@@ -1,3 +1,5 @@
+import { notify } from '../../utilities/nofity'
+
 export default {
   namespaced: true,
   state: {
@@ -49,7 +51,15 @@ export default {
           admin: true
         }
         commit('loginUser', admin)
+        notify.loginSuccessful()
+        this.$router.push({
+          path: '/'
+        })
       } else {
+        notify.loginFailed()
+        this.$router.push({
+          path: '/login'
+        })
         // commit('loginUser', user)b
       }
     },

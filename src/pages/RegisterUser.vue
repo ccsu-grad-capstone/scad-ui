@@ -1,14 +1,12 @@
 <template>
-  <div class="flex flex-center column">
+  <q-page class="flex flex-center column">
     <div class="q-pa-md full-width justify-center " style="max-width: 600px">
       <q-card class="q-pa-md">
         <q-card-section>
           <div class="text-h6">SCAD: Salary Cap Dynasty Fantasy Football</div>
           <div class="text-subtitle2">Register Now</div>
         </q-card-section>
-
         <q-separator />
-
         <q-form @submit="onSubmit" @reset="reset" class="q-gutter-xs col-9">
           <q-input
             filled
@@ -53,21 +51,30 @@
             :error="$v.user.confirmPassword.$error"
             error-message="Passwords do not match"
           />
-          <div>
-
-            <q-btn label="Submit" type="submit" color="primary" />
+          <q-btn-group spread>
+            <q-btn
+              label="Submit"
+              type="submit"
+              dense
+              no-caps
+              color="grey-4"
+              text-color="grey-8"
+              size="md"
+            />
             <q-btn
               label="Reset"
               type="reset"
-              color="primary"
-              flat
-              class="q-ml-sm"
+              dense
+              no-caps
+              color="grey-4"
+              text-color="grey-8"
+              size="md"
             />
-          </div>
+          </q-btn-group>
         </q-form>
       </q-card>
     </div>
-  </div>
+  </q-page>
 </template>
 
 <script>
@@ -118,7 +125,6 @@ export default {
         }
       }
     },
-    register () {},
     reset: function () {
       Object.assign(this.$data, this.initializeState())
       this.resetValidation()

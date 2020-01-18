@@ -132,7 +132,13 @@
             <q-tooltip>Account</q-tooltip>
           </q-btn>
         </div>
-        <q-btn v-else round color="secondary" dense icon="supervised_user_circle">
+        <q-btn
+          v-else
+          round
+          color="secondary"
+          dense
+          icon="supervised_user_circle"
+        >
           <q-menu anchor="bottom right" self="top right">
             <div class="q-pa-md" style="width: 400px">
               <div class="text-body1 text-grey-8 q-mb-md">
@@ -217,13 +223,11 @@
             v-ripple
             v-for="link in links3"
             :key="link.text"
-
             clickable
           >
             <q-item-section>
               <q-item-label
-                >{{ link.text }}
-                <q-icon v-if="link.icon" :name="link.icon"
+                >{{ link.text }} <q-icon v-if="link.icon" :name="link.icon"
               /></q-item-label>
             </q-item-section>
           </q-item>
@@ -245,12 +249,6 @@
               >
               <span> · </span>
               <a
-                class="GNL__drawer-footer-link"
-                href="javascript:void(0)"
-                aria-label="About"
-                >About Google</a
-              >
-                            <a
                 class="GNL__drawer-footer-link"
                 @click="navigate('register')"
                 aria-label="Register"
