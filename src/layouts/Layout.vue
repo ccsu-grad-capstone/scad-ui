@@ -184,6 +184,7 @@
     </q-header>
 
     <q-drawer
+      v-if="this.loggedIn"
       v-model="leftDrawerOpen"
       show-if-above
       bordered
@@ -249,6 +250,12 @@
                 aria-label="About"
                 >About Google</a
               >
+                            <a
+                class="GNL__drawer-footer-link"
+                @click="navigate('register')"
+                aria-label="Register"
+                >Register</a
+              >
             </div>
           </div>
         </q-list>
@@ -306,6 +313,9 @@ export default {
       return this.$store.state.user
     },
     active () {
+      return this.user.active
+    },
+    loggedIn () {
       return this.user.active
     }
   },

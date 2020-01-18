@@ -12,17 +12,19 @@
         <q-form @submit="onSubmit" @reset="reset" class="q-gutter-xs col-9">
           <q-input
             filled
-            v-model="user.fName"
+            v-model="$v.user.fName.$model"
             label="First Name"
             lazy-rules
-            :rules="[val => (val && val.length > 0) || 'Please type something']"
+            :error="$v.user.fName.$error"
+            error-message="Required Field"
           />
           <q-input
             filled
-            v-model="user.lName"
+            v-model="$v.user.lName.$model"
             label="Last Name"
             lazy-rules
-            :rules="[val => (val && val.length > 0) || 'Please type something']"
+            :error="$v.user.lName.$error"
+            error-message="Required Field"
           />
           <q-input
             filled
@@ -30,26 +32,17 @@
             v-model="user.email"
             label="Email"
             lazy-rules
-            :rules="[
-              val =>
-                /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(val) ||
-                'Invalid Email'
-            ]"
+            :error="$v.user.email.$error"
+            error-message="Please enter a valid email address"
           />
-
           <q-input
             filled
             type="password"
-            v-model="user.password"
+            v-model="$v.user.password.$model"
             label="Password"
             lazy-rules
-            :rules="[
-              val =>
-                /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/.test(
-                  val
-                ) ||
-                'Password must have 1 uppercase, 1 lowercase, 1 number and one special character'
-            ]"
+            :error="$v.user.password.$error"
+            error-message="Required Field"
           />
           <q-input
             filled
@@ -57,9 +50,11 @@
             v-model="user.confirmPassword"
             label="Confirm Password"
             lazy-rules
-            :rules="[val => val === user.password || 'Your passwords do not match']"
+            :error="$v.user.confirmPassword.$error"
+            error-message="Passwords do not match"
           />
           <div>
+
             <q-btn label="Submit" type="submit" color="primary" />
             <q-btn
               label="Reset"
@@ -76,14 +71,41 @@
 </template>
 
 <script>
+import { required, email, sameAs } from 'vuelidate/lib/validators'
 export default {
   data () {
     return this.initializeState()
   },
+  validations: {
+    user: {
+      fName: { required },
+      lName: { required },
+      // Accepts valid email addresses. Keep in mind you still have to carefully
+      // verify it on your server, as it is impossible to tell if the address is
+      // real without sending verification email.
+      email: { required, email },
+      password: { required },
+      confirmPassword: {
+        sameAsPassword: sameAs('password')
+      }
+    }
+  },
+  destroyed () {
+    this.reset()
+  },
   methods: {
     onSubmit () {
-      console.log(this.user)
-      this.reset()
+      console.log('[REGISTERUSER - Methods] - onSubmit()')
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        console.log('Register Validation failed')
+      } else {
+        console.log('Register Validation Successful', this.user)
+        this.$store.dispatch('user/registerUser', this.user)
+        this.$router.push({
+          path: 'dashboard'
+        })
+      }
     },
     initializeState () {
       return {
@@ -96,19 +118,16 @@ export default {
         }
       }
     },
-    register () {
-    },
+    register () {},
     reset: function () {
       Object.assign(this.$data, this.initializeState())
       this.resetValidation()
+    },
+    resetValidation () {
+      this.$nextTick(() => {
+        this.$v.$reset()
+      })
     }
-    // resetValidation () {
-    //   this.$refs.fName.resetValidation()
-    //   this.$refs.lName.resetValidation()
-    //   this.$refs.email.resetValidation()
-    //   this.$refs.password.resetValidation()
-    //   this.$refs.confirmpassword.resetValidation()
-    // }
   }
 }
 </script>
