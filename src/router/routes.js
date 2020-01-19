@@ -57,6 +57,13 @@ const routes = [
     ]
   },
   {
+    path: '/create-league',
+    component: () => import('layouts/Layout.vue'),
+    children: [
+      { path: '', component: () => import('pages/CreateLeague.vue') }
+    ]
+  },
+  {
     path: '/matchup',
     component: () => import('layouts/Layout.vue'),
     children: [

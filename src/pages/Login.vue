@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex flex-center column">
-    <div class="q-pa-md full-width justify-center" style="max-width: 600px">
+    <div class="q-pa-md full-width justify-center" style="max-width: 500px">
       <q-card class="q-pa-md">
         <q-card-section>
           <div class="text-h6">Login</div>
@@ -31,7 +31,7 @@
               type="submit"
               dense
               no-caps
-              color="grey-4"
+              color="grey-1"
               text-color="grey-8"
               size="md"
             />
@@ -40,7 +40,7 @@
               type="submit"
               dense
               no-caps
-              color="grey-4"
+              color="grey-1"
               text-color="grey-8"
               size="md"
               @click.prevent="reset"
@@ -50,7 +50,7 @@
               type="submit"
               dense
               no-caps
-              color="grey-4"
+              color="grey-1"
               text-color="grey-8"
               size="md"
               @click.prevent="register"

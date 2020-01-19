@@ -17,7 +17,7 @@
           shrink
           class="row items-center no-wrap"
         >
-          <span class="q-ml-sm"> {{ appName }}</span>
+          <img src="../statics/scad-logo_v1_100x30.png" clickable @click="iconNavigate"/>
         </q-toolbar-title>
 
         <q-space />
@@ -132,13 +132,7 @@
             <q-tooltip>Account</q-tooltip>
           </q-btn>
         </div>
-        <q-btn
-          v-else
-          round
-          color="secondary"
-          dense
-          icon="supervised_user_circle"
-        >
+        <q-btn v-else round color="accent" dense icon="supervised_user_circle">
           <q-menu anchor="bottom right" self="top right">
             <div class="q-pa-md" style="width: 400px">
               <div class="text-body1 text-grey-8 q-mb-md">
@@ -346,6 +340,13 @@ export default {
     logout () {
       console.log('logout()')
       this.$store.dispatch('user/logoutUser')
+    },
+    iconNavigate () {
+      if (this.loggedIn) {
+        this.navigate('dashboard')
+      } else {
+        this.navigate('/')
+      }
     }
   }
 }

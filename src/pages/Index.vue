@@ -1,8 +1,16 @@
 <template>
-  <q-page class="flex flex-center">
-    <div class="column items-center">
-      <h3>Welcome to SCAD</h3>
-      <h4>Salary Cap Dynasty Fantasy Football</h4>
+  <q-page class="flex justify-center">
+    <q-card class="q-pa-md q-ma-md" style="width: 100%">
+      <q-card-section>
+        <div class="column items-center">
+          <q-img src="../statics/scad-logo_v1_700x500.png" style="width: 40%" />
+        </div>
+      </q-card-section>
+      <q-separator />
+      <div class="column items-center">
+        <div class="text"></div>
+      </div>
+
       <div class="row full-width justify-center items-center">
         <div class="column col items-center">
           Existing Users:
@@ -10,8 +18,7 @@
             label="Login Here"
             dense
             no-caps
-            color="grey-4"
-            text-color="grey-8"
+            color="primary"
             size="md"
             @click="$router.push('login')"
           />
@@ -23,15 +30,14 @@
             label="Register Here"
             dense
             no-caps
-            color="grey-4"
-            text-color="grey-8"
-            f
+            color="secondary"
+            text-color="primary"
             size="md"
             @click="$router.push('register')"
           />
         </div>
       </div>
-    </div>
+    </q-card>
   </q-page>
 </template>
 

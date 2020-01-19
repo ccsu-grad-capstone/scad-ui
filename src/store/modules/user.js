@@ -3,10 +3,10 @@ import { notify } from '../../utilities/nofity'
 export default {
   namespaced: true,
   state: {
-    fName: null,
+    fName: 'null',
     lName: null,
     email: null,
-    active: false,
+    active: true,
     admin: false
   },
   getters: {
