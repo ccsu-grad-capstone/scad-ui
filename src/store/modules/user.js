@@ -1,4 +1,5 @@
 import { notify } from '../../utilities/nofity'
+import axios from 'axios'
 
 export default {
   namespaced: true,
@@ -40,7 +41,19 @@ export default {
     },
     loginUser ({ commit }, user) {
       console.log('[USER-ACTION] - loginUser()')
-      // make call to API here to validate user credentials
+      console.log(user)
+      axios.get(`http://localhost:8080/scadservices/api/user/${user.email}`)
+        .then(function (response) {
+        // handle success
+          console.log(response)
+        })
+        .catch(function (error) {
+        // handle error
+          console.log(error)
+        })
+        .finally(function () {
+        // always executed
+        })
 
       if (user.email === 'admin@gmail.com' && user.password === 'admin') {
         let admin = {
