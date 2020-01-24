@@ -1,7 +1,7 @@
-<template>
-    <div>
-        <h3>League Home</h3>
-    </div>
+<template lang="pug">
+  body
+    div
+      h3 League Home
 </template>
 
 <script>

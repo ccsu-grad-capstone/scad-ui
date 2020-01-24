@@ -1,7 +1,7 @@
-<template>
-  <div>
-    <h3>League Settings</h3>
-  </div>
+<template lang="pug">
+  body
+    div
+      h3 League Setting
 </template>
 
 <script>

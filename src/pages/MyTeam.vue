@@ -1,7 +1,7 @@
-<template>
-  <div>
-    <h3> My Team </h3>
-  </div>
+<template lang="pug">
+  body
+    div
+      h3 My Team
 </template>
 
 <script>

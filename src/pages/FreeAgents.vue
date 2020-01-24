@@ -1,9 +1,8 @@
-<template>
-  <div>
-    <h3>Free Agents</h3>
-  </div>
+<template lang="pug">
+  body
+    div
+      h3 Free Agents
 </template>
-
 <script>
 export default {
   data () {

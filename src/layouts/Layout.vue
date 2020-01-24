@@ -144,14 +144,14 @@
                   Email:
                 </div>
                 <div class="col-9 q-pl-md">
-                  <q-input dense v-model="email" />
+                  <q-input dense v-model="email " :error="$v.email.$error" error-message="Please enter a valid email address" />
                 </div>
 
                 <div class="col-3 text-subtitle2 text-grey">
                   Password:
                 </div>
                 <div class="col-9 q-pl-md">
-                  <q-input dense v-model="password" />
+                  <q-input dense v-model="password" :error="$v.password.$error" error-message="Required Field" />
                 </div>
                 <div class="col-12 q-pt-lg row justify-end">
                   <q-btn
@@ -163,7 +163,6 @@
                     style="min-width: 68px;"
                     label="Login"
                     @click="login"
-                    v-close-popup
                   />
                   <q-btn
                     flat
@@ -261,6 +260,8 @@
 </template>
 
 <script>
+import { required, email } from 'vuelidate/lib/validators'
+
 export default {
   name: 'DefaultLayout',
 
@@ -296,6 +297,10 @@ export default {
       ]
     }
   },
+  validations: {
+    email: { required, email },
+    password: { required }
+  },
 
   computed: {
     appName () {
@@ -317,6 +322,10 @@ export default {
       console.log('in MyLayout navigate')
       this.$router.push({
         path: nav
+      }).catch(error => {
+        if (error.name !== 'NavigationDuplicated') {
+          throw error
+        }
       })
     },
     onClear () {
@@ -331,15 +340,37 @@ export default {
       this.showDateOptions = false
     },
     login () {
-      let user = {
-        email: this.email,
-        password: this.password
+      console.log('[LOGIN - Methods] - login()')
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        console.log('Login Validation failed')
+      } else {
+        let user = {
+          email: this.email,
+          password: this.password
+        }
+        this.$store.dispatch('user/loginUser', user).then(() => {
+          if (this.user.isActive) {
+            this.$router.push({
+              path: '/dashboard'
+            })
+          } else {
+            this.$router.push({
+              path: '/'
+            })
+          }
+        })
       }
-      this.$store.dispatch('user/loginUser', user)
     },
     logout () {
       console.log('logout()')
-      this.$store.dispatch('user/logoutUser')
+      this.$store.commit('user/logoutUser')
+      // eslint-disable-next-line handle-callback-err
+      this.$router.push('/').catch(error => {
+        if (error.name !== 'NavigationDuplicated') {
+          throw error
+        }
+      })
     },
     iconNavigate () {
       if (this.loggedIn) {

@@ -93,21 +93,25 @@ module.exports = function (ctx) {
             formatter: require('eslint').CLIEngine.getFormatter('stylish')
           }
         })
+        cfg.module.rules.push({
+          test: /\.pug$/,
+          loader: 'pug-plain-loader'
+        })
       }
     },
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {
-      proxy: {
-        // proxy all requests starting with /api to jsonplaceholder
-        '/api': {
-          target: 'http://localhost:8080/scadservices',
-          changeOrigin: true,
-          pathRewrite: {
-            '^/api': ''
-          }
-        }
-      },
+      // proxy: {
+      //   // proxy all requests starting with /api to jsonplaceholder
+      //   '/api': {
+      //     target: 'http://localhost:8080/scadservices',
+      //     changeOrigin: true,
+      //     pathRewrite: {
+      //       '^/api': ''
+      //     }
+      //   }
+      // },
       before (app) {
         const cors = require('cors')
         app.use(cors())

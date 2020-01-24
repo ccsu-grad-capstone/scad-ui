@@ -1,80 +1,20 @@
-<template>
-  <q-page class="flex flex-center column">
-    <div class="q-pa-md full-width justify-center " style="max-width: 600px">
-      <q-card class="q-pa-md">
-        <q-card-section>
-          <div class="text-h6">SCAD: Salary Cap Dynasty Fantasy Football</div>
-          <div class="text-subtitle2">Register Now</div>
-        </q-card-section>
-        <q-separator />
-        <q-form @submit="onSubmit" @reset="reset" class="q-gutter-xs col-9">
-          <q-input
-            filled
-            v-model="$v.user.fName.$model"
-            label="First Name"
-            lazy-rules
-            :error="$v.user.fName.$error"
-            error-message="Required Field"
-          />
-          <q-input
-            filled
-            v-model="$v.user.lName.$model"
-            label="Last Name"
-            lazy-rules
-            :error="$v.user.lName.$error"
-            error-message="Required Field"
-          />
-          <q-input
-            filled
-            type="email"
-            v-model="user.email"
-            label="Email"
-            lazy-rules
-            :error="$v.user.email.$error"
-            error-message="Please enter a valid email address"
-          />
-          <q-input
-            filled
-            type="password"
-            v-model="$v.user.password.$model"
-            label="Password"
-            lazy-rules
-            :error="$v.user.password.$error"
-            error-message="Required Field"
-          />
-          <q-input
-            filled
-            type="password"
-            v-model="user.confirmPassword"
-            label="Confirm Password"
-            lazy-rules
-            :error="$v.user.confirmPassword.$error"
-            error-message="Passwords do not match"
-          />
-          <q-btn-group spread>
-            <q-btn
-              label="Submit"
-              type="submit"
-              dense
-              no-caps
-              color="grey-4"
-              text-color="grey-8"
-              size="md"
-            />
-            <q-btn
-              label="Reset"
-              type="reset"
-              dense
-              no-caps
-              color="grey-4"
-              text-color="grey-8"
-              size="md"
-            />
-          </q-btn-group>
-        </q-form>
-      </q-card>
-    </div>
-  </q-page>
+<template lang="pug">
+  q-page.flex.flex-center.column
+    .q-pa-md.full-width.justify-center(style="max-width: 600px")
+      q-card.q-pa-md
+        q-card-section
+          .text-h6 SCAD: Salary Cap Dynasty Fantasy Football
+          .text-subtitle2 Register Now
+        q-separator
+        q-form.q-gutter-xs.col-9(@submit="onSubmit" @reset="reset")
+          q-input(filled="" v-model="$v.user.firstName.$model" label="First Name" lazy-rules="" :error="$v.user.firstName.$error" error-message="Required Field")
+          q-input(filled="" v-model="$v.user.lastName.$model" label="Last Name" lazy-rules="" :error="$v.user.lastName.$error" error-message="Required Field")
+          q-input(filled="" type="email" v-model="user.email" label="Email" lazy-rules="" :error="$v.user.email.$error" error-message="Please enter a valid email address")
+          q-input(filled="" type="password" v-model="$v.user.password.$model" label="Password" lazy-rules="" :error="$v.user.password.$error" error-message="Required Field")
+          q-input(filled="" type="password" v-model="user.confirmPassword" label="Confirm Password" lazy-rules="" :error="$v.user.confirmPassword.$error" error-message="Passwords do not match")
+          q-btn-group(spread="")
+            q-btn(label="Submit" type="submit" dense="" no-caps="" color="grey-4" text-color="grey-8" size="md")
+            q-btn(label="Reset" type="reset" dense="" no-caps="" color="grey-4" text-color="grey-8" size="md")
 </template>
 
 <script>
@@ -85,8 +25,8 @@ export default {
   },
   validations: {
     user: {
-      fName: { required },
-      lName: { required },
+      firstName: { required },
+      lastName: { required },
       // Accepts valid email addresses. Keep in mind you still have to carefully
       // verify it on your server, as it is impossible to tell if the address is
       // real without sending verification email.
@@ -109,16 +49,22 @@ export default {
       } else {
         console.log('Register Validation Successful', this.user)
         this.$store.dispatch('user/registerUser', this.user)
-        this.$router.push({
-          path: 'dashboard'
-        })
+        if (this.user.isActive) {
+          this.$router.push({
+            path: '/dashboard'
+          })
+        } else {
+          this.$router.push({
+            path: '/'
+          })
+        }
       }
     },
     initializeState () {
       return {
         user: {
-          fName: '',
-          lName: '',
+          firstName: '',
+          lastName: '',
           email: '',
           password: '',
           confirmPassword: ''

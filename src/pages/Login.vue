@@ -1,65 +1,18 @@
-<template>
-  <q-page class="flex flex-center column">
-    <div class="q-pa-md full-width justify-center" style="max-width: 500px">
-      <q-card class="q-pa-md">
-        <q-card-section>
-          <div class="text-h6">Login</div>
-        </q-card-section>
-        <q-separator />
-        <q-form @submit="onSubmit" @reset="reset" class="q-gutter-xs col-9">
-          <q-input
-            filled
-            type="email"
-            v-model="email"
-            label="Email"
-            lazy-rules
-            :error="$v.email.$error"
-            error-message="Please enter a valid email address"
-          />
-          <q-input
-            filled
-            type="password"
-            v-model="password"
-            label="Password"
-            lazy-rules
-            :error="$v.password.$error"
-            error-message="Required Field"
-          />
-          <q-btn-group spread>
-            <q-btn
-              label="Login"
-              type="submit"
-              dense
-              no-caps
-              color="grey-1"
-              text-color="grey-8"
-              size="md"
-            />
-            <q-btn
-              label="Reset"
-              type="submit"
-              dense
-              no-caps
-              color="grey-1"
-              text-color="grey-8"
-              size="md"
-              @click.prevent="reset"
-            />
-            <q-btn
-              label="Register Here"
-              type="submit"
-              dense
-              no-caps
-              color="grey-1"
-              text-color="grey-8"
-              size="md"
-              @click.prevent="register"
-            />
-          </q-btn-group>
-        </q-form>
-      </q-card>
-    </div>
-  </q-page>
+<template lang="pug">
+  q-page.flex.flex-center.column
+    .q-pa-md.full-width.justify-center(style="max-width: 500px")
+      q-card.q-pa-md
+        q-card-section
+          .text-h6 Login
+        q-separator
+        q-form.q-gutter-xs.col-9(@submit="onSubmit" @reset="reset")
+          q-input(filled="" type="email" v-model="email" label="Email" lazy-rules="" :error="$v.email.$error" error-message="Please enter a valid email address")
+          q-input(filled="" type="password" v-model="password" label="Password" lazy-rules="" :error="$v.password.$error" error-message="Required Field")
+          q-btn-group(spread="")
+            q-btn(label="Login" type="submit" dense="" no-caps="" color="grey-1" text-color="grey-8" size="md")
+            q-btn(label="Reset" type="submit" dense="" no-caps="" color="grey-1" text-color="grey-8" size="md" @click.prevent="reset")
+            q-btn(label="Register Here" type="submit" dense="" no-caps="" color="grey-1" text-color="grey-8" size="md" @click.prevent="register")
+
 </template>
 
 <script>
@@ -76,6 +29,11 @@ export default {
     email: { required, email },
     password: { required }
   },
+  computed: {
+    user () {
+      return this.$store.state.user
+    }
+  },
   methods: {
     onSubmit () {
       console.log('[LOGIN - Methods] - onSubmit()')
@@ -87,9 +45,16 @@ export default {
           email: this.email,
           password: this.password
         }
-        this.$store.dispatch('user/loginUser', user)
-        this.$router.push({
-          path: 'dashboard'
+        this.$store.dispatch('user/loginUser', user).then(() => {
+          if (this.user.isActive) {
+            this.$router.push({
+              path: '/dashboard'
+            })
+          } else {
+            this.$router.push({
+              path: '/'
+            })
+          }
         })
       }
     },

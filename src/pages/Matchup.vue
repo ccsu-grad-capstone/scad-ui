@@ -1,7 +1,7 @@
-<template>
-  <div>
-    <h3>Matchup</h3>
-  </div>
+<template lang="pug">
+  body
+    div
+      h3 Matchups
 </template>
 
 <script>
