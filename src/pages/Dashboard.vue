@@ -11,10 +11,10 @@
         .row.full-width.justify-center.items-center
           .column.col.items-center
             | Looking to join an existing league?
-            q-btn(label='Join Here' dense='' no-caps='' color='primary' size='md')
+            q-btn(label='Join Here' dense no-caps color='primary' size='md')
           .column.col.items-center
             | Looking to create a new league?
-            q-btn(label='Create League' dense='' no-caps='' color='secondary' text-color='primary' size='md' @click="$router.push('create-league')")
+            q-btn(label='Create League' dense no-caps color='secondary' text-color='primary' size='md' @click="$router.push('create-league')")
 
 </template>
 

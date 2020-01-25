@@ -1,432 +1,150 @@
-<template>
-  <q-page class="flex flex-center">
-    <q-card class="q-pa-md q-ma-md" style="width: 75%">
-      <q-card-section>
-        <div class="text-h6">Create New League</div>
-        <div>{{ this.league }}</div>
-      </q-card-section>
-      <q-separator />
-      <q-form @submit="onSubmit" @reset="reset" class="q-gutter-xs col-9">
-        <div class="row">
-          <div class="col">
-            <q-input
-              filled
-              dense
-              v-model="$v.league.name.$model"
-              label="League Name"
-              lazy-rules
-              :error="$v.league.name.$error"
-              error-message="Required Field"
-            />
-          </div>
-        </div>
-        <div class="row justify-around">
-          <div class="col-2">
-            <q-select
-              filled
-              dense
-              v-model="league.capacity"
-              :options="capacity"
-              label="League Capacity"
-            />
-          </div>
-          <div class="col-2">
-            <q-select
-              filled
-              dense
-              v-model="league.divisions"
-              :options="divisions"
-              label="Divisions"
-            />
-          </div>
-          <div class="col-3">
-            <q-select
-              filled
-              dense
-              v-model="league.draftType"
-              :options="draftType"
-              label="Draft Type"
-            />
-          </div>
-          <div class="col-3">
-            <q-select
-              filled
-              dense
-              v-model="league.scoringType"
-              :options="scoringType"
-              label="Scoring Type"
-            />
-          </div>
-        </div>
+<template lang="pug">
+  q-page.flex.flex-center
+    q-card.q-pa-md.q-ma-md(style='width: 75%')
+      q-card-section
+        .text-h6 Create New League
+        div {{ this.league }}
+      q-separator
+      q-form.q-gutter-xs.col-9(@submit='onSubmit' @reset='reset')
+        .row
+          .col
+            q-input(filled dense v-model='$v.league.name.$model' label='League Name' lazy-rules :error='$v.league.name.$error' error-message='Required Field')
+        .row.justify-around
+          .col-2
+            q-select(filled dense v-model='league.capacity' :options='capacity' label='League Capacity')
+          .col-2
+            q-select(filled dense v-model='league.divisions' :options='divisions' label='Divisions')
+          .col-3
+            q-select(filled dense v-model='league.draftType' :options='draftType' label='Draft Type')
+          .col-3
+            q-select(filled dense v-model='league.scoringType' :options='scoringType' label='Scoring Type')
+        .row
+          .col-6
+            .row.q-pa-md.q-mt-md.items-center
+              .col-11
+                q-slider(v-model='league.teamCap' :min='100' :max='1000' :step='100' label dense :label-value='`$${league.teamCap}`' color='primary')
+              div
+                | Team Salary Cap: ${{ league.teamCap }}
+                q-btn(rounded dense color='info' size='xs' label="What's This?")
+                  q-tooltip
+                    | To determine the salary cap limit for each team in your
+                    | league.
+          .col-6
+            .row.q-pa-md.q-mt-md.items-center
+              .col-11
+                q-slider(v-model='league.irReliefPerc' :min='0' :max='100' :step='5' label dense :label-value='`${league.irReliefPerc}%`' color='primary')
+              div
+                | IR Cap Relief: {{ league.irReliefPerc }}%
+                q-btn(rounded dense color='info' size='xs' label="What's This?")
+                  q-tooltip
+                    | Determine the cap relief given to players on IR
+        .row
+          .col-6
+            .row.q-pa-md
+              .col-11
+                q-slider(:value='calcLeagueCap' label dense :min='1600' :max='16000' readonly :label-value='`$${league.leagueCap}`' color='primary')
+              div
+                | League Salary Cap: ${{ league.leagueCap }}
+                q-btn(rounded dense color='info' size='xs' label="What's This?")
+                  q-tooltip
+                    | Team Salary Cap x Capacity
+          .col-6
+            .row.q-pa-md.items-center
+              .col-11
+                q-slider(v-model='league.tagReliefPerc' :min='0' :max='100' :step='5' label dense :label-value='`${league.tagReliefPerc}%`' color='primary')
+              div
+                | Franchise Tag Relief: {{ league.tagReliefPerc }}%
+                q-btn(rounded dense color='info' size='xs' label="What's This?")
+                  q-tooltip
+                    | To determine the salary cap limit for each team in your
+                    | league.
+        q-separator(color='secondary' inset)
+        .row
+          .col-6
+            .text-h6.text-center
+              | Roster Positions:
+            .row
+              .col-5.text-subtitle1.text-right.q-pa-xs.q-pt-sm
+                | QB:
+              .col-2.q-pa-xs
+                q-select(filled dense v-model='league.roster.qb' :options='positionCounts')
+            .row
+              .col-5.text-subtitle1.text-right.q-pa-xs.q-pt-sm
+                | RB:
+              .col-2.q-pa-xs
+                q-select(filled dense v-model='league.roster.rb' :options='positionCounts')
+            .row
+              .col-5.text-subtitle1.text-right.q-pa-xs.q-pt-sm
+                | WR:
+              .col-2.q-pa-xs
+                q-select(filled dense v-model='league.roster.wr' :options='positionCounts')
+            .row
+              .col-5.text-subtitle1.text-right.q-pa-xs.q-pt-sm
+                | TE:
+              .col-2.q-pa-xs
+                q-select(filled dense v-model='league.roster.te' :options='positionCounts')
+            .row
+              .col-5.text-subtitle1.text-right.q-pa-xs.q-pt-sm
+                | RB/WR:
+              .col-2.q-pa-xs
+                q-select(filled dense v-model='league.roster.rb_wr' :options='positionCounts')
+            .row
+              .col-5.text-subtitle1.text-right.q-pa-xs.q-pt-sm
+                | RB/WR/TE:
+              .col-2.q-pa-xs
+                q-select(filled dense v-model='league.roster.rb_wr_te' :options='positionCounts')
+            .row
+              .col-5.text-subtitle1.text-right.q-pa-xs.q-pt-sm
+                | QB/RB/WR/TE:
+              .col-2.q-pa-xs
+                q-select(filled dense v-model='league.roster.qb_rb_wr_te' :options='positionCounts')
+            .row
+              .col-5.text-subtitle1.text-right.q-pa-xs.q-pt-sm
+                | K:
+              .col-2.q-pa-xs
+                q-select(filled dense v-model='league.roster.k' :options='positionCounts')
+            .row
+              .col-5.text-subtitle1.text-right.q-pa-xs.q-pt-sm
+                | DEF:
+              .col-2.q-pa-xs
+                q-select(filled dense v-model='league.roster.def' :options='positionCounts')
+            .row
+              .col-5.text-subtitle1.text-right.q-pa-xs.q-pt-sm
+                | IR:
+              .col-2.q-pa-xs
+                q-select(filled dense v-model='league.roster.ir' :options='positionCounts')
+            .row
+              .col-5.text-subtitle1.text-right.q-pa-xs.q-pt-sm
+                | Bench:
+              .col-2.q-pa-xs
+                q-select(filled dense v-model='league.roster.bn' :options='positionCounts')
+            .row
+              .col-5.text-subtitle1.text-right.q-pa-xs.q-pt-sm
+                | Total Roster Slots:
+              .col-2.q-pa-xs
+                q-select(disable filled dense :value='calcRosterLimit')
+          .col-6
+            .text-h6.text-center
+              | Stat Categories:
+            .row
+              .col-6
+                .row
+                  .col-8.text-body2.text-right.q-pa-xs.q-pt-sm
+                    | Passing Yards:
+                  .col-3.q-pa-xs
+                    q-select(filled dense v-model='league.roster.qb' :options='positionCounts')
+        .col-6
+          .row.q-gutter-sm.justify-center
+            .col-5
+              q-select(filled dense v-model='league.waiverType' :options='waiverType' label='Waiver Type')
+            .col-5
+              q-select(filled dense v-model='league.waiverTime' :options='waiverTime' label='Waiver Time')
+      .row.justify-center.q-pt-md
+        .col-6
+          q-btn-group(spread)
+            q-btn(label='Submit' type='submit' dense no-caps color='primary' size='md')
+            q-btn(label='Reset' type='reset' dense no-caps color='info' size='md')
 
-        <div class="row">
-          <div class="col-6">
-            <div class="row q-pa-md q-mt-md items-center">
-              <div class="col-11">
-                <q-slider
-                  v-model="league.teamCap"
-                  :min="100"
-                  :max="1000"
-                  :step="100"
-                  label
-                  dense
-                  :label-value="`$${league.teamCap}`"
-                  color="primary"
-                />
-              </div>
-              <div>
-                Team Salary Cap: ${{ league.teamCap }}
-                <q-btn
-                  rounded
-                  dense
-                  color="info"
-                  size="xs"
-                  label="What's This?"
-                >
-                  <q-tooltip>
-                    To determine the salary cap limit for each team in your
-                    league.
-                  </q-tooltip>
-                </q-btn>
-              </div>
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="row q-pa-md q-mt-md items-center">
-              <div class="col-11">
-                <q-slider
-                  v-model="league.irReliefPerc"
-                  :min="0"
-                  :max="100"
-                  :step="5"
-                  label
-                  dense
-                  :label-value="`${league.irReliefPerc}%`"
-                  color="primary"
-                />
-              </div>
-              <div>
-                IR Cap Relief: {{ league.irReliefPerc }}%
-                <q-btn
-                  rounded
-                  dense
-                  color="info"
-                  size="xs"
-                  label="What's This?"
-                >
-                  <q-tooltip>
-                    Determine the cap relief given to players on IR
-                  </q-tooltip>
-                </q-btn>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-6">
-            <div class="row q-pa-md">
-              <div class="col-11">
-                <q-slider
-                  :value="calcLeagueCap"
-                  label
-                  dense
-                  :min="1600"
-                  :max="16000"
-                  readonly
-                  :label-value="`$${league.leagueCap}`"
-                  color="primary"
-                />
-              </div>
-              <div>
-                League Salary Cap: ${{ league.leagueCap }}
-                <q-btn
-                  rounded
-                  dense
-                  color="info"
-                  size="xs"
-                  label="What's This?"
-                >
-                  <q-tooltip>
-                    Team Salary Cap x Capacity
-                  </q-tooltip>
-                </q-btn>
-              </div>
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="row q-pa-md items-center">
-              <div class="col-11">
-                <q-slider
-                  v-model="league.tagReliefPerc"
-                  :min="0"
-                  :max="100"
-                  :step="5"
-                  label
-                  dense
-                  :label-value="`${league.tagReliefPerc}%`"
-                  color="primary"
-                />
-              </div>
-              <div>
-                Franchise Tag Relief: {{ league.tagReliefPerc }}%
-                <q-btn
-                  rounded
-                  dense
-                  color="info"
-                  size="xs"
-                  label="What's This?"
-                >
-                  <q-tooltip>
-                    To determine the salary cap limit for each team in your
-                    league.
-                  </q-tooltip>
-                </q-btn>
-              </div>
-            </div>
-          </div>
-        </div>
-        <q-separator color="secondary" inset />
-        <div class="row">
-          <div class="col-6">
-            <div class="text-h6 text-center">
-              Roster Positions:
-            </div>
-            <div class="row">
-              <div class="col-5 text-subtitle1 text-right q-pa-xs q-pt-sm">
-                QB:
-              </div>
-
-              <div class="col-2 q-pa-xs">
-                <q-select
-                  filled
-                  dense
-                  v-model="league.roster.qb"
-                  :options="positionCounts"
-                />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-5 text-subtitle1 text-right q-pa-xs q-pt-sm">
-                RB:
-              </div>
-
-              <div class="col-2 q-pa-xs">
-                <q-select
-                  filled
-                  dense
-                  v-model="league.roster.rb"
-                  :options="positionCounts"
-                />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-5 text-subtitle1 text-right q-pa-xs q-pt-sm">
-                WR:
-              </div>
-
-              <div class="col-2 q-pa-xs">
-                <q-select
-                  filled
-                  dense
-                  v-model="league.roster.wr"
-                  :options="positionCounts"
-                />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-5 text-subtitle1 text-right q-pa-xs q-pt-sm">
-                TE:
-              </div>
-
-              <div class="col-2 q-pa-xs">
-                <q-select
-                  filled
-                  dense
-                  v-model="league.roster.te"
-                  :options="positionCounts"
-                />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-5 text-subtitle1 text-right q-pa-xs q-pt-sm">
-                RB/WR:
-              </div>
-
-              <div class="col-2 q-pa-xs">
-                <q-select
-                  filled
-                  dense
-                  v-model="league.roster.rb_wr"
-                  :options="positionCounts"
-                />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-5 text-subtitle1 text-right q-pa-xs q-pt-sm">
-                RB/WR/TE:
-              </div>
-
-              <div class="col-2 q-pa-xs">
-                <q-select
-                  filled
-                  dense
-                  v-model="league.roster.rb_wr_te"
-                  :options="positionCounts"
-                />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-5 text-subtitle1 text-right q-pa-xs q-pt-sm">
-                QB/RB/WR/TE:
-              </div>
-
-              <div class="col-2 q-pa-xs">
-                <q-select
-                  filled
-                  dense
-                  v-model="league.roster.qb_rb_wr_te"
-                  :options="positionCounts"
-                />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-5 text-subtitle1 text-right q-pa-xs q-pt-sm">
-                K:
-              </div>
-
-              <div class="col-2 q-pa-xs">
-                <q-select
-                  filled
-                  dense
-                  v-model="league.roster.k"
-                  :options="positionCounts"
-                />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-5 text-subtitle1 text-right q-pa-xs q-pt-sm">
-                DEF:
-              </div>
-
-              <div class="col-2 q-pa-xs">
-                <q-select
-                  filled
-                  dense
-                  v-model="league.roster.def"
-                  :options="positionCounts"
-                />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-5 text-subtitle1 text-right q-pa-xs q-pt-sm">
-                IR:
-              </div>
-
-              <div class="col-2 q-pa-xs">
-                <q-select
-                  filled
-                  dense
-                  v-model="league.roster.ir"
-                  :options="positionCounts"
-                />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-5 text-subtitle1 text-right q-pa-xs q-pt-sm">
-                Bench:
-              </div>
-
-              <div class="col-2 q-pa-xs">
-                <q-select
-                  filled
-                  dense
-                  v-model="league.roster.bn"
-                  :options="positionCounts"
-                />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-5 text-subtitle1 text-right q-pa-xs q-pt-sm">
-                Total Roster Slots:
-              </div>
-
-              <div class="col-2 q-pa-xs">
-                <q-select disable filled dense :value="calcRosterLimit" />
-              </div>
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="text-h6 text-center">
-              Stat Categories:
-            </div>
-            <div class="row">
-              <div class="col-6">
-                <div class="row">
-                  <div class="col-8 text-body2 text-right q-pa-xs q-pt-sm">
-                    Passing Yards:
-                  </div>
-
-                  <div class="col-3 q-pa-xs">
-                    <q-select
-                      filled
-                      dense
-                      v-model="league.roster.qb"
-                      :options="positionCounts"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="row q-gutter-sm">
-              <div class="col-5">
-                <q-select
-                  filled
-                  dense
-                  v-model="league.waiverType"
-                  :options="waiverType"
-                  label="Waiver Type"
-                />
-              </div>
-              <div class="col-5">
-                <q-select
-                  filled
-                  dense
-                  v-model="league.waiverTime"
-                  :options="waiverTime"
-                  label="Waiver Time"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-6"></div>
-        <div class="row justify-center q-pt-md">
-          <div class="col-6">
-            <q-btn-group spread>
-              <q-btn
-                label="Submit"
-                type="submit"
-                dense
-                no-caps
-                color="primary"
-                size="md"
-              />
-              <q-btn
-                label="Reset"
-                type="reset"
-                dense
-                no-caps
-                color="info"
-                size="md"
-              />
-            </q-btn-group>
-          </div>
-        </div>
-      </q-form>
-    </q-card>
-  </q-page>
 </template>
 
 <script>

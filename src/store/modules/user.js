@@ -6,13 +6,17 @@ const bcrypt = require('bcryptjs')
 export default {
   namespaced: true,
   state: {
-    firstName: 'null',
-    lastName: null,
-    email: null,
+    firstName: 'Ryan',
+    lastName: 'Lauzon',
+    email: 'admin@admin.com',
     active: true,
     isAdmin: false
   },
   getters: {
+    name (state) {
+      console.log('[USER-GETTERS] - name()')
+      return `${state.firstName} ${state.lastName}`
+    }
   },
 
   mutations: {
