@@ -69,6 +69,20 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/Matchup.vue') }
     ]
+  },
+  {
+    path: '/about',
+    component: () => import('layouts/Layout.vue'),
+    children: [
+      { path: '', component: () => import('pages/About.vue') }
+    ]
+  },
+  {
+    path: '/my-profile',
+    component: () => import('layouts/Layout.vue'),
+    children: [
+      { path: '', component: () => import('pages/MyProfile.vue') }
+    ]
   }
 ]
 

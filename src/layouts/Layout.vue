@@ -1,262 +1,93 @@
-<template>
-  <q-layout view="hHh lpR fFf" class="bg-grey-1">
-    <q-header elevated class="bg-white text-grey-8" height-hint="64">
-      <q-toolbar class="GNL__toolbar">
-        <q-btn
-          flat
-          dense
-          round
-          @click="leftDrawerOpen = !leftDrawerOpen"
-          aria-label="Menu"
-          icon="menu"
-          class="q-mr-sm"
-        />
-
-        <q-toolbar-title
-          v-if="$q.screen.gt.xs"
-          shrink
-          class="row items-center no-wrap"
-        >
-          <img src="../statics/scad-logo_v1_100x30.png" clickable @click="iconNavigate"/>
-        </q-toolbar-title>
-
-        <q-space />
-
-        <q-input
-          class="GNL__toolbar-input"
-          outlined
-          dense
-          v-model="search"
-          color="bg-grey-7 shadow-1"
-          placeholder="Search for topics, locations & sources"
-        >
-          <template v-slot:prepend>
-            <q-icon v-if="search === ''" name="search" />
-            <q-icon
-              v-else
-              name="clear"
-              class="cursor-pointer"
-              @click="search = ''"
-            />
-          </template>
-          <template v-slot:append>
-            <q-btn flat dense round aria-label="Menu" icon="arrow_drop_down">
-              <q-menu anchor="bottom right" self="top right">
-                <div class="q-pa-md" style="width: 400px">
-                  <div class="text-body2 text-grey q-mb-md">
-                    Narrow your search results
-                  </div>
-
-                  <div class="row items-center">
-                    <div class="col-3 text-subtitle2 text-grey">
-                      Exact phrase
-                    </div>
-                    <div class="col-9 q-pl-md">
-                      <q-input dense v-model="exactPhrase" />
-                    </div>
-
-                    <div class="col-3 text-subtitle2 text-grey">
-                      Has words
-                    </div>
-                    <div class="col-9 q-pl-md">
-                      <q-input dense v-model="hasWords" />
-                    </div>
-
-                    <div class="col-3 text-subtitle2 text-grey">
-                      Exclude words
-                    </div>
-                    <div class="col-9 q-pl-md">
-                      <q-input dense v-model="excludeWords" />
-                    </div>
-
-                    <div class="col-3 text-subtitle2 text-grey">
-                      Website
-                    </div>
-                    <div class="col-9 q-pl-md">
-                      <q-input dense v-model="byWebsite" />
-                    </div>
-
-                    <div class="col-12 q-pt-lg row justify-end">
-                      <q-btn
-                        flat
-                        dense
-                        no-caps
-                        color="grey-7"
-                        size="md"
-                        style="min-width: 68px;"
-                        label="Search"
-                        v-close-popup
-                      />
-                      <q-btn
-                        flat
-                        dense
-                        no-caps
-                        color="grey-7"
-                        size="md"
-                        style="min-width: 68px;"
-                        @click="onClear"
-                        label="Clear"
-                        v-close-popup
-                      />
-                    </div>
-                  </div>
-                </div>
-              </q-menu>
-            </q-btn>
-          </template>
-        </q-input>
-
-        <q-space />
-
-        <div class="q-gutter-sm row items-center no-wrap" v-if="active">
-          <q-btn
-            v-if="$q.screen.gt.sm"
-            round
-            dense
-            flat
-            color="text-grey-7"
-            icon="apps"
-          >
-            <q-tooltip>Google Apps</q-tooltip>
-          </q-btn>
-          <q-btn round dense flat color="grey-8" icon="notifications">
-            <q-badge color="red" text-color="white" floating>
-              2
-            </q-badge>
-            <q-tooltip>Notifications</q-tooltip>
-          </q-btn>
-          <q-btn round flat>
-            <q-avatar size="26px">
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
-            </q-avatar>
-            <q-tooltip>Account</q-tooltip>
-          </q-btn>
-        </div>
-        <q-btn v-else round color="accent" dense icon="supervised_user_circle">
-          <q-menu anchor="bottom right" self="top right">
-            <div class="q-pa-md" style="width: 400px">
-              <div class="text-body1 text-grey-8 q-mb-md">
-                Login
-              </div>
-
-              <div class="row items-center">
-                <div class="col-3 text-subtitle2 text-grey">
-                  Email:
-                </div>
-                <div class="col-9 q-pl-md">
-                  <q-input dense v-model="email " :error="$v.email.$error" error-message="Please enter a valid email address" />
-                </div>
-
-                <div class="col-3 text-subtitle2 text-grey">
-                  Password:
-                </div>
-                <div class="col-9 q-pl-md">
-                  <q-input dense v-model="password" :error="$v.password.$error" error-message="Required Field" />
-                </div>
-                <div class="col-12 q-pt-lg row justify-end">
-                  <q-btn
-                    flat
-                    dense
-                    no-caps
-                    color="grey-7"
-                    size="md"
-                    style="min-width: 68px;"
-                    label="Login"
-                    @click="login"
-                  />
-                  <q-btn
-                    flat
-                    dense
-                    no-caps
-                    color="red-7"
-                    size="md"
-                    style="min-width: 68px;"
-                    label="Cancel"
-                    v-close-popup
-                  />
-                </div>
-              </div>
-            </div>
-          </q-menu>
-        </q-btn>
-      </q-toolbar>
-    </q-header>
-
-    <q-drawer
-      v-if="this.loggedIn"
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-      content-class="bg-white"
-      :width="230"
-    >
-      <q-scroll-area class="fit">
-        <q-list padding class="text-grey-8">
-          <q-item
-            class="GNL__drawer-item"
-            @click="navigate(link.route)"
-            v-ripple
-            v-for="link in links1"
-            :key="link.text"
-            clickable
-          >
-            <q-item-section avatar>
-              <q-icon :name="link.icon" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>{{ link.text }}</q-item-label>
-            </q-item-section>
-          </q-item>
-
-          <q-separator inset class="q-my-sm" />
-
-          <q-item
-            class="GNL__drawer-item"
-            @click="link.click"
-            v-ripple
-            v-for="link in links3"
-            :key="link.text"
-            clickable
-          >
-            <q-item-section>
-              <q-item-label
-                >{{ link.text }} <q-icon v-if="link.icon" :name="link.icon"
-              /></q-item-label>
-            </q-item-section>
-          </q-item>
-
-          <div class="q-mt-md">
-            <div class="flex flex-center q-gutter-xs">
-              <a
-                class="GNL__drawer-footer-link"
-                @click="logout"
-                aria-label="Privacy"
-                >Logout</a
-              >
-              <span> · </span>
-              <a
-                class="GNL__drawer-footer-link"
-                href="javascript:void(0)"
-                aria-label="Terms"
-                >Terms</a
-              >
-              <span> · </span>
-              <a
-                class="GNL__drawer-footer-link"
-                @click="navigate('register')"
-                aria-label="Register"
-                >Register</a
-              >
-            </div>
-          </div>
-        </q-list>
-      </q-scroll-area>
-    </q-drawer>
-
-    <q-page-container>
-      <router-view />
-    </q-page-container>
-  </q-layout>
+<template lang="pug">
+  q-layout.bg-grey-1(view="hHh lpR fFf")
+    q-header.bg-white.text-grey-8(elevated="" height-hint="64")
+      q-toolbar.GNL__toolbar
+        q-btn.q-mr-sm(flat="" dense="" round="" @click="leftDrawerOpen = !leftDrawerOpen" aria-label="Menu" icon="menu")
+        q-toolbar-title.row.items-center.no-wrap(v-if="$q.screen.gt.xs" shrink="")
+            img(src="../statics/scad-logo_v1_100x30.png" clickable="" @click="iconNavigate")
+        q-space
+        q-input.GNL__toolbar-input(outlined="" dense="" v-model="search" color="bg-grey-7 shadow-1" placeholder="Search for topics, locations & sources")
+          template(v-slot:prepend="")
+            q-icon(v-if="search === ''" name="search")
+            q-icon.cursor-pointer(v-else="" name="clear" @click="search = ''")
+          template(v-slot:append="")
+            q-btn(flat="" dense="" round="" aria-label="Menu" icon="arrow_drop_down")
+              q-menu(anchor="bottom right" self="top right")
+                .q-pa-md(style="width: 400px")
+                  .text-body2.text-grey.q-mb-md
+                    | Narrow your search results
+                  .row.items-center
+                    .col-3.text-subtitle2.text-grey
+                      | Exact phrase
+                    .col-9.q-pl-md
+                      q-input(dense="" v-model="exactPhrase")
+                    .col-3.text-subtitle2.text-grey
+                      | Has words
+                    .col-9.q-pl-md
+                      q-input(dense="" v-model="hasWords")
+                    .col-3.text-subtitle2.text-grey
+                      | Exclude words
+                    .col-9.q-pl-md
+                      q-input(dense="" v-model="excludeWords")
+                    .col-3.text-subtitle2.text-grey
+                      | Website
+                    .col-9.q-pl-md
+                      q-input(dense="" v-model="byWebsite")
+                    .col-12.q-pt-lg.row.justify-end
+                      q-btn(flat="" dense="" no-caps="" color="grey-7" size="md" style="min-width: 68px;" label="Search" v-close-popup="")
+                      q-btn(flat="" dense="" no-caps="" color="grey-7" size="md" style="min-width: 68px;" @click="onClear" label="Clear" v-close-popup="")
+        q-space
+        .q-gutter-sm.row.items-center.no-wrap(v-if="active")
+          q-btn(v-if="$q.screen.gt.sm" round="" dense="" flat="" color="text-grey-7" icon="apps")
+            q-tooltip Google Apps
+          q-btn(round="" dense="" flat="" color="grey-8" icon="notifications")
+            q-badge(color="red" text-color="white" floating="")
+              | 2
+            q-tooltip Notifications
+          q-btn(round="" flat="")
+            q-avatar(size="26px")
+              img(src="https://cdn.quasar.dev/img/boy-avatar.png")
+            q-tooltip Account
+        q-btn(v-else="" round="" color="accent" dense="" icon="supervised_user_circle")
+          q-menu(anchor="bottom right" self="top right")
+            .q-pa-md(style="width: 400px")
+              .text-body1.text-grey-8.q-mb-md
+                | Login
+              .row.items-center
+                .col-3.text-subtitle2.text-grey
+                  | Email:
+                .col-9.q-pl-md
+                  q-input(dense="" v-model="email " :error="$v.email.$error" error-message="Please enter a valid email address")
+                .col-3.text-subtitle2.text-grey
+                  | Password:
+                .col-9.q-pl-md
+                  q-input(dense="" v-model="password" :error="$v.password.$error" error-message="Required Field" type="password")
+                .col-12.q-pt-lg.row.justify-end
+                  q-btn(flat="" dense="" no-caps="" color="grey-7" size="md" style="min-width: 68px;" label="Login" @click="login")
+                  q-btn(flat="" dense="" no-caps="" color="red-7" size="md" style="min-width: 68px;" label="Cancel" v-close-popup="")
+    q-drawer(v-if="this.loggedIn" v-model="leftDrawerOpen" show-if-above="" bordered="" content-class="bg-white" :width="230")
+      q-scroll-area.fit
+        q-list.text-grey-8(padding="")
+          q-item.GNL__drawer-item(@click="navigate(link.route)" v-ripple="" v-for="link in links1" :key="link.text" clickable="")
+            q-item-section(avatar="")
+              q-icon(:name="link.icon")
+            q-item-section
+              q-item-label {{ link.text }}
+          q-separator.q-my-sm(inset="")
+          q-item.GNL__drawer-item(@click="navigate(link.click)" v-ripple="" v-for="link in links3" :key="link.text" clickable="")
+            q-item-section
+              q-item-label
+                | {{ link.text }}
+                q-icon(v-if="link.icon" :name="link.icon")
+          .q-mt-md
+            .flex.flex-center.q-gutter-xs
+              a.GNL__drawer-footer-link(@click="logout" aria-label="Privacy") Logout
+              span  ·
+              a.GNL__drawer-footer-link(href="javascript:void(0)" aria-label="Terms") Terms
+              span  ·
+              a.GNL__drawer-footer-link(@click="navigate('register')" aria-label="Register") Register
+    q-page-container
+      router-view
 </template>
 
 <script>
@@ -291,7 +122,7 @@ export default {
         }
       ],
       links3: [
-        { icon: '', text: 'My Profile', click: 'myProfile' },
+        { icon: '', text: 'My Profile', click: 'my-profile' },
         { icon: '', text: 'About', click: 'about' },
         { icon: 'logout', text: 'Logout', click: 'logout' }
       ]
@@ -318,15 +149,18 @@ export default {
   },
   methods: {
     navigate: function (nav) {
-      // Do what you want here.
       console.log('in MyLayout navigate')
-      this.$router.push({
-        path: nav
-      }).catch(error => {
-        if (error.name !== 'NavigationDuplicated') {
-          throw error
-        }
-      })
+      if (nav === 'logout') {
+        this.logout()
+      } else {
+        this.$router.push({
+          path: nav
+        }).catch(error => {
+          if (error.name !== 'NavigationDuplicated') {
+            throw error
+          }
+        })
+      }
     },
     onClear () {
       this.exactPhrase = ''
