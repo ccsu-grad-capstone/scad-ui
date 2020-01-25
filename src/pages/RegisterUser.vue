@@ -20,6 +20,7 @@
 <script>
 import { required, email, sameAs } from 'vuelidate/lib/validators'
 export default {
+  name: 'RegisterUser',
   data () {
     return this.initializeState()
   },

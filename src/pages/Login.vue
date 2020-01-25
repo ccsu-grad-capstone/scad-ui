@@ -19,6 +19,8 @@
 import { required, email } from 'vuelidate/lib/validators'
 
 export default {
+  name: 'Login',
+
   data () {
     return {
       email: '',

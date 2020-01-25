@@ -432,6 +432,8 @@
 <script>
 import { required } from 'vuelidate/lib/validators'
 export default {
+  name: 'CreateLeague',
+
   data () {
     return {
       league: {

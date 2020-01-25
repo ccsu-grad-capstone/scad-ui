@@ -1,12 +1,12 @@
 <template lang="pug">
   body
     div
-      h3 My Profile
+      h3 About
 </template>
 
 <script>
 export default {
-  name: 'MyProfile',
+  name: 'MyProfileCard',
 
   data () {
     return {}
