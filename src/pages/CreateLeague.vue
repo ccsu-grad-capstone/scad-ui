@@ -37,10 +37,15 @@
             q-select( rounded outlined dense v-model='league.waiverType' :options='referenceData.waiverType' :error='$v.league.waiverType.$error' error-message='Required Field')
         .row
           .col-3.text-subtitle2.text-right.q-pt-md
+            | Weekly Waiver:
+          .col-4.q-pl-lg
+            q-select( rounded outlined dense v-model='league.weeklyWaivers' :options='referenceData.weeklyWaivers' :error='$v.league.waiverType.$error' error-message='Required Field')
+        .row
+          .col-3.text-subtitle2.text-right.q-pt-md
             | Waiver Time:
           .col-2.q-pl-lg
             q-select( rounded outlined dense v-model='league.waiverTime' :options='referenceData.waiverTime' :error='$v.league.waiverTime.$error' error-message='Required Field')
-          .col-3.text-subtitle2.q-pt-md
+          .col-3.text-subtitle2.q-pt-md.q-pl-sm
             | days
         .row
           .col-3.text-subtitle2.text-right.q-pt-md
@@ -49,9 +54,9 @@
             q-select( rounded outlined dense v-model='league.playoffTeams' :options='referenceData.playoffTeams' :error='$v.league.playoffTeams.$error' error-message='Required Field')
         .row
           .col-3.text-subtitle2.text-right.q-pt-md
-            | Playoff Schedule:
-          .col-3.q-pl-lg
-            q-select( rounded outlined dense v-model='league.playoffSchedule' :options='referenceData.playoffSchedule' :error='$v.league.playoffSchedule.$error' error-message='Required Field')
+            | Playoff:
+          .col-4.q-pl-lg
+            q-select( rounded outlined dense v-model='league.playoffs' :options='referenceData.playoffs' :error='$v.league.playoffs.$error' error-message='Required Field')
         .row
           .col-3.text-subtitle2.text-right.q-pt-md
             | Playoff Reseeding:
@@ -59,14 +64,49 @@
             q-select( rounded outlined dense v-model='league.playoffReseeding' :options='referenceData.booleans' :error='$v.league.playoffReseeding.$error' error-message='Required Field')
         .row
           .col-3.text-subtitle2.text-right.q-pt-md
+            | Playoff TieBreaker:
+          .col-3.q-pl-lg
+            q-select( rounded outlined dense v-model='league.playoffTieBreaker' :options='referenceData.playoffTieBreaker' :error='$v.league.playoffReseeding.$error' error-message='Required Field')
+        .row
+          .col-3.text-subtitle2.text-right.q-pt-md
             | Lock Eliminated Teams:
           .col-2.q-pl-lg
             q-select( rounded outlined dense v-model='league.lockEliminatedTeams' :options='referenceData.booleans' :error='$v.league.lockEliminatedTeams.$error' error-message='Required Field')
         .row
           .col-3.text-subtitle2.text-right.q-pt-md
+            | Max Acquisitions Per Season:
+          .col-3.q-pl-lg
+            q-select( rounded outlined dense v-model='league.maxAcqPerSeason' :options='referenceData.booleans' :error='$v.league.lockEliminatedTeams.$error' error-message='Required Field')
+        .row
+          .col-3.text-subtitle2.text-right.q-pt-md
+            | Max Axquisitions Per Week:
+          .col-3.q-pl-lg
+            q-select( rounded outlined dense v-model='league.maxAcqPerWeek' :options='referenceData.booleans' :error='$v.league.lockEliminatedTeams.$error' error-message='Required Field')
+        .row
+          .col-3.text-subtitle2.text-right.q-pt-md
+            | Max Trades Per Season:
+          .col-3.q-pl-lg
+            q-select( rounded outlined dense v-model='league.maxTradesPerSeason' :options='referenceData.booleans' :error='$v.league.lockEliminatedTeams.$error' error-message='Required Field')
+        .row
+          .col-3.text-subtitle2.text-right.q-pt-md
             | Trade Deadline Date:
           .col-2.q-pl-lg
             q-select( rounded outlined dense v-model='league.tradeDeadlineDate' :error='$v.league.tradeDeadlineDate.$error' error-message='Required Field')
+        .row
+          .col-3.text-subtitle2.text-right.q-pt-md
+            | Trade Review Time:
+          .col-2.q-pl-lg
+            q-select( rounded outlined dense v-model='league.tradeReviewTime' :options='referenceData.tradeReviewTime' :error='$v.league.lockEliminatedTeams.$error' error-message='Required Field')
+          .col-3.text-subtitle2.q-pt-md.q-pl-sm
+            | days
+        q-separator.q-my-md(color='secondary' inset)
+        .row.text-h6.justify-center
+          | SCAD Settings
+        .row.q-pt-md
+          .col-3.text-subtitle2.text-right.q-pt-md
+            | Rookie Draft Rounds:
+          .col-2.q-pl-lg
+            q-select( rounded outlined dense v-model='league.rookieDraftRds' :options='referenceData.rookieDraftRds' :error='$v.league.lockEliminatedTeams.$error' error-message='Required Field')
         .row.q-py-md
           .col-3.text-subtitle2.text-right.q-pt
             | Team Salary Cap: ${{ league.teamCap }}
@@ -85,7 +125,12 @@
             q-btn(rounded dense color='info' size='xs' label="What's This?")
               q-tooltip
                 | Team Salary Cap x Capacity
-        .row.q-py-md
+        .row
+          .col-3.text-subtitle2.text-right.q-pt-md
+            | Injured Reserved:
+          .col-2.q-pl-lg
+            q-select( rounded outlined dense v-model='league.ir' :options='referenceData.positionCounts' :error='$v.league.ir.$error' error-message='Required Field')
+        .row.q-pb-md
           .col-3.text-subtitle2.text-right
             | IR Cap Relief: {{ league.irReliefPerc }}%
           .col-7.q-pl-lg
@@ -94,7 +139,12 @@
             q-btn(rounded dense color='info' size='xs' label="What's This?")
               q-tooltip
                 | Team Salary Cap x Capacity
-        .row.q-py-md
+        .row
+          .col-3.text-subtitle2.text-right.q-pt-md
+            | Franchise Tags:
+          .col-2.q-pl-lg
+            q-select( rounded outlined dense v-model='league.franchiseTagSpots' :options='referenceData.positionCounts' :error='$v.league.franchiseTagSpots.$error' error-message='Required Field')
+        .row.q-pb-md
           .col-3.text-subtitle2.text-right
             | Franchise Tag Relief: {{ league.tagReliefPerc }}%
           .col-7.q-pl-lg
@@ -158,16 +208,6 @@
                 | Bench:
               .col-4.q-pa-xs
                 q-select( rounded outlined dense v-model='league.roster.bn' :options='referenceData.benchCounts' :error='$v.league.roster.bn.$error' error-message='Required Field')
-            .row
-              .col-6.text-subtitle2.text-right.q-pa-xs.q-pt-sm
-                | IR:
-              .col-4.q-pa-xs
-                q-select( rounded outlined dense v-model='league.ir' :options='referenceData.positionCounts' :error='$v.league.ir.$error' error-message='Required Field')
-            .row
-              .col-6.text-subtitle2.text-right.q-pa-xs.q-pt-sm
-                | Franchise Tags:
-              .col-4.q-pa-xs
-                q-select( rounded outlined dense v-model='league.franchiseTagSpots' :options='referenceData.positionCounts' :error='$v.league.franchiseTagSpots.$error' error-message='Required Field')
             .row
               .col-6.text-subtitle2.text-right.q-pa-xs.q-pt-xs
                 | Total Roster Slots:
@@ -418,15 +458,23 @@ export default {
         capacity: 12,
         divisions: 1,
         draftType: 'Auction',
-        scoringType: '',
-        waiverType: '',
+        scoringType: 'Head-to-Head',
+        waiverType: 'FAAB',
+        waiverTime: 2,
+        weeklyWaivers: 'Game Time - Tuesday',
         irReliefPerc: 50,
         tagReliefPerc: 50,
+        rookieDraftRds: 3,
         leagueCap: this.calcLeagueCap,
         teamCap: 250,
         tradeDeadlineDate: null,
-        playoffSchedule: null,
+        tradeReviewTime: 2,
+        maxAcqPerSeason: 'No Maximum',
+        maxAcqPerWeek: 'No Maximum',
+        maxTradesPerSeason: 'No Maximum',
+        playoffs: 'Weeks 14-16 (6 teams)',
         playoffReseeding: true,
+        playoffTieBreaker: 'Points For',
         playoffTeams: 6,
         lockEliminatedTeams: true,
         roster: {
@@ -502,7 +550,7 @@ export default {
       waiverType: { required },
       waiverTime: { required },
       tradeDeadlineDate: { required },
-      playoffSchedule: { required },
+      playoffs: { required },
       playoffReseeding: { required },
       playoffTeams: { required },
       lockEliminatedTeams: { required },

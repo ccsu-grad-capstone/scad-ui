@@ -15,5 +15,17 @@ export default {
   defPoints: [-7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7],
   playoffTeams: [0, 2, 4, 6, 8, 10, 12, 14, 16],
   booleans: [true, false],
-  playoffSchedule: ['No Playoffs', 'Weeks 14-16', 'Weeks 15-17', 'Weeks 13-6', 'Weeks 14-17']
+  playoffs: [
+    'No Playoffs',
+    'Weeks 15-16 (4 teams)',
+    'Weeks 16-17 (4 teams)',
+    'Weeks 14-16 (6 teams)',
+    'Weeks 15-17 (6 teams)',
+    'Weeks 13-16 (8 teams)',
+    'Weeks 14-17 (8 teams)'
+  ],
+  tradeReviewTime: [1, 2, 3, 4, 5],
+  rookieDraftRounds: [1, 2, 3, 4, 5],
+  playoffTieBreaker: ['Head-to-Head', 'Points For'],
+  weeklyWaivers: ['Game Time - Tuesday', 'First Game of Week - Tuesday', 'Sunday - Tuesday']
 }
