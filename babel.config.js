@@ -1,5 +1,16 @@
 module.exports = {
-  presets: [
-    '@quasar/babel-preset-app'
+  'presets': [
+    '@vue/cli-plugin-babel/preset'
+  ],
+  'plugins': [
+    [
+      'transform-imports',
+      {
+        'quasar': {
+          'transform': 'quasar/dist/babel-transforms/imports.js',
+          'preventFullImport': true
+        }
+      }
+    ]
   ]
 }

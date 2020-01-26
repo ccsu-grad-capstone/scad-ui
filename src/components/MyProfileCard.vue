@@ -3,7 +3,7 @@
       .col-8
         q-card.my-card(flat bordered)
           q-item-section.q-pa-md
-            q-img(src="../statics/logo-set/scad-4.png" style="width: 50%")
+            img(src="../statics/logo-set/scad-4.png" style="width: 50%")
           q-separator
           q-item-section
             div.text-h5 {{ name }}

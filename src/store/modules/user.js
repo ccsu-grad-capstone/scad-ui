@@ -1,5 +1,5 @@
 import { notify } from '../../utilities/nofity'
-import axios from 'axios'
+import { api } from '../../utilities/axios'
 
 const bcrypt = require('bcryptjs')
 
@@ -44,7 +44,7 @@ export default {
     registerUser ({ commit }, user) {
       console.log('[USER-ACTION] - loginUser()')
       user.password = bcrypt.hashSync(user.password, 8)
-      return axios.post(`http://localhost:8080/scadservices/api/user`, { user })
+      return api.post(`/user`, { user })
         .then(function (response) {
         // handle success
         // check if registration was successful
@@ -63,7 +63,7 @@ export default {
     loginUser ({ commit }, user) {
       console.log('[USER-ACTION] - loginUser()')
       console.log(user)
-      return axios.get(`http://localhost:8080/scadservices/api/user?email=${user.email}`)
+      return api.get(`/user?email=${user.email}`)
         .then(function (response) {
         // handle success
           if (bcrypt.compareSync(user.password, response.data.password)) {
@@ -73,8 +73,8 @@ export default {
           }
         })
         .catch(function (error) {
-        // handle error
-          console.log(error)
+          // handle error
+          console.log('loginUser() error: ', error)
           notify.loginFailed()
         })
         .finally(function () {

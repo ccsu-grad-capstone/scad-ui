@@ -3,7 +3,7 @@
     q-card.q-pa-md.q-ma-md(style="width: 100%")
       q-card-section
         .column.items-center
-          q-img(src="../statics/scad-logo_v1_700x500.png" style="width: 40%")
+          img(src="../statics/scad-logo_v1_700x500.png" style="width: 40%")
       q-separator
       .row.full-width.justify-center.items-center
         .column.col.items-center Existing Users:
