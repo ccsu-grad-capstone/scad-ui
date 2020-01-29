@@ -1,5 +1,5 @@
 import { notify } from '../../utilities/nofity'
-import { api } from '../../utilities/axios'
+import { scad } from '../../utilities/axios-scad'
 
 const bcrypt = require('bcryptjs')
 
@@ -43,11 +43,11 @@ export default {
   actions: {
     // loginWithYahoo (state, commit) {
     //   console.log('[USER-MUTATION] - loginWithYahoo()')
-    //   return api.get('https://api.login.yahoo.com/oauth2/request_auth?client_id=dj0yJmk9dG5YTU9UMHBpQWJ6JmQ9WVdrOWVFMWxWbk5yTlRBbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTgz&response_type=code&redirect_uri=https://localhost:8081/login&scope=openid%20fspt-w&nonce=YihsFwGKgt3KJUh6tPs2')
+    //   return scad.get('https://scad.login.yahoo.com/oauth2/request_auth?client_id=dj0yJmk9dG5YTU9UMHBpQWJ6JmQ9WVdrOWVFMWxWbk5yTlRBbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTgz&response_type=code&redirect_uri=https://localhost:8081/login&scope=openid%20fspt-w&nonce=YihsFwGKgt3KJUh6tPs2')
     // },
     loginWithYahoo (state, commit) {
       console.log('[USER-MUTATION] - loginWithYahoo()')
-      return api.post('https://api.login.yahoo.com/oauth2/request_auth', {
+      return scad.post('https://api.login.yahoo.com/oauth2/request_auth', {
         client_id: 'dj0yJmk9dG5YTU9UMHBpQWJ6JmQ9WVdrOWVFMWxWbk5yTlRBbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTgz',
         redirect_uri: 'http://localhost:8081/dashboard',
         response_type: 'code',
@@ -58,7 +58,7 @@ export default {
     registerUser ({ commit }, user) {
       console.log('[USER-ACTION] - loginUser()')
       user.password = bcrypt.hashSync(user.password, 8)
-      return api.post(`/user`, { user })
+      return scad.post(`/user`, { user })
         .then(function (response) {
         // handle success
         // check if registration was successful
@@ -77,7 +77,7 @@ export default {
     loginUser ({ commit }, user) {
       console.log('[USER-ACTION] - loginUser()')
       console.log(user)
-      return api.get(`/user?email=${user.email}`)
+      return scad.get(`/user?email=${user.email}`)
         .then(function (response) {
         // handle success
           if (bcrypt.compareSync(user.password, response.data.password)) {

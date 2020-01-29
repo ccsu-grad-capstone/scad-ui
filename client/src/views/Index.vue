@@ -8,6 +8,10 @@
       .row.full-width.justify-center.items-center
         .column.col.items-center Login with Yahoo:
           q-btn(label="Login Here" dense="" no-caps="" color="primary" size="md" @click="loginWithYahoo")
+      a(href='http://localhost:3000/auth/github')
+        button Sign-In With Github
+      a(href='http://localhost:3000/auth/yahoo')
+        button Sign-In With Yahoo
 
 </template>
 
