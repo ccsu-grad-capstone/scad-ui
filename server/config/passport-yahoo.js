@@ -24,9 +24,11 @@ passport.deserializeUser((id, done) => {
 
 passport.use(new YahooStrategy({
   clientID:
-  'dj0yJmk9dG5YTU9UMHBpQWJ6JmQ9WVdrOWVFMWxWbk5yTlRBbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTgz',
-  clientSecret: '9b4d5c8a1476471ed965139aa011ea43f7c7ddbd',
-  callbackURL: "http://127.0.0.1:3000/auth/yahoo/redirect"
+  'dj0yJmk9a2xIZVk3Y0pjVnhEJmQ9WVdrOVFUaG9NRnA1TTJNbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTVi',
+  clientSecret: 'b5f151168beea78374fcd9ddaf555cb57023e32e',
+  callbackURL: "http://localhost:3000/auth/yahoo/redirect",
+  response_type: 'code',
+  scope: 'openid,fspt-w',
 },
 function(token, tokenSecret, profile, done) {
   User.findOrCreate({ yahooId: profile.id }, function (err, user) {
