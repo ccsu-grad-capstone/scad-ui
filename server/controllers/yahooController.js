@@ -2,19 +2,21 @@ const debug = require('debug')('app:yahooController')
 
 async function oauth (service, code) {
   try {
-    const tokens = await service.getTokens(code)
+    const tokens = await service.getAccessTokens(code)
     // this is where we'll login with mongo 
-    res.redirect(`http://localhost:8081/dashboard/${tokens}`)
+    return tokens
   } catch (err) {
     debug(err.stack)
   }
 }
 
 function yahooController (service) {
-  function getTokens (req, res) {
+  async function getAccessTokens (req, res) {
     const { code } = req.query
-    debug(`code: ${code}`)
-    oauth(service, code)
+    const tokens = await oauth(service, code)
+    debug(`access_token: ${tokens.access_token}`)
+    debug(`refresh_token: ${tokens.refresh_token}`)
+    res.redirect(`http://localhost:8081/dashboard?access_token=${tokens.access_token}&refresh_token=${tokens.refresh_token}`)
   }
 
   function middleware(req, res, next) {
@@ -24,7 +26,7 @@ function yahooController (service) {
     //   res.redirect('/')
     // }
   }
-  return { getTokens, middleware}
+  return { getAccessTokens, middleware}
 }
 
 module.exports = yahooController

@@ -6,11 +6,15 @@ const bcrypt = require('bcryptjs')
 export default {
   namespaced: true,
   state: {
-    firstName: 'Ryan',
-    lastName: 'Lauzon',
-    email: 'admin@admin.com',
-    active: true,
-    isAdmin: false
+    firstName: '',
+    lastName: '',
+    email: '',
+    active: false,
+    isAdmin: false,
+    tokens: {
+      access_token: '',
+      refresh_token: ''
+    }
   },
   getters: {
     name (state) {
@@ -38,15 +42,29 @@ export default {
       state.email = null
       state.active = false
       state.admin = false
+    },
+    clearTokens (state) {
+      state.tokens.access_token = ''
+      state.tokens.refresh_token = ''
+      state.active = false
+    },
+    updateTokens (state, tokens) {
+      console.log('[USER-MUTATION] - updateTokens()')
+      console.log(tokens)
+      state.tokens.access_token = tokens.access_token
+      state.tokens.refresh_token = tokens.refresh_token
+      state.active = true
     }
   },
   actions: {
-    // loginWithYahoo (state, commit) {
-    //   console.log('[USER-MUTATION] - loginWithYahoo()')
-    //   return scad.get('https://scad.login.yahoo.com/oauth2/request_auth?client_id=dj0yJmk9dG5YTU9UMHBpQWJ6JmQ9WVdrOWVFMWxWbk5yTlRBbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTgz&response_type=code&redirect_uri=https://localhost:8081/login&scope=openid%20fspt-w&nonce=YihsFwGKgt3KJUh6tPs2')
-    // },
+    updateUser ({ commit }, tokens) {
+      console.log('[USER-ACTION] - updateUser()')
+      console.log(tokens)
+      commit('updateTokens', tokens)
+      // scad.post()
+    },
     loginWithYahoo (state, commit) {
-      console.log('[USER-MUTATION] - loginWithYahoo()')
+      console.log('[USER-ACTION] - loginWithYahoo()')
       return scad.post('https://api.login.yahoo.com/oauth2/request_auth', {
         client_id: 'dj0yJmk9dG5YTU9UMHBpQWJ6JmQ9WVdrOWVFMWxWbk5yTlRBbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTgz',
         redirect_uri: 'http://localhost:8081/dashboard',

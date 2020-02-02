@@ -37,7 +37,7 @@
                       q-btn(flat="" dense="" no-caps="" color="grey-7" size="md" style="min-width: 68px;" label="Search" v-close-popup="")
                       q-btn(flat="" dense="" no-caps="" color="grey-7" size="md" style="min-width: 68px;" @click="onClear" label="Clear" v-close-popup="")
         q-space
-        .q-gutter-sm.row.items-center.no-wrap(v-if="active")
+        .q-gutter-sm.row.items-center.no-wrap(v-if="tokens.access_token")
           q-btn(v-if="$q.screen.gt.sm" round="" dense="" flat="" color="text-grey-7" icon="apps")
             q-tooltip Google Apps
           q-btn(round="" dense="" flat="" color="grey-8" icon="notifications")
@@ -145,6 +145,9 @@ export default {
     },
     loggedIn () {
       return this.user.active
+    },
+    tokens () {
+      return this.user.tokens
     }
   },
   methods: {

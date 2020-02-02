@@ -1,24 +1,11 @@
 const axios = require('axios')
 const xml2js = require('xml2js')
-const debug = require('debug')('app:yahooOauth')
+const debug = require('debug')('app:yahooGetTokens')
 
 var parser = xml2js.Parser({ explicitArray: false })
 
 function yahooOauth() {
-  function getTokens(code) {
-    var postData = {
-      grant_type: 'authorization_code',
-      redirect_uri: 'https://localhost:3000/auth/yahoo/redirect',
-      code: 'sc9jyt7'
-    }
-
-    let axiosConfig = {
-      headers: {
-        'Authorization':
-          'Basic ZGoweUptazlhV3RaV2pKWFdWVjNhMlF5Sm1ROVdWZHJPVlpXVWxCa1NFWjZUbGRWYldOSGJ6bE5RUzB0Sm5NOVkyOXVjM1Z0WlhKelpXTnlaWFFtYzNZOU1DWjRQVGc1OjdlNjQ3NzdiODlhOTljMzA2Y2I5MjJkYzJkMmVmOTFhNDI0ZjYwMzI=',
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    }
+  function getAccessTokens(code) {
 
     const options = {
       method: 'POST',
@@ -29,32 +16,21 @@ function yahooOauth() {
       data: `grant_type=authorization_code&redirect_uri=https://localhost:3000/auth/yahoo/redirect&code=${code}`,
       url: 'https://api.login.yahoo.com/oauth2/get_token'
     }
-
-    // debug(`oauth data: ${data.client_secret}`)
-    // console.log(`oauth data: ${data}`)
     return new Promise((resolve, reject) => {
-      // axios.post(`https://api.login.yahoo.com/oauth2/get_token?grant_type=authorization_code&redirect_uri=https://localhost:3000/auth/yahoo/redirect&code=${code}`, axiosConfig)
-      // axios.post(`https://api.login.yahoo.com/oauth2/get_token`,
-      //     {
-      //       grant_type: 'authorization_code',
-      //       redirect_uri: 'https://localhost:3000/auth/yahoo/redirect',
-      //       code: code
-      //     },
-      //     axiosConfig
-      //   )
       axios(options)
         .then(response => {
-          console.log(`yahooOauth access_token: ${JSON.stringify(response.data.access_token)}`)
-          console.log(`yahooOauth token_type: ${response.data.token_type}`)
-          console.log(`yahooOauth expires_in: ${response.data.expires_in}`)
-          console.log(`yahooOauth refresh_token: ${response.data.refresh_token}`)
-          console.log(`yahooOauth xoauth_yahoo_guid: ${response.data.xoauth_yahoo_guid}`)
-          // parser.parseString(response.data, (err, result) => {
+          debug(`yahooGetTokens access_token: ${response.data.access_token}`)
+          debug(`yahooGetTokens token_type: ${response.data.token_type}`)
+          debug(`yahooGetTokens expires_in: ${response.data.expires_in}`)
+          debug(`yahooGetTokens refresh_token: ${response.data.refresh_token}`)
+          debug(`yahooGetTokens xoauth_yahoo_guid: ${response.data.xoauth_yahoo_guid}`)
+          resolve(response.data)
+          // parser.parseString(response.date, (err, result) => {
           //   if (err) {
-          //     debug(err)
+          //     debug (`parse string error: ${err}`)
           //   } else {
-          //     debug(result)
-          //     resolve(result.yahooOauth.token) //might have to change this reslove value based on response
+          //     debug (`pars string result: ${result}`)
+          //     resolve(result)
           //   }
           // })
         })
@@ -64,7 +40,7 @@ function yahooOauth() {
         })
     })
   }
-  return { getTokens }
+  return { getAccessTokens }
 }
 
 module.exports = yahooOauth()

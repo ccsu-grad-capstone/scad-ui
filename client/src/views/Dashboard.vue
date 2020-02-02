@@ -5,7 +5,7 @@
         .text-h6
           | DASHBOARD
         .text
-          | Welcome, {{this.user.email}}
+          | Welcome, {{tokens}}
       q-separator
       .column.items-center.text
         .row.full-width.justify-center.items-center
@@ -24,12 +24,28 @@ export default {
   data () {
     return {}
   },
+  mounted () {
+    this.updateTokens()
+  },
   computed: {
     user () {
       return this.$store.state.user
     },
     loggedIn () {
       return this.user.active
+    },
+    tokens () {
+      return this.user.tokens
+    }
+  },
+  methods: {
+    updateTokens () {
+      console.log('[DASHBOARD] - updateTokens()')
+      const tokens = {
+        access_token: this.$route.query.access_token,
+        refresh_token: this.$route.query.refresh_token
+      }
+      this.$store.dispatch('user/updateUser', tokens)
     }
   }
 }
