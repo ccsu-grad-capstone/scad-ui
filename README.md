@@ -1,24 +1,27 @@
 # scad-ui
 
-## Project setup
+## Client setup
 ```
+cd client
 npm install
 ```
 
-### Compiles and hot-reloads for development
+## Server setup
+```
+cd server
+npm install
+```
+
+### Client run for development (from client folder)
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### Server run for development (from server folder)
 ```
-npm run build
+npm run serve
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).

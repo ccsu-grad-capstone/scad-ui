@@ -1,6 +1,6 @@
 const axios = require('axios')
 const xml2js = require('xml2js')
-const debug = require('debug')('app:yahooGetTokens')
+const debug = require('debug')('app:yahooOauth')
 
 var parser = xml2js.Parser({ explicitArray: false })
 
