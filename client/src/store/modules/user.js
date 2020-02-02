@@ -62,6 +62,13 @@ export default {
     }
   },
   actions: {
+    async loginWithYahoo () {
+      console.log('[USER-ACTION] - loginWithYahoo()')
+      await server.get('auth/yahoo')
+        .then((response) => {
+          console.log(response.data)
+        })
+    },
     async refreshToken ({ commit, state }) {
       console.log('[USER-ACTION] - refreshToken()')
       await server.get(`auth/yahoo/refresh?refresh_token=${state.tokens.refresh_token}`)

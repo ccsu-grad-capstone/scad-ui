@@ -17,7 +17,9 @@ export default {
   },
   methods: {
     loginWithYahoo () {
+      console.log('[INDEX] - loginWithYahoo()')
       window.location = 'http://localhost:3000/auth/yahoo'
+      // this.$store.dispatch('user/loginWithYahoo')
     }
   }
 }
