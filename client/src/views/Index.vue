@@ -4,15 +4,9 @@
       q-card-section
         .column.items-center
           img(src="../statics/scad-logo_v1_700x500.png" style="width: 40%")
-      q-separator
       .row.full-width.justify-center.items-center
-        .column.col.items-center Login with Yahoo:
-          q-btn(label="Login Here" dense="" no-caps="" color="primary" size="md" @click="loginWithYahoo")
-      a(href='http://localhost:3000/auth/github')
-        button Sign-In With Github
-      a(href='http://localhost:3000/auth/yahoo')
-        button Sign-In With Yahoo
-
+        .column.col.items-center
+          q-btn(label="Sign-In With Yahoo" dense="" no-caps="" color="primary" size="md" @click="loginWithYahoo")
 </template>
 
 <script>
@@ -23,7 +17,7 @@ export default {
   },
   methods: {
     loginWithYahoo () {
-      this.$store.dispatch('user/loginWithYahoo')
+      window.location = 'http://localhost:3000/auth/yahoo'
     }
   }
 }

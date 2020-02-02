@@ -1,7 +1,6 @@
-import { notify } from '../../utilities/nofity'
-import { scad } from '../../utilities/axios-scad'
-
-const bcrypt = require('bcryptjs')
+// import { notify } from '../../utilities/nofity'
+// import { scad } from '../../utilities/axios-scad'
+import { server } from '../../utilities/axios-server'
 
 export default {
   namespaced: true,
@@ -46,72 +45,35 @@ export default {
     clearTokens (state) {
       state.tokens.access_token = ''
       state.tokens.refresh_token = ''
+      state.tokens.id_token = ''
       state.active = false
     },
     updateTokens (state, tokens) {
       console.log('[USER-MUTATION] - updateTokens()')
-      console.log(tokens)
       state.tokens.access_token = tokens.access_token
       state.tokens.refresh_token = tokens.refresh_token
+      state.tokens.id_token = tokens.id_token
       state.active = true
+    },
+    refreshToken (state, tokens) {
+      console.log('[USER-MUTATION] - updateTokens()')
+      state.tokens.access_token = tokens.access_token
+      state.tokens.refresh_token = tokens.refresh_token
     }
   },
   actions: {
-    updateUser ({ commit }, tokens) {
+    async refreshToken ({ commit, state }) {
+      console.log('[USER-ACTION] - refreshToken()')
+      await server.get(`auth/yahoo/refresh?refresh_token=${state.tokens.refresh_token}`)
+        .then((response) => {
+          console.log(response.data)
+          commit('refreshToken', response.data)
+        })
+    },
+    updateTokens ({ commit }, tokens) {
       console.log('[USER-ACTION] - updateUser()')
-      console.log(tokens)
       commit('updateTokens', tokens)
       // scad.post()
-    },
-    loginWithYahoo (state, commit) {
-      console.log('[USER-ACTION] - loginWithYahoo()')
-      return scad.post('https://api.login.yahoo.com/oauth2/request_auth', {
-        client_id: 'dj0yJmk9dG5YTU9UMHBpQWJ6JmQ9WVdrOWVFMWxWbk5yTlRBbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTgz',
-        redirect_uri: 'http://localhost:8081/dashboard',
-        response_type: 'code',
-        scope: 'openid fspt-w',
-        nonce: 'nonce=YihsFwGKgt3KJUh6tPs2'
-      })
-    },
-    registerUser ({ commit }, user) {
-      console.log('[USER-ACTION] - loginUser()')
-      user.password = bcrypt.hashSync(user.password, 8)
-      return scad.post(`/user`, { user })
-        .then(function (response) {
-        // handle success
-        // check if registration was successful
-          commit('loginUser', response.data)
-          notify.loginSuccessful()
-        })
-        .catch(function (error) {
-        // handle error
-          console.log(error)
-          notify.loginFailed()
-        })
-        .finally(function () {
-        // always executed
-        })
-    },
-    loginUser ({ commit }, user) {
-      console.log('[USER-ACTION] - loginUser()')
-      console.log(user)
-      return scad.get(`/user?email=${user.email}`)
-        .then(function (response) {
-        // handle success
-          if (bcrypt.compareSync(user.password, response.data.password)) {
-          // check if login was successful
-            commit('loginUser', response.data)
-            notify.loginSuccessful()
-          }
-        })
-        .catch(function (error) {
-          // handle error
-          console.log('loginUser() error: ', error)
-          notify.loginFailed()
-        })
-        .finally(function () {
-        // always executed
-        })
     }
   }
 }

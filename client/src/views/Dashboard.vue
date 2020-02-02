@@ -14,7 +14,7 @@
             q-btn(label='Join Here' dense no-caps color='primary' size='md')
           .column.col.items-center
             | Looking to create a new league?
-            q-btn(label='Create League' dense no-caps color='secondary' text-color='primary' size='md' @click="$router.push('create-league')")
+            q-btn(label='Refresh Token' dense no-caps color='secondary' text-color='primary' size='md' @click="refreshToken")
 
 </template>
 
@@ -43,9 +43,13 @@ export default {
       console.log('[DASHBOARD] - updateTokens()')
       const tokens = {
         access_token: this.$route.query.access_token,
-        refresh_token: this.$route.query.refresh_token
+        refresh_token: this.$route.query.refresh_token,
+        id_token: this.$route.query.id_token
       }
-      this.$store.dispatch('user/updateUser', tokens)
+      this.$store.dispatch('user/updateTokens', tokens)
+    },
+    refreshToken () {
+      this.$store.dispatch('user/refreshToken')
     }
   }
 }
