@@ -1,6 +1,7 @@
 // import { notify } from '../../utilities/nofity'
 import { scad } from '../../utilities/axios-scad'
 import { server } from '../../utilities/axios-server'
+import axios from 'axios'
 
 export default {
   namespaced: true,
@@ -70,7 +71,8 @@ export default {
   actions: {
     async loginWithYahoo () {
       console.log('[USER-ACTION] - loginWithYahoo()')
-      await server.get('auth/yahoo')
+      var nonce = Math.floor(Math.random() * 1000000 + 1)
+      await axios.get(`https://api.login.yahoo.com/oauth2/request_auth?client_id=dj0yJmk9aWtZWjJXWVV3a2QyJmQ9WVdrOVZWUlBkSEZ6TldVbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTg5&redirect_uri=https://localhost:3000/auth/yahoo/redirect&response_type=code&language=en-us&scope=openid,fspt-w&nonce=${nonce}`)
         .then((response) => {
           console.log(response.data)
         })

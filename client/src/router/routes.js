@@ -8,20 +8,6 @@ const routes = [
     ]
   },
   {
-    path: '/register',
-    component: () => import('../layouts/Layout.vue'),
-    children: [
-      { path: '', component: () => import('../views/RegisterUser.vue') }
-    ]
-  },
-  {
-    path: '/login',
-    component: () => import('../layouts/Layout.vue'),
-    children: [
-      { path: '', component: () => import('../views/Login.vue') }
-    ]
-  },
-  {
     path: '/my-team',
     component: () => import('../layouts/Layout.vue'),
     children: [
@@ -57,17 +43,10 @@ const routes = [
     ]
   },
   {
-    path: '/create-league',
+    path: '/register-league',
     component: () => import('../layouts/Layout.vue'),
     children: [
-      { path: '', component: () => import('../views/CreateLeague.vue') }
-    ]
-  },
-  {
-    path: '/matchup',
-    component: () => import('../layouts/Layout.vue'),
-    children: [
-      { path: '', component: () => import('../views/Matchup.vue') }
+      { path: '', component: () => import('../views/RegisterLeague.vue') }
     ]
   },
   {
