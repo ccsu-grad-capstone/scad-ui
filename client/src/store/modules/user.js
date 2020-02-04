@@ -1,10 +1,11 @@
 // import { notify } from '../../utilities/nofity'
-// import { scad } from '../../utilities/axios-scad'
+import { scad } from '../../utilities/axios-scad'
 import { server } from '../../utilities/axios-server'
 
 export default {
   namespaced: true,
   state: {
+    user: {},
     firstName: '',
     lastName: '',
     email: '',
@@ -12,7 +13,8 @@ export default {
     isAdmin: false,
     tokens: {
       access_token: '',
-      refresh_token: ''
+      refresh_token: '',
+      id_token: ''
     }
   },
   getters: {
@@ -59,6 +61,10 @@ export default {
       console.log('[USER-MUTATION] - updateTokens()')
       state.tokens.access_token = tokens.access_token
       state.tokens.refresh_token = tokens.refresh_token
+    },
+    updateUser (state, user) {
+      console.log('[USER-MUTATION] - updateUser()')
+      state.user = user
     }
   },
   actions: {
@@ -68,6 +74,9 @@ export default {
         .then((response) => {
           console.log(response.data)
         })
+        .catch(error => {
+          console.log(error.response.data)
+        })
     },
     async refreshToken ({ commit, state }) {
       console.log('[USER-ACTION] - refreshToken()')
@@ -76,11 +85,33 @@ export default {
           console.log(response.data)
           commit('refreshToken', response.data)
         })
+        .catch(error => {
+          console.log(error.response)
+        })
     },
-    updateTokens ({ commit }, tokens) {
+    async updateUser ({ commit, dispatch }, tokens) {
       console.log('[USER-ACTION] - updateUser()')
       commit('updateTokens', tokens)
-      // scad.post()
+      dispatch('loginToScad')
+    },
+    async loginToScad ({ state, commit }) {
+      console.log('[USER-ACTION] - loginToScad()')
+      const options = {
+        method: 'GET',
+        headers: {
+          'access_token': `${state.access_token}`,
+          'username': 'scad-api-readwrite',
+          'password': 'scad-api-readwrite' },
+        url: `user/${state.tokens.id_token}`
+      }
+      await scad(options)
+        .then((response) => {
+          console.log(response.data)
+          commit('updateUser', response.data)
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }
   }
 }

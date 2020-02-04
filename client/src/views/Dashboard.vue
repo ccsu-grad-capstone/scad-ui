@@ -2,18 +2,25 @@
   q-page.flex
     q-card.q-pa-md.q-ma-md(style='width: 100%')
       q-card-section
-        .text-h6
+        .text-h4
           | DASHBOARD
+        .text-h6
+          | tokens.access_token:
         .text
-          | Welcome, {{tokens}}
+          | {{tokens.access_token}}
+        .text-h6
+          | tokens.refresh_token:
+        .text
+          |{{tokens.refresh_token}}
+        .text-h6
+          | tokens.id_token:
+        .text
+          | {{tokens.id_token}}
       q-separator
       .column.items-center.text
         .row.full-width.justify-center.items-center
           .column.col.items-center
-            | Looking to join an existing league?
-            q-btn(label='Join Here' dense no-caps color='primary' size='md')
-          .column.col.items-center
-            | Looking to create a new league?
+            | Press to refresh the token
             q-btn(label='Refresh Token' dense no-caps color='secondary' text-color='primary' size='md' @click="refreshToken")
 
 </template>
@@ -25,7 +32,7 @@ export default {
     return {}
   },
   mounted () {
-    this.updateTokens()
+    this.updateUser()
   },
   computed: {
     user () {
@@ -39,14 +46,14 @@ export default {
     }
   },
   methods: {
-    updateTokens () {
-      console.log('[DASHBOARD] - updateTokens()')
+    updateUser () {
+      console.log('[DASHBOARD] - updateUser()')
       const tokens = {
         access_token: this.$route.query.access_token,
         refresh_token: this.$route.query.refresh_token,
         id_token: this.$route.query.id_token
       }
-      this.$store.dispatch('user/updateTokens', tokens)
+      this.$store.dispatch('user/updateUser', tokens)
     },
     refreshToken () {
       this.$store.dispatch('user/refreshToken')
