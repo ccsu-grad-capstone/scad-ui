@@ -22,6 +22,12 @@
           .column.col.items-center
             | Press to refresh the token
             q-btn(label='Refresh Token' dense no-caps color='secondary' text-color='primary' size='md' @click="refreshToken")
+        .row.full-width.justify-center.items-center.q-pt-lg
+          .column.col.items-center
+            q-btn(label='Register League' dense no-caps color='secondary' text-color='primary' size='md' @click="$router.push('register-league')")
+        .row.full-width.justify-center.items-center.q-pt-lg
+          .column.col.items-center
+            q-btn(label='Login to SCAD' dense no-caps color='secondary' text-color='primary' size='md' @click="loginToScad")
 
 </template>
 
@@ -48,15 +54,20 @@ export default {
   methods: {
     updateUser () {
       console.log('[DASHBOARD] - updateUser()')
-      const tokens = {
-        access_token: this.$route.query.access_token,
-        refresh_token: this.$route.query.refresh_token,
-        id_token: this.$route.query.id_token
+      if (this.$route.query.access_token) {
+        const tokens = {
+          access_token: this.$route.query.access_token,
+          refresh_token: this.$route.query.refresh_token,
+          id_token: this.$route.query.id_token
+        }
+        this.$store.dispatch('user/updateUser', tokens)
       }
-      this.$store.dispatch('user/updateUser', tokens)
     },
     refreshToken () {
       this.$store.dispatch('user/refreshToken')
+    },
+    async loginToScad () {
+      await this.$store.dispatch('user/loginToScad')
     }
   }
 }

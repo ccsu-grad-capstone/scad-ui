@@ -94,7 +94,7 @@ export default {
     async updateUser ({ commit, dispatch }, tokens) {
       console.log('[USER-ACTION] - updateUser()')
       commit('updateTokens', tokens)
-      dispatch('loginToScad')
+      // dispatch('loginToScad')
     },
     async loginToScad ({ state, commit }) {
       console.log('[USER-ACTION] - loginToScad()')
@@ -102,9 +102,9 @@ export default {
         method: 'GET',
         headers: {
           'access_token': `${state.access_token}`,
-          'username': 'scad-api-readwrite',
-          'password': 'scad-api-readwrite' },
-        url: `user/${state.tokens.id_token}`
+          'id_token': `${state.tokens.id_token}`,
+          'Authorization': 'Basic dXxERLUVfGhQNhKxabNoRvNzBW8J8Gju76YNMNvG2+A=' },
+        url: `user/1`
       }
       await scad(options)
         .then((response) => {

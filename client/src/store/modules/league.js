@@ -1,5 +1,5 @@
 // import { notify } from '../../utilities/nofity'
-// import axios from 'axios'
+import { scad } from '../../utilities/axios-scad'
 
 export default {
   namespaced: true,
@@ -14,6 +14,10 @@ export default {
 
   },
   actions: {
+    registerLeague ({ commit, state }) {
+      console.log('[LEAGUE-ACTION] - registerLeague()')
+      scad.post()
+    }
 
   }
 }
