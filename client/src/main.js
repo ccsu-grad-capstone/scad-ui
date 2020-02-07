@@ -2,9 +2,17 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import VueCookies from 'vue-cookies'
+
 import './quasar'
 
 Vue.config.productionTip = false
+
+Vue.use(VueCookies)
+
+Vue.$cookies.config('7d')
+Vue.$cookies.set('theme', 'default')
+Vue.$cookies.set('hover-time', '1s')
 
 new Vue({
   router,

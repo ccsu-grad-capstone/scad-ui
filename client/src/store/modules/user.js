@@ -26,30 +26,17 @@ export default {
   },
 
   mutations: {
-    loginUser (state, user) {
-      console.log('[USER-MUTATION] - loginUser()')
-      state.firstName = user.firstName
-      state.lastName = user.lastName
-      state.email = user.email
-      state.active = true
-      if (user.isAdmin) {
-        state.isAdmin = true
-      }
-    },
     logoutUser (state) {
       console.log('[USER-MUTATION] - logoutUser()')
-      // eslint-disable-next-line no-unused-expressions
-      state.firstName = null
-      state.lastName = null
-      state.email = null
+      state.user = {}
+      state.firstName = ''
+      state.lastName = ''
+      state.email = ''
       state.active = false
-      state.admin = false
-    },
-    clearTokens (state) {
+      state.isAdmin = false
       state.tokens.access_token = ''
       state.tokens.refresh_token = ''
       state.tokens.id_token = ''
-      state.active = false
     },
     updateTokens (state, tokens) {
       console.log('[USER-MUTATION] - updateTokens()')
@@ -59,7 +46,7 @@ export default {
       state.active = true
     },
     refreshToken (state, tokens) {
-      console.log('[USER-MUTATION] - updateTokens()')
+      console.log('[USER-MUTATION] - refreshToken()')
       state.tokens.access_token = tokens.access_token
       state.tokens.refresh_token = tokens.refresh_token
     },
@@ -91,8 +78,8 @@ export default {
           console.log(error.response)
         })
     },
-    async updateUser ({ commit, dispatch }, tokens) {
-      console.log('[USER-ACTION] - updateUser()')
+    async refreshStateWithCookies ({ commit, dispatch }, tokens) {
+      console.log('[USER-ACTION] - refreshStateWithCookies()')
       commit('updateTokens', tokens)
       // dispatch('loginToScad')
     },

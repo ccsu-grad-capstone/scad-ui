@@ -36,23 +36,14 @@
 </template>
 
 <script>
-import { required, email } from 'vuelidate/lib/validators'
 
 export default {
   name: 'DefaultLayout',
 
   data () {
     return {
-      email: '',
-      password: '',
       leftDrawerOpen: false,
-      showAdvanced: false,
       showDateOptions: false,
-      exactPhrase: '',
-      hasWords: '',
-      excludeWords: '',
-      byWebsite: '',
-      byDate: 'Any time',
       links1: [
         { icon: 'dashboard', text: 'Dashboard', route: 'dashboard' },
         { icon: 'home', text: 'League Home', route: 'league-home' },
@@ -71,11 +62,9 @@ export default {
       ]
     }
   },
-  validations: {
-    email: { required, email },
-    password: { required }
+  mounted () {
+    this.persistState()
   },
-
   computed: {
     appName () {
       return this.$store.state.app.appName
@@ -108,19 +97,43 @@ export default {
         })
       }
     },
-    onClear () {
-      this.exactPhrase = ''
-      this.hasWords = ''
-      this.excludeWords = ''
-      this.byWebsite = ''
-      this.byDate = 'Any time'
+    persistState () {
+      console.log('[LAYOUT] - checkCookies()')
+      this.checkForTokens()
+      this.refreshStateWithCookies()
     },
-    changeDate (option) {
-      this.byDate = option
-      this.showDateOptions = false
+    checkForTokens () {
+      console.log('[LAYOUT] - checkForTokens()')
+      if (this.$route.query.access_token) {
+        console.log('New Tokens - Update Vuex and Cookies')
+        const tokens = {
+          access_token: this.$route.query.access_token,
+          refresh_token: this.$route.query.refresh_token,
+          id_token: this.$route.query.id_token
+        }
+        this.$cookies.set('access_token', tokens.access_token)
+        this.$cookies.set('id_token', tokens.id_token)
+        this.$cookies.set('refresh_token', tokens.refresh_token)
+        this.$store.dispatch('user/refreshStateWithCookies', tokens)
+      } else {
+        console.log('No Tokens in Query Params..')
+      }
+    },
+    refreshStateWithCookies () {
+      console.log('[LAYOUT] - refreshStateWithCookies()')
+      if (this.$cookies.isKey('access_token') && !this.tokens.access_token) {
+        console.log('Access_Token is stored in cookies but not in store')
+        const tokens = {
+          access_token: this.$cookies.get('access_token'),
+          refresh_token: this.$cookies.get('refresh_token'),
+          id_token: this.$cookies.get('id_token')
+        }
+        this.$store.dispatch('user/refreshStateWithCookies', tokens)
+      }
     },
     logout () {
-      console.log('logout()')
+      console.log('[LAYOUT] - logout()')
+      this.$cookies.keys().forEach(cookie => this.$cookies.remove(cookie))
       this.$store.commit('user/logoutUser')
       // eslint-disable-next-line handle-callback-err
       this.$router.push('/').catch(error => {

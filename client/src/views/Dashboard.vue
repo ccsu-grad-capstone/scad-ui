@@ -6,21 +6,33 @@
           | DASHBOARD
         .text-h6
           | tokens.access_token:
-        .text
+        .text-caption
           | {{tokens.access_token}}
         .text-h6
           | tokens.refresh_token:
-        .text
+        .text-caption
           |{{tokens.refresh_token}}
         .text-h6
           | tokens.id_token:
-        .text
+        .text-caption
           | {{tokens.id_token}}
+        q-separator.q-mt-lg
+        .text-h6
+          | cookie.access_token:
+        .text-caption
+          | {{this.$cookies.get("access_token")}}
+        .text-h6
+          | cookie.refresh_token:
+        .text-caption
+          | {{this.$cookies.get("refresh_token")}}
+        .text-h6
+          | cookie.id_token:
+        .text-caption
+          | {{this.$cookies.get("id_token")}}
       q-separator
       .column.items-center.text
         .row.full-width.justify-center.items-center
           .column.col.items-center
-            | Press to refresh the token
             q-btn(label='Refresh Token' dense no-caps color='secondary' text-color='primary' size='md' @click="refreshToken")
         .row.full-width.justify-center.items-center.q-pt-lg
           .column.col.items-center
@@ -38,7 +50,7 @@ export default {
     return {}
   },
   mounted () {
-    this.updateUser()
+
   },
   computed: {
     user () {
@@ -52,21 +64,12 @@ export default {
     }
   },
   methods: {
-    updateUser () {
-      console.log('[DASHBOARD] - updateUser()')
-      if (this.$route.query.access_token) {
-        const tokens = {
-          access_token: this.$route.query.access_token,
-          refresh_token: this.$route.query.refresh_token,
-          id_token: this.$route.query.id_token
-        }
-        this.$store.dispatch('user/updateUser', tokens)
-      }
-    },
     refreshToken () {
+      console.log('[DASHBOARD] - refreshToken()')
       this.$store.dispatch('user/refreshToken')
     },
     async loginToScad () {
+      console.log('[DASHBOARD] - loginToScad()')
       await this.$store.dispatch('user/loginToScad')
     }
   }
