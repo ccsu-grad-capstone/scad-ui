@@ -12,42 +12,60 @@ const routes = [
     component: () => import('../layouts/Layout.vue'),
     children: [
       { path: '', component: () => import('../views/MyTeam.vue') }
-    ]
+    ],
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/league-home',
     component: () => import('../layouts/Layout.vue'),
     children: [
       { path: '', component: () => import('../views/LeagueHome.vue') }
-    ]
+    ],
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/dashboard',
     component: () => import('../layouts/Layout.vue'),
     children: [
       { path: '', component: () => import('../views/Dashboard.vue') }
-    ]
+    ],
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/free-agents',
     component: () => import('../layouts/Layout.vue'),
     children: [
       { path: '', component: () => import('../views/FreeAgents.vue') }
-    ]
+    ],
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/league-settings',
     component: () => import('../layouts/Layout.vue'),
     children: [
       { path: '', component: () => import('../views/LeagueSettings.vue') }
-    ]
+    ],
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/register-league',
     component: () => import('../layouts/Layout.vue'),
     children: [
       { path: '', component: () => import('../views/RegisterLeague.vue') }
-    ]
+    ],
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/about',
@@ -61,7 +79,11 @@ const routes = [
     component: () => import('../layouts/Layout.vue'),
     children: [
       { path: '', component: () => import('../views/MyProfile.vue') }
-    ]
+    ],
+    meta: {
+      requiresAuth: true,
+      isAdmin: true
+    }
   }
 ]
 

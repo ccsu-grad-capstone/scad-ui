@@ -101,6 +101,9 @@ export default {
       console.log('[LAYOUT] - checkCookies()')
       this.checkForTokens()
       this.refreshStateWithCookies()
+      if (this.$route.query) {
+        history.pushState(null, '', location.href.split('?')[0])
+      }
     },
     checkForTokens () {
       console.log('[LAYOUT] - checkForTokens()')
