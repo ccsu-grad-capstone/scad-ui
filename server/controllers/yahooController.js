@@ -6,7 +6,7 @@ function yahooController(service) {
     var nonce = Math.floor(Math.random() * 1000000 + 1)
     debug(`redirectToYahoo()`)
     res.redirect(
-      `https://api.login.yahoo.com/oauth2/request_auth?client_id=dj0yJmk9aWtZWjJXWVV3a2QyJmQ9WVdrOVZWUlBkSEZ6TldVbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTg5&redirect_uri=https://localhost:3000/auth/yahoo/redirect&response_type=code&language=en-us&scope=openid,fspt-w&nonce=${nonce}`
+      `https://api.login.yahoo.com/oauth2/request_auth?client_id=dj0yJmk9a1pBOHVpblRxME9PJmQ9WVdrOVpFaDZWVmxyTkcwbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWE3&redirect_uri=https://localhost:3000/auth/yahoo/redirect&response_type=code&language=en-us&scope=openid,fspt-w,sdpp-r&nonce=${nonce}`
     )
   }
 

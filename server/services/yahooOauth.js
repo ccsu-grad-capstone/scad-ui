@@ -11,7 +11,7 @@ function yahooOauth() {
       headers: { 
         'content-type': 'application/x-www-form-urlencoded',
         'Authorization':
-        'Basic ZGoweUptazlhV3RaV2pKWFdWVjNhMlF5Sm1ROVdWZHJPVlpXVWxCa1NFWjZUbGRWYldOSGJ6bE5RUzB0Sm5NOVkyOXVjM1Z0WlhKelpXTnlaWFFtYzNZOU1DWjRQVGc1OjdlNjQ3NzdiODlhOTljMzA2Y2I5MjJkYzJkMmVmOTFhNDI0ZjYwMzI='},
+        'Basic ZGoweUptazlhMXBCT0hWcGJsUnhNRTlQSm1ROVdWZHJPVnBGYURaV1ZteHlUa2N3YldOSGJ6bE5RUzB0Sm5NOVkyOXVjM1Z0WlhKelpXTnlaWFFtYzNZOU1DWjRQV0UzOjRmOWY3ZGI5NGI2NjFmODIyM2JkOTY4NDcxNDQxMTEzM2FjOWVjZTc='},
       data: `grant_type=authorization_code&redirect_uri=https://localhost:3000/auth/yahoo/redirect&code=${code}`,
       url: 'https://api.login.yahoo.com/oauth2/get_token'
     }
@@ -38,7 +38,7 @@ function yahooOauth() {
       headers: { 
         'content-type': 'application/x-www-form-urlencoded',
         'Authorization':
-        'Basic ZGoweUptazlhV3RaV2pKWFdWVjNhMlF5Sm1ROVdWZHJPVlpXVWxCa1NFWjZUbGRWYldOSGJ6bE5RUzB0Sm5NOVkyOXVjM1Z0WlhKelpXTnlaWFFtYzNZOU1DWjRQVGc1OjdlNjQ3NzdiODlhOTljMzA2Y2I5MjJkYzJkMmVmOTFhNDI0ZjYwMzI='},
+        'Basic ZGoweUptazlhMXBCT0hWcGJsUnhNRTlQSm1ROVdWZHJPVnBGYURaV1ZteHlUa2N3YldOSGJ6bE5RUzB0Sm5NOVkyOXVjM1Z0WlhKelpXTnlaWFFtYzNZOU1DWjRQV0UzOjRmOWY3ZGI5NGI2NjFmODIyM2JkOTY4NDcxNDQxMTEzM2FjOWVjZTc='},
       data: `grant_type=refresh_token&redirect_uri=https://localhost:3000/auth/yahoo/refresh&refresh_token=${refresh_token}`,
       url: 'https://api.login.yahoo.com/oauth2/get_token'
     }
