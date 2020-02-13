@@ -89,8 +89,8 @@ export default {
         headers: {
           'access_token': `${state.tokens.access_token}`,
           'id_token': `${state.tokens.id_token}`,
-          // 'Access-Control-Allow-Origin': '*',
-          'Authorization': 'Basic dXxERLUVfGhQNhKxabNoRvNzBW8J8Gju76YNMNvG2+A=' }
+          'Access-Control-Allow-Origin': '*',
+          'Authorization': 'Basic c2NhZC1hcGktcmVhZHdyaXRlOnNjYWQtYXBpLXJlYWR3cml0ZQ==' }
       }
       await axios.get('http://localhost:8080/scadservices/api/user', options)
         .then((response) => {
