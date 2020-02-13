@@ -1,7 +1,7 @@
 // import { notify } from '../../utilities/nofity'
-import { scad } from '../../utilities/axios-scad'
-import { server } from '../../utilities/axios-server'
+// import { scad } from '../../utilities/axios-scad'
 import axios from 'axios'
+import { server } from '../../utilities/axios-server'
 
 export default {
   namespaced: true,
@@ -86,20 +86,20 @@ export default {
     async loginToScad ({ state, commit }) {
       console.log('[USER-ACTION] - loginToScad()')
       const options = {
-        method: 'GET',
         headers: {
           'access_token': `${state.tokens.access_token}`,
           'id_token': `${state.tokens.id_token}`,
-          'Authorization': 'Basic dXxERLUVfGhQNhKxabNoRvNzBW8J8Gju76YNMNvG2+A=' },
-        url: `user`
+          // 'Access-Control-Allow-Origin': '*',
+          'Authorization': 'Basic dXxERLUVfGhQNhKxabNoRvNzBW8J8Gju76YNMNvG2+A=' }
       }
-      await scad(options)
+      await axios.get('http://localhost:8080/scadservices/api/user', options)
         .then((response) => {
           console.log(response.data)
           commit('updateUser', response.data)
         })
         .catch(error => {
           console.log(error)
+          console.error(JSON.stringify(error))
         })
     }
   }
