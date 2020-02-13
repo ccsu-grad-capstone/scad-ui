@@ -88,10 +88,10 @@ export default {
       const options = {
         method: 'GET',
         headers: {
-          'access_token': `${state.access_token}`,
+          'access_token': `${state.tokens.access_token}`,
           'id_token': `${state.tokens.id_token}`,
           'Authorization': 'Basic dXxERLUVfGhQNhKxabNoRvNzBW8J8Gju76YNMNvG2+A=' },
-        url: `user/1`
+        url: `user`
       }
       await scad(options)
         .then((response) => {
