@@ -1,7 +1,7 @@
 <template lang="pug">
   body
     div
-      h3 Free Agents
+      .q-px-md.text-h4.text-weight-bolder  Free Agents
 </template>
 <script>
 export default {

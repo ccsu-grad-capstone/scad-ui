@@ -4,7 +4,11 @@ import { scad } from '../../utilities/axios-scad'
 export default {
   namespaced: true,
   state: {
-    league: {}
+    league: {
+      hi: 'hi'
+    },
+    yahooLeagues: [ ],
+    scadLeagues: []
   },
   getters: {
 

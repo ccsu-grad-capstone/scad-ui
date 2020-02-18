@@ -2,7 +2,7 @@
   q-page.flex
     q-card.q-pa-md.q-ma-md(style='width: 100%')
       q-card-section
-        .text-h4
+        .text-h4.text-weight-bolder
           | DASHBOARD
         .text-h6
           | tokens.access_token:
@@ -30,6 +30,10 @@
         .text-caption
           | {{this.$cookies.get("id_token")}}
       q-separator
+      .text-h6
+        | User details:
+        .text-caption
+        | {{user.user}}
       .column.items-center.text
         .row.full-width.justify-center.items-center
           .column.col.items-center

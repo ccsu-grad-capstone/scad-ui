@@ -1,7 +1,7 @@
 <template lang="pug">
   body
     div
-      h3 About
+     .q-px-md.text-h4.text-weight-bolder  About
 </template>
 
 <script>

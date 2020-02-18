@@ -1,7 +1,7 @@
 <template lang="pug">
   body
     div
-      h3 League Home
+      .q-px-md.text-h4.text-weight-bolder  League Home
 </template>
 
 <script>

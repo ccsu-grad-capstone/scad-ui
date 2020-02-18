@@ -1,5 +1,5 @@
 // import { notify } from '../../utilities/nofity'
-// import { scad } from '../../utilities/axios-scad'
+import { scad } from '../../utilities/axios-scad'
 import axios from 'axios'
 import { server } from '../../utilities/axios-server'
 
@@ -7,9 +7,6 @@ export default {
   namespaced: true,
   state: {
     user: {},
-    firstName: '',
-    lastName: '',
-    email: '',
     active: false,
     isAdmin: false,
     tokens: {
@@ -92,7 +89,7 @@ export default {
           'Access-Control-Allow-Origin': '*',
           'Authorization': 'Basic c2NhZC1hcGktcmVhZHdyaXRlOnNjYWQtYXBpLXJlYWR3cml0ZQ==' }
       }
-      await axios.get('http://localhost:8080/scadservices/api/user', options)
+      await scad.get('/user', options)
         .then((response) => {
           console.log(response.data)
           commit('updateUser', response.data)

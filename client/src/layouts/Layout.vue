@@ -1,32 +1,32 @@
 <template lang="pug">
   q-layout.bg-grey-1(view="hHh lpR fFf")
-    q-header.bg-white.text-grey-8(elevated="" height-hint="64")
+    q-header.bg-white.text-grey-8(elevated height-hint="64")
       q-toolbar.GNL__toolbar
-        q-btn.q-mr-sm(flat="" dense="" round="" @click="leftDrawerOpen = !leftDrawerOpen" aria-label="Menu" icon="menu")
-        q-toolbar-title.row.items-center.no-wrap(v-if="$q.screen.gt.xs" shrink="")
-            img(src="../statics/scad-logo_v1_100x30.png" clickable="" @click="iconNavigate")
+        q-btn.q-mr-sm(flat dense round @click="leftDrawerOpen = !leftDrawerOpen" aria-label="Menu" icon="menu")
+        q-toolbar-title.row.items-center.no-wrap(v-if="$q.screen.gt.xs" shrink)
+            img(src="../statics/scad-logo_v1_100x30.png" clickable @click="iconNavigate")
         q-space
         .q-gutter-sm.row.items-center.no-wrap(v-if="tokens.access_token")
-          q-btn(v-if="$q.screen.gt.sm" round="" dense="" flat="" color="text-grey-7" icon="apps")
+          q-btn(v-if="$q.screen.gt.sm" round dense flat color="text-grey-7" icon="apps")
             q-tooltip Google Apps
-          q-btn(round="" dense="" flat="" color="grey-8" icon="notifications")
-            q-badge(color="red" text-color="white" floating="")
+          q-btn(round dense flat color="grey-8" icon="notifications")
+            q-badge(color="red" text-color="white" floating)
               | 2
             q-tooltip Notifications
-          q-btn(round="" flat="")
+          q-btn(round flat)
             q-avatar(size="26px")
               img(src="https://cdn.quasar.dev/img/boy-avatar.png")
             q-tooltip Account
-    q-drawer(v-if="this.loggedIn" v-model="leftDrawerOpen" show-if-above="" bordered="" content-class="bg-white" :width="230")
+    q-drawer(v-if="this.loggedIn" v-model="leftDrawerOpen" show-if-above bordered content-class="bg-white" :width="230")
       q-scroll-area.fit
-        q-list.text-grey-8(padding="")
-          q-item.GNL__drawer-item(@click="navigate(link.route)" v-ripple="" v-for="link in links1" :key="link.text" clickable="")
-            q-item-section(avatar="")
+        q-list.text-grey-8(padding)
+          q-item.GNL__drawer-item(@click="navigate(link.route)" v-if="Object.keys(league.league).length !== 0" v-ripple v-for="link in hasLeagueLinks" :key="link.text" clickable)
+            q-item-section(avatar)
               q-icon(:name="link.icon")
             q-item-section
               q-item-label {{ link.text }}
-          q-separator.q-my-sm(inset="")
-          q-item.GNL__drawer-item(@click="navigate(link.click)" v-ripple="" v-for="link in links3" :key="link.text" clickable="")
+          q-separator.q-my-sm(inset)
+          q-item.GNL__drawer-item(@click="navigate(link.click)" v-ripple v-for="link in links3" :key="link.text" clickable)
             q-item-section
               q-item-label
                 | {{ link.text }}
@@ -44,7 +44,7 @@ export default {
     return {
       leftDrawerOpen: false,
       showDateOptions: false,
-      links1: [
+      hasLeagueLinks: [
         { icon: 'dashboard', text: 'Dashboard', route: 'dashboard' },
         { icon: 'home', text: 'League Home', route: 'league-home' },
         { icon: 'list', text: 'My Team', route: 'my-team' },
@@ -55,8 +55,12 @@ export default {
           route: 'league-settings'
         }
       ],
+      noLeagueLinks: [
+        { icon: 'dashboard', text: 'Dashboard', route: 'dashboard' }
+      ],
       links3: [
         { icon: '', text: 'My Profile', click: 'my-profile' },
+        { icon: '', text: 'Register League', click: 'register-league' },
         { icon: '', text: 'About', click: 'about' },
         { icon: 'logout', text: 'Logout', click: 'logout' }
       ]
@@ -66,9 +70,6 @@ export default {
     this.persistState()
   },
   computed: {
-    appName () {
-      return this.$store.state.app.appName
-    },
     user () {
       return this.$store.state.user
     },
@@ -80,6 +81,9 @@ export default {
     },
     tokens () {
       return this.user.tokens
+    },
+    league () {
+      return this.$store.state.league
     }
   },
   methods: {
