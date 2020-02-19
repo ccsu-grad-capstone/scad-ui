@@ -1,20 +1,18 @@
 <template lang="pug">
   div.q-pa-md.row.items-start.q-gutter-md
-    .col-10
-      q-card.my-card(flat bordered)
-        q-item-section.q-pa-md
-          img(src="../statics/logo-set/scad-1.png" style="width: 35%")
-        q-separator
-        q-item-section.q-px-md
-          div.text-h5 {{ name }}
-          div.text-body1 {{user.email}}
-          q-separator
-          q-card-section(horizontal)
-            q-card-section
-              |  User Since:
-            q-separator(vertical)
-            q-card-section.col-4
-              | Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    q-card.q-pa-md.row(style='width: 100%')
+      .col-3.q-pa-md
+        .row.justify-center
+          img(:src="getProfilePic()" style="width: 60%")
+          .text-h6 {{ user.user.name }}
+      .col-7.q-px-md(horizontal)
+        div.text-body1 {{user.email}}
+        q-card-section
+        q-card-section
+          |  User Since:
+        q-separator(vertical)
+        q-card-section.col-4
+          | Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 </template>
 
 <script>
@@ -30,6 +28,11 @@ export default {
     },
     name () {
       return this.$store.getters['user/name']
+    }
+  },
+  methods: {
+    getProfilePic () {
+      return this.user.user.profile_images.image128
     }
   }
 }

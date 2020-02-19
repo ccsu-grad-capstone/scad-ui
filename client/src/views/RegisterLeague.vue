@@ -1,6 +1,6 @@
 <template lang="pug">
   q-page.flex.flex-center
-    q-card.q-pa-md.q-ma-md(style='width: 75%')
+    q-card.q-pa-md.q-ma-lg(style='width: 100%')
       q-card-section
         .text-h4.text-weight-bolder Register Your Yahoo League With SCAD
       q-form(@submit='onSubmit')

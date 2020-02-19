@@ -15,7 +15,7 @@
             q-tooltip Notifications
           q-btn(round flat)
             q-avatar(size="26px")
-              img(src="https://cdn.quasar.dev/img/boy-avatar.png")
+              img(:src="getProfilePic()")
             q-tooltip Account
     q-drawer(v-if="this.loggedIn" v-model="leftDrawerOpen" show-if-above bordered content-class="bg-white" :width="230")
       q-scroll-area.fit
@@ -155,6 +155,9 @@ export default {
       } else {
         this.navigate('/')
       }
+    },
+    getProfilePic () {
+      return this.user.user.profile_images.image64
     }
   }
 }
