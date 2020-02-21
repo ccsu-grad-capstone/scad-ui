@@ -3,12 +3,14 @@ import Vuex from 'vuex'
 
 import user from './modules/user'
 import league from './modules/league'
+import dialog from './modules/dialog'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
     user,
-    league
+    league,
+    dialog
   }
 })

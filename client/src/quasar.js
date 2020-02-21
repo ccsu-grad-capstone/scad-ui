@@ -36,7 +36,8 @@ import {
   QForm,
   QBtnGroup,
   QSelect,
-  QSlider
+  QSlider,
+  QDialog
 
 } from 'quasar'
 
@@ -83,7 +84,8 @@ Vue.use(Quasar, {
     QForm,
     QBtnGroup,
     QSelect,
-    QSlider
+    QSlider,
+    QDialog
   },
   directives: {
     Ripple

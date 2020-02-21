@@ -92,20 +92,31 @@
         .col-3
           q-btn-group(spread)
             q-btn(label='Submit' type='submit' dense no-caps color='primary' size='md' @click="onSubmit")
-
+    q-dialog(v-model='registerLeagueInvites' persistent)
+      register-league-invites
 </template>
 
 <script>
 import { required } from 'vuelidate/lib/validators'
 import referenceData from '../utilities/referenceData'
+import RegisterLeagueInvites from '../components/dialogs/registerLeagueInvites'
+
+import { createHelpers } from 'vuex-map-fields'
+const { mapFields } = createHelpers({
+  getterType: 'dialog/getField',
+  mutationType: 'dialog/updateField'
+})
+
 export default {
   name: 'RegisterLeague',
-
+  components: {
+    'register-league-invites': RegisterLeagueInvites
+  },
   data () {
     return {
       newLeague: {
-        yahooLeagueID: '',
-        yahooLeagueName: '',
+        yahooLeagueID: 'asdf',
+        yahooLeagueName: 'asdf',
         leagueManagers: 12,
         rookieDraftRds: 3,
         rookieDraftStrategy: 'Message Board',
@@ -139,6 +150,9 @@ export default {
   },
   created () {},
   computed: {
+    ...mapFields([
+      'registerLeagueInvites'
+    ]),
     referenceData () {
       return referenceData
     },
@@ -162,10 +176,11 @@ export default {
         console.log('REGISTERLEAGUE Validation failed')
       } else {
         console.log('REGISTERLEAGUE Validation Successful', this.newLeague)
-        this.$store.dispatch('league/registerLeague', this.newLeague)
-        this.$router.push({
-          path: 'dashboard'
-        })
+        this.registerLeagueInvites = true
+        this.$store.dispatch('league/registerLeague', { league: this.newLeague })
+        // this.$router.push({
+        //   path: 'dashboard'
+        // })
       }
     },
     setLeagueCap () {

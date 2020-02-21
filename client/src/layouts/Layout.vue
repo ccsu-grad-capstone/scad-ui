@@ -42,7 +42,7 @@ export default {
 
   data () {
     return {
-      leftDrawerOpen: false,
+      leftDrawerOpen: true,
       showDateOptions: false,
       hasLeagueLinks: [
         { icon: 'dashboard', text: 'Dashboard', route: 'dashboard' },
