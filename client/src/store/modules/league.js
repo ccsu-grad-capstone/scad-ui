@@ -7,7 +7,7 @@ export default {
     league: {
       hi: 'hi'
     },
-    yahooLeagues: [ ],
+    yahooLeagues: [],
     scadLeagues: []
   },
   getters: {

@@ -87,7 +87,8 @@ export default {
           '0': {
             'players': {
               '0': {
-                'player': [
+                'player':
+                [
                   [
                     {
                       'player_key': '390.p.30977'

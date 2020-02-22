@@ -1,10 +1,10 @@
 <template lang="pug">
   q-page.flex.flex-center
     q-card.q-pa-md.q-ma-lg(style='width: 100%')
-      q-card-section
+      q-card-section.row.justify-center
         .text-h4.text-weight-bolder Register Your Yahoo League With SCAD
       q-form(@submit='onSubmit')
-        q-separator.q-my-lg(color='secondary' inset)
+        q-separator.q-mb-lg(color='secondary' inset)
         .row
           .col-3.text-subtitle2.text-right.q-pt-sm
             | Choose your league:

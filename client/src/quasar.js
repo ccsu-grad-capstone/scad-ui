@@ -37,7 +37,10 @@ import {
   QBtnGroup,
   QSelect,
   QSlider,
-  QDialog
+  QDialog,
+  QTable,
+  QMarkupTable,
+  QTd
 
 } from 'quasar'
 
@@ -85,7 +88,10 @@ Vue.use(Quasar, {
     QBtnGroup,
     QSelect,
     QSlider,
-    QDialog
+    QDialog,
+    QTable,
+    QMarkupTable,
+    QTd
   },
   directives: {
     Ripple

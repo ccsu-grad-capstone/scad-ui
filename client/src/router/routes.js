@@ -18,6 +18,16 @@ const routes = [
     }
   },
   {
+    path: '/draft-picks',
+    component: () => import('../layouts/Layout.vue'),
+    children: [
+      { path: '', component: () => import('../views/DraftPicks.vue') }
+    ],
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/league-home',
     component: () => import('../layouts/Layout.vue'),
     children: [

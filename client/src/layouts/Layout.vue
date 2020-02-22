@@ -17,7 +17,7 @@
             q-avatar(size="26px")
               img(:src="getProfilePic()")
             q-tooltip Account
-    q-drawer(v-if="this.loggedIn" v-model="leftDrawerOpen" show-if-above bordered content-class="bg-white" :width="230")
+    q-drawer(v-if="this.loggedIn" v-model="leftDrawerOpen" show-if-above bordered content-class="bg-white" :width="230" elevated)
       q-scroll-area.fit
         q-list.text-grey-8(padding)
           q-item.GNL__drawer-item(@click="navigate(link.route)" v-if="Object.keys(league.league).length !== 0" v-ripple v-for="link in hasLeagueLinks" :key="link.text" clickable)
@@ -46,9 +46,10 @@ export default {
       showDateOptions: false,
       hasLeagueLinks: [
         { icon: 'dashboard', text: 'Dashboard', route: 'dashboard' },
-        { icon: 'home', text: 'League Home', route: 'league-home' },
         { icon: 'list', text: 'My Team', route: 'my-team' },
+        { icon: 'list', text: 'Draft Picks', route: 'draft-picks' },
         { icon: 'people', text: 'Free Agents', route: 'free-agents' },
+        { icon: 'home', text: 'League Home', route: 'league-home' },
         {
           icon: 'settings_applications',
           text: 'League Settings',

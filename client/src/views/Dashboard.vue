@@ -1,43 +1,15 @@
 <template lang="pug">
   q-page.flex
-    q-card.q-pa-md.q-ma-md(style='width: 100%')
+    my-team-lite
+    my-tokens
+    q-separator
+    q-card.q-ma-md
       q-card-section
-        .text-h4.text-weight-bolder
-          | DASHBOARD
-        .text-h6
-          | tokens.access_token:
-        .text-caption
-          | {{tokens.access_token}}
-        .text-h6
-          | tokens.refresh_token:
-        .text-caption
-          |{{tokens.refresh_token}}
-        .text-h6
-          | tokens.id_token:
-        .text-caption
-          | {{tokens.id_token}}
-        q-separator.q-mt-lg
-        .text-h6
-          | cookie.access_token:
-        .text-caption
-          | {{this.$cookies.get("access_token")}}
-        .text-h6
-          | cookie.refresh_token:
-        .text-caption
-          | {{this.$cookies.get("refresh_token")}}
-        .text-h6
-          | cookie.id_token:
-        .text-caption
-          | {{this.$cookies.get("id_token")}}
-      q-separator
       .text-h6
         | User details:
         .text-caption
         | {{user.user}}
       .column.items-center.text
-        .row.full-width.justify-center.items-center
-          .column.col.items-center
-            q-btn(label='Refresh Token' dense no-caps color='secondary' text-color='primary' size='md' @click="refreshToken")
         .row.full-width.justify-center.items-center.q-pt-lg
           .column.col.items-center
             q-btn(label='Register League' dense no-caps color='secondary' text-color='primary' size='md' @click="$router.push('register-league')")
@@ -48,8 +20,15 @@
 </template>
 
 <script>
+import MyTokens from '../components/MyTokens'
+import MyTeamLite from '../components/MyTeamLite'
+
 export default {
   name: 'Dashboard',
+  components: {
+    'my-tokens': MyTokens,
+    'my-team-lite': MyTeamLite
+  },
   data () {
     return {}
   },
