@@ -1,31 +1,72 @@
 <template lang="pug">
   body
     q-card.q-ma-md
-      | {{this.getTeam()}}
       q-card-section
-        q-card
-          q-card-section
             .row.q-gutter-md
-              .column.bg-red.justify-center
+              .col-4
                 .row.justify-center
                   q-avatar(size="100px")
                     img(:src="this.getTeam().team_logos[0].url")
                 .row.justify-center
-                  .text-h6 {{this.getTeam().name}}
+                  .col
+                    .row.justify-center
+                      .text-h6 {{this.getTeam().name}}
+                    .row.justify-center
+                      .text-caption.text-grey-7 Manager ({{this.getTeam().managers[0].nickname}})
+                    .row.justify-center
+                      .text-caption: a(:href='this.getTeam().url') {{this.getTeam().url}}
               q-separator(vertical)
               .col.q-pa-md
-                .row
+                .row.q-gutter-md
                   .col
+                    .text-primary.text-center.text-weight-bolder
+                      | SCAD Details
                     .row
-                      .col.text-grey-8.text-caption.text-right Remaining Salary:
-                      .col-7.text-primary.text-weight-bold
-                        |  $TBD
+                      .col-7.text-grey-8.text-caption.text-right Salary Cap:
+                      .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
+                        | $250
                     .row
-                      .col.text-grey-8.text-caption.text-right Available Cap Exemption Give:
-                      .col-7.text-primary.text-weight-bold
-                        |  $TBD
-                  .col.bg-red
-                    | {{this.getTeam()}}
+                      .col-7.text-grey-8.text-caption.text-right Remaining Salary:
+                      .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
+                        | $TBD
+                    .row
+                      .col-7.text-grey-8.text-caption.text-right Available Cap Exemption Give:
+                      .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
+                        | $TBD
+                    .row
+                      .col-7.text-grey-8.text-caption.text-right Available Cap Exemption Take:
+                      .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
+                        | $TBD
+                    .row
+                      .col-7.text-grey-8.text-caption.text-right Franchise Tag:
+                      .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
+                        | N/A
+
+                  q-separator(vertical)
+
+                  .col
+                    .text-primary.text-center.text-weight-bolder
+                      | Yahoo Details
+                    .row
+                      .col-7.text-grey-8.text-caption.text-right Waiver Priority:
+                      .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
+                        | {{this.getTeam().waiver_priority}}
+                    .row
+                      .col-7.text-grey-8.text-caption.text-right FAAB Remaining Budget:
+                      .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
+                        | ${{this.getTeam().faab_balance}}
+                    .row
+                      .col-7.text-grey-8.text-caption.text-right Number of Trades:
+                      .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
+                        | {{this.getTeam().number_of_moves}}
+                    .row
+                      .col-7.text-grey-8.text-caption.text-right Draft Grade:
+                      .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
+                        | {{this.getTeam().draft_grade}}
+                    .row
+                      .col-7.text-grey-8.text-caption.text-right Franchise Tag:
+                      .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
+                        | N/A
       q-separator
       q-card-section
         .row.full-width
@@ -115,4 +156,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="stylus" scoped>
+  .scad-team-settings
+    text: $h2
+    color: $blue-1
+    background-color: $grey-5
+</style>

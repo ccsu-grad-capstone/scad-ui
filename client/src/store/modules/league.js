@@ -1,12 +1,11 @@
 // import { notify } from '../../utilities/nofity'
 import { scad } from '../../utilities/axios-scad'
+import leagueStandings from '../../data/leagueStandings'
 
 export default {
   namespaced: true,
   state: {
-    league: {
-      hi: 'hi'
-    },
+    league: leagueStandings.fantasy_content.league,
     yahooLeagues: [],
     scadLeagues: []
   },

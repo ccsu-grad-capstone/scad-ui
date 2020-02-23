@@ -1,6 +1,7 @@
 <template lang="pug">
   q-page.flex
-    my-team-lite
+    lite-league
+    lite-my-team
     my-tokens
     q-separator
     q-card.q-ma-md
@@ -21,13 +22,15 @@
 
 <script>
 import MyTokens from '../components/MyTokens'
-import MyTeamLite from '../components/MyTeamLite'
+import LiteMyTeam from '../components/LiteMyTeam'
+import LiteLeague from '../components/LiteLeague'
 
 export default {
   name: 'Dashboard',
   components: {
     'my-tokens': MyTokens,
-    'my-team-lite': MyTeamLite
+    'lite-my-team': LiteMyTeam,
+    'lite-league': LiteLeague
   },
   data () {
     return {}

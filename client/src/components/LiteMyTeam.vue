@@ -16,7 +16,7 @@
 import { mapRoster } from '../utilities/helpers/teamHelper'
 
 export default {
-  name: 'MyTeamLite',
+  name: 'LiteMyTeam',
   data () {
     return {
       pagination: {

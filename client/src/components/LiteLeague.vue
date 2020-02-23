@@ -1,33 +1,21 @@
 <template lang="pug">
-  body
-    q-card.q-ma-md
-      q-card-section
-        .row.q-gutter-md
-          .div
-            q-avatar(size="85px")
-              //- img(v-if="league.url" :src="league.url")
-              img(src="../statics/yahoo-ff.png")
-          .column.justify-center.align-center.text-center
-            .text-h4.text-weight-bolder {{league.name}}
-            a(:href='league.url') {{league.url}}
-      q-separator
-      q-card-section
-        .row.full-width
-          div(style="width: 50%")
-            q-table(
-              :data='league.standings.teams.team',
-              :columns='columns',
-              row-key='name',
-              :pagination.sync="pagination",
-              hide-bottom,
-              )
-              template(v-slot:body-cell-name='props')
-                q-td(:props='props')
-                  .row.full-width
-                    .col-2
-                      q-avatar(size="25px")
-                        img(:src="props.row.team_logos.team_logo.url")
-                    .column.justify-center {{props.row.name}}
+  .q-pa-md(style="width: 35%")
+    .text-h6.text-weight-bolder {{ league.name }}
+      q-table(
+        :data='league.standings.teams.team',
+        :columns='columns',
+        row-key='name',
+        :pagination.sync="pagination",
+        hide-bottom,
+        dense
+        )
+        template(v-slot:body-cell-name='props')
+          q-td(:props='props')
+            .row.full-width
+              .col-2
+                q-avatar(size="25px")
+                  img(:src="props.row.team_logos.team_logo.url")
+              .column.justify-center {{props.row.name}}
 
 </template>
 
@@ -35,7 +23,7 @@
 import { mapRoster, mapTeam } from '../utilities/helpers/teamHelper'
 
 export default {
-  name: 'LeagueHome',
+  name: 'LiteLeague',
   data () {
     return {
       pagination: {
@@ -76,12 +64,12 @@ export default {
           style: 'max-width: 100px'
         },
         {
-          name: 'salary',
+          name: 'win-percentage',
           required: true,
-          label: 'Team Salary',
+          label: '%',
           align: 'left',
-          // field: row => row.team_standings.outcome_totals,
-          format: val => `${val}`,
+          field: row => row.team_standings.outcome_totals,
+          format: val => `${val.percentage}`,
           sortable: false,
           headerClasses: 'bg-grey-3',
           style: 'max-width: 100px'

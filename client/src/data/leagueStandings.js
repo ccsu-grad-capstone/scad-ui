@@ -4,7 +4,7 @@ export default {
       'league_key': '390.l.22351',
       'league_id': '22351',
       'name': 'Salary Cap Dynasty 2019',
-      'url': 'https: //football.fantasysports.yahoo.com/f1/22351',
+      'url': 'https://football.fantasysports.yahoo.com/f1/22351',
       'logo_url': '',
       'draft_status': 'postdraft',
       'num_teams': '12',
@@ -34,11 +34,11 @@ export default {
               'team_key': '390.l.22351.t.3',
               'team_id': '3',
               'name': 'Good JuJu',
-              'url': 'https: //football.fantasysports.yahoo.com/f1/22351/3',
+              'url': 'https://football.fantasysports.yahoo.com/f1/22351/3',
               'team_logos': {
                 'team_logo': {
                   'size': 'large',
-                  'url': 'https: //s.yimg.com/cv/apiv2/default/nfl/nfl_10.png'
+                  'url': 'https://s.yimg.com/cv/apiv2/default/nfl/nfl_10.png'
                 }
               },
               'waiver_priority': '6',
@@ -54,14 +54,14 @@ export default {
               'league_scoring_type': 'head',
               'has_draft_grade': '1',
               'draft_grade': 'B+',
-              'draft_recap_url': 'https: //football.fantasysports.yahoo.com/f1/22351/3/draftrecap',
+              'draft_recap_url': 'https://football.fantasysports.yahoo.com/f1/22351/3/draftrecap',
               'managers': {
                 'manager': {
                   'manager_id': '3',
                   'nickname': 'Michael',
                   'guid': 'MLCDTYQHRH2HJMROLKI5RUQCHU',
                   'email': 'uconn3242@gmail.com',
-                  'image_url': 'https: //s.yimg.com/ag/images/4591/38854173736_dc7fe7_64sq.jpg'
+                  'image_url': 'https://s.yimg.com/ag/images/4591/38854173736_dc7fe7_64sq.jpg'
                 }
               },
               'team_points': {
@@ -90,11 +90,11 @@ export default {
               'team_key': '390.l.22351.t.5',
               'team_id': '5',
               'name': 'jamest1728',
-              'url': 'https: //football.fantasysports.yahoo.com/f1/22351/5',
+              'url': 'https://football.fantasysports.yahoo.com/f1/22351/5',
               'team_logos': {
                 'team_logo': {
                   'size': 'large',
-                  'url': 'https: //s.yimg.com/cv/apiv2/default/nfl/nfl_11.png'
+                  'url': 'https://s.yimg.com/cv/apiv2/default/nfl/nfl_11.png'
                 }
               },
               'waiver_priority': '4',
@@ -110,7 +110,7 @@ export default {
               'league_scoring_type': 'head',
               'has_draft_grade': '1',
               'draft_grade': 'A-',
-              'draft_recap_url': 'https: //football.fantasysports.yahoo.com/f1/22351/5/draftrecap',
+              'draft_recap_url': 'https://football.fantasysports.yahoo.com/f1/22351/5/draftrecap',
               'managers': {
                 'manager': [
                   {
@@ -118,7 +118,7 @@ export default {
                     'nickname': 'James',
                     'guid': 'KV4U3VKTAIDPFG3PPOIHCLFJKQ',
                     'email': 'jamest1728@yahoo.com',
-                    'image_url': 'https: //s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg'
+                    'image_url': 'https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg'
                   },
                   {
                     'manager_id': '13',
@@ -126,7 +126,7 @@ export default {
                     'guid': 'K5YFKE7WLKLKHJDEDVJMMEE4BY',
                     'is_comanager': '1',
                     'email': 'kroon15@yahoo.com',
-                    'image_url': 'https: //s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg'
+                    'image_url': 'https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg'
                   }
                 ]
               },
@@ -157,11 +157,11 @@ export default {
               'team_id': '2',
               'name': 'GoldDiggers',
               'is_owned_by_current_login': '1',
-              'url': 'https: //football.fantasysports.yahoo.com/f1/22351/2',
+              'url': 'https://football.fantasysports.yahoo.com/f1/22351/2',
               'team_logos': {
                 'team_logo': {
                   'size': 'large',
-                  'url': 'https: //s.yimg.com/cv/apiv2/default/nfl/nfl_2_l.png'
+                  'url': 'https://s.yimg.com/cv/apiv2/default/nfl/nfl_2_l.png'
                 }
               },
               'waiver_priority': '8',
@@ -177,7 +177,7 @@ export default {
               'league_scoring_type': 'head',
               'has_draft_grade': '1',
               'draft_grade': 'D+',
-              'draft_recap_url': 'https: //football.fantasysports.yahoo.com/f1/22351/2/draftrecap',
+              'draft_recap_url': 'https://football.fantasysports.yahoo.com/f1/22351/2/draftrecap',
               'managers': {
                 'manager': {
                   'manager_id': '2',
@@ -185,7 +185,7 @@ export default {
                   'guid': '2OMLCT3C2A42Z3FCGWJZCIDYLU',
                   'is_current_login': '1',
                   'email': 'lauzon232@gmail.com',
-                  'image_url': 'https: //s.yimg.com/ag/images/5877/59490392552_ac9b6a_64sq.jpg'
+                  'image_url': 'https://s.yimg.com/ag/images/5877/59490392552_ac9b6a_64sq.jpg'
                 }
               },
               'team_points': {
@@ -214,11 +214,11 @@ export default {
               'team_key': '390.l.22351.t.11',
               'team_id': '11',
               'name': 'TheMuffinStuffers',
-              'url': 'https: //football.fantasysports.yahoo.com/f1/22351/11',
+              'url': 'https://football.fantasysports.yahoo.com/f1/22351/11',
               'team_logos': {
                 'team_logo': {
                   'size': 'large',
-                  'url': 'https: //s.yimg.com/cv/apiv2/default/nfl/nfl_9_m.png'
+                  'url': 'https://s.yimg.com/cv/apiv2/default/nfl/nfl_9_m.png'
                 }
               },
               'waiver_priority': '11',
@@ -234,14 +234,14 @@ export default {
               'league_scoring_type': 'head',
               'has_draft_grade': '1',
               'draft_grade': 'B-',
-              'draft_recap_url': 'https: //football.fantasysports.yahoo.com/f1/22351/11/draftrecap',
+              'draft_recap_url': 'https://football.fantasysports.yahoo.com/f1/22351/11/draftrecap',
               'managers': {
                 'manager': {
                   'manager_id': '11',
                   'nickname': 'ALmEiDa',
                   'guid': 'YSBGEGQK2QHHSVQSE5YNTS5HPQ',
                   'email': 'matthew.almeida@sbcglobal.net',
-                  'image_url': 'https: //s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg'
+                  'image_url': 'https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg'
                 }
               },
               'team_points': {
@@ -270,11 +270,11 @@ export default {
               'team_key': '390.l.22351.t.7',
               'team_id': '7',
               'name': 'Ligers',
-              'url': 'https: //football.fantasysports.yahoo.com/f1/22351/7',
+              'url': 'https://football.fantasysports.yahoo.com/f1/22351/7',
               'team_logos': {
                 'team_logo': {
                   'size': 'large',
-                  'url': 'https: //s.yimg.com/cv/apiv2/default/nfl/nfl_8.png'
+                  'url': 'https://s.yimg.com/cv/apiv2/default/nfl/nfl_8.png'
                 }
               },
               'waiver_priority': '1',
@@ -290,14 +290,14 @@ export default {
               'league_scoring_type': 'head',
               'has_draft_grade': '1',
               'draft_grade': 'C',
-              'draft_recap_url': 'https: //football.fantasysports.yahoo.com/f1/22351/7/draftrecap',
+              'draft_recap_url': 'https://football.fantasysports.yahoo.com/f1/22351/7/draftrecap',
               'managers': {
                 'manager': {
                   'manager_id': '7',
                   'nickname': 'jeff',
                   'guid': 'LAVJNFHIYUTVLPKV3V3U3X5KPE',
                   'email': 'jcwolfenden13@gmail.com',
-                  'image_url': 'https: //s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg'
+                  'image_url': 'https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg'
                 }
               },
               'team_points': {
@@ -326,11 +326,11 @@ export default {
               'team_key': '390.l.22351.t.10',
               'team_id': '10',
               'name': 'stillmatic',
-              'url': 'https: //football.fantasysports.yahoo.com/f1/22351/10',
+              'url': 'https://football.fantasysports.yahoo.com/f1/22351/10',
               'team_logos': {
                 'team_logo': {
                   'size': 'large',
-                  'url': 'https: //s.yimg.com/cv/apiv2/default/nfl/nfl_1.png'
+                  'url': 'https://s.yimg.com/cv/apiv2/default/nfl/nfl_1.png'
                 }
               },
               'waiver_priority': '3',
@@ -346,14 +346,14 @@ export default {
               'league_scoring_type': 'head',
               'has_draft_grade': '1',
               'draft_grade': 'B',
-              'draft_recap_url': 'https: //football.fantasysports.yahoo.com/f1/22351/10/draftrecap',
+              'draft_recap_url': 'https://football.fantasysports.yahoo.com/f1/22351/10/draftrecap',
               'managers': {
                 'manager': {
                   'manager_id': '10',
                   'nickname': 'steve fuller',
                   'guid': 'UO73PUM552FSR3MOJ6ODMWUUTA',
                   'email': 'sfuller2303@gmail.com',
-                  'image_url': 'https: //s.yimg.com/ag/images/4567/38697728446_b92252_64sq.jpg'
+                  'image_url': 'https://s.yimg.com/ag/images/4567/38697728446_b92252_64sq.jpg'
                 }
               },
               'team_points': {
@@ -382,11 +382,11 @@ export default {
               'team_key': '390.l.22351.t.4',
               'team_id': '4',
               'name': 'Honolulu Blue Myself',
-              'url': 'https: //football.fantasysports.yahoo.com/f1/22351/4',
+              'url': 'https://football.fantasysports.yahoo.com/f1/22351/4',
               'team_logos': {
                 'team_logo': {
                   'size': 'large',
-                  'url': 'https: //yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/56414613091_3ca976.jpg'
+                  'url': 'https://yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/56414613091_3ca976.jpg'
                 }
               },
               'waiver_priority': '9',
@@ -401,14 +401,14 @@ export default {
               'league_scoring_type': 'head',
               'has_draft_grade': '1',
               'draft_grade': 'B',
-              'draft_recap_url': 'https: //football.fantasysports.yahoo.com/f1/22351/4/draftrecap',
+              'draft_recap_url': 'https://football.fantasysports.yahoo.com/f1/22351/4/draftrecap',
               'managers': {
                 'manager': {
                   'manager_id': '4',
                   'nickname': 'Brendan',
                   'guid': 'FZ5KERTXYQLKOYP2BTWTG7UDDY',
                   'email': 'brendan.collier@gmail.com',
-                  'image_url': 'https: //s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg'
+                  'image_url': 'https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg'
                 }
               },
               'team_points': {
@@ -437,11 +437,11 @@ export default {
               'team_key': '390.l.22351.t.9',
               'team_id': '9',
               'name': 'Silver & Black',
-              'url': 'https: //football.fantasysports.yahoo.com/f1/22351/9',
+              'url': 'https://football.fantasysports.yahoo.com/f1/22351/9',
               'team_logos': {
                 'team_logo': {
                   'size': 'large',
-                  'url': 'https: //s.yimg.com/cv/apiv2/default/nfl/nfl_4.png'
+                  'url': 'https://s.yimg.com/cv/apiv2/default/nfl/nfl_4.png'
                 }
               },
               'waiver_priority': '12',
@@ -456,13 +456,13 @@ export default {
               'league_scoring_type': 'head',
               'has_draft_grade': '1',
               'draft_grade': 'C-',
-              'draft_recap_url': 'https: //football.fantasysports.yahoo.com/f1/22351/9/draftrecap',
+              'draft_recap_url': 'https://football.fantasysports.yahoo.com/f1/22351/9/draftrecap',
               'managers': {
                 'manager': {
                   'manager_id': '9',
                   'nickname': 'Jay',
                   'guid': '4RSQ3TPB6A5FBCN5FZ6BWKP7MU',
-                  'image_url': 'https: //s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg'
+                  'image_url': 'https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg'
                 }
               },
               'team_points': {
@@ -491,11 +491,11 @@ export default {
               'team_key': '390.l.22351.t.6',
               'team_id': '6',
               'name': 'L.A. Golds',
-              'url': 'https: //football.fantasysports.yahoo.com/f1/22351/6',
+              'url': 'https://football.fantasysports.yahoo.com/f1/22351/6',
               'team_logos': {
                 'team_logo': {
                   'size': 'large',
-                  'url': 'https: //s.yimg.com/cv/apiv2/default/nfl/nfl_10.png'
+                  'url': 'https://s.yimg.com/cv/apiv2/default/nfl/nfl_10.png'
                 }
               },
               'waiver_priority': '5',
@@ -510,14 +510,14 @@ export default {
               'league_scoring_type': 'head',
               'has_draft_grade': '1',
               'draft_grade': 'A',
-              'draft_recap_url': 'https: //football.fantasysports.yahoo.com/f1/22351/6/draftrecap',
+              'draft_recap_url': 'https://football.fantasysports.yahoo.com/f1/22351/6/draftrecap',
               'managers': {
                 'manager': {
                   'manager_id': '6',
                   'nickname': 'Paul',
                   'guid': 'NGIU4FGEMS326YPZLUZZKT5CO4',
                   'email': 'paulmetheny@gmail.com',
-                  'image_url': 'https: //s.yimg.com/ag/images/4575/39028624621_4045ac_64sq.jpg'
+                  'image_url': 'https://s.yimg.com/ag/images/4575/39028624621_4045ac_64sq.jpg'
                 }
               },
               'team_points': {
@@ -546,11 +546,11 @@ export default {
               'team_key': '390.l.22351.t.12',
               'team_id': '12',
               'name': 'Underground Kings',
-              'url': 'https: //football.fantasysports.yahoo.com/f1/22351/12',
+              'url': 'https://football.fantasysports.yahoo.com/f1/22351/12',
               'team_logos': {
                 'team_logo': {
                   'size': 'large',
-                  'url': 'https: //yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/40487889346_9a0fef.jpg'
+                  'url': 'https://yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/40487889346_9a0fef.jpg'
                 }
               },
               'waiver_priority': '10',
@@ -565,14 +565,14 @@ export default {
               'league_scoring_type': 'head',
               'has_draft_grade': '1',
               'draft_grade': 'D+',
-              'draft_recap_url': 'https: //football.fantasysports.yahoo.com/f1/22351/12/draftrecap',
+              'draft_recap_url': 'https://football.fantasysports.yahoo.com/f1/22351/12/draftrecap',
               'managers': {
                 'manager': {
                   'manager_id': '12',
                   'nickname': 'Barstool Hero',
                   'guid': 'RAL6NBFQ3AGEUH4AHH3GVGGY5M',
                   'email': 'johnjohn055@sbcglobal.net',
-                  'image_url': 'https: //s.yimg.com/ag/images/4639/27416087889_995019_64sq.jpg'
+                  'image_url': 'https://s.yimg.com/ag/images/4639/27416087889_995019_64sq.jpg'
                 }
               },
               'team_points': {
@@ -601,11 +601,11 @@ export default {
               'team_key': '390.l.22351.t.8',
               'team_id': '8',
               'name': 'Nick',
-              'url': 'https: //football.fantasysports.yahoo.com/f1/22351/8',
+              'url': 'https://football.fantasysports.yahoo.com/f1/22351/8',
               'team_logos': {
                 'team_logo': {
                   'size': 'large',
-                  'url': 'https: //yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/25051511340_0fa8f9ed63.jpg'
+                  'url': 'https://yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/25051511340_0fa8f9ed63.jpg'
                 }
               },
               'waiver_priority': '7',
@@ -620,14 +620,14 @@ export default {
               'league_scoring_type': 'head',
               'has_draft_grade': '1',
               'draft_grade': 'D+',
-              'draft_recap_url': 'https: //football.fantasysports.yahoo.com/f1/22351/8/draftrecap',
+              'draft_recap_url': 'https://football.fantasysports.yahoo.com/f1/22351/8/draftrecap',
               'managers': {
                 'manager': {
                   'manager_id': '8',
                   'nickname': 'Nick',
                   'guid': 'RSPJ357SO2YCMM6NTQKTK5F5IU',
                   'email': 'nmelluzzo@gmail.com',
-                  'image_url': 'https: //s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg'
+                  'image_url': 'https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg'
                 }
               },
               'team_points': {
@@ -656,11 +656,11 @@ export default {
               'team_key': '390.l.22351.t.1',
               'team_id': '1',
               'name': 'Schutt Up & Play',
-              'url': 'https: //football.fantasysports.yahoo.com/f1/22351/1',
+              'url': 'https://football.fantasysports.yahoo.com/f1/22351/1',
               'team_logos': {
                 'team_logo': {
                   'size': 'large',
-                  'url': 'https: //s.yimg.com/cv/apiv2/default/nfl/nfl_8.png'
+                  'url': 'https://s.yimg.com/cv/apiv2/default/nfl/nfl_8.png'
                 }
               },
               'waiver_priority': '2',
@@ -675,7 +675,7 @@ export default {
               'league_scoring_type': 'head',
               'has_draft_grade': '1',
               'draft_grade': 'C+',
-              'draft_recap_url': 'https: //football.fantasysports.yahoo.com/f1/22351/1/draftrecap',
+              'draft_recap_url': 'https://football.fantasysports.yahoo.com/f1/22351/1/draftrecap',
               'managers': {
                 'manager': {
                   'manager_id': '1',
@@ -683,7 +683,7 @@ export default {
                   'guid': 'BFQMJIU4B2FIDAMHKRHPJMRLJE',
                   'is_commissioner': '1',
                   'email': 'fuller.david.a@gmail.com',
-                  'image_url': 'https: //s.yimg.com/ag/images/4693/27516450279_782606_64sq.jpg'
+                  'image_url': 'https://s.yimg.com/ag/images/4693/27516450279_782606_64sq.jpg'
                 }
               },
               'team_points': {
