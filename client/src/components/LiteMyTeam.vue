@@ -7,7 +7,7 @@
       row-key='name',
       :pagination.sync="pagination",
       hide-bottom,
-      separator='cell'
+      separator='cell',
       dense
       )
 </template>

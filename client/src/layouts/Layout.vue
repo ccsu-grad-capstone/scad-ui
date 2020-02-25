@@ -20,6 +20,11 @@
     q-drawer(v-if="this.loggedIn" v-model="leftDrawerOpen" show-if-above bordered content-class="bg-white" :width="230" elevated)
       q-scroll-area.fit
         q-list.text-grey-8(padding)
+          q-item.row.justify-center
+            q-avatar(size="25px")
+              img(src="../statics/yahoo-ff.png")
+            q-item-section
+              q-item-label.q-pl-sm  {{league.league.name}}
           q-item.GNL__drawer-item(@click="navigate(link.route)" v-if="Object.keys(league.league).length !== 0" v-ripple v-for="link in hasLeagueLinks" :key="link.text" clickable)
             q-item-section(avatar)
               q-icon(:name="link.icon")
@@ -47,7 +52,7 @@ export default {
       hasLeagueLinks: [
         { icon: 'dashboard', text: 'Dashboard', route: 'dashboard' },
         { icon: 'list', text: 'My Team', route: 'my-team' },
-        { icon: 'list', text: 'Draft Picks', route: 'draft-picks' },
+        { icon: 'ballot', text: 'Draft Picks', route: 'draft-picks' },
         { icon: 'people', text: 'Free Agents', route: 'free-agents' },
         { icon: 'home', text: 'League Home', route: 'league-home' },
         {

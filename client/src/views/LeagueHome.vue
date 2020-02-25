@@ -5,7 +5,6 @@
         .row.q-gutter-md
           .div
             q-avatar(size="85px")
-              //- img(v-if="league.url" :src="league.url")
               img(src="../statics/yahoo-ff.png")
           .column.justify-center.align-center.text-center
             .text-h4.text-weight-bolder {{league.name}}
@@ -20,6 +19,7 @@
               row-key='name',
               :pagination.sync="pagination",
               hide-bottom,
+              dense
               )
               template(v-slot:body-cell-name='props')
                 q-td(:props='props')

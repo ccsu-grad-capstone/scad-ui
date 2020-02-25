@@ -1,21 +1,21 @@
 <template lang="pug">
   .q-pa-md(style="width: 35%")
     .text-h6.text-weight-bolder {{ league.name }}
-      q-table(
-        :data='league.standings.teams.team',
-        :columns='columns',
-        row-key='name',
-        :pagination.sync="pagination",
-        hide-bottom,
-        dense
-        )
-        template(v-slot:body-cell-name='props')
-          q-td(:props='props')
-            .row.full-width
-              .col-2
-                q-avatar(size="25px")
-                  img(:src="props.row.team_logos.team_logo.url")
-              .column.justify-center {{props.row.name}}
+    q-table(
+      :data='league.standings.teams.team',
+      :columns='columns',
+      row-key='name',
+      :pagination.sync="pagination",
+      hide-bottom,
+      dense
+      )
+      template(v-slot:body-cell-name='props')
+        q-td(:props='props')
+          .row.full-width
+            .col-2
+              q-avatar(size="25px")
+                img(:src="props.row.team_logos.team_logo.url")
+            .column.justify-center {{props.row.name}}
 
 </template>
 
@@ -66,10 +66,10 @@ export default {
         {
           name: 'win-percentage',
           required: true,
-          label: '%',
+          label: 'Salary',
           align: 'left',
-          field: row => row.team_standings.outcome_totals,
-          format: val => `${val.percentage}`,
+          // field: row => row.team_standings.outcome_totals,
+          format: val => `${val}`,
           sortable: false,
           headerClasses: 'bg-grey-3',
           style: 'max-width: 100px'
