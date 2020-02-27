@@ -15,7 +15,7 @@ export default {
 
   mutations: {
     updateLeague (state, league) {
-      console.log('[LEAGUE-MUTATION] - updateLeague(): ', league.league)
+      console.log('[LEAGUE-MUTATION] - updateLeague()')
       state.league = league
     }
   },
@@ -28,6 +28,17 @@ export default {
     emailLeagueMembers (state) {
       console.log('[LEAGUE-ACTION] - emailLeagueMembers()')
       scad.post()
+    },
+    async getLeague (commit) {
+      console.log('[LEAGUE-ACTION] - emailLeagueMembers()')
+      // await scad.get(`/league:${league_id}`) // get league by leagueID?
+      //   .then((res) => {
+      //     commit('league/updateLeague', res.data)
+      //   })
+      //   .catch(err => {
+      //     console.error(JSON.stringify(err))
+      //   })
+      commit('league/updateLeague', leagueStandings.fantasy_content.league)
     }
   }
 }

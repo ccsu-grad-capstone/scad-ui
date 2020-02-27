@@ -114,13 +114,12 @@ export default {
           'Authorization': 'Basic c2NhZC1hcGktcmVhZHdyaXRlOnNjYWQtYXBpLXJlYWR3cml0ZQ==' }
       }
       await scad.get('/user', options)
-        .then((response) => {
-          console.log(response.data)
-          commit('updateUser', response.data)
+        .then((res) => {
+          console.log(res.data)
+          commit('updateUser', res.data)
         })
-        .catch(error => {
-          console.log(error)
-          console.error(JSON.stringify(error))
+        .catch(err => {
+          console.error(JSON.stringify(err))
         })
     }
   }

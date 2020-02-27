@@ -8,10 +8,10 @@ const routes = [
     ]
   },
   {
-    path: '/my-team',
+    path: '/team:team_key',
     component: () => import('../layouts/Layout.vue'),
     children: [
-      { path: '', component: () => import('../views/MyTeam.vue') }
+      { path: '', component: () => import('../views/Team.vue') }
     ],
     meta: {
       requiresAuth: true

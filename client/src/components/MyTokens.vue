@@ -36,6 +36,10 @@ export default {
     }
   },
   methods: {
+    refreshToken () {
+      console.log('[DASHBOARD] - refreshToken()')
+      this.$store.dispatch('user/refreshToken')
+    }
   }
 }
 </script>

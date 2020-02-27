@@ -27,7 +27,8 @@
                     .col-2
                       q-avatar(size="25px")
                         img(:src="props.row.team_logos.team_logo.url")
-                    .column.justify-center {{props.row.name}}
+                    .column.justify-center
+                      router-link(:to="{ path: `team:${props.row.team_key}`}") {{props.row.name}}
 
 </template>
 

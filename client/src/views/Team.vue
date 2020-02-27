@@ -6,15 +6,15 @@
           .col-4
             .row.justify-center
               q-avatar(size="100px")
-                img(:src="this.getTeam().team_logos[0].url")
+                img(:src="this.mapMyTeam().team_logos[0].url")
             .row.justify-center
               .col
                 .row.justify-center
-                  .text-h6 {{this.getTeam().name}}
+                  .text-h6 {{this.mapMyTeam().name}}
                 .row.justify-center
-                  .text-caption.text-grey-7 Manager ({{this.getTeam().managers[0].nickname}})
+                  .text-caption.text-grey-7 Manager ({{this.mapMyTeam().managers[0].nickname}})  | team_key {{this.$route.params.team_key}}
                 .row.justify-center
-                  .text-caption: a(:href='this.getTeam().url') {{this.getTeam().url}}
+                  .text-caption: a(:href='this.mapMyTeam().url') {{this.mapMyTeam().url}}
           q-separator(vertical)
           .col.q-pa-md
             .row.q-gutter-md
@@ -26,7 +26,7 @@
                   .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
                     | $250
                 .row
-                  .col-7.text-grey-8.text-caption.text-right Remaining Salary:
+                  .col-7.text-grey-8.text-caption.text-right Current Team Salary:
                   .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
                     | $TBD
                 .row
@@ -50,41 +50,54 @@
                 .row
                   .col-7.text-grey-8.text-caption.text-right Waiver Priority:
                   .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
-                    | {{this.getTeam().waiver_priority}}
+                    | {{this.mapMyTeam().waiver_priority}}
                 .row
                   .col-7.text-grey-8.text-caption.text-right FAAB Remaining Budget:
                   .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
-                    | ${{this.getTeam().faab_balance}}
+                    | ${{this.mapMyTeam().faab_balance}}
                 .row
-                  .col-7.text-grey-8.text-caption.text-right Number of Trades:
+                  .col-7.text-grey-8.text-caption.text-right Number of Moves:
                   .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
-                    | {{this.getTeam().number_of_moves}}
+                    | {{this.mapMyTeam().number_of_moves}}
                 .row
                   .col-7.text-grey-8.text-caption.text-right Draft Grade:
                   .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
-                    | {{this.getTeam().draft_grade}}
+                    | {{this.mapMyTeam().draft_grade}}
                 .row
                   .col-7.text-grey-8.text-caption.text-right Franchise Tag:
                   .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
                     | N/A
       q-separator
       q-card-section
-        .row.full-width
-          div(style="width: 50%")
+        .row.full-width.justify-right
+          div(style="width: 40%")
+            .row.full-width.justify-between.q-pa-sm
+              q-select( filled dense v-model='teama' :options='options' style="height: 20px")
+              div.q-gutter-sm
+                q-btn(label='Edit Salaries' dense color='secondary' text-color='primary' size='sm' @click="editSalaries = !editSalaries")
+                q-btn(label='Save' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
             q-table(
-              :data='getPlayers()',
+              :data='mapMyPlayers()',
               :columns='columns',
-              row-key='name',
+              row-key='playerName',
               :pagination.sync="pagination",
               hide-bottom,
+              dense
               )
-              template(v-slot:body-cell-name='props')
-                q-td(:props='props')
-                  .row.full-width
-                    .col-2
-                      q-avatar(size="30px")
-                       img(:src="props.row.headshot.url" style="width: 85%")
-                    .column.justify-center {{props.row.name.full}} ({{props.row.editorial_team_abbr}})
+              template(v-slot:body='props')
+                q-tr(:props='props')
+                  q-td(key='pos' :props='props') {{ props.row.display_position }}
+                  q-td(key='playerName' :props='props')
+                    .row.full-width
+                      .col-2.q-pl-xs
+                        q-avatar(size="25px")
+                          img(:src="props.row.headshot.url" style="width: 85%")
+                      .column.justify-center {{props.row.name.full}} ({{props.row.editorial_team_abbr}})
+                  q-td(key='salary' :props='props')
+                    .col(:style=" editSalaries ? 'border: 1px solid #26A69A;' : 'border: none;' ")
+                      .text-pre-wrap ${{ salary }}
+                      q-popup-edit(v-if="editSalaries" color="primary" v-model='salary' title='Update Salary' buttons)
+                        q-input(type='number' v-model='salary' dense autofocus)
 
 </template>
 
@@ -92,13 +105,16 @@
 import { mapRoster, mapTeam } from '../utilities/helpers/teamHelper'
 
 export default {
-  name: 'MyTeam',
+  name: 'Team',
   data () {
     return {
       pagination: {
         page: 1,
         rowsPerPage: 0 // 0 means all rows
       },
+      salary: 12,
+      teama: 'team',
+      editSalaries: false,
       columns: [
         {
           name: 'pos',
@@ -107,49 +123,58 @@ export default {
           align: 'right',
           field: row => row.display_position,
           format: val => `${val}`,
-          sortable: false,
+          sortable: true,
           // classes: 'bg-secondary ellipsis',
           // style: 'max-width: 10px',
           headerClasses: 'bg-grey-3'
         },
         {
-          name: 'name',
+          name: 'playerName',
           required: true,
           label: 'Player:',
           align: 'left',
           sortable: false,
           // classes: 'bg-grey-2 ellipsis',
-          style: 'max-width: 200px',
+          style: 'max-width: 150px',
           headerClasses: 'bg-grey-3'
         },
         {
           name: 'salary',
           required: true,
           label: 'Salary:',
-          align: 'left',
+          align: 'center',
           // field: row => row.editorial_team_abbr,
-          format: val => `${val}`,
-          sortable: false,
+          // format: val => `${val}`,
+          sortable: true,
           headerClasses: 'bg-grey-3',
           style: 'max-width: 100px'
         }
       ]
     }
   },
+  created () {
+    this.getTeam(this.$route.params.team_key)
+  },
   computed: {
     team () {
-      return this.$store.state.roster.team
-    },
-    roster () {
-      return this.$store.state.roster.roster
+      return this.$store.state.team.team
     }
   },
   methods: {
-    getPlayers () {
-      return mapRoster(this.roster)
+    mapMyPlayers () {
+      return mapRoster(this.team.roster)
     },
-    getTeam () {
-      return mapTeam(this.team)
+    mapMyTeam () {
+      return mapTeam(this.team.info)
+    },
+    async getTeam (teamKey) {
+      console.log(`[TEAM] - getTeam(${teamKey})`)
+      await this.$store.dispatch('team/getTeam', teamKey)
+    },
+    async saveSalaries () {
+      console.log(`[TEAM] - saveSalaries()`)
+      this.editSalaries = false
+      // this.$store.dispatch('team/saveSalaries')
     }
   }
 

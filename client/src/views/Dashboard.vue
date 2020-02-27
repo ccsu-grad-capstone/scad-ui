@@ -1,7 +1,15 @@
 <template lang="pug">
   q-page.flex
-    lite-league
-    lite-my-team
+    .row.q-gutter-md.full-width.justify-center.q-pt-lg
+      .div
+        q-avatar(size="85px")
+          img(src="../statics/yahoo-ff.png")
+      .column.justify-center.align-center.text-center
+        .text-h4.text-weight-bolder {{league.name}}
+        a(:href='league.url') {{league.url}}
+    .row.full-width
+      lite-league
+      lite-my-team
     my-tokens
     q-separator
     q-card.q-ma-md
@@ -47,13 +55,12 @@ export default {
     },
     tokens () {
       return this.user.tokens
+    },
+    league () {
+      return this.$store.state.league.league
     }
   },
   methods: {
-    refreshToken () {
-      console.log('[DASHBOARD] - refreshToken()')
-      this.$store.dispatch('user/refreshToken')
-    },
     async loginToScad () {
       console.log('[DASHBOARD] - loginToScad()')
       await this.$store.dispatch('user/loginToScad')

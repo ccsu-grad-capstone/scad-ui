@@ -40,7 +40,10 @@ import {
   QDialog,
   QTable,
   QMarkupTable,
-  QTd
+  QTd,
+  QPopupEdit,
+  QTr,
+  QCardActions
 
 } from 'quasar'
 
@@ -91,7 +94,10 @@ Vue.use(Quasar, {
     QDialog,
     QTable,
     QMarkupTable,
-    QTd
+    QTd,
+    QPopupEdit,
+    QTr,
+    QCardActions
   },
   directives: {
     Ripple

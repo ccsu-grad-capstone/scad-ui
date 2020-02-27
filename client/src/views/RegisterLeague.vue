@@ -178,9 +178,6 @@ export default {
         console.log('REGISTERLEAGUE Validation Successful', this.newLeague)
         this.registerLeagueInvites = true
         this.$store.dispatch('league/registerLeague', { league: this.newLeague })
-        // this.$router.push({
-        //   path: 'dashboard'
-        // })
       }
     },
     setLeagueCap () {

@@ -1,6 +1,6 @@
 <template lang="pug">
-  .q-pa-md(style="width: 35%")
-    .text-h6.text-weight-bolder {{ league.name }}
+  .q-pa-md(style="width: 50%")
+    .text-h6.text-weight-bolder Standings
     q-table(
       :data='league.standings.teams.team',
       :columns='columns',
@@ -16,6 +16,14 @@
               q-avatar(size="25px")
                 img(:src="props.row.team_logos.team_logo.url")
             .column.justify-center {{props.row.name}}
+      template(v-slot:body-cell-name='props')
+        q-td(:props='props')
+          .row.full-width
+            .col-2
+              q-avatar(size="25px")
+                img(:src="props.row.team_logos.team_logo.url")
+            .column.justify-center
+              router-link(:to="{ path: `team:${props.row.team_key}`}") {{props.row.name}}
 
 </template>
 

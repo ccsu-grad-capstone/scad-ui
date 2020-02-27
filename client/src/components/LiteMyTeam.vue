@@ -1,10 +1,10 @@
 <template lang="pug">
-  .q-pa-md(style="width: 35%")
+  .q-pa-md(style="width: 50%")
     .text-h6.text-weight-bolder My Team
     q-table(
       :data='getPlayers()',
       :columns='columns',
-      row-key='name',
+      row-key='playerName',
       :pagination.sync="pagination",
       hide-bottom,
       separator='cell',
@@ -37,7 +37,7 @@ export default {
           headerClasses: 'bg-grey-3'
         },
         {
-          name: 'name',
+          name: 'playerName',
           required: true,
           label: 'Player:',
           align: 'left',
@@ -64,10 +64,13 @@ export default {
   },
   computed: {
     team () {
-      return this.$store.state.roster.team
+      return this.$store.state.team.team.info
     },
     roster () {
-      return this.$store.state.roster.roster
+      return this.$store.state.team.team.roster
+    },
+    info () {
+      return this.$store.state.team.team.info
     }
   },
   methods: {

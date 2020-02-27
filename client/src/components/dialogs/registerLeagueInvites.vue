@@ -37,10 +37,16 @@ export default {
   methods: {
     noThanks () {
       this.registerLeagueInvites = false
+      this.$router.push({
+        path: 'dashboard'
+      })
     },
     yesPlease () {
       this.$store.dispatch('league/emailLeagueMembers')
       this.registerLeagueInvites = false
+      this.$router.push({
+        path: 'dashboard'
+      })
     }
   }
 }

@@ -20,7 +20,7 @@
     q-drawer(v-if="this.loggedIn" v-model="leftDrawerOpen" show-if-above bordered content-class="bg-white" :width="230" elevated)
       q-scroll-area.fit
         q-list.text-grey-8(padding)
-          q-item.row.justify-center
+          q-item.justify-center
             q-avatar(size="25px")
               img(src="../statics/yahoo-ff.png")
             q-item-section
@@ -51,7 +51,7 @@ export default {
       showDateOptions: false,
       hasLeagueLinks: [
         { icon: 'dashboard', text: 'Dashboard', route: 'dashboard' },
-        { icon: 'list', text: 'My Team', route: 'my-team' },
+        { icon: 'list', text: 'My Team', route: 'team:my-team' },
         { icon: 'ballot', text: 'Draft Picks', route: 'draft-picks' },
         { icon: 'people', text: 'Free Agents', route: 'free-agents' },
         { icon: 'home', text: 'League Home', route: 'league-home' },
