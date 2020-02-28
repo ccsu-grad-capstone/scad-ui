@@ -7,9 +7,10 @@
       .column.justify-center.align-center.text-center
         .text-h4.text-weight-bolder {{league.name}}
         a(:href='league.url') {{league.url}}
-    .row.full-width
+    .row.wrap
       lite-league
       lite-my-team
+      lite-draft-picks
     my-tokens
     q-separator
     q-card.q-ma-md
@@ -32,13 +33,15 @@
 import MyTokens from '../components/MyTokens'
 import LiteMyTeam from '../components/LiteMyTeam'
 import LiteLeague from '../components/LiteLeague'
+import LiteDraftPicks from '../components/LiteDraftPicks'
 
 export default {
   name: 'Dashboard',
   components: {
     'my-tokens': MyTokens,
     'lite-my-team': LiteMyTeam,
-    'lite-league': LiteLeague
+    'lite-league': LiteLeague,
+    'lite-draft-picks': LiteDraftPicks
   },
   data () {
     return {}

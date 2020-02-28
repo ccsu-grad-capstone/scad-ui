@@ -72,7 +72,7 @@
         .row.full-width.justify-right
           div(style="width: 40%")
             .row.full-width.justify-between.q-pa-sm
-              q-select( filled dense v-model='teama' :options='options' style="height: 20px")
+              q-select( filled dense v-model='selectTeam' :options='options' style="height: 20px")
               div.q-gutter-sm
                 q-btn(label='Edit Salaries' dense color='secondary' text-color='primary' size='sm' @click="editSalaries = !editSalaries")
                 q-btn(label='Save' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
@@ -113,7 +113,7 @@ export default {
         rowsPerPage: 0 // 0 means all rows
       },
       salary: 12,
-      teama: 'team',
+      selectTeam: 'team',
       editSalaries: false,
       columns: [
         {

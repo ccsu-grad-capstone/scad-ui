@@ -1,5 +1,5 @@
 <template lang="pug">
-  q-layout.bg-grey-1(view="hHh lpR fFf")
+  q-layout.bg-grey-1(view="hHh LpR fFf")
     q-header.bg-white.text-grey-8(elevated height-hint="64")
       q-toolbar.GNL__toolbar
         q-btn.q-mr-sm(flat dense round @click="leftDrawerOpen = !leftDrawerOpen" aria-label="Menu" icon="menu")
@@ -72,7 +72,7 @@ export default {
       ]
     }
   },
-  mounted () {
+  created () {
     this.persistState()
   },
   computed: {
@@ -132,7 +132,7 @@ export default {
         console.log('No Tokens in Query Params..')
       }
     },
-    refreshStateWithCookies () {
+    async refreshStateWithCookies () {
       console.log('[LAYOUT] - refreshStateWithCookies()')
       if (this.$cookies.isKey('access_token') && !this.tokens.access_token) {
         console.log('Access_Token is stored in cookies but not in store')
@@ -141,7 +141,7 @@ export default {
           refresh_token: this.$cookies.get('refresh_token'),
           id_token: this.$cookies.get('id_token')
         }
-        this.$store.dispatch('user/refreshStateWithCookies', tokens)
+        await this.$store.dispatch('user/refreshStateWithCookies', tokens)
       }
     },
     logout () {
@@ -163,7 +163,8 @@ export default {
       }
     },
     getProfilePic () {
-      return this.user.user.profile_images.image64
+      console.log('[LAYOUT] - getProfilePic()')
+      return this.user.user.profileImages.image64
     }
   }
 }
