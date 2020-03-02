@@ -43,7 +43,8 @@ import {
   QTd,
   QPopupEdit,
   QTr,
-  QCardActions
+  QCardActions,
+  QCheckbox
 
 } from 'quasar'
 
@@ -97,7 +98,8 @@ Vue.use(Quasar, {
     QTd,
     QPopupEdit,
     QTr,
-    QCardActions
+    QCardActions,
+    QCheckbox
   },
   directives: {
     Ripple

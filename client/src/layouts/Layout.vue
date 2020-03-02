@@ -21,10 +21,7 @@
       q-scroll-area.fit
         q-list.text-grey-8(padding)
           q-item.justify-center
-            q-avatar(size="25px")
-              img(src="../statics/yahoo-ff.png")
-            q-item-section
-              q-item-label.q-pl-sm  {{league.league.name}}
+            q-select( square outlined dense v-model='activeLeague')
           q-item.GNL__drawer-item(@click="navigate(link.route)" v-if="Object.keys(league.league).length !== 0" v-ripple v-for="link in hasLeagueLinks" :key="link.text" clickable)
             q-item-section(avatar)
               q-icon(:name="link.icon")
@@ -49,6 +46,7 @@ export default {
     return {
       leftDrawerOpen: true,
       showDateOptions: false,
+      activeLeague: 'Salary Cap Dynasty 2019',
       hasLeagueLinks: [
         { icon: 'dashboard', text: 'Dashboard', route: 'dashboard' },
         { icon: 'list', text: 'My Team', route: 'team:my-team' },
@@ -72,8 +70,8 @@ export default {
       ]
     }
   },
-  created () {
-    this.persistState()
+  async created () {
+    await this.persistState()
   },
   computed: {
     user () {
@@ -107,10 +105,10 @@ export default {
         })
       }
     },
-    persistState () {
+    async persistState () {
       console.log('[LAYOUT] - checkCookies()')
       this.checkForTokens()
-      this.refreshStateWithCookies()
+      await this.refreshStateWithCookies()
       if (this.$route.query) {
         history.pushState(null, '', location.href.split('?')[0])
       }

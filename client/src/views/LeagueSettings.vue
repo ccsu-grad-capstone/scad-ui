@@ -89,6 +89,67 @@
               | Year Limit on Trading Draft Picks in Advance:
             .col-3.text-body1.q-pl-lg.text-weight-bolder
               | {{settings.tradingDraftPickYears}}
+        q-item(clickable)
+          .row.full-width.q-pl-lg
+            .col-4.text-body1.text-left
+              | QB:
+            .col-3.text-body1.q-pl-lg.text-weight-bolder
+              .row.align-center
+                | 3
+                .text-caption (min),
+                | 6
+                .text-caption (max)
+        q-item(clickable)
+          .row.full-width.q-pl-lg
+            .col-4.text-body1.text-left
+              | RB:
+            .col-3.text-body1.q-pl-lg.text-weight-bolder
+              .row.align-center
+                | 3
+                .text-caption (min),
+                | 6
+                .text-caption (max)
+        q-item(clickable)
+          .row.full-width.q-pl-lg
+            .col-4.text-body1.text-left
+              | WR:
+            .col-3.text-body1.q-pl-lg.text-weight-bolder
+              .row.align-center
+                | 3
+                .text-caption (min),
+                | 6
+                .text-caption (max)
+        q-item(clickable)
+          .row.full-width.q-pl-lg
+            .col-4.text-body1.text-left
+              | TE:
+            .col-3.text-body1.q-pl-lg.text-weight-bolder
+              .row.align-center
+                | 3
+                .text-caption (min),
+                | 6
+                .text-caption (max)
+        q-item(clickable)
+          .row.full-width.q-pl-lg
+            .col-4.text-body1.text-left
+              | K:
+            .col-3.text-body1.q-pl-lg.text-weight-bolder
+              .row.align-center
+                | 3
+                .text-caption (min),
+                | 6
+                .text-caption (max)
+        q-item(clickable)
+          .row.full-width.q-pl-lg
+            .col-4.text-body1.text-left
+              | DEF:
+            .col-3.text-body1.q-pl-lg.text-weight-bolder
+              .row.align-center
+                | 3
+                .text-caption (min),
+                | 6
+                .text-caption (max)
+
 </template>
 
 <script>

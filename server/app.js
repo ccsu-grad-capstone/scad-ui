@@ -28,7 +28,7 @@ app.set('view engine', 'ejs')
 app.use('/auth', authRouter)
 
 app.get('/', (req, res) => {
-  res.redirect('http://localhost:8081/')
+  res.redirect('http://localhost:8081/about')
 })
 
 app.listen(port, () => {

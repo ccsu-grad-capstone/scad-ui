@@ -87,6 +87,56 @@
             q-select( rounded outlined dense v-model='newLeague.tradingDraftPickYears' :options='referenceData.tradingDraftPickYears' :error='$v.newLeague.tradingDraftPickYears.$error' error-message='Required Field')
           .col-3.text.text-left.q-pt-sm.q-pl-sm
             | Years
+        .row
+          .col-3.text-subtitle2.text-right.q-pt-sm
+            | Roster Limits:
+          .col-1.text-caption.text-center.q-pt-sm.q-pl-md
+            | min
+          .col-1.text-caption.text-center.q-pt-sm.q-pl-md
+            | max
+
+        .row
+          .col-3.text-subtitle2.text-right.q-pt-sm
+            | QB:
+          .col-1.q-pl-lg
+            q-select( rounded outlined dense v-model='newLeague.qbMin' :options='referenceData.rosterLimits' :error='$v.newLeague.qbMin.$error' error-message='Required Field')
+          .col-1.q-pl-lg
+            q-select( rounded outlined dense v-model='newLeague.qbMax' :options='referenceData.rosterLimits' :error='$v.newLeague.qbMax.$error' error-message='Required Field')
+        .row
+          .col-3.text-subtitle2.text-right.q-pt-sm
+            | RB:
+          .col-1.q-pl-lg
+            q-select( rounded outlined dense v-model='newLeague.rbMin' :options='referenceData.rosterLimits' :error='$v.newLeague.rbMin.$error' error-message='Required Field')
+          .col-1.q-pl-lg
+            q-select( rounded outlined dense v-model='newLeague.rbMax' :options='referenceData.rosterLimits' :error='$v.newLeague.rbMax.$error' error-message='Required Field')
+        .row
+          .col-3.text-subtitle2.text-right.q-pt-sm
+            | WR:
+          .col-1.q-pl-lg
+            q-select( rounded outlined dense v-model='newLeague.wrMin' :options='referenceData.rosterLimits' :error='$v.newLeague.wrMin.$error' error-message='Required Field')
+          .col-1.q-pl-lg
+            q-select( rounded outlined dense v-model='newLeague.wrMax' :options='referenceData.rosterLimits' :error='$v.newLeague.wrMax.$error' error-message='Required Field')
+        .row
+          .col-3.text-subtitle2.text-right.q-pt-sm
+            | TE:
+          .col-1.q-pl-lg
+            q-select( rounded outlined dense v-model='newLeague.teMin' :options='referenceData.rosterLimits' :error='$v.newLeague.teMin.$error' error-message='Required Field')
+          .col-1.q-pl-lg
+            q-select( rounded outlined dense v-model='newLeague.teMax' :options='referenceData.rosterLimits' :error='$v.newLeague.teMax.$error' error-message='Required Field')
+        .row
+          .col-3.text-subtitle2.text-right.q-pt-sm
+            | K:
+          .col-1.q-pl-lg
+            q-select( rounded outlined dense v-model='newLeague.kMin' :options='referenceData.rosterLimits' :error='$v.newLeague.kMin.$error' error-message='Required Field')
+          .col-1.q-pl-lg
+            q-select( rounded outlined dense v-model='newLeague.kMax' :options='referenceData.rosterLimits' :error='$v.newLeague.kMax.$error' error-message='Required Field')
+        .row
+          .col-3.text-subtitle2.text-right.q-pt-sm
+            | DEF:
+          .col-1.q-pl-lg
+            q-select( rounded outlined dense v-model='newLeague.defMin' :options='referenceData.rosterLimits' :error='$v.newLeague.defMin.$error' error-message='Required Field')
+          .col-1.q-pl-lg
+            q-select( rounded outlined dense v-model='newLeague.defMax' :options='referenceData.rosterLimits' :error='$v.newLeague.defMax.$error' error-message='Required Field')
         q-separator.q-my-lg(color='secondary' inset)
       .row.justify-center
         .col-3
@@ -127,7 +177,19 @@ export default {
         irReliefPerc: 50,
         franchiseTagReliefPerc: 50,
         franchiseTagSpots: 1,
-        tradingDraftPickYears: 5
+        tradingDraftPickYears: 5,
+        qbMin: '',
+        qbMax: '',
+        rbMin: '',
+        rbMax: '',
+        wrMin: '',
+        wrMax: '',
+        teMin: '',
+        teMax: '',
+        kMin: '',
+        kMax: '',
+        defMin: '',
+        defMax: ''
       }
     }
   },
@@ -145,7 +207,19 @@ export default {
       irReliefPerc: { required },
       franchiseTagReliefPerc: { required },
       franchiseTagSpots: { required },
-      tradingDraftPickYears: { required }
+      tradingDraftPickYears: { required },
+      qbMin: { required },
+      qbMax: { required },
+      rbMin: { required },
+      rbMax: { required },
+      wrMin: { required },
+      wrMax: { required },
+      teMin: { required },
+      teMax: { required },
+      kMin: { required },
+      kMax: { required },
+      defMin: { required },
+      defMax: { required }
     }
   },
   created () {},

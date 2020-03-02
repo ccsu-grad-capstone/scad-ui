@@ -3,7 +3,10 @@
     q-card.q-ma-md(style="width: 100%")
       q-card-section
         .column.items-center
-          img(src="../statics/scad-logo_v1_700x500.png" style="width: 60%")
+          img(src="../statics/scad-logo_v1_700x500.png" style="width: 50%")
+        .row.full-width.justify-center.items-center(v-if="!loggedIn")
+          .column.col.items-center
+            q-btn(label="Sign-In With Yahoo" dense no-caps color="primary" size="md" @click="loginWithYahoo")
       q-card-section(style="height: 300px")
         .row.full-width.justify-center.items-center.text-h6.text-weight-bold
           | Love Yahoo, but sick of managing the complexities of salary caps on your own?
@@ -44,8 +47,17 @@ export default {
   data () {
     return {}
   },
+  computed: {
+    loggedIn () {
+      return this.$store.state.user.active
+    }
+  },
   methods: {
-
+    loginWithYahoo () {
+      console.log('[ABOUT] - loginWithYahoo()')
+      window.location = 'http://localhost:3000/auth/yahoo'
+      // this.$store.dispatch('user/loginWithYahoo')
+    }
   }
 }
 

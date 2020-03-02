@@ -7,30 +7,7 @@ export default {
   namespaced: true,
   state: {
     // hard coded user information for now..
-    user: {
-      'at_hash': 'sXP6ji1r8zQXttarp8z2Ow',
-      'sub': '2OMLCT3C2A42Z3FCGWJZCIDYLU',
-      'email_verified': true,
-      'birthdate': '1990',
-      'iss': 'https://api.login.yahoo.com',
-      'profile_images': {
-        'image64': 'https://s.yimg.com/ag/images/5877/59490392552_ac9b6a_64sq.jpg',
-        'image192': 'https://s.yimg.com/ag/images/5877/59490392552_ac9b6a_192sq.jpg',
-        'image128': 'https://s.yimg.com/ag/images/5877/59490392552_ac9b6a_128sq.jpg',
-        'image32': 'https://s.yimg.com/ag/images/5877/59490392552_ac9b6a_32sq.jpg' },
-      'given_name': 'Ryan',
-      'locale': 'en-US',
-      'nonce': '446951',
-      'picture': 'https://s.yimg.com/ag/images/5877/59490392552_ac9b6a_192sq.jpg',
-      'aud': 'dj0yJmk9a1pBOHVpblRxME9PJmQ9WVdrOVpFaDZWVmxyTkcwbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWE3',
-      'auth_time': 1581523697,
-      'nickname': 'Ryan',
-      'name': 'Ryan Lauzon',
-      'session_exp': 1582733297,
-      'exp': 1582074180,
-      'iat': 1582070580,
-      'family_name': 'Lauzon',
-      'email': 'lauzon232@yahoo.com' },
+    user: {},
     active: false,
     isAdmin: false,
     tokens: {
@@ -102,7 +79,7 @@ export default {
     async refreshStateWithCookies ({ commit, dispatch }, tokens) {
       console.log('[USER-ACTION] - refreshStateWithCookies()')
       commit('updateTokens', tokens)
-      dispatch('loginToScad')
+      await dispatch('loginToScad')
     },
     async loginToScad ({ state, commit }) {
       console.log('[USER-ACTION] - loginToScad()')
