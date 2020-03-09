@@ -1,34 +1,31 @@
 <template lang="pug">
   body
-    q-card.q-ma-md
-      q-card-section
-        .row.q-gutter-md
-          .div
-            q-avatar(size="85px")
-              img(src="../statics/yahoo-ff.png")
-          .column.justify-center.align-center.text-center
-            .text-h4.text-weight-bolder {{league.name}}
-            a(:href='league.url') {{league.url}}
-      q-separator
-      q-card-section
-        .row.full-width
-          div(style="width: 50%")
-            q-table(
-              :data='league.standings.teams.team',
-              :columns='columns',
-              row-key='name',
-              :pagination.sync="pagination",
-              hide-bottom,
-              dense
-              )
-              template(v-slot:body-cell-name='props')
-                q-td(:props='props')
-                  .row.full-width
-                    .col-2
-                      q-avatar(size="25px")
-                        img(:src="props.row.team_logos.team_logo.url")
-                    .column.justify-center
-                      router-link(:to="{ path: `team:${props.row.team_key}`}") {{props.row.name}}
+    .row.q-gutter-md.full-width.justify-center.q-pt-lg
+      .div
+        q-avatar(size="85px")
+          img(src="../statics/yahoo-ff.png")
+      .column.justify-center.align-center.text-center
+        .text-h4.text-weight-bolder {{league.name}}
+        a(:href='league.url') {{league.url}}
+
+    .row.q-gutter-md.full-width.q-pt-lg
+      div(style="width: 50%")
+        q-table(
+          :data='league.standings.teams.team',
+          :columns='columns',
+          row-key='name',
+          :pagination.sync="pagination",
+          hide-bottom,
+          dense
+          )
+          template(v-slot:body-cell-name='props')
+            q-td(:props='props')
+              .row.full-width
+                .col-2
+                  q-avatar(size="25px")
+                    img(:src="props.row.team_logos.team_logo.url")
+                .column.justify-center
+                  router-link(:to="{ path: `team:${props.row.team_key}`}") {{props.row.name}}
 
 </template>
 
@@ -52,7 +49,7 @@ export default {
           format: val => `${val}`,
           sortable: false,
           // classes: 'bg-secondary ellipsis',
-          // style: 'max-width: 10px',
+          style: 'max-width: 10px',
           headerClasses: 'bg-grey-3'
         },
         {
@@ -80,7 +77,7 @@ export default {
           name: 'salary',
           required: true,
           label: 'Team Salary',
-          align: 'left',
+          align: 'center',
           // field: row => row.team_standings.outcome_totals,
           format: val => `${val}`,
           sortable: false,

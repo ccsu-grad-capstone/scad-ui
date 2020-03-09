@@ -78,6 +78,16 @@ const routes = [
     }
   },
   {
+    path: '/trade',
+    component: () => import('../layouts/Layout.vue'),
+    children: [
+      { path: '', component: () => import('../views/Trade.vue') }
+    ],
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/about',
     component: () => import('../layouts/Layout.vue'),
     children: [

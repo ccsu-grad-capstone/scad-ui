@@ -21,7 +21,7 @@
       q-scroll-area.fit
         q-list.text-grey-8(padding)
           q-item.justify-center
-            q-select( square outlined dense v-model='activeLeague')
+            q-select( square dense v-model='activeLeague' label='League')
           q-item.GNL__drawer-item(@click="navigate(link.route)" v-if="Object.keys(league.league).length !== 0" v-ripple v-for="link in hasLeagueLinks" :key="link.text" clickable)
             q-item-section(avatar)
               q-icon(:name="link.icon")

@@ -92,7 +92,7 @@
         q-item(clickable)
           .row.full-width.q-pl-lg
             .col-4.text-body1.text-left
-              | QB:
+              | QB Roster Limits:
             .col-3.text-body1.q-pl-lg.text-weight-bolder
               .row.align-center
                 | 3
@@ -102,7 +102,7 @@
         q-item(clickable)
           .row.full-width.q-pl-lg
             .col-4.text-body1.text-left
-              | RB:
+              | RB Roster Limits:
             .col-3.text-body1.q-pl-lg.text-weight-bolder
               .row.align-center
                 | 3
@@ -112,7 +112,7 @@
         q-item(clickable)
           .row.full-width.q-pl-lg
             .col-4.text-body1.text-left
-              | WR:
+              | WR Roster Limits:
             .col-3.text-body1.q-pl-lg.text-weight-bolder
               .row.align-center
                 | 3
@@ -122,7 +122,7 @@
         q-item(clickable)
           .row.full-width.q-pl-lg
             .col-4.text-body1.text-left
-              | TE:
+              | TE Roster Limits:
             .col-3.text-body1.q-pl-lg.text-weight-bolder
               .row.align-center
                 | 3
@@ -132,17 +132,19 @@
         q-item(clickable)
           .row.full-width.q-pl-lg
             .col-4.text-body1.text-left
-              | K:
+              | K Roster Limits:
             .col-3.text-body1.q-pl-lg.text-weight-bolder
               .row.align-center
                 | 3
                 .text-caption (min),
+                |
+                |
                 | 6
                 .text-caption (max)
         q-item(clickable)
           .row.full-width.q-pl-lg
             .col-4.text-body1.text-left
-              | DEF:
+              | DEF Roster Limits:
             .col-3.text-body1.q-pl-lg.text-weight-bolder
               .row.align-center
                 | 3

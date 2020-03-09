@@ -1,6 +1,6 @@
 <template lang="pug">
   body
-    .row.q-gutter-md
+    .row.q-gutter-md.q-pa-md
       .col-4
         .row.justify-center
           q-avatar(size="100px")
@@ -67,13 +67,14 @@
                 | N/A
       q-separator
       .row.full-width.justify-center
-        div(style="width: 75%")
+        div(style="width: 55%")
           .row.full-width.justify-between.q-pa-sm
-            q-select( filled dense v-model='selectTeam' style="height: 20px")
+            q-select(square dense v-model='selectTeam' style="width: 250px")
             div.q-gutter-sm
-              q-btn(label='Franchise Tag' dense color='secondary' text-color='primary' size='sm' @click="franchiseTag = !franchiseTag")
-              q-btn(label='Edit Salaries' dense color='secondary' text-color='primary' size='sm' @click="editSalaries = !editSalaries")
-              q-btn(label='Save' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
+              q-btn(v-if="!franchiseTag && !editSalaries" label='Franchise Tag' dense color='secondary' text-color='primary' size='sm' @click="franchiseTag = !franchiseTag")
+              q-btn(v-if="franchiseTag && !editSalaries" label='Save Franchise Tag' dense color='primary' text-color='white' size='sm' @click="saveFranchiseTag()")
+              q-btn(v-if="!editSalaries && !franchiseTag" label='Edit Salaries' dense color='secondary' text-color='primary' size='sm' @click="editSalaries = !editSalaries")
+              q-btn(v-if="editSalaries && !franchiseTag" label='Save Salaries' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
           q-table(
             :data='mapMyPlayers()',
             :columns='columns',
@@ -86,8 +87,8 @@
             )
             template(v-slot:body='props')
               q-tr(:props='props')
-                q-td(v-if="franchiseTag"): q-checkbox(dense v-model='props.selected' color='secondary' keep-color)
-                q-td(v-else): q-checkbox(dense v-model='props.selected' disable)
+                //- q-td(v-if="franchiseTag"): q-checkbox(dense v-model='props.selected' color='secondary' keep-color)
+                q-td: q-checkbox(dense v-model='props.selected' :disable="!franchiseTag ? true : false" :color="franchiseTag ? color='info' : color='grey'"  keep-color)
                 q-td(key='pos' :props='props' auto-width) {{ props.row.display_position }}
                 q-td(key='playerName' :props='props')
                   .row.full-width
@@ -181,6 +182,11 @@ export default {
       console.log(`[TEAM] - saveSalaries()`)
       this.editSalaries = false
       // this.$store.dispatch('team/saveSalaries')
+    },
+    async saveFranchiseTag () {
+      console.log(`[TEAM] - saveFranchiseTag()`)
+      this.franchiseTag = false
+      // this.$store.dispatch('team/updateFranchiseTag')
     }
   }
 

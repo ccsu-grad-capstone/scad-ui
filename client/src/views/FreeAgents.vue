@@ -1,24 +1,23 @@
 <template lang="pug">
   body
-    q-card.q-ma-md
-      q-card-section
-        .text-h4.text-weight-bolder Free Agents
-        .row.full-width.justify-right
-          div(style="width: 100%")
-            .row.full-width.q-gutter-sm.q-pa-sm
-              .col-3
-                q-input( filled dense label="Search" stack-label v-model='status')
-              div.q-gutter-sm
-                q-btn.q-pa-xs(label='Seach' dense color='secondary' text-color='primary' size='sm' @click="saveSalaries()")
-            .row.full-width.q-gutter-sm.q-pa-sm
-              .col-3
-                q-select( filled dense label="Status" stack-label :options="referenceData.status" v-model='status')
-              .col-3
-                q-select( filled dense label="Position" stack-label :options="referenceData.position" v-model='status')
-              div.q-gutter-sm
-                q-btn.q-pa-xs(label='Filter' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
-            .q-pa-md
-              q-table(title='Treats' dense :data='data' :columns='columns' row-key='name')
+    .row.q-gutter-md.q-pa-md
+      .text-h4.text-weight-bolder Free Agents
+      .row.full-width.justify-right
+        div(style="width: 100%")
+          .row.full-width.q-gutter-sm.q-pa-sm
+            .col-3
+              q-input( filled dense label="Search" stack-label v-model='search')
+            div.q-gutter-sm
+              q-btn.q-pa-xs(label='Seach' dense color='secondary' text-color='primary' size='sm' @click="saveSalaries()")
+          .row.full-width.q-gutter-sm.q-pa-sm
+            .col-3
+              q-select( filled dense label="Status" stack-label :options="referenceData.status" v-model='status')
+            .col-3
+              q-select( filled dense label="Position" stack-label :options="referenceData.position" v-model='position')
+            div.q-gutter-sm
+              q-btn.q-pa-xs(label='Filter' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
+          .q-pa-md
+            q-table(title='Treats' dense :data='data' :columns='columns' row-key='name')
 
 </template>
 
@@ -28,6 +27,8 @@ export default {
   data () {
     return {
       status: '',
+      position: '',
+      search: '',
       columns: [
         {
           name: 'name',
