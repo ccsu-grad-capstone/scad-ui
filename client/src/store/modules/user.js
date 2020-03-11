@@ -20,6 +20,12 @@ export default {
     name (state) {
       console.log('[USER-GETTERS] - name()')
       return `${state.firstName} ${state.lastName}`
+    },
+    getAccessToken (state) {
+      return state.tokens.access_token
+    },
+    getIdToken (state) {
+      return state.tokens.id_token
     }
   },
 

@@ -25,10 +25,10 @@ export default {
   computed: {
     user () {
       return this.$store.state.user
-    },
-    name () {
-      return this.$store.getters['user/name']
     }
+    // name () {
+    //   return this.$store.getters['user/name']
+    // }
   },
   methods: {
     getProfilePic () {

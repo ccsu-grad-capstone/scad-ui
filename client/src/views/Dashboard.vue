@@ -5,27 +5,29 @@
         q-avatar(size="85px")
           img(src="../statics/yahoo-ff.png")
       .column.justify-center.align-center.text-center
-        .text-h4.text-weight-bolder {{league.name}}
-        a(:href='league.url') {{league.url}}
-    .row.wrap
+        .text-h4.text-weight-bolder {{league.league.name}}
+        a(:href='league.league.url') {{league.league.url}}
+    .row.full-width
       lite-league
       lite-my-team
-      lite-draft-picks
     my-tokens
     q-separator
-    q-card.q-ma-md
-      q-card-section
+    q-card.q-ma-md.q-pa-md
       .text-h6
-        | User details:
+        | User Details:
         .text-caption
         | {{user.user}}
       .column.items-center.text
-        .row.full-width.justify-center.items-center.q-pt-lg
-          .column.col.items-center
-            q-btn(label='Register League' dense no-caps color='secondary' text-color='primary' size='md' @click="$router.push('register-league')")
-        .row.full-width.justify-center.items-center.q-pt-lg
-          .column.col.items-center
-            q-btn(label='Login to SCAD' dense no-caps color='secondary' text-color='primary' size='md' @click="loginToScad")
+        .col.items-center
+          q-btn(label='Login to SCAD' dense no-caps color='secondary' text-color='primary' size='md' @click="loginToScad")
+    q-card.q-ma-md.q-pa-md
+      .text-h6
+        | League Details:
+        .text-caption
+        | {{league.yahooLeagues}}
+      .column.items-center.text
+        .col.items-center
+          q-btn(label='Login to SCAD' dense no-caps color='secondary' text-color='primary' size='md' @click="getAllYahooLeagues")
 
 </template>
 
@@ -60,13 +62,17 @@ export default {
       return this.user.tokens
     },
     league () {
-      return this.$store.state.league.league
+      return this.$store.state.league
     }
   },
   methods: {
     async loginToScad () {
       console.log('[DASHBOARD] - loginToScad()')
       await this.$store.dispatch('user/loginToScad')
+    },
+    async getAllYahooLeagues () {
+      console.log('[DASHBOARD] - getAllYahooLeagues()')
+      await this.$store.dispatch('league/getAllYahooLeagues')
     }
   }
 }

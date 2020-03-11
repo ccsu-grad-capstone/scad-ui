@@ -19,6 +19,10 @@ export default {
     updateLeague (state, league) {
       console.log('[LEAGUE-MUTATION] - updateLeague()')
       state.league = league
+    },
+    updateYahooLeagues (state, leagues) {
+      console.log('[LEAGUE-MUTATION] - updateYahooLeagues()')
+      state.yahooLeagues = leagues
     }
   },
   actions: {
@@ -27,20 +31,31 @@ export default {
       scad.post()
       commit('updateLeague', { league: league })
     },
+
     emailLeagueMembers (state) {
       console.log('[LEAGUE-ACTION] - emailLeagueMembers()')
       scad.post()
     },
-    async getLeague (commit) {
-      console.log('[LEAGUE-ACTION] - emailLeagueMembers()')
-      // await scad.get(`/league:${league_id}`) // get league by leagueID?
-      //   .then((res) => {
-      //     commit('league/updateLeague', res.data)
-      //   })
-      //   .catch(err => {
-      //     console.error(JSON.stringify(err))
-      //   })
-      commit('league/updateLeague', leagueStandings.fantasy_content.league)
+
+    async getAllYahooLeagues ({ rootState, commit }) {
+      console.log('[LEAGUE-ACTION] - getAllYahooLeagues()')
+      console.log('rootState: ', rootState.user.tokens.access_token)
+      const options = {
+        headers: {
+          'access_token': `${rootState.user.tokens.access_token}`,
+          'id_token': `${rootState.user.tokens.id_token}`,
+          'Access-Control-Allow-Origin': '*',
+          'Authorization': 'Basic c2NhZC1hcGktcmVhZHdyaXRlOnNjYWQtYXBpLXJlYWR3cml0ZQ==' }
+      }
+      await scad.get(`/league/all`, options)
+        .then((res) => {
+          console.log('leagues/get response: ', res.data.leagues)
+          commit('updateYahooLeagues', res.data.leagues)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      // commit('league/updateLeague', leagueStandings.fantasy_content.league)
     }
   }
 }
