@@ -107,13 +107,15 @@ export default {
     },
     async persistState () {
       console.log('[LAYOUT] - checkCookies()')
-      this.checkForTokens()
+      await this.checkForTokens()
       await this.refreshStateWithCookies()
       if (this.$route.query) {
         history.pushState(null, '', location.href.split('?')[0])
       }
     },
-    checkForTokens () {
+
+    // If just logged in, tokens will be query params. Take and update store & cookies..
+    async checkForTokens () {
       console.log('[LAYOUT] - checkForTokens()')
       if (this.$route.query.access_token) {
         console.log('New Tokens - Update Vuex and Cookies')
@@ -125,7 +127,7 @@ export default {
         this.$cookies.set('access_token', tokens.access_token)
         this.$cookies.set('id_token', tokens.id_token)
         this.$cookies.set('refresh_token', tokens.refresh_token)
-        this.$store.dispatch('user/refreshStateWithCookies', tokens)
+        await this.$store.dispatch('user/refreshStateWithCookies', tokens)
       } else {
         console.log('No Tokens in Query Params..')
       }

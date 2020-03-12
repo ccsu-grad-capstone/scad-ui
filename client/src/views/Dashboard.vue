@@ -15,16 +15,16 @@
     q-card.q-ma-md.q-pa-md
       .text-h6
         | User Details:
-        .text-caption
-        | {{user.user}}
+      .text-caption
+      | {{user.user}}
       .column.items-center.text
         .col.items-center
           q-btn(label='Login to SCAD' dense no-caps color='secondary' text-color='primary' size='md' @click="loginToScad")
     q-card.q-ma-md.q-pa-md
       .text-h6
         | League Details:
-        .text-caption
-        | {{league.yahooLeagues}}
+      .text-caption
+      | {{league.yahooLeagues}}
       .column.items-center.text
         .col.items-center
           q-btn(label='Login to SCAD' dense no-caps color='secondary' text-color='primary' size='md' @click="getAllYahooLeagues")

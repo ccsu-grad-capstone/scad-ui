@@ -2,6 +2,7 @@
 import { scad } from '../../utilities/axios-scad'
 import axios from 'axios'
 import { server } from '../../utilities/axios-server'
+import Vue from 'vue'
 
 export default {
   namespaced: true,
@@ -75,11 +76,12 @@ export default {
       console.log('[USER-ACTION] - refreshToken()')
       await server.get(`auth/yahoo/refresh?refresh_token=${state.tokens.refresh_token}`)
         .then((response) => {
-          console.log(response.data)
+          console.log('refreshToken Response: ', response.data)
+          Vue.$cookies.set('access_token', response.data.access_token)
           commit('refreshToken', response.data)
         })
         .catch(error => {
-          console.log(error.response)
+          console.log(error)
         })
     },
     async refreshStateWithCookies ({ commit, dispatch }, tokens) {
