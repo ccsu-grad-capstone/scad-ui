@@ -142,6 +142,7 @@ export default {
           id_token: this.$cookies.get('id_token')
         }
         await this.$store.dispatch('user/refreshStateWithCookies', tokens)
+        await this.$store.dispatch('league/getAllYahooLeagues')
       }
     },
     logout () {

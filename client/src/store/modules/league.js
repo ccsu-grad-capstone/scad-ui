@@ -1,5 +1,5 @@
 // import { notify } from '../../utilities/nofity'
-import { scad } from '../../utilities/axios-scad'
+import { scad } from '../../utilities/axiosScad'
 import leagueStandings from '../../data/leagueStandings'
 import leagueSettings from '../../data/leagueSettings'
 
@@ -12,7 +12,26 @@ export default {
     scadLeagues: []
   },
   getters: {
-
+    // Return team names for Yahoo Leagues to display when Registering League
+    getTeams (state) {
+      console.log('[LEAGUE-GETTERS] - getTeams()')
+      let teams = []
+      state.yahooLeagues.forEach(league => {
+        let name = league.name
+        teams.push(name)
+      })
+      return teams
+    },
+    yahooLeagueId: (state) => (teamName) => {
+      console.log('[LEAGUE-GETTERS] - yahooLeagueId(): ', teamName)
+      const league = state.yahooLeagues.find(league => (league.name === teamName))
+      return league.league_id
+    },
+    yahooLeagueManagers: (state) => (teamName) => {
+      console.log('[LEAGUE-GETTERS] - yahooLeagueId(): ', teamName)
+      const league = state.yahooLeagues.find(league => (league.name === teamName))
+      return league.num_teams
+    }
   },
 
   mutations: {
@@ -26,10 +45,22 @@ export default {
     }
   },
   actions: {
-    registerLeague ({ commit, state }, { league }) {
-      console.log('[LEAGUE-ACTION] - registerLeague()')
-      scad.post()
-      commit('updateLeague', { league: league })
+    registerLeague ({ rootState, commit, state }, { league }) {
+      console.log('[LEAGUE-ACTION] - registerLeague()', league)
+      const options = {
+        headers: {
+          'access_token': `${rootState.user.tokens.access_token}`,
+          'id_token': `${rootState.user.tokens.id_token}`,
+          'Access-Control-Allow-Origin': '*',
+          'Authorization': 'Basic c2NhZC1hcGktcmVhZHdyaXRlOnNjYWQtYXBpLXJlYWR3cml0ZQ==' }
+      }
+      try {
+        const res = scad.post('scadleague', league, options)
+        console.log('POST response scadleague: ', res)
+        // commit('updateLeague', { league: league })
+      } catch (err) {
+        console.log(err)
+      }
     },
 
     emailLeagueMembers (state) {
@@ -39,23 +70,15 @@ export default {
 
     async getAllYahooLeagues ({ rootState, commit }) {
       console.log('[LEAGUE-ACTION] - getAllYahooLeagues()')
-      console.log('rootState: ', rootState.user.tokens.access_token)
-      const options = {
-        headers: {
-          'access_token': `${rootState.user.tokens.access_token}`,
-          'id_token': `${rootState.user.tokens.id_token}`,
-          'Access-Control-Allow-Origin': '*',
-          'Authorization': 'Basic c2NhZC1hcGktcmVhZHdyaXRlOnNjYWQtYXBpLXJlYWR3cml0ZQ==' }
+      try {
+        const res = await scad(
+          rootState.user.tokens.access_token,
+          rootState.user.tokens.id_token)
+          .get(`/league/all`)
+        commit('updateYahooLeagues', res.data.leagues)
+      } catch (err) {
+        console.log(err)
       }
-      await scad.get(`/league/all`, options)
-        .then((res) => {
-          console.log('leagues/get response: ', res.data.leagues)
-          commit('updateYahooLeagues', res.data.leagues)
-        })
-        .catch(err => {
-          console.log(err)
-        })
-      // commit('league/updateLeague', leagueStandings.fantasy_content.league)
     }
   }
 }

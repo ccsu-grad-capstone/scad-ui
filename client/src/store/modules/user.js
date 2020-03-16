@@ -1,5 +1,5 @@
 // import { notify } from '../../utilities/nofity'
-import { scad } from '../../utilities/axios-scad'
+import { scad } from '../../utilities/axiosScad'
 import axios from 'axios'
 import { server } from '../../utilities/axios-server'
 import Vue from 'vue'
@@ -91,21 +91,15 @@ export default {
     },
     async loginToScad ({ state, commit }) {
       console.log('[USER-ACTION] - loginToScad()')
-      const options = {
-        headers: {
-          'access_token': `${state.tokens.access_token}`,
-          'id_token': `${state.tokens.id_token}`,
-          'Access-Control-Allow-Origin': '*',
-          'Authorization': 'Basic c2NhZC1hcGktcmVhZHdyaXRlOnNjYWQtYXBpLXJlYWR3cml0ZQ==' }
+      try {
+        const res = await scad(
+          state.tokens.access_token,
+          state.tokens.id_token)
+          .get('/user')
+        commit('updateUser', res.data)
+      } catch (err) {
+        console.error(JSON.stringify(err))
       }
-      await scad.get('/user', options)
-        .then((res) => {
-          console.log(res.data)
-          commit('updateUser', res.data)
-        })
-        .catch(err => {
-          console.error(JSON.stringify(err))
-        })
     }
   }
 }

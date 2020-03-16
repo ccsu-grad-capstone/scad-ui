@@ -9,7 +9,7 @@
           .col-3.text-subtitle2.text-right.q-pt-sm
             | Choose your league:
           .col-7.q-pl-lg
-            q-select( rounded outlined dense v-model='$v.newLeague.yahooLeagueID.$model' :options="league.yahooLeagues" lazy-rules :error='$v.newLeague.yahooLeagueID.$error' error-message='Required Field')
+            q-select( rounded outlined dense v-model='$v.newLeague.yahooLeagueName.$model' :options="yahooTeams" @input="updateWithYahooDetails()" lazy-rules :error='$v.newLeague.yahooLeagueName.$error' error-message='Required Field')
         .row.q-pb-md
           .col-3.text-subtitle2.text-right
             | League Managers:
@@ -34,7 +34,7 @@
           .col-3.text-subtitle2.text-right
             | Team Salary Cap: ${{ newLeague.teamCap }}
           .col-7.q-pl-lg
-            q-slider(v-model='newLeague.teamCap' :min='100' :max='1000' :step='100' label dense :label-value='`$${newLeague.teamCap}`' color='primary')
+            q-slider(v-model='newLeague.teamCap' :min='100' :max='1000' :step='5' label dense :label-value='`$${newLeague.teamCap}`' color='primary')
           .col-2.q-px-sm
             q-btn(rounded dense color='info' size='xs' label="What's This?")
               q-tooltip
@@ -52,7 +52,7 @@
           .col-3.text-subtitle2.text-right
             | Salary Cap Exemption Limit: ${{ newLeague.salaryCapExemptionLimit }}
           .col-7.q-pl-lg
-            q-slider(v-model='newLeague.salaryCapExemptionLimit' :min='0' :max='100' :step='5' label dense :label-value='`${newLeague.salaryCapExemptionLimit}%`' color='primary')
+            q-slider(v-model='newLeague.salaryCapExemptionLimit' :min='0' :max='100' :step='5' label dense :label-value='`$${newLeague.salaryCapExemptionLimit}`' color='primary')
           .col-2.q-px-sm
             q-btn(rounded dense color='info' size='xs' label="What's This?")
               q-tooltip
@@ -142,6 +142,7 @@
         .col-3
           q-btn-group(spread)
             q-btn(label='Submit' type='submit' dense no-caps color='primary' size='md' @click="onSubmit")
+    | {{newLeague}}
     q-dialog(v-model='registerLeagueInvites' persistent)
       register-league-invites
 </template>
@@ -165,9 +166,9 @@ export default {
   data () {
     return {
       newLeague: {
-        yahooLeagueID: 'asdf',
-        yahooLeagueName: 'asdf',
-        leagueManagers: 12,
+        yahooLeagueId: '',
+        yahooLeagueName: '',
+        leagueManagers: '',
         rookieDraftRds: 3,
         rookieDraftStrategy: 'Message Board',
         rookieWageScale: 'Standard',
@@ -178,24 +179,24 @@ export default {
         franchiseTagReliefPerc: 50,
         franchiseTagSpots: 1,
         tradingDraftPickYears: 5,
-        qbMin: '',
-        qbMax: '',
-        rbMin: '',
-        rbMax: '',
-        wrMin: '',
-        wrMax: '',
-        teMin: '',
-        teMax: '',
-        kMin: '',
-        kMax: '',
-        defMin: '',
-        defMax: ''
+        qbMin: '2',
+        qbMax: '4',
+        rbMin: '4',
+        rbMax: '7',
+        wrMin: '5',
+        wrMax: '8',
+        teMin: '2',
+        teMax: '4',
+        kMin: '0',
+        kMax: '2',
+        defMin: '2',
+        defMax: '4'
       }
     }
   },
   validations: {
     newLeague: {
-      yahooLeagueID: { required },
+      yahooLeagueId: { required },
       yahooLeagueName: { required },
       leagueManagers: { required },
       rookieDraftRds: { required },
@@ -222,7 +223,9 @@ export default {
       defMax: { required }
     }
   },
-  created () {},
+  created () {
+    // console.log('this.yahooTeams: ', this.yahooTeams)
+  },
   computed: {
     ...mapFields([
       'registerLeagueInvites'
@@ -240,6 +243,15 @@ export default {
     },
     league () {
       return this.$store.state.league
+    },
+    yahooTeams () {
+      return this.$store.getters['league/getTeams']
+    },
+    getYahooLeagueId () {
+      return this.$store.getters['league/yahooLeagueId'](this.newLeague.yahooLeagueName)
+    },
+    getYahooLeagueManagers () {
+      return this.$store.getters['league/yahooLeagueManagers'](this.newLeague.yahooLeagueName)
     }
   },
   methods: {
@@ -266,6 +278,11 @@ export default {
       this.$nextTick(() => {
         this.$v.$reset()
       })
+    },
+    updateWithYahooDetails () {
+      console.log('[REGISTERLEAGUE - Methods] - updateLeagueId()')
+      this.newLeague.yahooLeagueId = this.getYahooLeagueId
+      this.newLeague.leagueManagers = this.getYahooLeagueManagers
     }
   }
 }

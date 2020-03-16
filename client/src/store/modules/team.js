@@ -1,5 +1,5 @@
 // import { notify } from '../../utilities/nofity'
-import { scad } from '../../utilities/axios-scad'
+import { scad } from '../../utilities/axiosScad'
 import teamDetails from '../../data/teamDetails'
 
 export default {
@@ -22,15 +22,17 @@ export default {
     }
   },
   actions: {
-    getTeam ({ commit }, teamKey) {
+    async getTeam ({ commit, rootState }, teamKey) {
       console.log(`[ROSTER-ACTION] - getTeam(${teamKey})`)
-      scad.get(`team/${teamKey}`)
-        .then((res) => {
-          commit('updateTeam', res.data)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+      try {
+        const res = await scad(
+          rootState.user.tokens.access_token,
+          rootState.user.tokens.id_token)
+          .get(`/team/${teamKey}`)
+        console.log(res)
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 }
