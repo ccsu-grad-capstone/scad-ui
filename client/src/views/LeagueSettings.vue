@@ -164,7 +164,9 @@ export default {
     return {
     }
   },
-  created () {},
+  mounted () {
+    // this.$store.dispatch('league/getSettings')
+  },
   computed: {
     league () {
       return this.$store.state.league.league

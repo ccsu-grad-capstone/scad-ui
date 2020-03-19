@@ -9,7 +9,7 @@
           .col-3.text-subtitle2.text-right.q-pt-sm
             | Choose your league:
           .col-7.q-pl-lg
-            q-select( rounded outlined dense v-model='$v.newLeague.yahooLeagueName.$model' :options="yahooTeams" @input="updateWithYahooDetails()" lazy-rules :error='$v.newLeague.yahooLeagueName.$error' error-message='Required Field')
+            q-select( filled dense v-model='$v.newLeague.yahooLeagueName.$model' :options="yahooTeams" @input="updateWithYahooDetails()" lazy-rules :error='$v.newLeague.yahooLeagueName.$error' error-message='Required Field')
         .row.q-pb-md
           .col-3.text-subtitle2.text-right
             | League Managers:
@@ -19,17 +19,17 @@
           .col-3.text-subtitle2.text-right.q-pt-sm
             | Rookie Draft Rounds:
           .col-2.q-pl-lg
-            q-select( rounded outlined dense v-model='$v.newLeague.rookieDraftRds.$model' :options='referenceData.rookieDraftRounds' :error='$v.newLeague.rookieDraftRds.$error' error-message='Required Field')
+            q-select( filled dense v-model='$v.newLeague.rookieDraftRds.$model' :options='referenceData.rookieDraftRounds' :error='$v.newLeague.rookieDraftRds.$error' error-message='Required Field')
         .row
           .col-3.text-subtitle2.text-right.q-pt-sm
             | Rookie Draft Strategy:
           .col-3.q-pl-lg
-            q-select( rounded outlined dense v-model='$v.newLeague.rookieDraftStrategy.$model' :options='referenceData.rookieDraftStrategy' :error='$v.newLeague.rookieDraftStrategy.$error' error-message='Required Field')
+            q-select( filled dense v-model='$v.newLeague.rookieDraftStrategy.$model' :options='referenceData.rookieDraftStrategy' :error='$v.newLeague.rookieDraftStrategy.$error' error-message='Required Field')
         .row
           .col-3.text-subtitle2.text-right.q-pt-sm
             | Rookie Wage Scale:
           .col-2.q-pl-lg
-            q-select( rounded outlined dense v-model='$v.newLeague.rookieWageScale.$model' :options='referenceData.rookieWageScale' :error='$v.newLeague.rookieWageScale.$error' error-message='Required Field')
+            q-select( filled dense v-model='$v.newLeague.rookieWageScale.$model' :options='referenceData.rookieWageScale' :error='$v.newLeague.rookieWageScale.$error' error-message='Required Field')
         .row.q-py-md
           .col-3.text-subtitle2.text-right
             | Team Salary Cap: ${{ newLeague.teamCap }}
@@ -79,12 +79,12 @@
           .col-3.text-subtitle2.text-right.q-pt-sm
             | Franchise Tags:
           .col-2.q-pl-lg
-            q-select( rounded outlined dense v-model='newLeague.franchiseTagSpots' :options='referenceData.positionCounts' :error='$v.newLeague.franchiseTagSpots.$error' error-message='Required Field')
+            q-select( filled dense v-model='newLeague.franchiseTagSpots' :options='referenceData.franchiseTags' :error='$v.newLeague.franchiseTagSpots.$error' error-message='Required Field')
         .row
           .col-3.text-subtitle2.text-right.q-pt-sm
             | Draft Pick Trading Limit:
           .col-2.q-pl-lg
-            q-select( rounded outlined dense v-model='newLeague.tradingDraftPickYears' :options='referenceData.tradingDraftPickYears' :error='$v.newLeague.tradingDraftPickYears.$error' error-message='Required Field')
+            q-select( filled dense v-model='newLeague.tradingDraftPickYears' :options='referenceData.tradingDraftPickYears' :error='$v.newLeague.tradingDraftPickYears.$error' error-message='Required Field')
           .col-3.text.text-left.q-pt-sm.q-pl-sm
             | Years
         .row
@@ -99,50 +99,49 @@
           .col-3.text-subtitle2.text-right.q-pt-sm
             | QB:
           .col-1.q-pl-lg
-            q-select( rounded outlined dense v-model='newLeague.qbMin' :options='referenceData.rosterLimits' :error='$v.newLeague.qbMin.$error' error-message='Required Field')
+            q-select( filled dense v-model='newLeague.qbMin' :options='referenceData.rosterLimits' :error='$v.newLeague.qbMin.$error' error-message='Required Field')
           .col-1.q-pl-lg
-            q-select( rounded outlined dense v-model='newLeague.qbMax' :options='referenceData.rosterLimits' :error='$v.newLeague.qbMax.$error' error-message='Required Field')
+            q-select( filled dense v-model='newLeague.qbMax' :options='referenceData.rosterLimits' :error='$v.newLeague.qbMax.$error' error-message='Required Field')
         .row
           .col-3.text-subtitle2.text-right.q-pt-sm
             | RB:
           .col-1.q-pl-lg
-            q-select( rounded outlined dense v-model='newLeague.rbMin' :options='referenceData.rosterLimits' :error='$v.newLeague.rbMin.$error' error-message='Required Field')
+            q-select( filled dense v-model='newLeague.rbMin' :options='referenceData.rosterLimits' :error='$v.newLeague.rbMin.$error' error-message='Required Field')
           .col-1.q-pl-lg
-            q-select( rounded outlined dense v-model='newLeague.rbMax' :options='referenceData.rosterLimits' :error='$v.newLeague.rbMax.$error' error-message='Required Field')
+            q-select( filled dense v-model='newLeague.rbMax' :options='referenceData.rosterLimits' :error='$v.newLeague.rbMax.$error' error-message='Required Field')
         .row
           .col-3.text-subtitle2.text-right.q-pt-sm
             | WR:
           .col-1.q-pl-lg
-            q-select( rounded outlined dense v-model='newLeague.wrMin' :options='referenceData.rosterLimits' :error='$v.newLeague.wrMin.$error' error-message='Required Field')
+            q-select( filled dense v-model='newLeague.wrMin' :options='referenceData.rosterLimits' :error='$v.newLeague.wrMin.$error' error-message='Required Field')
           .col-1.q-pl-lg
-            q-select( rounded outlined dense v-model='newLeague.wrMax' :options='referenceData.rosterLimits' :error='$v.newLeague.wrMax.$error' error-message='Required Field')
+            q-select( filled dense v-model='newLeague.wrMax' :options='referenceData.rosterLimits' :error='$v.newLeague.wrMax.$error' error-message='Required Field')
         .row
           .col-3.text-subtitle2.text-right.q-pt-sm
             | TE:
           .col-1.q-pl-lg
-            q-select( rounded outlined dense v-model='newLeague.teMin' :options='referenceData.rosterLimits' :error='$v.newLeague.teMin.$error' error-message='Required Field')
+            q-select( filled dense v-model='newLeague.teMin' :options='referenceData.rosterLimits' :error='$v.newLeague.teMin.$error' error-message='Required Field')
           .col-1.q-pl-lg
-            q-select( rounded outlined dense v-model='newLeague.teMax' :options='referenceData.rosterLimits' :error='$v.newLeague.teMax.$error' error-message='Required Field')
+            q-select( filled dense v-model='newLeague.teMax' :options='referenceData.rosterLimits' :error='$v.newLeague.teMax.$error' error-message='Required Field')
         .row
           .col-3.text-subtitle2.text-right.q-pt-sm
             | K:
           .col-1.q-pl-lg
-            q-select( rounded outlined dense v-model='newLeague.kMin' :options='referenceData.rosterLimits' :error='$v.newLeague.kMin.$error' error-message='Required Field')
+            q-select( filled dense v-model='newLeague.kMin' :options='referenceData.rosterLimits' :error='$v.newLeague.kMin.$error' error-message='Required Field')
           .col-1.q-pl-lg
-            q-select( rounded outlined dense v-model='newLeague.kMax' :options='referenceData.rosterLimits' :error='$v.newLeague.kMax.$error' error-message='Required Field')
+            q-select( filled dense v-model='newLeague.kMax' :options='referenceData.rosterLimits' :error='$v.newLeague.kMax.$error' error-message='Required Field')
         .row
           .col-3.text-subtitle2.text-right.q-pt-sm
             | DEF:
           .col-1.q-pl-lg
-            q-select( rounded outlined dense v-model='newLeague.defMin' :options='referenceData.rosterLimits' :error='$v.newLeague.defMin.$error' error-message='Required Field')
+            q-select( filled dense v-model='newLeague.defMin' :options='referenceData.rosterLimits' :error='$v.newLeague.defMin.$error' error-message='Required Field')
           .col-1.q-pl-lg
-            q-select( rounded outlined dense v-model='newLeague.defMax' :options='referenceData.rosterLimits' :error='$v.newLeague.defMax.$error' error-message='Required Field')
+            q-select( filled dense v-model='newLeague.defMax' :options='referenceData.rosterLimits' :error='$v.newLeague.defMax.$error' error-message='Required Field')
         q-separator.q-my-lg(color='secondary' inset)
       .row.justify-center
         .col-3
           q-btn-group(spread)
             q-btn(label='Submit' type='submit' dense no-caps color='primary' size='md' @click="onSubmit")
-    | {{newLeague}}
     q-dialog(v-model='registerLeagueInvites' persistent)
       register-league-invites
 </template>
@@ -168,29 +167,29 @@ export default {
       newLeague: {
         yahooLeagueId: '',
         yahooLeagueName: '',
-        leagueManagers: '',
+        leagueManagers: undefined,
         rookieDraftRds: 3,
         rookieDraftStrategy: 'Message Board',
         rookieWageScale: 'Standard',
         teamCap: 250,
-        leagueCap: this.calcLeagueCap,
+        leagueCap: 1600,
         salaryCapExemptionLimit: 25,
         irReliefPerc: 50,
         franchiseTagReliefPerc: 50,
         franchiseTagSpots: 1,
         tradingDraftPickYears: 5,
-        qbMin: '2',
-        qbMax: '4',
-        rbMin: '4',
-        rbMax: '7',
-        wrMin: '5',
-        wrMax: '8',
-        teMin: '2',
-        teMax: '4',
-        kMin: '0',
-        kMax: '2',
-        defMin: '2',
-        defMax: '4'
+        qbMin: 2,
+        qbMax: 4,
+        rbMin: 4,
+        rbMax: 7,
+        wrMin: 5,
+        wrMax: 8,
+        teMin: 2,
+        teMax: 4,
+        kMin: 0,
+        kMax: 2,
+        defMin: 2,
+        defMax: 4
       }
     }
   },
@@ -224,7 +223,6 @@ export default {
     }
   },
   created () {
-    // console.log('this.yahooTeams: ', this.yahooTeams)
   },
   computed: {
     ...mapFields([
@@ -255,19 +253,35 @@ export default {
     }
   },
   methods: {
-    onSubmit () {
+    async onSubmit () {
       console.log('[REGISTERLEAGUE - Methods] - onSubmit()')
+
+      // Show the page as loading for 5 seconds, then redirect to the dashboard
+      this.$q.loading.show({
+        message: 'Sit tight while we put together a SCAD league for you'
+      })
+      this.timer = setTimeout(() => {
+        this.$q.loading.hide()
+        this.timer = void 0
+        this.$router.push('/dashboard')
+      }, 5000)
+
       this.$v.$touch()
       if (this.$v.$invalid) {
-        console.log('REGISTERLEAGUE Validation failed')
+        console.log('REGISTERLEAGUE Validation Failed')
       } else {
         console.log('REGISTERLEAGUE Validation Successful', this.newLeague)
-        this.registerLeagueInvites = true
-        this.$store.dispatch('league/registerLeague', { league: this.newLeague })
+
+        // Used to open dialog for emailing league about SCAD league
+        // this.registerLeagueInvites = true
+
+        await this.$store.dispatch('league/registerLeague', { league: this.newLeague })
       }
     },
     setLeagueCap () {
-      this.newLeague.leagueCap = this.newLeague.teamCap * this.newLeague.leagueManagers
+      if (this.newLeague.leagueManagers) {
+        this.newLeague.leagueCap = this.newLeague.teamCap * this.newLeague.leagueManagers
+      }
     },
     setRosterLimit () {
       let counts = Object.values(this.newLeague.roster)

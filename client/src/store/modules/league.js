@@ -28,7 +28,7 @@ export default {
       return league.league_id
     },
     yahooLeagueManagers: (state) => (teamName) => {
-      console.log('[LEAGUE-GETTERS] - yahooLeagueId(): ', teamName)
+      console.log('[LEAGUE-GETTERS] - yahooLeagueManagers(): ', teamName)
       const league = state.yahooLeagues.find(league => (league.name === teamName))
       return league.num_teams
     }
@@ -45,17 +45,13 @@ export default {
     }
   },
   actions: {
-    registerLeague ({ rootState, commit, state }, { league }) {
-      console.log('[LEAGUE-ACTION] - registerLeague()', league)
-      const options = {
-        headers: {
-          'access_token': `${rootState.user.tokens.access_token}`,
-          'id_token': `${rootState.user.tokens.id_token}`,
-          'Access-Control-Allow-Origin': '*',
-          'Authorization': 'Basic c2NhZC1hcGktcmVhZHdyaXRlOnNjYWQtYXBpLXJlYWR3cml0ZQ==' }
-      }
+    async registerLeague ({ rootState, commit, state }, { league }) {
+      console.log('[LEAGUE-ACTION] - registerLeague()')
       try {
-        const res = scad.post('scadleague', league, options)
+        const res = await scad(
+          rootState.user.tokens.access_token,
+          rootState.user.tokens.id_token)
+          .post('scadleague', league)
         console.log('POST response scadleague: ', res)
         // commit('updateLeague', { league: league })
       } catch (err) {

@@ -1,6 +1,7 @@
 <template lang="pug">
   body
     .row.q-gutter-md.q-pa-md
+      .row.full-width.bg-red
       .col-4
         .row.justify-center
           q-avatar(size="100px")

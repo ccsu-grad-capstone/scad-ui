@@ -87,6 +87,7 @@ export default {
     async refreshStateWithCookies ({ commit, dispatch }, tokens) {
       console.log('[USER-ACTION] - refreshStateWithCookies()')
       commit('updateTokens', tokens)
+      await dispatch('refreshToken')
       await dispatch('loginToScad')
     },
     async loginToScad ({ state, commit }) {

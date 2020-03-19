@@ -49,7 +49,8 @@ export default {
     return {}
   },
   mounted () {
-
+    this.$store.dispatch('user/refreshToken')
+    // this.$store.dispatch('league/getDashboard')
   },
   computed: {
     user () {

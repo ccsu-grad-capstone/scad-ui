@@ -34,7 +34,8 @@
                 | {{ link.text }}
                 q-icon(v-if="link.icon" :name="link.icon")
     q-page-container
-      router-view
+      div
+        router-view
 </template>
 
 <script>
@@ -44,6 +45,7 @@ export default {
 
   data () {
     return {
+      loaded: false,
       leftDrawerOpen: true,
       showDateOptions: false,
       activeLeague: 'Salary Cap Dynasty 2019',
@@ -72,6 +74,7 @@ export default {
   },
   async created () {
     await this.persistState()
+    this.loaded = true
   },
   computed: {
     user () {
@@ -92,7 +95,6 @@ export default {
   },
   methods: {
     navigate: function (nav) {
-      console.log('in MyLayout navigate')
       if (nav === 'logout') {
         this.logout()
       } else {
@@ -106,7 +108,7 @@ export default {
       }
     },
     async persistState () {
-      console.log('[LAYOUT] - checkCookies()')
+      console.log('[LAYOUT] - persistState()')
       await this.checkForTokens()
       await this.refreshStateWithCookies()
       if (this.$route.query) {
@@ -118,16 +120,10 @@ export default {
     async checkForTokens () {
       console.log('[LAYOUT] - checkForTokens()')
       if (this.$route.query.access_token) {
-        console.log('New Tokens - Update Vuex and Cookies')
-        const tokens = {
-          access_token: this.$route.query.access_token,
-          refresh_token: this.$route.query.refresh_token,
-          id_token: this.$route.query.id_token
-        }
-        this.$cookies.set('access_token', tokens.access_token)
-        this.$cookies.set('id_token', tokens.id_token)
-        this.$cookies.set('refresh_token', tokens.refresh_token)
-        await this.$store.dispatch('user/refreshStateWithCookies', tokens)
+        console.log('New Tokens - Update Cookies w/ Tokens')
+        this.$cookies.set('access_token', this.$route.query.access_token)
+        this.$cookies.set('id_token', this.$route.query.id_token)
+        this.$cookies.set('refresh_token', this.$route.query.refresh_token)
       } else {
         console.log('No Tokens in Query Params..')
       }
@@ -135,17 +131,19 @@ export default {
     async refreshStateWithCookies () {
       console.log('[LAYOUT] - refreshStateWithCookies()')
       if (this.$cookies.isKey('access_token') && !this.tokens.access_token) {
-        console.log('Access_Token is stored in cookies but not in store')
+        console.log('Access_Token is stored in cookies but not in store - Refresh Token and Update Store')
         const tokens = {
           access_token: this.$cookies.get('access_token'),
           refresh_token: this.$cookies.get('refresh_token'),
           id_token: this.$cookies.get('id_token')
         }
         await this.$store.dispatch('user/refreshStateWithCookies', tokens)
+
+        // remove this once we have a dashboard endpoint
         await this.$store.dispatch('league/getAllYahooLeagues')
       }
     },
-    logout () {
+    async logout () {
       console.log('[LAYOUT] - logout()')
       this.$cookies.keys().forEach(cookie => this.$cookies.remove(cookie))
       this.$store.commit('user/logoutUser')
@@ -165,7 +163,9 @@ export default {
     },
     getProfilePic () {
       console.log('[LAYOUT] - getProfilePic()')
-      return this.user.user.profileImages.image64
+      if (this.loaded) {
+        return this.user.user.profileImages.image64
+      }
     }
   }
 }

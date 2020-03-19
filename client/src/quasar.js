@@ -44,7 +44,8 @@ import {
   QPopupEdit,
   QTr,
   QCardActions,
-  QCheckbox
+  QCheckbox,
+  Loading
 
 } from 'quasar'
 
@@ -105,5 +106,6 @@ Vue.use(Quasar, {
     Ripple
   },
   plugins: {
+    Loading
   }
 })

@@ -17,6 +17,8 @@ const router = new VueRouter({
 
 // Route Auth
 router.beforeEach((to, from, next) => {
+  window.scrollTo(0, 0)
+
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (!Vue.$cookies.get('access_token')) {
       if (to.query.access_token) {
