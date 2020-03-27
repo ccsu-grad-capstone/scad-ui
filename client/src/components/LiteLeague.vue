@@ -93,7 +93,7 @@ export default {
       return this.$store.state.roster.roster
     },
     league () {
-      return this.$store.state.league.league
+      return this.$store.state.league.yahooLeague
     }
   },
   methods: {

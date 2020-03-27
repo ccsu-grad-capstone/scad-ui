@@ -31,7 +31,7 @@ export default {
       'registerLeagueInvites'
     ]),
     league () {
-      return this.$store.state.league.league
+      return this.$store.state.league.yahooLeague
     }
   },
   methods: {

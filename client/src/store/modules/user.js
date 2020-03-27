@@ -3,14 +3,15 @@ import { scad } from '../../utilities/axiosScad'
 import axios from 'axios'
 import { server } from '../../utilities/axios-server'
 import Vue from 'vue'
+import notify from '../../utilities/nofity'
 
 export default {
   namespaced: true,
   state: {
     // hard coded user information for now..
     user: {},
-    active: false,
     isAdmin: false,
+    active: false,
     tokens: {
       access_token: '',
       refresh_token: '',
@@ -34,10 +35,6 @@ export default {
     logoutUser (state) {
       console.log('[USER-MUTATION] - logoutUser()')
       state.user = {}
-      state.firstName = ''
-      state.lastName = ''
-      state.email = ''
-      state.active = false
       state.isAdmin = false
       state.tokens.access_token = ''
       state.tokens.refresh_token = ''
@@ -48,7 +45,6 @@ export default {
       state.tokens.access_token = tokens.access_token
       state.tokens.refresh_token = tokens.refresh_token
       state.tokens.id_token = tokens.id_token
-      state.active = true
     },
     refreshToken (state, tokens) {
       console.log('[USER-MUTATION] - refreshToken()')
@@ -58,9 +54,11 @@ export default {
     updateUser (state, user) {
       console.log('[USER-MUTATION] - updateUser()')
       state.user = user
+      state.active = true
     }
   },
   actions: {
+    // initiate OAuth Call
     async loginWithYahoo () {
       console.log('[USER-ACTION] - loginWithYahoo()')
       var nonce = Math.floor(Math.random() * 1000000 + 1)
@@ -72,11 +70,12 @@ export default {
           console.log(error.response.data)
         })
     },
+
+    // refresh tokens with OAuth
     async refreshToken ({ commit, state }) {
       console.log('[USER-ACTION] - refreshToken()')
       await server.get(`auth/yahoo/refresh?refresh_token=${state.tokens.refresh_token}`)
         .then((response) => {
-          console.log('refreshToken Response: ', response.data)
           Vue.$cookies.set('access_token', response.data.access_token)
           commit('refreshToken', response.data)
         })
@@ -84,6 +83,8 @@ export default {
           console.log(error)
         })
     },
+
+    // Takes cookies from browser and upates the state, then calls SCAD
     async refreshStateWithCookies ({ commit, dispatch }, tokens) {
       console.log('[USER-ACTION] - refreshStateWithCookies()')
       commit('updateTokens', tokens)
@@ -98,8 +99,81 @@ export default {
           state.tokens.id_token)
           .get('/user')
         commit('updateUser', res.data)
-      } catch (err) {
-        console.error(JSON.stringify(err))
+
+        // TEST ENDPOINTS HERE
+        // const test = await scad(
+        //   state.tokens.access_token,
+        //   state.tokens.id_token)
+        //   .get(`/league/${22351}/settings`)
+        // console.log('TEST: ', test)
+
+        // const dashboard = await scad(
+        //   state.tokens.access_token,
+        //   state.tokens.id_token)
+        //   .get(`/dashboard/details`)
+        // console.log('DASHBOARD: ', dashboard)
+        // commit('league/updateScadSettings', dashboard.data.SCADLeague, { root: true })
+        // commit('league/updateYahooLeague', dashboard.data.YahooLeague, { root: true })
+
+        const settings = await scad(
+          state.tokens.access_token,
+          state.tokens.id_token)
+          .get(`/league/${22351}/settings`)
+        console.log('SETTINGS: ', settings)
+        commit('league/updateYahooSettings', settings.data, { root: true })
+
+        const teams = await scad(
+          state.tokens.access_token,
+          state.tokens.id_token)
+          .get(`/league/${22351}/teams`)
+        console.log('TEAMS: ', teams)
+        commit('league/updateTeams', teams.data.teams, { root: true })
+
+        const standings = await scad(
+          state.tokens.access_token,
+          state.tokens.id_token)
+          .get(`/league/${22351}/standings`)
+        console.log('STANDINGS: ', standings)
+        commit('league/updateStandings', standings.data, { root: true })
+
+        const scadplayer = await scad(
+          state.tokens.access_token,
+          state.tokens.id_token)
+          .get(`/scadleague/player/${1}`)
+        console.log('SCAD Player: ', scadplayer)
+
+        // remove this once we have a dashboard endpoint
+        const yahooleagues = await scad(
+          state.tokens.access_token,
+          state.tokens.id_token)
+          .get(`/league/all`)
+        // console.log('leagues: ', res)
+        commit('updateYahooLeagues', yahooleagues.data.leagues)
+      } catch (error) {
+        if (error.response) {
+          /*
+           * The request was made and the server responded with a
+           * status code that falls out of the range of 2xx
+           */
+          console.log(error.response)
+          notify.serverIssue(error.response.status, error.message)
+          // console.log(error.response.data)
+          // console.log(error.response.status)
+          // console.log(error.response.headers)
+          // console.log(error.message)
+          // console.log(error.request)
+        } else if (error.request) {
+          /*
+           * The request was made but no response was received, `error.request`
+           * is an instance of XMLHttpRequest in the browser and an instance
+           * of http.ClientRequest in Node.js
+           */
+          console.log(error.request)
+        } else {
+          // Something happened in setting up the request and triggered an Error
+          console.log('Error', error.message)
+        }
+        console.log(error)
       }
     }
   }

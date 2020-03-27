@@ -22,7 +22,7 @@
         q-list.text-grey-8(padding)
           q-item.justify-center
             q-select( square dense v-model='activeLeague' label='League')
-          q-item.GNL__drawer-item(@click="navigate(link.route)" v-if="Object.keys(league.league).length !== 0" v-ripple v-for="link in hasLeagueLinks" :key="link.text" clickable)
+          q-item.GNL__drawer-item(@click="navigate(link.route)" v-if="Object.keys(league.yahooLeague).length !== 0" v-ripple v-for="link in hasLeagueLinks" :key="link.text" clickable)
             q-item-section(avatar)
               q-icon(:name="link.icon")
             q-item-section
@@ -80,9 +80,6 @@ export default {
     user () {
       return this.$store.state.user
     },
-    active () {
-      return this.user.active
-    },
     loggedIn () {
       return this.user.active
     },
@@ -138,9 +135,6 @@ export default {
           id_token: this.$cookies.get('id_token')
         }
         await this.$store.dispatch('user/refreshStateWithCookies', tokens)
-
-        // remove this once we have a dashboard endpoint
-        await this.$store.dispatch('league/getAllYahooLeagues')
       }
     },
     async logout () {

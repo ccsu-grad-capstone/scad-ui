@@ -1,6 +1,6 @@
 import { Notify } from 'quasar'
 
-const notify = {
+export default {
   loginFailed () {
     Notify.create({
       message: 'Login Failed',
@@ -14,7 +14,13 @@ const notify = {
       position: 'top',
       color: 'green'
     })
+  },
+  serverIssue (code, message) {
+    Notify.create({
+      message: `[${code}] ${message}, please try again soon`,
+      position: 'top',
+      timeout: 2500,
+      color: 'red'
+    })
   }
 }
-
-export { notify }

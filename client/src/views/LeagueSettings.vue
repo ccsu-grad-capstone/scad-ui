@@ -169,7 +169,7 @@ export default {
   },
   computed: {
     league () {
-      return this.$store.state.league.league
+      return this.$store.state.league.yahooLeague
     },
     settings () {
       return this.$store.state.league.settings

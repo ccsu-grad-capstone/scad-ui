@@ -45,7 +45,8 @@ import {
   QTr,
   QCardActions,
   QCheckbox,
-  Loading
+  Loading,
+  Notify
 
 } from 'quasar'
 
@@ -106,6 +107,7 @@ Vue.use(Quasar, {
     Ripple
   },
   plugins: {
-    Loading
+    Loading,
+    Notify
   }
 })

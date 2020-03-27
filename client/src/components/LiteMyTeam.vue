@@ -64,13 +64,13 @@ export default {
   },
   computed: {
     team () {
-      return this.$store.state.team.team.info
+      return this.$store.state.team
     },
     roster () {
-      return this.$store.state.team.team.roster
+      return this.$store.state.team.roster
     },
     info () {
-      return this.$store.state.team.team.info
+      return this.$store.state.team.info
     }
   },
   methods: {

@@ -70,7 +70,7 @@
       .row.full-width.justify-center
         div(style="width: 55%")
           .row.full-width.justify-between.q-pa-sm
-            q-select(square dense v-model='selectTeam' style="width: 250px")
+            q-select(square dense v-model='selectedTeamName' :options="teams" style="width: 250px" @input="updateTeamPage")
             div.q-gutter-sm
               q-btn(v-if="!franchiseTag && !editSalaries" label='Franchise Tag' dense color='secondary' text-color='primary' size='sm' @click="franchiseTag = !franchiseTag")
               q-btn(v-if="franchiseTag && !editSalaries" label='Save Franchise Tag' dense color='primary' text-color='white' size='sm' @click="saveFranchiseTag()")
@@ -119,7 +119,8 @@ export default {
         rowsPerPage: 0 // 0 means all rows
       },
       salary: 12,
-      selectTeam: 'team',
+      selectedTeamName: 'Choose a Team',
+      selectedTeamID: '',
       editSalaries: false,
       franchiseTag: false,
       selected: [],
@@ -161,11 +162,18 @@ export default {
     }
   },
   created () {
+    console.log('[TEAM] - created()')
     this.getTeam(this.$route.params.team_key)
   },
   computed: {
     team () {
-      return this.$store.state.team.team
+      return this.$store.state.team
+    },
+    teams () {
+      return this.$store.getters['league/getTeams']
+    },
+    getTeamID () {
+      return this.$store.getters['league/getTeamID'](this.selectedTeamName)
     }
   },
   methods: {
@@ -188,6 +196,13 @@ export default {
       console.log(`[TEAM] - saveFranchiseTag()`)
       this.franchiseTag = false
       // this.$store.dispatch('team/updateFranchiseTag')
+    },
+    async updateTeamPage (teamName) {
+      console.log(`[TEAM] - updateTeamPage()`)
+      this.selectedTeamID = this.getTeamID
+      // this.$forceUpdate()
+      this.$router.push(`/team:${this.selectedTeamID}`)
+      this.getTeam(this.$route.params.team_key)
     }
   }
 

@@ -32,18 +32,18 @@
             q-select( filled dense v-model='$v.newLeague.rookieWageScale.$model' :options='referenceData.rookieWageScale' :error='$v.newLeague.rookieWageScale.$error' error-message='Required Field')
         .row.q-py-md
           .col-3.text-subtitle2.text-right
-            | Team Salary Cap: ${{ newLeague.teamCap }}
+            | Team Salary Cap: ${{ newLeague.teamSalaryCap }}
           .col-7.q-pl-lg
-            q-slider(v-model='newLeague.teamCap' :min='100' :max='1000' :step='5' label dense :label-value='`$${newLeague.teamCap}`' color='primary')
+            q-slider(v-model='newLeague.teamSalaryCap' :min='100' :max='1000' :step='5' label dense :label-value='`$${newLeague.teamSalaryCap}`' color='primary')
           .col-2.q-px-sm
             q-btn(rounded dense color='info' size='xs' label="What's This?")
               q-tooltip
                 | Salary Cap alloted to each team
         .row.q-py-md
           .col-3.text-subtitle2.text-right
-            | League Salary Cap: ${{ newLeague.leagueCap }}
+            | League Salary Cap: ${{ newLeague.leagueSalaryCap }}
           .col-7.q-pl-lg
-            q-slider(:value='calcLeagueCap' label dense :min='1600' :max='16000' readonly :label-value='`$${newLeague.leagueCap}`' color='primary')
+            q-slider(:value='calcLeagueCap' label dense :min='1600' :max='16000' readonly :label-value='`$${newLeague.leagueSalaryCap}`' color='primary')
           .col-2.q-px-sm
             q-btn(rounded dense color='info' size='xs' label="What's This?")
               q-tooltip
@@ -171,8 +171,8 @@ export default {
         rookieDraftRds: 3,
         rookieDraftStrategy: 'Message Board',
         rookieWageScale: 'Standard',
-        teamCap: 250,
-        leagueCap: 1600,
+        teamSalaryCap: 250,
+        leagueSalaryCap: 1600,
         salaryCapExemptionLimit: 25,
         irReliefPerc: 50,
         franchiseTagReliefPerc: 50,
@@ -201,8 +201,8 @@ export default {
       rookieDraftRds: { required },
       rookieDraftStrategy: { required },
       rookieWageScale: { required },
-      teamCap: { required },
-      leagueCap: { required },
+      teamSalaryCap: { required },
+      leagueSalaryCap: { required },
       salaryCapExemptionLimit: { required },
       irReliefPerc: { required },
       franchiseTagReliefPerc: { required },
@@ -233,7 +233,7 @@ export default {
     },
     calcLeagueCap () {
       this.setLeagueCap()
-      return this.newLeague.leagueCap
+      return this.newLeague.leagueSalaryCap
     },
     calcRosterLimit () {
       this.setRosterLimit()
@@ -243,7 +243,7 @@ export default {
       return this.$store.state.league
     },
     yahooTeams () {
-      return this.$store.getters['league/getTeams']
+      return this.$store.getters['league/getLeagues']
     },
     getYahooLeagueId () {
       return this.$store.getters['league/yahooLeagueId'](this.newLeague.yahooLeagueName)
@@ -280,7 +280,7 @@ export default {
     },
     setLeagueCap () {
       if (this.newLeague.leagueManagers) {
-        this.newLeague.leagueCap = this.newLeague.teamCap * this.newLeague.leagueManagers
+        this.newLeague.leagueSalaryCap = this.newLeague.teamSalaryCap * this.newLeague.leagueManagers
       }
     },
     setRosterLimit () {
