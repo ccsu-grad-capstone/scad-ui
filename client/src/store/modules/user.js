@@ -83,37 +83,36 @@ export default {
           console.log(error)
         })
     },
-
-    // Takes cookies from browser and upates the state, then calls SCAD
-    async refreshStateWithCookies ({ commit, dispatch }, tokens) {
-      console.log('[USER-ACTION] - refreshStateWithCookies()')
-      commit('updateTokens', tokens)
-      await dispatch('refreshToken')
-      await dispatch('loginToScad')
-    },
-    async loginToScad ({ state, commit }) {
-      console.log('[USER-ACTION] - loginToScad()')
+    async updateUser ({ state, commit }) {
+      console.log('[USER-ACTION] - updateUser()')
       try {
         const res = await scad(
           state.tokens.access_token,
           state.tokens.id_token)
           .get('/user')
         commit('updateUser', res.data)
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response)
+          notify.serverIssue(error.response.status, error.message)
+        } else if (error.request) {
+          console.log(error.request)
+        } else {
+          console.log('Error', error.message)
+        }
+      }
+    },
 
-        // TEST ENDPOINTS HERE
-        // const test = await scad(
-        //   state.tokens.access_token,
-        //   state.tokens.id_token)
-        //   .get(`/league/${22351}/settings`)
-        // console.log('TEST: ', test)
-
-        // const dashboard = await scad(
-        //   state.tokens.access_token,
-        //   state.tokens.id_token)
-        //   .get(`/dashboard/details`)
-        // console.log('DASHBOARD: ', dashboard)
-        // commit('league/updateScadSettings', dashboard.data.SCADLeague, { root: true })
-        // commit('league/updateYahooLeague', dashboard.data.YahooLeague, { root: true })
+    async loginToScad ({ state, commit }) {
+      console.log('[USER-ACTION] - loginToScad()')
+      try {
+        const dashboard = await scad(
+          state.tokens.access_token,
+          state.tokens.id_token)
+          .get(`/dashboard/details`)
+        console.log('DASHBOARD: ', dashboard)
+        commit('league/updateScadSettings', dashboard.data.SCADLeague, { root: true })
+        commit('league/updateYahooLeague', dashboard.data.YahooLeague, { root: true })
 
         const settings = await scad(
           state.tokens.access_token,

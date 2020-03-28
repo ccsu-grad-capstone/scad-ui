@@ -3,10 +3,7 @@
     q-card.q-ma-md(style="width: 100%")
       q-card-section
         .column.items-center
-          img(src="../statics/scad-logo_v1_700x500.png" style="width: 50%")
-        .row.full-width.justify-center.items-center(v-if="!loggedIn")
-          .column.col.items-center
-            q-btn(label="Sign-In With Yahoo" dense no-caps color="primary" size="md" @click="loginWithYahoo")
+          img(src="../statics/scad-logo_v1_700x500.png" style="width: 35%")
       q-card-section(style="height: 300px")
         .row.full-width.justify-center.items-center.text-h6.text-weight-bold
           | Love Yahoo, but sick of managing the complexities of salary caps on your own?
@@ -16,6 +13,17 @@
           | New to dynasty, and looking to start a salary cap league?
           br
           | Look no further..
+        div.q-pt-lg(v-if="!loggedIn")
+          .row.full-width.justify-center.text-body2
+            | Click here to login with your Yahoo account
+          .row.full-width.justify-center.q-pt-sm
+            q-btn(label="Log In Here" dense no-caps color="primary" size="md" @click="loginWithYahoo")
+        div.q-pt-lg(v-else)
+          .row.full-width.justify-center.text-body2
+            | Register your Yahoo Fantasy Football League with us here!
+          .row.full-width.justify-center.q-pt-sm
+            q-btn(label="Register League" dense no-caps color="primary" size="md" @click="registerLeague")
+
       q-separator
       q-card-section
         .row.full-width.justify-center.q-gutter-sm
@@ -56,7 +64,9 @@ export default {
     loginWithYahoo () {
       console.log('[ABOUT] - loginWithYahoo()')
       window.location = 'http://localhost:3000/auth/yahoo'
-      // this.$store.dispatch('user/loginWithYahoo')
+    },
+    registerLeague () {
+      this.$router.push('register-league')
     }
   }
 }

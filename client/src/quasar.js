@@ -46,7 +46,8 @@ import {
   QCardActions,
   QCheckbox,
   Loading,
-  Notify
+  Notify,
+  QToggle
 
 } from 'quasar'
 
@@ -101,7 +102,8 @@ Vue.use(Quasar, {
     QPopupEdit,
     QTr,
     QCardActions,
-    QCheckbox
+    QCheckbox,
+    QToggle
   },
   directives: {
     Ripple

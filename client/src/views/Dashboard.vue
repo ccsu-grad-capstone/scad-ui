@@ -1,6 +1,6 @@
 <template lang="pug">
   q-page.flex
-    .row.q-gutter-md.full-width.justify-center.q-pt-lg
+    .row.q-gutter-md.full-width.justify-center.q-pt-lg(v-if="league.isActive")
       .div
         q-avatar(size="85px")
           img(src="../statics/yahoo-ff.png")
@@ -9,7 +9,7 @@
         a(:href='league.yahooLeague.url') {{league.yahooLeague.url}}
     .row.full-width
       //- lite-league
-      lite-my-team
+      //- lite-my-team
     my-tokens
     q-separator
     q-card.q-ma-md.q-pa-md

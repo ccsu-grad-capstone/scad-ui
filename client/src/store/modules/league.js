@@ -5,6 +5,7 @@ import { scad } from '../../utilities/axiosScad'
 export default {
   namespaced: true,
   state: {
+    isActive: false,
     key: '',
     yahooLeagueID: '',
     scadLeagueID: '',
@@ -19,6 +20,9 @@ export default {
   mutations: {
     dashboard (state, dashboard) {
       console.log('[LEAGUE-MUTATION] - dashboard()')
+      if (dashboard.key === 'league') {
+        state.isActive = true
+      }
       state.key = dashboard.key
       state.yahooLeagueID = dashboard.YahooLeague.league_id
       state.scadLeagueID = dashboard.SCADLeague.id
@@ -58,6 +62,9 @@ export default {
     updateYahooLeagues (state, leagues) {
       console.log('[LEAGUE-MUTATION] - updateYahooLeagues()')
       state.yahooLeagues = leagues
+    },
+    leagueIsActiveToggle (state) {
+      state.isActive = !state.isActive
     }
   },
   getters: {

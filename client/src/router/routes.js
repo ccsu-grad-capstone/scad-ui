@@ -4,7 +4,7 @@ const routes = [
     path: '/',
     component: () => import('../layouts/Layout.vue'),
     children: [
-      { path: '', component: () => import('../views/Index.vue') }
+      { path: '', component: () => import('../views/About.vue') }
     ]
   },
   {
@@ -14,7 +14,8 @@ const routes = [
       { path: '', component: () => import('../views/Team.vue') }
     ],
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      requiresLeague: true
     }
   },
   {
@@ -24,7 +25,8 @@ const routes = [
       { path: '', component: () => import('../views/DraftPicks.vue') }
     ],
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      requiresLeague: true
     }
   },
   {
@@ -34,7 +36,8 @@ const routes = [
       { path: '', component: () => import('../views/LeagueHome.vue') }
     ],
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      requiresLeague: true
     }
   },
   {
@@ -44,7 +47,8 @@ const routes = [
       { path: '', component: () => import('../views/Dashboard.vue') }
     ],
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      requiresLeague: true
     }
   },
   {
@@ -54,7 +58,8 @@ const routes = [
       { path: '', component: () => import('../views/FreeAgents.vue') }
     ],
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      requiresLeague: true
     }
   },
   {
@@ -64,17 +69,8 @@ const routes = [
       { path: '', component: () => import('../views/LeagueSettings.vue') }
     ],
     meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: '/register-league',
-    component: () => import('../layouts/Layout.vue'),
-    children: [
-      { path: '', component: () => import('../views/RegisterLeague.vue') }
-    ],
-    meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      requiresLeague: true
     }
   },
   {
@@ -82,6 +78,17 @@ const routes = [
     component: () => import('../layouts/Layout.vue'),
     children: [
       { path: '', component: () => import('../views/Trade.vue') }
+    ],
+    meta: {
+      requiresAuth: true,
+      requiresLeague: true
+    }
+  },
+  {
+    path: '/register-league',
+    component: () => import('../layouts/Layout.vue'),
+    children: [
+      { path: '', component: () => import('../views/RegisterLeague.vue') }
     ],
     meta: {
       requiresAuth: true
@@ -96,6 +103,7 @@ const routes = [
   },
   {
     path: '/my-profile',
+    name: 'my-profile',
     component: () => import('../layouts/Layout.vue'),
     children: [
       { path: '', component: () => import('../views/MyProfile.vue') }

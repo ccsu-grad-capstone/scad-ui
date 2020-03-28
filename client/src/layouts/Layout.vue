@@ -6,6 +6,11 @@
         q-toolbar-title.row.items-center.no-wrap(v-if="$q.screen.gt.xs" shrink)
             img(src="../statics/scad-logo_v1_100x30.png" clickable @click="iconNavigate")
         q-space
+        q-item
+          q-item-section
+            q-item-label
+              | league.isActive
+              q-toggle(v-model="league.isActive")
         .q-gutter-sm.row.items-center.no-wrap(v-if="tokens.access_token")
           q-btn(v-if="$q.screen.gt.sm" round dense flat color="text-grey-7" icon="apps")
             q-tooltip Google Apps
@@ -21,13 +26,14 @@
       q-scroll-area.fit
         q-list.text-grey-8(padding)
           q-item.justify-center
-            q-select( square dense v-model='activeLeague' label='League')
-          q-item.GNL__drawer-item(@click="navigate(link.route)" v-if="Object.keys(league.yahooLeague).length !== 0" v-ripple v-for="link in hasLeagueLinks" :key="link.text" clickable)
+            .col
+              q-select( square dense v-model='activeLeague' label='League')
+          q-item.GNL__drawer-item(@click="navigate(link.route)" v-if="league.isActive" v-ripple v-for="link in hasLeagueLinks" :key="link.text" clickable)
             q-item-section(avatar)
               q-icon(:name="link.icon")
             q-item-section
               q-item-label {{ link.text }}
-          q-separator.q-my-sm(inset)
+          q-separator.q-my-sm(v-if="league.isActive" inset)
           q-item.GNL__drawer-item(@click="navigate(link.click)" v-ripple v-for="link in links3" :key="link.text" clickable)
             q-item-section
               q-item-label
@@ -35,7 +41,7 @@
                 q-icon(v-if="link.icon" :name="link.icon")
     q-page-container
       div
-        router-view
+        router-view(v-if="loaded")
 </template>
 
 <script>
@@ -48,7 +54,7 @@ export default {
       loaded: false,
       leftDrawerOpen: true,
       showDateOptions: false,
-      activeLeague: 'Salary Cap Dynasty 2019',
+      activeLeague: 'Please Register Below',
       hasLeagueLinks: [
         { icon: 'dashboard', text: 'Dashboard', route: 'dashboard' },
         { icon: 'list', text: 'My Team', route: 'team:my-team' },
@@ -98,23 +104,16 @@ export default {
         this.$router.push({
           path: nav
         }).catch(error => {
-          if (error.name !== 'NavigationDuplicated') {
-            throw error
-          }
+          // if (error.name !== 'NavigationDuplicated') {
+          throw error
+          // }
         })
       }
     },
+
     async persistState () {
       console.log('[LAYOUT] - persistState()')
-      await this.checkForTokens()
-      await this.refreshStateWithCookies()
-      if (this.$route.query) {
-        history.pushState(null, '', location.href.split('?')[0])
-      }
-    },
 
-    // If just logged in, tokens will be query params. Take and update store & cookies..
-    async checkForTokens () {
       console.log('[LAYOUT] - checkForTokens()')
       if (this.$route.query.access_token) {
         console.log('New Tokens - Update Cookies w/ Tokens')
@@ -124,8 +123,7 @@ export default {
       } else {
         console.log('No Tokens in Query Params..')
       }
-    },
-    async refreshStateWithCookies () {
+
       console.log('[LAYOUT] - refreshStateWithCookies()')
       if (this.$cookies.isKey('access_token') && !this.tokens.access_token) {
         console.log('Access_Token is stored in cookies but not in store - Refresh Token and Update Store')
@@ -134,7 +132,13 @@ export default {
           refresh_token: this.$cookies.get('refresh_token'),
           id_token: this.$cookies.get('id_token')
         }
-        await this.$store.dispatch('user/refreshStateWithCookies', tokens)
+        await this.$store.commit('user/updateTokens', tokens)
+        await this.$store.dispatch('user/refreshToken')
+        await this.$store.dispatch('user/updateUser')
+      }
+
+      if (this.$route.query) {
+        history.pushState(null, '', location.href.split('?')[0])
       }
     },
     async logout () {
@@ -149,7 +153,7 @@ export default {
       })
     },
     iconNavigate () {
-      if (this.loggedIn) {
+      if (this.loggedIn && this.league.isActive) {
         this.navigate('dashboard')
       } else {
         this.navigate('/')
@@ -160,6 +164,9 @@ export default {
       if (this.loaded) {
         return this.user.user.profileImages.image64
       }
+    },
+    leagueIsActiveToggle () {
+      this.$store.commit('league/leagueIsActiveToggle')
     }
   }
 }
