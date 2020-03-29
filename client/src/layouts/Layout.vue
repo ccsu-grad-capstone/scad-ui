@@ -12,6 +12,7 @@
               | league.isActive
               q-toggle(v-model="league.isActive")
         .q-gutter-sm.row.items-center.no-wrap(v-if="tokens.access_token")
+          | {{fullName('ryan', 'lauzon')}}
           q-btn(v-if="$q.screen.gt.sm" round dense flat color="text-grey-7" icon="apps")
             q-tooltip Google Apps
           q-btn(round dense flat color="grey-8" icon="notifications")
@@ -45,6 +46,7 @@
 </template>
 
 <script>
+import { fullName } from '../utilities/utils'
 
 export default {
   name: 'DefaultLayout',
@@ -94,6 +96,9 @@ export default {
     },
     league () {
       return this.$store.state.league
+    },
+    fullName () {
+      return fullName
     }
   },
   methods: {
