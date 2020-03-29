@@ -15,6 +15,18 @@ export default {
       color: 'green'
     })
   },
+  emailCommissioner (email) {
+    Notify.create({
+      message: `Email Sent to ${email}.  We look forward to serving your SCAD needs soon!`,
+      position: 'top',
+      color: 'info',
+      timeout: 10000,
+      icon: 'email',
+      actions: [
+        { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+      ]
+    })
+  },
   genericServerIssueWithResponse (code, message) {
     Notify.create({
       message: `[${code}] ${message}, please try again soon`,

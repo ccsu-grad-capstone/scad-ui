@@ -8,7 +8,7 @@
             .col-3
               q-input( filled dense label="Search by Name" stack-label v-model='search')
             div.q-gutter-sm
-              q-btn.q-pa-xs(label='Seach' dense color='secondary' text-color='primary' size='sm' @click="saveSalaries()")
+              q-btn.q-pa-xs(label='Search' dense color='secondary' text-color='primary' size='sm' @click="saveSalaries()")
           .row.full-width.q-gutter-sm.q-pa-sm
             .col-3
               q-select( filled dense label="Team" stack-label :options="referenceData.status" v-model='team')

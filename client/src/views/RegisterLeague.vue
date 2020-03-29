@@ -1,6 +1,6 @@
 <template lang="pug">
-  q-page.flex.flex-center
-    q-card.q-pa-md.q-ma-lg(style='width: 100%')
+  q-page.flex
+    q-card.q-pa-md.q-ma-lg(v-if="commish" style='width: 100%')
       q-card-section.row.justify-center
         .text-h4.text-weight-bolder Register Your Yahoo League With SCAD
       q-form(@submit='onSubmit')
@@ -142,14 +142,43 @@
         .col-3
           q-btn-group(spread)
             q-btn(label='Submit' type='submit' dense no-caps color='primary' size='md' @click="onSubmit")
-    q-dialog(v-model='registerLeagueInvites' persistent)
-      register-league-invites
+      q-dialog(v-model='registerLeagueInvites' persistent)
+        register-league-invites
+    q-card.q-pa-md.q-ma-lg(v-else style='width: 100%')
+      q-card-section.row.justify-center
+        .row.full-width.justify-center
+          .text-h4.text-weight-bolder Ught Oh..
+        .row.full-width.justify-center.q-pt-lg
+          .text-body1
+            | In order to create a league with
+          .text-body1.text-primary.text-weight-bolder
+            | SCAD,
+          .text-body1
+            | you must be a league commissioner for one of your pre-existing
+        .row.full-width.justify-center
+          .text-body1
+            | Yahoo Fantasy Football leagues.  Based on our information, that doesn't not appear to be the case.
+        .row.full-width.justify-center.q-pt-lg
+          .text-body1.text-weight-bolder.text-primary.text-uppercase
+            | We appologize for the inconvenience.
+        .row.full-width.justify-center.q-pt-lg
+          .text-body1
+            | Feel free to choose your league below, and we'll send along an email to the commissioner on your behalf.
+        .row.full-width.justify-center.q-pt-lg
+          .col-3.text-subtitle2.text-right.q-pt-sm
+            | Your Yahoo leagues:
+          .col-7.q-pl-lg
+            q-select( filled dense v-model='$v.newLeague.yahooLeagueName.$model' :options="yahooTeams" @input="updateWithYahooDetails()" lazy-rules :error='$v.newLeague.yahooLeagueName.$error' error-message='Required Field')
+          .col.q-pl-lg.q-pt-xs
+            q-btn(label='Send Email' type='submit' dense no-caps color='primary' size='md' @click="sendEmail()")
+
 </template>
 
 <script>
 import { required } from 'vuelidate/lib/validators'
 import referenceData from '../utilities/referenceData'
 import RegisterLeagueInvites from '../components/dialogs/registerLeagueInvites'
+import notify from '../utilities/nofity'
 
 import { createHelpers } from 'vuex-map-fields'
 const { mapFields } = createHelpers({
@@ -164,6 +193,7 @@ export default {
   },
   data () {
     return {
+      commish: false,
       newLeague: {
         yahooLeagueId: '',
         yahooLeagueName: '',
@@ -297,6 +327,12 @@ export default {
       console.log('[REGISTERLEAGUE - Methods] - updateLeagueId()')
       this.newLeague.yahooLeagueId = this.getYahooLeagueId
       this.newLeague.leagueManagers = this.getYahooLeagueManagers
+    },
+    sendEmail () {
+      console.log('[REGISTERLEAGUE - Methods] - sendEmail()')
+      // this.$store.dispatch('')
+      notify.emailCommissioner('emailAddress..')
+      this.$router.push('/about')
     }
   }
 }
