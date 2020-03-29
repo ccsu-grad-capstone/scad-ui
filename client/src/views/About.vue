@@ -1,9 +1,7 @@
 <template lang="pug">
   q-page.flex.justify-center
+    img(src="../statics/background.jpeg" style="width: 100%")
     q-card.q-ma-md(style="width: 100%")
-      q-card-section
-        .column.items-center
-          img(src="../statics/scad-logo_v1_700x500.png" style="width: 35%")
       q-card-section(style="height: 300px")
         .row.full-width.justify-center.items-center.text-h6.text-weight-bold
           | Love Yahoo, but sick of managing the complexities of salary caps on your own?

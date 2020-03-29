@@ -8,7 +8,6 @@ import notify from '../../utilities/nofity'
 export default {
   namespaced: true,
   state: {
-    // hard coded user information for now..
     user: {},
     isAdmin: false,
     active: false,
@@ -36,6 +35,7 @@ export default {
       console.log('[USER-MUTATION] - logoutUser()')
       state.user = {}
       state.isAdmin = false
+      state.active = false
       state.tokens.access_token = ''
       state.tokens.refresh_token = ''
       state.tokens.id_token = ''

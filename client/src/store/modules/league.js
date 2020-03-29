@@ -65,6 +65,19 @@ export default {
     },
     leagueIsActiveToggle (state) {
       state.isActive = !state.isActive
+    },
+    logoutLeague (state) {
+      console.log('[LEAGUE-MUTATION] - logoutLeague()')
+      state.isActive = false
+      state.key = ''
+      state.yahooLeagueID = ''
+      state.scadLeagueID = ''
+      state.yahooLeague = {}
+      state.yahooSettings = {}
+      state.scadSettings = {}
+      state.teams = []
+      state.standings = []
+      state.scadLeagues = []
     }
   },
   getters: {

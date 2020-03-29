@@ -16,6 +16,11 @@ export default {
       console.log(`[PLAYER-MUTATION] - updatePlayer()`)
       state.id = player.id
       state.salary = player.salary // <- ??
+    },
+    logoutPlayer (state) {
+      console.log('[PLAYER-MUTATION] - logoutPlayer()')
+      state.id = ''
+      state.salary = ''
     }
   },
   actions: {

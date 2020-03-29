@@ -16,9 +16,14 @@ export default {
 
   mutations: {
     updateTeam (state, newTeam) {
-      console.log(`[ROSTER-MUTATION] - updateTeam(${newTeam})`)
+      console.log(`[TEAM-MUTATION] - updateTeam(${newTeam})`)
       state.team.info = {}
       state.team.roster = {}
+    },
+    logoutTeam (state) {
+      console.log('[TEAM-MUTATION] - logoutTeam()')
+      state.info = ''
+      state.roster = ''
     }
   },
   actions: {

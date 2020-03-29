@@ -1,5 +1,5 @@
 <template lang="pug">
-  q-page.flex
+  q-page.flex(v-if="loaded")
     .row.q-gutter-md.full-width.justify-center.q-pt-lg(v-if="league.isActive")
       .div
         q-avatar(size="85px")
@@ -55,10 +55,17 @@ export default {
     'lite-draft-picks': LiteDraftPicks
   },
   data () {
-    return {}
+    return {
+      loaded: false
+    }
   },
-  mounted () {
-    this.$store.dispatch('user/refreshToken')
+  created () {
+    if (!this.league.isActive) {
+      this.$router.push('/about')
+    } else {
+      this.loaded = true
+    }
+    // this.$store.dispatch('user/refreshToken')
     // this.$store.dispatch('league/getDashboard')
   },
   computed: {

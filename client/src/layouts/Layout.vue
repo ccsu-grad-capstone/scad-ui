@@ -136,7 +136,6 @@ export default {
         await this.$store.dispatch('user/refreshToken')
         await this.$store.dispatch('user/updateUser')
       }
-
       if (this.$route.query) {
         history.pushState(null, '', location.href.split('?')[0])
       }
@@ -145,6 +144,9 @@ export default {
       console.log('[LAYOUT] - logout()')
       this.$cookies.keys().forEach(cookie => this.$cookies.remove(cookie))
       this.$store.commit('user/logoutUser')
+      this.$store.commit('league/logoutLeague')
+      this.$store.commit('team/logoutTeam')
+      this.$store.commit('player/logoutPlayer')
       // eslint-disable-next-line handle-callback-err
       this.$router.push('/').catch(error => {
         if (error.name !== 'NavigationDuplicated') {
