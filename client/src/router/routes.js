@@ -52,10 +52,10 @@ const routes = [
     }
   },
   {
-    path: '/free-agents',
+    path: '/players',
     component: () => import('../layouts/Layout.vue'),
     children: [
-      { path: '', component: () => import('../views/FreeAgents.vue') }
+      { path: '', component: () => import('../views/Players.vue') }
     ],
     meta: {
       requiresAuth: true,

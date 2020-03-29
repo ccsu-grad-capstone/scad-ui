@@ -1,6 +1,7 @@
 // import { notify } from '../../utilities/nofity'
 // import { scad } from '../../utilities/axiosScad'
 // import teamDetails from '../../data/teamDetails'
+import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
 
 export default {
   namespaced: true,
@@ -36,7 +37,7 @@ export default {
         //   .get(`/league/${rootState.league.leagueID}/team/${teamKey}/roster`)
         // console.log(res)
       } catch (err) {
-        console.log(err)
+        catchAxiosScadError(err)
       }
     }
   }

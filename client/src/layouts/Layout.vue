@@ -12,14 +12,9 @@
               | league.isActive
               q-toggle(v-model="league.isActive")
         .q-gutter-sm.row.items-center.no-wrap(v-if="tokens.access_token")
-          q-btn(v-if="$q.screen.gt.sm" round dense flat color="text-grey-7" icon="apps")
-            q-tooltip Google Apps
-          q-btn(round dense flat color="grey-8" icon="notifications")
-            q-badge(color="red" text-color="white" floating)
-              | 2
-            q-tooltip Notifications
-          q-btn(round flat)
-            q-avatar(size="26px")
+          .text-weight-bold.text-body1 Welcome, {{ user.user.givenName }}
+          q-btn(round flat @click="navigate('my-profile')")
+            q-avatar(size="40px")
               img(:src="getProfilePic()")
             q-tooltip Account
     q-drawer(v-if="this.loggedIn" v-model="leftDrawerOpen" show-if-above bordered content-class="bg-white" :width="230" elevated)
@@ -59,7 +54,7 @@ export default {
         { icon: 'dashboard', text: 'Dashboard', route: 'dashboard' },
         { icon: 'list', text: 'My Team', route: 'team:my-team' },
         { icon: 'ballot', text: 'Draft Picks', route: 'draft-picks' },
-        { icon: 'people', text: 'Free Agents', route: 'free-agents' },
+        { icon: 'people', text: 'Players', route: 'players' },
         { icon: 'home', text: 'League Home', route: 'league-home' },
         {
           icon: 'settings_applications',
@@ -135,6 +130,7 @@ export default {
         await this.$store.commit('user/updateTokens', tokens)
         await this.$store.dispatch('user/refreshToken')
         await this.$store.dispatch('user/updateUser')
+        await this.$store.dispatch('user/loginToScad')
       }
       if (this.$route.query) {
         history.pushState(null, '', location.href.split('?')[0])

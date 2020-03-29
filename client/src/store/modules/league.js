@@ -1,6 +1,7 @@
 // import { notify } from '../../utilities/nofity'
 import { scad } from '../../utilities/axiosScad'
 // import leagueSettings from '../../data/leagueSettings'
+import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
 
 export default {
   namespaced: true,
@@ -128,7 +129,7 @@ export default {
         console.log('POST response scadleague: ', res)
         // commit('updateLeague', { league: league })
       } catch (err) {
-        console.log(err)
+        catchAxiosScadError(err)
       }
     },
 
@@ -136,6 +137,21 @@ export default {
     //   console.log('[LEAGUE-ACTION] - emailLeagueMembers()')
     //   scad.post()
     // },
+
+    async getScadSettings ({ rootState, state, commit }) {
+      console.log('[LEAGUE-ACTION] - getScadSettings()')
+      try {
+        const res = await scad(
+          rootState.user.tokens.access_token,
+          rootState.user.tokens.id_token)
+          .get(`/scadleague/1`)
+          // .get(`/scadleague/default`)
+        console.log('settings: ', res)
+        commit('updateScadSettings', res.data)
+      } catch (err) {
+        catchAxiosScadError(err)
+      }
+    },
 
     async getAllYahooLeagues ({ rootState, commit }) {
       console.log('[LEAGUE-ACTION] - getAllYahooLeagues()')
@@ -147,7 +163,7 @@ export default {
         // console.log('leagues: ', res)
         commit('updateYahooLeagues', res.data.leagues)
       } catch (err) {
-        console.log(err)
+        catchAxiosScadError(err)
       }
     }
   }

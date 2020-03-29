@@ -1,9 +1,8 @@
-// import { notify } from '../../utilities/nofity'
+import Vue from 'vue'
 import { scad } from '../../utilities/axiosScad'
 import axios from 'axios'
 import { server } from '../../utilities/axios-server'
-import Vue from 'vue'
-import notify from '../../utilities/nofity'
+import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
 
 export default {
   namespaced: true,
@@ -67,7 +66,7 @@ export default {
           console.log(response.data)
         })
         .catch(error => {
-          console.log(error.response.data)
+          catchAxiosScadError(error)
         })
     },
 
@@ -80,7 +79,7 @@ export default {
           commit('refreshToken', response.data)
         })
         .catch(error => {
-          console.log(error)
+          catchAxiosScadError(error)
         })
     },
     async updateUser ({ state, commit }) {
@@ -92,14 +91,7 @@ export default {
           .get('/user')
         commit('updateUser', res.data)
       } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-          notify.serverIssue(error.response.status, error.message)
-        } else if (error.request) {
-          console.log(error.request)
-        } else {
-          console.log('Error', error.message)
-        }
+        catchAxiosScadError(error)
       }
     },
 
@@ -148,31 +140,8 @@ export default {
           .get(`/league/all`)
         // console.log('leagues: ', res)
         commit('updateYahooLeagues', yahooleagues.data.leagues)
-      } catch (error) {
-        if (error.response) {
-          /*
-           * The request was made and the server responded with a
-           * status code that falls out of the range of 2xx
-           */
-          console.log(error.response)
-          notify.serverIssue(error.response.status, error.message)
-          // console.log(error.response.data)
-          // console.log(error.response.status)
-          // console.log(error.response.headers)
-          // console.log(error.message)
-          // console.log(error.request)
-        } else if (error.request) {
-          /*
-           * The request was made but no response was received, `error.request`
-           * is an instance of XMLHttpRequest in the browser and an instance
-           * of http.ClientRequest in Node.js
-           */
-          console.log(error.request)
-        } else {
-          // Something happened in setting up the request and triggered an Error
-          console.log('Error', error.message)
-        }
-        console.log(error)
+      } catch (err) {
+        catchAxiosScadError(err)
       }
     }
   }
