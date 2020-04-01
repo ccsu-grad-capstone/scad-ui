@@ -11,19 +11,24 @@ function middleware(req, res, next) {
 function router() {
   draftPicksRouter.use(middleware)
 
-  function getAllByLeague (req, res) {
-    const { league } = req.query
+  async function getAllByLeague (req, res) {
+    const { leagueID } = req.params
+    debug(leagueID)
     debug('getAllByLeague')
     try {
-      draftPicks.getAllByLeague(league)
+      const result = await draftPicks.getAllByLeague(leagueID)
+      res.json({
+        data: result
+      })
+      
     } catch (error) {
       console.log(error)
     }
   }
 
   function create (req, res) {
-    const dp = req.body
-    debug('create: ', dp)
+    debug('create')
+    const dp = req.body.data
     if (dp) {
       try {
         draftPicks.create(dp)
@@ -34,7 +39,7 @@ function router() {
   }
 
   function update (req, res) {
-    const { id } = req.query
+    const { id } = req.params
     debug('update')
     try {
       draftPicks.update(id)
@@ -44,7 +49,7 @@ function router() {
   }
 
   function remove (req, res) {
-    const { id } = req.query
+    const { id } = req.params
     debug('remove')
     try {
       draftPicks.remove(id)
@@ -53,9 +58,9 @@ function router() {
     }
   }
 
-  draftPicksRouter.get('/:league', getAllByLeague)
+  draftPicksRouter.get('/:leagueID', getAllByLeague)
   draftPicksRouter.post('/create', create)
-  draftPicksRouter.post('/update:id', update)
+  draftPicksRouter.put('/:id', update)
   draftPicksRouter.delete('/remove:id', remove)
 
   return draftPicksRouter

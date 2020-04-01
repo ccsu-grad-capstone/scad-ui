@@ -8,6 +8,7 @@ const passport = require('passport')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const cors = require('cors')
+const mongoose = require('mongoose')
 
 const authRouter = require('./routes/authRouter')
 const draftPicks = require('./routes/draftPicks-route')
@@ -15,15 +16,11 @@ const draftPicks = require('./routes/draftPicks-route')
 const app = express()
 const port = process.env.PORT || 4000
 
-const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://admin:scad1234@cluster0-ugtb0.mongodb.net/test?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useNewUrlParser: true });
-
-client.connect(err => {
-  const collection = client.db("test").collection("devices");
-  // perform actions on the collection object
-  client.close();
-});
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connection.on('connected', () => debug('Successfully connected to database..'))
+mongoose.connection.on('disconnected', () => debug('Database disconnected..'))
+mongoose.connection.on('error', () => debug('Could not connect to database'))
 
 
 app.use(cors())

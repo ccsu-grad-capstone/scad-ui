@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const DraftPickSchema = new Schema({
-  scadLeagueID: { type: String, required: true },
+  yahooLeagueID: { type: String, required: true },
   ownerID: { type: Number, required: true },
   originalOwnerID: { type: Number, required: true },
   year: { type: Number, required: true },

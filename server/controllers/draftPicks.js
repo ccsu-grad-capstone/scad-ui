@@ -1,24 +1,43 @@
 const debug = require('debug')('app:draftPicksController')
 
-function draftPicks() {
+const DraftPick = require('../models/DraftPick')
 
-  async function getAllByLeague (league) {
-    debug(leage)
-  }
 
-  async function create (dp) {
-    debug(dp)
+async function getAllByLeague (leagueID) {
+  debug('Getting all draft picks by league: ', )
+  try {
+    return await DraftPick.find( {scadLeagueID: leagueID} ).sort( { ownerID: 1 } )
+  } catch (error) {
+    debug(error)
   }
-  
-  async function update (id, dp) {
-    debug(dp)
-  }
-  
-  async function remove (id) {
-    debug(id)
-  }
-
-  return { create, update, remove, getAllByLeague }
 }
 
-module.exports = draftPicks()
+async function create (dp) {
+  debug('Creating new DraftPick')
+  try {
+    return new DraftPick(dp).save()
+  } catch (error) {
+    debug(error)
+  }
+}
+
+async function update (id, dp) {
+  debug('Updating DraftPick: ', id)
+  try {
+    return new DraftPick(dp).save()
+  } catch (error) {
+    debug(error)
+  }
+}
+
+async function remove (id) {
+  debug('Removing DraftPick: ', id)
+  try {
+    return new DraftPick(dp).save()
+  } catch (error) {
+    debug(error)
+  }
+}
+
+
+module.exports = { getAllByLeague, create, update, remove }
