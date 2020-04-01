@@ -26,6 +26,7 @@ app.set('views', './views')
 app.set('view engine', 'ejs')
 
 app.use('/auth', authRouter)
+app.use('/draftPicks', authRouter)
 
 app.get('/', (req, res) => {
   res.redirect('http://localhost:8081/about')
