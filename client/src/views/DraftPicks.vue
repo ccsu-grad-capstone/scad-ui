@@ -1,6 +1,7 @@
 <template lang="pug">
   .q-pa-md
     .text-h4.text-weight-bolder Draft Picks
+    q-btn.q-mr-sm(dense @click="tester" label="TEST")
     .row.q-gutter-lg.q-pt-lg
       div
         .text-body1.text-weight-bold 2020 Round 1
@@ -378,9 +379,30 @@
 </template>
 
 <script>
-export default {
-  name: 'DraftPicks'
+import { server } from '../utilities/axios-server'
+import { catchAxiosScadError } from '../utilities/catchAxiosErrors'
 
+export default {
+  name: 'DraftPicks',
+  data () {
+    return {
+      user () {
+        return this.$store.state.user
+      }
+    }
+  },
+  computed: {
+
+  },
+  methods: {
+    async tester () {
+      try {
+        await server.post('/draftPicks/create', { data: 'DRAFT PICK DETAILS' })
+      } catch (error) {
+        catchAxiosScadError(error)
+      }
+    }
+  }
 }
 </script>
 
