@@ -6,13 +6,13 @@
       .row.full-width.justify-center
           .row.full-width.q-gutter-sm.q-pa-sm
             .col-2
-              q-select( filled dense label="Team" stack-label v-model='filter.team')
+              q-select( filled dense label="Owner" stack-label v-model='filter.team' :options='filteredTeams')
             .col-2
-              q-select( filled dense label="Year" stack-label v-model='filter.year')
+              q-select( filled dense label="Year" stack-label v-model='filter.year' :options='referenceData.years')
             .col-2
-              q-select( filled dense label="Round" stack-label v-model='filter.rd')
+              q-select( filled dense label="Round" stack-label v-model='filter.rd' :options='referenceData.rounds')
             div.q-gutter-sm
-              q-btn.q-pa-xs(label='Filter' dense color='primary' text-color='white' size='sm' @click="")
+              q-btn.q-pa-xs(label='Clear' dense color='primary' text-color='white' size='sm' @click="clearFilter")
 
     .row.full-width.q-pa-md
       div(style="width: 75%")
@@ -24,11 +24,19 @@
           hide-bottom,
           dense,
         )
+          //- template(v-slot:body='props')
+          //-   q-tr(:props='props')
+          //-     q-td(auto-width)
+          //-       q-btn(size='xs' color='accent' round dense @click='editPick' icon="edit")
+          //-     q-td(v-for='col in props.cols' :key='col.name' :props='props')
+          //-       | {{ col.value }}
+
 </template>
 
 <script>
 import { server } from '../utilities/axios-server'
 import { catchAxiosScadError } from '../utilities/catchAxiosErrors'
+import referenceData from '../utilities/referenceData'
 
 export default {
   name: 'DraftPicks',
@@ -44,6 +52,11 @@ export default {
         rowsPerPage: 0 // 0 means all rows
       },
       columns: [
+        // {
+        //   name: 'edit',
+        //   label: '',
+        //   align: 'left'
+        // },
         {
           name: 'year',
           required: true,
@@ -119,26 +132,43 @@ export default {
     },
     leagueID () {
       return this.$store.state.league.yahooLeagueID
+    },
+    referenceData () {
+      return referenceData
+    },
+    filteredTeams () {
+      return this.teams.map(t => Object.assign({}, t, { value: t.name, label: t.name }))
     }
   },
   methods: {
     async getDraftPicks () {
       this.$store.dispatch('draftPicks/getDraftPicksByLeague', this.leagueID)
     },
+    displayTeam () {
+
+    },
     filteredPicks () {
       var filtered = this.draftPicks
       Object.keys(this.filter).forEach(key => {
         if (this.filter[key] !== '') {
-          filtered = filtered.filter(dp => dp[key] === this.filter[key])
+          if (key === 'team') {
+            console.log('**************')
+            filtered = filtered.filter(dp => dp.teamName === this.filter.team.name)
+          } else {
+            filtered = filtered.filter(dp => dp[key] === this.filter[key])
+          }
         }
       })
       return filtered
     },
+    clearFilter () {
+      this.filter.team = ''
+      this.filter.year = ''
+      this.filter.rd = ''
+    },
     async tester () {
-      let rounds = [1, 2, 3]
-      let years = [2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030]
-      years.forEach(y => {
-        rounds.forEach(r => {
+      referenceData.years.forEach(y => {
+        referenceData.rounds.forEach(r => {
           this.teams.forEach(async t => {
             let draftPick = {
               yahooLeagueID: this.leagueID,
