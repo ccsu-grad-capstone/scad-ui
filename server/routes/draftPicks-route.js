@@ -40,9 +40,10 @@ function router() {
 
   function update (req, res) {
     const { id } = req.params
+    const dp = req.body.data
     debug('update')
     try {
-      draftPicks.update(id)
+      draftPicks.update(id, dp)
       res.send('Draft Pick updated successfully')
     } catch (error) {
       console.log(error)

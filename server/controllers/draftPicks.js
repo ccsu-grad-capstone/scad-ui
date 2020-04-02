@@ -6,7 +6,7 @@ const DraftPick = require('../models/DraftPick')
 async function getAllByLeague (leagueID) {
   debug('Getting all draft picks by league: ', )
   try {
-    return await DraftPick.find( {yahooLeagueID: leagueID} ).sort( { ownerID: 1 } )
+    return await DraftPick.find( {yahooLeagueID: leagueID} ).sort( { year: 1 } )
   } catch (error) {
     debug(error)
   }
@@ -24,7 +24,7 @@ async function create (dp) {
 async function update (id, dp) {
   debug('Updating DraftPick: ', id)
   try {
-    return new DraftPick(dp).save()
+    return DraftPick.findByIdAndUpdate(id, dp, { new: true, runValidators: true }).exec()
   } catch (error) {
     debug(error)
   }

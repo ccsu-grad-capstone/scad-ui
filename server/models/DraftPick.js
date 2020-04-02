@@ -3,13 +3,14 @@ const Schema = mongoose.Schema;
 
 const DraftPickSchema = new Schema({
   yahooLeagueID: { type: String, required: true },
-  ownerID: { type: Number, required: true },
-  originalOwnerID: { type: Number, required: true },
   year: { type: Number, required: true },
   rd: { type: Number, required: true },
   pick: { type: Number },
   salary: { type: Number },
-  playerID: { type: Number}
+  team: {type: Object },
+  originalTeam: {type: Object},
+  player: { type: Number}, 
+  comments: { type: String}
 });
 
 const DraftPick = mongoose.model("DraftPick", DraftPickSchema);

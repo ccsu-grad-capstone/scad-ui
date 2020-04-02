@@ -1,6 +1,14 @@
 import { Notify } from 'quasar'
 
 export default {
+  saveSuccessful (message) {
+    Notify.create({
+      message: `${message}`,
+      position: 'top',
+      color: 'green',
+      icon: 'check'
+    })
+  },
   loginFailed () {
     Notify.create({
       message: 'Login Failed',

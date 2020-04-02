@@ -19,18 +19,32 @@
         q-table(
           :data='filteredPicks()',
           :columns='columns',
-          row-key= 'player_key',
+          row-key= '_id',
           :pagination.sync="pagination",
           hide-bottom,
           dense,
         )
-          //- template(v-slot:body='props')
-          //-   q-tr(:props='props')
-          //-     q-td(auto-width)
-          //-       q-btn(size='xs' color='accent' round dense @click='editPick' icon="edit")
-          //-     q-td(v-for='col in props.cols' :key='col.name' :props='props')
-          //-       | {{ col.value }}
+          template(v-slot:body-cell-edit='props')
+            q-td(:props='props' auto-width)
+              q-btn(size='xs' color='accent' round dense @click='editPick(props.row)' icon="edit")
+    q-dialog(v-if="edit.visable" v-model='edit.visable')
+      q-card(style="width: 500px; max-width: 80vw;")
+        q-card-section.row
+          .col.text-center.text-h5.text-weight-bolder  {{ edit.dp.year }} - {{ outputRound(edit.dp.rd) }} Round
+        q-card-section.row.items-center
+          .row.full-width
+            .col-4.text-body.text-right.text-weight-bold.q-ma-sm Pick:
+            .col-6.q-ma-sm {{displayPick()}}
+          .row.full-width
+            .col-4.text-body.text-right.text-weight-bold.q-ma-sm Owner:
+            .col-6.q-pl-sm: q-select(dense v-model='edit.dp.team.name' :options='filteredTeams')
+          .row.full-width.q-mt-sm
+            .col-4.text-body.text-right.text-weight-bold.q-ma-sm Original Owner:
+            .col-6.q-ma-sm.text-grey {{edit.dp.originalTeam.name}}
 
+        q-card-actions.row.justify-around
+          q-btn(flat label='Cancel' color='primary' @click="edit.visable = false")
+          q-btn(flat label='Save' color='primary' @click="savePick()")
 </template>
 
 <script>
@@ -42,6 +56,10 @@ export default {
   name: 'DraftPicks',
   data () {
     return {
+      edit: {
+        visable: false,
+        dp: {}
+      },
       filter: {
         team: '',
         year: '',
@@ -52,11 +70,11 @@ export default {
         rowsPerPage: 0 // 0 means all rows
       },
       columns: [
-        // {
-        //   name: 'edit',
-        //   label: '',
-        //   align: 'left'
-        // },
+        {
+          name: 'edit',
+          label: '',
+          align: 'left'
+        },
         {
           name: 'year',
           required: true,
@@ -89,7 +107,7 @@ export default {
             if (val !== undefined) {
               return `${val}`
             } else {
-              return ''
+              return '-'
             }
           },
           sortable: true
@@ -97,19 +115,19 @@ export default {
           // // style: 'max-width: 100px'
         },
         {
-          name: 'teamName',
+          name: 'owner',
           required: true,
           label: 'Owner:',
           align: 'left',
-          field: row => row.teamName,
+          field: row => row.team.name,
           format: val => `${val}`
         },
         {
-          name: 'originalTeamOwner',
+          name: 'originalOwner',
           required: true,
           label: 'Original Owner',
           align: 'left',
-          field: row => row.originalTeamName,
+          field: row => row.originalTeam.name,
           format: val => `${val}`,
           style: 'color: grey'
 
@@ -144,8 +162,33 @@ export default {
     async getDraftPicks () {
       this.$store.dispatch('draftPicks/getDraftPicksByLeague', this.leagueID)
     },
-    displayTeam () {
-
+    editPick (dp) {
+      this.edit.visable = true
+      this.edit.dp = dp
+      console.log('dp: ', dp)
+    },
+    async savePick () {
+      console.log('[DRAFTPICK] Method - savePick()')
+      await this.$store.dispatch('draftPicks/saveDraftPick', this.edit.dp)
+      this.edit.visable = false
+    },
+    displayPick () {
+      if (this.edit.dp.pick) {
+        return this.edit.dp.pick
+      } else {
+        return '-'
+      }
+    },
+    outputRound (rd) {
+      if (rd === 1) {
+        return '1st'
+      } else if (rd === 2) {
+        return '2nd'
+      } else if (rd === 3) {
+        return '3rd'
+      } else if (rd === 4) {
+        return '4th'
+      }
     },
     filteredPicks () {
       var filtered = this.draftPicks
@@ -153,7 +196,7 @@ export default {
         if (this.filter[key] !== '') {
           if (key === 'team') {
             console.log('**************')
-            filtered = filtered.filter(dp => dp.teamName === this.filter.team.name)
+            filtered = filtered.filter(dp => dp.team.name === this.filter.team.name)
           } else {
             filtered = filtered.filter(dp => dp[key] === this.filter[key])
           }
@@ -172,13 +215,13 @@ export default {
           this.teams.forEach(async t => {
             let draftPick = {
               yahooLeagueID: this.leagueID,
-              ownerID: t.team_id,
-              originalOwnerID: t.team_id,
               year: y,
               rd: r,
               pick: undefined,
               salary: undefined,
-              playerID: undefined
+              playerID: undefined,
+              team: t,
+              originalTeam: t
             }
             try {
               await server.post('/draftPicks/create', { data: draftPick })
