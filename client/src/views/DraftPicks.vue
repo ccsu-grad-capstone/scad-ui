@@ -15,7 +15,7 @@
               q-btn.q-pa-xs(label='Clear' dense color='primary' text-color='white' size='sm' @click="clearFilter")
 
     .row.full-width.q-pa-md
-      div(style="width: 75%")
+      div(style="width:100%")
         q-table(
           :data='filteredPicks()',
           :columns='columns',
@@ -25,23 +25,40 @@
           dense,
         )
           template(v-slot:body-cell-edit='props')
-            q-td(:props='props' auto-width)
+            q-td.q-pr-md(:props='props' auto-width)
               q-btn(size='xs' color='accent' round dense @click='editPick(props.row)' icon="edit")
+          template(v-slot:body-cell-year='props')
+            q-td(:props='props' auto-width)
+              | {{ props.row.year }}
+          template(v-slot:body-cell-rd='props')
+            q-td(:props='props' auto-width)
+              | {{ props.row.rd }}
+          template(v-slot:body-cell-pick='props')
+            q-td(:props='props' auto-width)
+              | {{ props.row.pick }}
+          template(v-slot:body-cell-owner='props')
+            q-td(:props='props')
+              | {{ props.row.team.name }}
+          template(v-slot:body-cell-originalOwner='props')
+            q-td(:props='props' auto-width)
+              | {{ props.row.originalTeam.name }}
     q-dialog(v-if="edit.visable" v-model='edit.visable')
       q-card(style="width: 500px; max-width: 80vw;")
         q-card-section.row
           .col.text-center.text-h5.text-weight-bolder  {{ edit.dp.year }} - {{ outputRound(edit.dp.rd) }} Round
         q-card-section.row.items-center
           .row.full-width
-            .col-4.text-body.text-right.text-weight-bold.q-ma-sm Pick:
-            .col-6.q-ma-sm {{displayPick()}}
+            .col-3.text-body.text-right.text-weight-bold.q-ma-sm Pick:
+            .col-3.q-pl-sm: q-select(dense v-model='edit.dp.pick' :options='referenceData.twelveTeams')
           .row.full-width
-            .col-4.text-body.text-right.text-weight-bold.q-ma-sm Owner:
-            .col-6.q-pl-sm: q-select(dense v-model='edit.dp.team.name' :options='filteredTeams')
+            .col-3.text-body.text-right.text-weight-bold.q-ma-sm Owner:
+            .col.q-pl-sm: q-select(dense v-model='edit.dp.team' :options='filteredTeams')
           .row.full-width.q-mt-sm
-            .col-4.text-body.text-right.text-weight-bold.q-ma-sm Original Owner:
-            .col-6.q-ma-sm.text-grey {{edit.dp.originalTeam.name}}
-
+            .col-3.text-body.text-right.text-weight-bold.q-ma-sm Original Owner:
+            .col.q-ma-sm.text-grey {{edit.dp.originalTeam.name}}
+          .row.full-width.q-mt-sm
+            .col-3.text-body.text-right.text-weight-bold.q-ma-sm Comments:
+            .col.q-ma-sm.text-grey: q-input(v-model='edit.dp.comments' filled type='textarea')
         q-card-actions.row.justify-around
           q-btn(flat label='Cancel' color='primary' @click="edit.visable = false")
           q-btn(flat label='Save' color='primary' @click="savePick()")
@@ -93,8 +110,7 @@ export default {
           align: 'center',
           sortable: false,
           field: row => row.rd,
-          format: val => `${val}`,
-          style: 'max-width: 150px'
+          format: val => `${val}`
           // headerClasses: 'bg-grey-3'
         },
         {
@@ -119,6 +135,7 @@ export default {
           required: true,
           label: 'Owner:',
           align: 'left',
+          style: 'width: 200px',
           field: row => row.team.name,
           format: val => `${val}`
         },
@@ -127,7 +144,15 @@ export default {
           required: true,
           label: 'Original Owner',
           align: 'left',
+          style: 'color: grey; width: 200px',
           field: row => row.originalTeam.name,
+          format: val => `${val}`
+        },
+        {
+          name: 'comments',
+          label: 'Comments',
+          align: 'left',
+          field: row => row.comments,
           format: val => `${val}`,
           style: 'color: grey'
 
@@ -165,7 +190,6 @@ export default {
     editPick (dp) {
       this.edit.visable = true
       this.edit.dp = dp
-      console.log('dp: ', dp)
     },
     async savePick () {
       console.log('[DRAFTPICK] Method - savePick()')
@@ -195,7 +219,6 @@ export default {
       Object.keys(this.filter).forEach(key => {
         if (this.filter[key] !== '') {
           if (key === 'team') {
-            console.log('**************')
             filtered = filtered.filter(dp => dp.team.name === this.filter.team.name)
           } else {
             filtered = filtered.filter(dp => dp[key] === this.filter[key])
@@ -221,7 +244,8 @@ export default {
               salary: undefined,
               playerID: undefined,
               team: t,
-              originalTeam: t
+              originalTeam: t,
+              comments: ''
             }
             try {
               await server.post('/draftPicks/create', { data: draftPick })
