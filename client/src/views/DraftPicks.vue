@@ -2,8 +2,8 @@
   .q-pa-md
     .row.q-gutter-md.q-pa-md
       .text-h4.text-weight-bolder Draft Picks
-      .row.full-width.justify-right
-        div(style="width: 100%")
+      q-btn.q-mr-sm(dense @click="tester" size='sm' label="UPLOAD")
+      .row.full-width.justify-center
           .row.full-width.q-gutter-sm.q-pa-sm
             .col-2
               q-select( filled dense label="Team" stack-label v-model='filter.team')
@@ -13,10 +13,9 @@
               q-select( filled dense label="Round" stack-label v-model='filter.rd')
             div.q-gutter-sm
               q-btn.q-pa-xs(label='Filter' dense color='primary' text-color='white' size='sm' @click="")
-    q-btn.q-mr-sm(dense @click="tester" label="TEST")
 
-    .row.q-gutter-lg.q-pt-lg
-      div
+    .row.full-width.q-pa-md
+      div(style="width: 75%")
         q-table(
           :data='filteredPicks()',
           :columns='columns',
@@ -24,7 +23,7 @@
           :pagination.sync="pagination",
           hide-bottom,
           dense,
-          )
+        )
 </template>
 
 <script>
@@ -85,16 +84,22 @@ export default {
           // // style: 'max-width: 100px'
         },
         {
-          name: 'team',
+          name: 'teamName',
           required: true,
-          label: 'Team:',
-          // align: 'right',
-          field: row => row.ownerID,
+          label: 'Owner:',
+          align: 'left',
+          field: row => row.teamName,
           format: val => `${val}`
-          // sortable: true,
-          // classes: 'bg-secondary ellipsis',
-          // style: 'max-width: 10px',
-          // headerClasses: 'bg-grey-3'
+        },
+        {
+          name: 'originalTeamOwner',
+          required: true,
+          label: 'Original Owner',
+          align: 'left',
+          field: row => row.originalTeamName,
+          format: val => `${val}`,
+          style: 'color: grey'
+
         }
       ]
     }
@@ -109,9 +114,11 @@ export default {
     draftPicks () {
       return this.$store.state.draftPicks.draftPicks
     },
+    teams () {
+      return this.$store.state.league.teams
+    },
     leagueID () {
-      return '23489'
-      // return this.$store.state.league.yahooLeagueID
+      return this.$store.state.league.yahooLeagueID
     }
   },
   methods: {
@@ -128,24 +135,28 @@ export default {
       return filtered
     },
     async tester () {
-      let teams = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-      // let rounds = [1, 2, 3]
-      teams.forEach(async t => {
-        let draftPick = {
-          yahooLeagueID: '23489',
-          ownerID: t,
-          originalOwnerID: t,
-          year: 2020,
-          rd: 1,
-          pick: undefined,
-          salary: undefined,
-          playerID: undefined
-        }
-        try {
-          await server.post('/draftPicks/create', { data: draftPick })
-        } catch (error) {
-          catchAxiosScadError(error)
-        }
+      let rounds = [1, 2, 3]
+      let years = [2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030]
+      years.forEach(y => {
+        rounds.forEach(r => {
+          this.teams.forEach(async t => {
+            let draftPick = {
+              yahooLeagueID: this.leagueID,
+              ownerID: t.team_id,
+              originalOwnerID: t.team_id,
+              year: y,
+              rd: r,
+              pick: undefined,
+              salary: undefined,
+              playerID: undefined
+            }
+            try {
+              await server.post('/draftPicks/create', { data: draftPick })
+            } catch (error) {
+              catchAxiosScadError(error)
+            }
+          })
+        })
       })
     }
   }

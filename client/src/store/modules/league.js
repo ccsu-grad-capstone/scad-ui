@@ -6,9 +6,9 @@ import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
 export default {
   namespaced: true,
   state: {
-    isActive: false,
+    isActive: true,
     key: '',
-    yahooLeagueID: '',
+    yahooLeagueID: '22351',
     scadLeagueID: '',
     yahooLeague: {},
     yahooSettings: {},

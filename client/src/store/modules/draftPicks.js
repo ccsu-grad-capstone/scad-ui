@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 // import { notify } from '../../utilities/nofity'
 // import { scad } from '../../utilities/axios-scad'
 // import leagueStandings from '../../data/leagueStandings'
@@ -22,10 +23,18 @@ export default {
   },
 
   actions: {
-    async getDraftPicksByLeague ({ commit, state }, leagueID) {
+    async getDraftPicksByLeague ({ commit, state, rootState }, leagueID) {
       try {
         const response = await server.get(`/draftPicks/${leagueID}`)
-        commit('updateDraftPicks', { dp: response.data.data })
+        var draftPicks = response.data.data
+        var teams = rootState.league.teams
+        draftPicks.forEach(dp => {
+          let team = teams.find(t => t.team_id == dp.ownerID)
+          let original = teams.find(t => t.team_id == dp.originalOwnerID)
+          dp.teamName = team.name
+          dp.originalTeamName = original.name
+        })
+        commit('updateDraftPicks', { dp: draftPicks })
       } catch (error) {
         catchAxiosScadError(error)
       }

@@ -99,9 +99,9 @@ export default {
         this.$router.push({
           path: nav
         }).catch(error => {
-          // if (error.name !== 'NavigationDuplicated') {
-          throw error
-          // }
+          if (error.name !== 'NavigationDuplicated') {
+            throw error
+          }
         })
       }
     },

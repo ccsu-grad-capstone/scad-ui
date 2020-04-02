@@ -14,7 +14,6 @@ function router() {
   async function getAllByLeague (req, res) {
     const { leagueID } = req.params
     debug(leagueID)
-    debug('getAllByLeague')
     try {
       const result = await draftPicks.getAllByLeague(leagueID)
       res.json({
@@ -32,6 +31,7 @@ function router() {
     if (dp) {
       try {
         draftPicks.create(dp)
+        res.send('Draft Pick Created successfully')
       } catch (error) {
         console.log(error)
       }
@@ -43,6 +43,7 @@ function router() {
     debug('update')
     try {
       draftPicks.update(id)
+      res.send('Draft Pick updated successfully')
     } catch (error) {
       console.log(error)
     }
@@ -53,6 +54,8 @@ function router() {
     debug('remove')
     try {
       draftPicks.remove(id)
+      res.send('Draft Pick removed successfully')
+
     } catch (error) {
       console.log(error)
     }
