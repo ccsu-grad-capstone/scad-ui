@@ -18,12 +18,15 @@ export default {
 
   mutations: {
     updateDraftPicks (state, { dp }) {
+      console.log('[DRAFTPICK-MUTATION] - updateDraftPicks()')
+
       state.draftPicks = dp
     }
   },
 
   actions: {
     async getDraftPicksByLeague ({ commit, state, rootState }, leagueID) {
+      console.log('[DRAFTPICK-ACTION] - getDraftPicksByLeague()')
       try {
         const response = await server.get(`/draftPicks/${leagueID}`)
         commit('updateDraftPicks', { dp: response.data.data })
@@ -31,12 +34,12 @@ export default {
         catchAxiosScadError(error)
       }
     },
-    async saveDraftPick ({ state }, dp) {
-      console.log('[DRAFTPICK-MUTATION] - saveDraftPick()')
-      console.log('save dp: ', dp)
+    async saveDraftPick ({ dispatch }, dp) {
+      console.log('[DRAFTPICK-ACTION] - saveDraftPick()')
       try {
         const response = await server.put(`/draftPicks/${dp._id}`, { data: dp })
         notify.saveSuccessful(response.data)
+        await dispatch('getDraftPicksByLeague', dp.yahooLeagueID)
       } catch (error) {
         catchAxiosScadError(error)
       }

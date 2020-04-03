@@ -190,11 +190,12 @@ export default {
     editPick (dp) {
       this.edit.visable = true
       this.edit.dp = dp
+      console.log(dp)
     },
     async savePick () {
       console.log('[DRAFTPICK] Method - savePick()')
-      await this.$store.dispatch('draftPicks/saveDraftPick', this.edit.dp)
       this.edit.visable = false
+      await this.$store.dispatch('draftPicks/saveDraftPick', this.edit.dp)
     },
     displayPick () {
       if (this.edit.dp.pick) {
