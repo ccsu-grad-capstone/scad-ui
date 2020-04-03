@@ -31,7 +31,7 @@ export default {
 
   mutations: {
     logoutUser (state) {
-      console.log('[USER-MUTATION] - logoutUser()')
+      // console.log('[USER-MUTATION] - logoutUser()')
       state.user = {}
       state.isAdmin = false
       state.active = false
@@ -40,18 +40,18 @@ export default {
       state.tokens.id_token = ''
     },
     updateTokens (state, tokens) {
-      console.log('[USER-MUTATION] - updateTokens()')
+      // console.log('[USER-MUTATION] - updateTokens()')
       state.tokens.access_token = tokens.access_token
       state.tokens.refresh_token = tokens.refresh_token
       state.tokens.id_token = tokens.id_token
     },
     refreshToken (state, tokens) {
-      console.log('[USER-MUTATION] - refreshToken()')
+      // console.log('[USER-MUTATION] - refreshToken()')
       state.tokens.access_token = tokens.access_token
       state.tokens.refresh_token = tokens.refresh_token
     },
     updateUser (state, user) {
-      console.log('[USER-MUTATION] - updateUser()')
+      // console.log('[USER-MUTATION] - updateUser()')
       state.user = user
       state.active = true
     }
@@ -103,22 +103,27 @@ export default {
           state.tokens.id_token)
           .get(`/dashboard/details`)
         console.log('DASHBOARD: ', dashboard)
-        commit('league/updateScadSettings', dashboard.data.SCADLeague, { root: true })
-        commit('league/updateYahooLeague', dashboard.data.YahooLeague, { root: true })
 
-        const scadleagues = await scad(
-          state.tokens.access_token,
-          state.tokens.id_token)
-          .get(`/scadleague/all`)
-        console.log('SCADLEAGUES: ', scadleagues)
-        commit('league/updateScadLeagues', scadleagues.data.scadLeagues, { root: true })
+        if (dashboard.data.key === 'league') {
+          commit('league/updateScadSettings', dashboard.data.SCADLeague, { root: true })
+          commit('league/updateYahooLeague', dashboard.data.YahooLeague, { root: true })
+        } else {
+          commit('league/dashboardRegister', dashboard.data, { root: true })
+        }
+
+        // const scadleagues = await scad(
+        //   state.tokens.access_token,
+        //   state.tokens.id_token)
+        //   .get(`/scadleague/all`)
+        // console.log('SCADLEAGUES: ', scadleagues)
+        // commit('league/updateScadLeagues', scadleagues.data.scadLeagues, { root: true })
 
         // const settings = await scad(
         //   state.tokens.access_token,
         //   state.tokens.id_token)
         //   .get(`/league/${22351}/settings`)
         // console.log('SETTINGS: ', settings)
-        // commit('league/updateYahooSettings', settings.data, { root: true })
+        // commit('league/updateYahooSettings', settings.data.settings[0], { root: true })
 
         // const teams = await scad(
         //   state.tokens.access_token,

@@ -115,7 +115,7 @@ export default {
     async persistState () {
       console.log('[LAYOUT] - persistState()')
 
-      console.log('[LAYOUT] - checkForTokens()')
+      // console.log('[LAYOUT] - checkForTokens()')
       if (this.$route.query.access_token) {
         console.log('New Tokens - Update Cookies w/ Tokens')
         this.$cookies.set('access_token', this.$route.query.access_token)
@@ -125,7 +125,7 @@ export default {
         console.log('No Tokens in Query Params..')
       }
 
-      console.log('[LAYOUT] - refreshStateWithCookies()')
+      // console.log('[LAYOUT] - refreshStateWithCookies()')
       if (this.$cookies.isKey('access_token') && !this.tokens.access_token) {
         console.log('Access_Token is stored in cookies but not in store - Refresh Token and Update Store')
         const tokens = {
@@ -170,7 +170,6 @@ export default {
       }
     },
     getProfilePic () {
-      console.log('[LAYOUT] - getProfilePic()')
       if (this.loaded) {
         return this.user.user.profileImages.image64
       }

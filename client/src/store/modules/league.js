@@ -6,24 +6,28 @@ import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
 export default {
   namespaced: true,
   state: {
-    isActive: true,
+    // General Info
+    isActive: false,
     key: '',
-    yahooLeagueID: '22351',
+    yahooCommishLeagues: [],
+
+    // If Active League Info (dashboard.key === 'league')
+    // yahooLeagueID: '22351',
+    yahooLeagueID: '',
     scadLeagueID: '',
     yahooLeague: {},
     yahooSettings: {},
     scadSettings: {},
-    teams: [],
     standings: [],
+    teams: [],
+
     scadLeagues: [],
     yahooLeagues: [] // to remove this when we have scad leagues we're allowed to register
   },
   mutations: {
     dashboard (state, dashboard) {
-      console.log('[LEAGUE-MUTATION] - dashboard()')
-      if (dashboard.key === 'league') {
-        state.isActive = true
-      }
+      // console.log('[LEAGUE-MUTATION] - dashboard()')
+      state.isActive = true
       state.key = dashboard.key
       state.yahooLeagueID = dashboard.YahooLeague.league_id
       state.scadLeagueID = dashboard.SCADLeague.id
@@ -33,35 +37,41 @@ export default {
       // state.standings = dashboard.???????
       // commit('team/updateTeam', dashboard.????????, { root: true })
     },
+    dashboardRegister (state, dashboard) {
+      // console.log('[LEAGUE-MUTATION] - dashboardRegister()')
+      state.isActive = false
+      state.key = dashboard.key
+      state.yahooCommishLeagues = dashboard.YahooLeagues
+    },
     updateYahooLeague (state, league) {
-      console.log('[LEAGUE-MUTATION] - updateYahooLeague()')
+      // console.log('[LEAGUE-MUTATION] - updateYahooLeague()')
       state.yahooLeague = league
       state.yahooLeagueID = league.league_id
     },
     updateYahooSettings (state, settings) {
-      console.log('[LEAGUE-MUTATION] - updateYahooSettings()')
+      // console.log('[LEAGUE-MUTATION] - updateYahooSettings()')
       state.yahooSettings = settings
     },
     updateScadSettings (state, settings) {
-      console.log('[LEAGUE-MUTATION] - updateScadSettings()')
+      // console.log('[LEAGUE-MUTATION] - updateScadSettings()')
       state.scadSettings = settings
       state.scadLeagueID = settings.id
     },
     updateTeams (state, teams) {
-      console.log('[LEAGUE-MUTATION] - updateTeams()')
+      // console.log('[LEAGUE-MUTATION] - updateTeams()')
       state.teams = teams
     },
     updateStandings (state, standings) {
-      console.log('[LEAGUE-MUTATION] - updateStandings()')
+      // console.log('[LEAGUE-MUTATION] - updateStandings()')
       state.standings = standings
     },
     updateScadLeagues (state, leagues) {
-      console.log('[LEAGUE-MUTATION] - updateStandings()')
+      // console.log('[LEAGUE-MUTATION] - updateStandings()')
       state.scadLeagues = leagues
     },
     // to remove this when we have scad leagues we're allowed to register
     updateYahooLeagues (state, leagues) {
-      console.log('[LEAGUE-MUTATION] - updateYahooLeagues()')
+      // console.log('[LEAGUE-MUTATION] - updateYahooLeagues()')
       state.yahooLeagues = leagues
     },
     leagueIsActiveToggle (state) {
