@@ -30,7 +30,7 @@ router.beforeEach((to, from, next) => {
         next()
         // else, no user, go to index to log in..
       } else {
-        next({ path: '/' })
+        next({ path: '/about' })
       }
       // else, there is an access_token..
     } else {

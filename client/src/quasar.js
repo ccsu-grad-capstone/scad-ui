@@ -47,7 +47,10 @@ import {
   QCheckbox,
   Loading,
   Notify,
-  QToggle
+  QToggle,
+  QInnerLoading,
+  QSpinnerGears,
+  QSkeleton
 
 } from 'quasar'
 
@@ -103,7 +106,10 @@ Vue.use(Quasar, {
     QTr,
     QCardActions,
     QCheckbox,
-    QToggle
+    QToggle,
+    QInnerLoading,
+    QSpinnerGears,
+    QSkeleton
   },
   directives: {
     Ripple

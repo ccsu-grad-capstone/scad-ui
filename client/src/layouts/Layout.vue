@@ -55,7 +55,7 @@ export default {
         { icon: 'list', text: 'My Team', route: 'team:my-team' },
         { icon: 'ballot', text: 'Draft Picks', route: 'draft-picks' },
         { icon: 'people', text: 'Players', route: 'players' },
-        { icon: 'home', text: 'League Home', route: 'league-home' },
+        // { icon: 'home', text: 'League Home', route: 'league-home' },
         {
           icon: 'settings_applications',
           text: 'League Settings',
@@ -99,9 +99,9 @@ export default {
         this.$router.push({
           path: nav
         }).catch(error => {
-          // if (error.name !== 'NavigationDuplicated') {
-          throw error
-          // }
+          if (error.name !== 'NavigationDuplicated') {
+            throw error
+          }
         })
       }
     },
