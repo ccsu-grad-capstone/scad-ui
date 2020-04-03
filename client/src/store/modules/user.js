@@ -95,16 +95,23 @@ export default {
       }
     },
 
-    async loginToScad ({ state, commit }) {
+    async loginToScad ({ state, commit, rootState }) {
       console.log('[USER-ACTION] - loginToScad()')
       try {
-        // const dashboard = await scad(
-        //   state.tokens.access_token,
-        //   state.tokens.id_token)
-        //   .get(`/dashboard/details`)
-        // console.log('DASHBOARD: ', dashboard)
-        // commit('league/updateScadSettings', dashboard.data.SCADLeague, { root: true })
-        // commit('league/updateYahooLeague', dashboard.data.YahooLeague, { root: true })
+        const dashboard = await scad(
+          state.tokens.access_token,
+          state.tokens.id_token)
+          .get(`/dashboard/details`)
+        console.log('DASHBOARD: ', dashboard)
+        commit('league/updateScadSettings', dashboard.data.SCADLeague, { root: true })
+        commit('league/updateYahooLeague', dashboard.data.YahooLeague, { root: true })
+
+        const scadleagues = await scad(
+          state.tokens.access_token,
+          state.tokens.id_token)
+          .get(`/scadleague/all`)
+        console.log('SCADLEAGUES: ', scadleagues)
+        commit('league/updateScadLeagues', scadleagues.data.scadLeagues, { root: true })
 
         // const settings = await scad(
         //   state.tokens.access_token,
@@ -116,17 +123,17 @@ export default {
         // const teams = await scad(
         //   state.tokens.access_token,
         //   state.tokens.id_token)
-        //   .get(`/league/${22351}/teams`)
+        //   .get(`/league/${rootState.league.yahooLeagueID}/teams`)
         // console.log('TEAMS: ', teams)
         // commit('league/updateTeams', teams.data.teams, { root: true })
 
-        const standings = await scad(
-          state.tokens.access_token,
-          state.tokens.id_token)
-          .get(`/league/${22351}/standings`)
-        console.log('STANDINGS: ', standings)
-        commit('league/updateStandings', standings.data.standings, { root: true })
-        commit('league/updateTeams', standings.data.standings, { root: true })
+        // const standings = await scad(
+        //   state.tokens.access_token,
+        //   state.tokens.id_token)
+        //   .get(`/league/${22351}/standings`)
+        // console.log('STANDINGS: ', standings)
+        // commit('league/updateStandings', standings.data.standings, { root: true })
+        // commit('league/updateTeams', standings.data.standings, { root: true })
 
         // const scadplayer = await scad(
         //   state.tokens.access_token,

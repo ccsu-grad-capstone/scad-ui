@@ -165,6 +165,19 @@ export default {
       } catch (err) {
         catchAxiosScadError(err)
       }
+    },
+
+    async switchLeagues ({ rootState, commit }, league) {
+      console.log('[LEAGUE-ACTION] - switchLeagues()')
+      commit('updateScadSettings', league)
+      try {
+        // const res = await scad(
+        //   rootState.user.tokens.access_token,
+        //   rootState.user.tokens.id_token)
+        //   .get(`/league/all`)
+      } catch (err) {
+        catchAxiosScadError(err)
+      }
     }
   }
 }

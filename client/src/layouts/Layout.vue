@@ -22,7 +22,7 @@
         q-list.text-grey-8(padding)
           q-item.justify-center
             .col
-              q-select( square dense v-model='activeLeague' label='League')
+              q-select( filled dense label="League" v-model='activeLeague' :options='filteredLeagues' @input="switchLeagues()")
           q-item.GNL__drawer-item(@click="navigate(link.route)" v-if="league.isActive" v-ripple v-for="link in hasLeagueLinks" :key="link.text" clickable)
             q-item-section(avatar)
               q-icon(:name="link.icon")
@@ -89,6 +89,12 @@ export default {
     },
     league () {
       return this.$store.state.league
+    },
+    scadLeagues () {
+      return this.league.scadLeagues
+    },
+    filteredLeagues () {
+      return this.scadLeagues.map(l => Object.assign({}, l, { value: l.yahooLeagueId, label: l.yahooLeagueId }))
     }
   },
   methods: {
@@ -149,6 +155,12 @@ export default {
           throw error
         }
       })
+    },
+    async switchLeagues () {
+      console.log('[LAYOUT] - switchLeagues()')
+      console.log(this.activeLeague)
+      await this.$store.dispatch('league/switchLeagues', this.activeLeague)
+      this.navigate('/dashboard')
     },
     iconNavigate () {
       if (this.loggedIn && this.league.isActive) {

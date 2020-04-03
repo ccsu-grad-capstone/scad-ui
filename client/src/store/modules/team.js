@@ -6,10 +6,8 @@ import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
 export default {
   namespaced: true,
   state: {
-    info: '',
-    roster: ''
-    // info: teamDetails.fantasy_content.team[0],
-    // roster: teamDetails.fantasy_content.team[1].roster
+    info: {},
+    roster: []
   },
   getters: {
 
