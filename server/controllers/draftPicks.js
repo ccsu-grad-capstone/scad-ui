@@ -6,7 +6,7 @@ const DraftPick = require('../models/DraftPick')
 async function getAllByLeague (leagueID) {
   debug('Getting all draft picks by league: ', )
   try {
-    return await DraftPick.find( {yahooLeagueID: leagueID} ).sort( { year: 1 } )
+    return await DraftPick.find( {yahooLeagueID: leagueID} ).sort( { year: 1 } ).limit(180)
   } catch (error) {
     debug(error)
   }

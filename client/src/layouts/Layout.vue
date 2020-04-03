@@ -34,7 +34,6 @@
               q-item-label
                 | {{ link.text }}
                 q-icon(v-if="link.icon" :name="link.icon")
-          | {{ myYahooTeamID }}
     q-page-container
       div
         router-view(v-if="loaded")

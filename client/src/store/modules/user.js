@@ -102,7 +102,7 @@ export default {
           state.tokens.access_token,
           state.tokens.id_token)
           .get(`/dashboard/details`)
-        console.log('DASHBOARD: ', dashboard)
+        console.log('DASHBOARD: ', dashboard.data)
 
         if (dashboard.data.key === 'league') {
           commit('league/updateScadSettings', dashboard.data.SCADLeague, { root: true })

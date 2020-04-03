@@ -133,8 +133,8 @@ export default {
           label: 'POS:',
           // align: 'right',
           field: row => row.display_position,
-          format: val => `${val}`
-          // sortable: true,
+          format: val => `${val}`,
+          sortable: true
           // classes: 'bg-secondary ellipsis',
           // style: 'max-width: 10px',
           // headerClasses: 'bg-grey-3'
@@ -164,8 +164,7 @@ export default {
     }
   },
   async created () {
-    console.log('[TEAM] - created()')
-    console.log(this.$route.params.team_id)
+    // console.log('[TEAM] - created()')
     await this.getTeam(this.$route.params.team_id)
   },
   computed: {

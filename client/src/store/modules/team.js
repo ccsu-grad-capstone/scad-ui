@@ -14,15 +14,19 @@ export default {
   },
 
   mutations: {
-    updateTeam (state, newTeam) {
-      console.log(`[TEAM-MUTATION] - updateTeam(${newTeam})`)
-      state.team.info = {}
-      state.team.roster = {}
+    updateTeam (state, data) {
+      // console.log(`[TEAM-MUTATION] - updateTeam(${newTeam})`)
+      state.team.info = data.info
+      state.team.roster = data.roster
     },
     logoutTeam (state) {
-      console.log('[TEAM-MUTATION] - logoutTeam()')
+      // console.log('[TEAM-MUTATION] - logoutTeam()')
       state.info = ''
       state.roster = ''
+    },
+    updateTeamRoster (state, roster) {
+      // console.log('[TEAM-MUTATION] - updateTeamRoster()')
+      state.roster = roster
     }
   },
   actions: {
@@ -33,7 +37,8 @@ export default {
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .get(`/league/${rootState.league.yahooLeagueID}/team/${yahooTeamID}/roster`)
-        console.log(res)
+        console.log('TEAM: ', res.data.roster.players)
+        commit('updateTeamRoster', res.data.roster.players)
       } catch (err) {
         catchAxiosScadError(err)
       }

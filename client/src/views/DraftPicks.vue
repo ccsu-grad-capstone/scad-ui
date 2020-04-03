@@ -21,7 +21,6 @@
           :columns='columns',
           row-key= '_id',
           :pagination.sync="pagination",
-          hide-bottom,
           dense,
         )
           template(v-slot:body-cell-edit='props')
@@ -52,7 +51,7 @@
             .col-3.q-pl-sm: q-select(dense v-model='edit.dp.pick' :options='referenceData.twelveTeams')
           .row.full-width
             .col-3.text-body.text-right.text-weight-bold.q-ma-sm Owner:
-            .col.q-pl-sm: q-select(dense v-model='edit.dp.team' :options='filteredTeams')
+            .col.q-pl-sm: q-select(dense v-model='edit.dp.team' :options='filteredTeams' :display-value='displayTeam()')
           .row.full-width.q-mt-sm
             .col-3.text-body.text-right.text-weight-bold.q-ma-sm Original Owner:
             .col.q-ma-sm.text-grey {{edit.dp.originalTeam.name}}
@@ -84,7 +83,7 @@ export default {
       },
       pagination: {
         page: 1,
-        rowsPerPage: 0 // 0 means all rows
+        rowsPerPage: 36 // 0 means all rows
       },
       columns: [
         {
@@ -190,7 +189,6 @@ export default {
     editPick (dp) {
       this.edit.visable = true
       this.edit.dp = dp
-      console.log(dp)
     },
     async savePick () {
       console.log('[DRAFTPICK] Method - savePick()')
@@ -203,6 +201,9 @@ export default {
       } else {
         return '-'
       }
+    },
+    displayTeam () {
+      return this.edit.dp.team.name
     },
     outputRound (rd) {
       if (rd === 1) {
