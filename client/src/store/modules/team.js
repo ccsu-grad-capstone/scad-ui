@@ -1,11 +1,11 @@
 // import { notify } from '../../utilities/nofity'
-// import { scad } from '../../utilities/axiosScad'
-// import teamDetails from '../../data/teamDetails'
+import { scad } from '../../utilities/axiosScad'
 import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
 
 export default {
   namespaced: true,
   state: {
+    myYahooTeamID: '2',
     info: {},
     roster: []
   },
@@ -26,14 +26,14 @@ export default {
     }
   },
   actions: {
-    async getTeam ({ commit, rootState }, teamKey) {
-      console.log(`[ROSTER-ACTION] - getTeam(${teamKey})`)
+    async getTeam ({ commit, rootState }, yahooTeamID) {
+      console.log(`[ROSTER-ACTION] - getTeam(${yahooTeamID})`)
       try {
-        // const res = await scad(
-        //   rootState.user.tokens.access_token,
-        //   rootState.user.tokens.id_token)
-        //   .get(`/league/${rootState.league.leagueID}/team/${teamKey}/roster`)
-        // console.log(res)
+        const res = await scad(
+          rootState.user.tokens.access_token,
+          rootState.user.tokens.id_token)
+          .get(`/league/${rootState.league.yahooLeagueID}/team/${yahooTeamID}/roster`)
+        console.log(res)
       } catch (err) {
         catchAxiosScadError(err)
       }

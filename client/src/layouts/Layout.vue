@@ -34,6 +34,7 @@
               q-item-label
                 | {{ link.text }}
                 q-icon(v-if="link.icon" :name="link.icon")
+          | {{ myYahooTeamID }}
     q-page-container
       div
         router-view(v-if="loaded")
@@ -51,15 +52,16 @@ export default {
       showDateOptions: false,
       activeLeague: 'Please Register Below',
       hasLeagueLinks: [
-        { icon: 'dashboard', text: 'Dashboard', route: 'dashboard' },
-        { icon: 'list', text: 'My Team', route: 'team:my-team' },
-        { icon: 'ballot', text: 'Draft Picks', route: 'draft-picks' },
-        { icon: 'people', text: 'Players', route: 'players' },
+        { icon: 'dashboard', text: 'Dashboard', route: '/dashboard' },
+        // { icon: 'list', text: 'My Team', route: `team/1` },
+        { icon: 'list', text: `My Team`, route: `/team` },
+        { icon: 'ballot', text: 'Draft Picks', route: '/draft-picks' },
+        { icon: 'people', text: 'Players', route: '/players' },
         // { icon: 'home', text: 'League Home', route: 'league-home' },
         {
           icon: 'settings_applications',
           text: 'League Settings',
-          route: 'league-settings'
+          route: '/league-settings'
         }
       ],
       noLeagueLinks: [
@@ -93,6 +95,9 @@ export default {
     scadLeagues () {
       return this.league.scadLeagues
     },
+    myYahooTeamID () {
+      return this.$store.state.team.myYahooTeamID
+    },
     filteredLeagues () {
       return this.scadLeagues.map(l => Object.assign({}, l, { value: l.yahooLeagueId, label: l.yahooLeagueId }))
     }
@@ -101,6 +106,9 @@ export default {
     navigate: function (nav) {
       if (nav === 'logout') {
         this.logout()
+      } else if (nav === '/team') {
+        // this.$router.push({ name: 'team', params: { team_id: `${this.myYahooTeamID}` } })
+        this.$router.push({ path: `/team/${this.myYahooTeamID}` })
       } else {
         this.$router.push({
           path: nav
@@ -158,7 +166,6 @@ export default {
     },
     async switchLeagues () {
       console.log('[LAYOUT] - switchLeagues()')
-      console.log(this.activeLeague)
       await this.$store.dispatch('league/switchLeagues', this.activeLeague)
       this.navigate('/dashboard')
     },
@@ -176,6 +183,9 @@ export default {
     },
     leagueIsActiveToggle () {
       this.$store.commit('league/leagueIsActiveToggle')
+    },
+    getMyYahooTeamID () {
+
     }
   }
 }

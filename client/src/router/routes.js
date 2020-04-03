@@ -8,7 +8,8 @@ const routes = [
     ]
   },
   {
-    path: '/team:team_key',
+    path: '/team/:team_id',
+    name: 'team',
     component: () => import('../layouts/Layout.vue'),
     children: [
       { path: '', component: () => import('../views/Team.vue') }

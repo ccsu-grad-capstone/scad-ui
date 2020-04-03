@@ -7,13 +7,13 @@ export default {
   namespaced: true,
   state: {
     // General Info
-    isActive: false,
+    isActive: true,
     key: '',
     yahooCommishLeagues: [],
 
     // If Active League Info (dashboard.key === 'league')
-    // yahooLeagueID: '22351',
-    yahooLeagueID: '',
+    yahooLeagueID: '22351',
+    // yahooLeagueID: '',
     scadLeagueID: '',
     yahooLeague: {},
     yahooSettings: {},
@@ -39,7 +39,7 @@ export default {
     },
     dashboardRegister (state, dashboard) {
       // console.log('[LEAGUE-MUTATION] - dashboardRegister()')
-      state.isActive = false
+      // state.isActive = false
       state.key = dashboard.key
       state.yahooCommishLeagues = dashboard.YahooLeagues
     },

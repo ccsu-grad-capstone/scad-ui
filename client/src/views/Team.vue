@@ -165,7 +165,8 @@ export default {
   },
   async created () {
     console.log('[TEAM] - created()')
-    await this.getTeam(this.$route.params.team_key)
+    console.log(this.$route.params.team_id)
+    await this.getTeam(this.$route.params.team_id)
   },
   computed: {
     teams () {
@@ -176,9 +177,9 @@ export default {
     }
   },
   methods: {
-    async getTeam (teamKey) {
-      console.log(`[TEAM] - getTeam(${teamKey})`)
-      await this.$store.dispatch('team/getTeam', teamKey)
+    async getTeam (yahooTeamID) {
+      console.log(`[TEAM] - getTeam(${yahooTeamID})`)
+      await this.$store.dispatch('team/getTeam', yahooTeamID)
       this.team.info = this.$store.state.team.info
       this.team.roster = this.$store.state.team.roster
     },
