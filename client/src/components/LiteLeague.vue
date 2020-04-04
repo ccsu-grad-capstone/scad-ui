@@ -2,7 +2,7 @@
   .q-pa-md(style="width: 50%")
     .text-h6.text-weight-bolder Standings
     q-table(
-      :data='league.standings.teams.team',
+      :data='teams',
       :columns='columns',
       row-key='name',
       :pagination.sync="pagination",
@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import { mapRoster, mapTeam } from '../utilities/helpers/teamHelper'
 
 export default {
   name: 'LiteLeague',
@@ -86,23 +85,15 @@ export default {
     }
   },
   computed: {
-    team () {
-      return this.$store.state.roster.team
-    },
-    roster () {
-      return this.$store.state.roster.roster
-    },
     league () {
-      return this.$store.state.league.yahooLeague
+      return this.$store.state.league
+    },
+    teams () {
+      return this.league.yahooTeams
     }
   },
   methods: {
-    getPlayers () {
-      return mapRoster(this.roster)
-    },
-    getTeam () {
-      return mapTeam(this.team)
-    }
+
   }
 
 }

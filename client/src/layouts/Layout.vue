@@ -141,10 +141,10 @@ export default {
           id_token: this.$cookies.get('id_token')
         }
         await this.$store.commit('user/updateTokens', tokens)
-        await this.$store.dispatch('user/refreshToken')
-        await this.$store.dispatch('user/updateUser')
-        await this.$store.dispatch('user/loginToScad')
       }
+      await this.$store.dispatch('user/refreshToken')
+      await this.$store.dispatch('user/updateUser')
+      this.$store.dispatch('league/getScadInfo')
       if (this.$route.query) {
         history.pushState(null, '', location.href.split('?')[0])
       }

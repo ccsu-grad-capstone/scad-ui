@@ -5,15 +5,15 @@
       .col-4
         .row.justify-center
           q-avatar(size="100px")
-            //- img(:src="team.info.team_logos[0].url")
+            img(:src="yahooTeam.team_logos[0].team_logo.url")
         .row.justify-center
           .col
             .row.justify-center
-              .text-h6 {{team.info.name}}
+              .text-h6 {{yahooTeam.name}}
             .row.justify-center
-              //- .text-caption.text-grey-7 Manager ({{team.info.managers[0].nickname}})  | team_key {{this.$route.params.team_key}}
+              .text-caption.text-grey-7 Manager ({{yahooTeam.managers[0].nickname}})  | team_key {{this.$route.params.team_key}}
             .row.justify-center
-              .text-caption: a(:href='team.info.url') {{team.info.url}}
+              .text-caption: a(:href='yahooTeam.url') {{yahooTeam.url}}
       q-separator(vertical)
       .col.q-pa-md
         .row.q-gutter-md
@@ -49,19 +49,19 @@
             .row
               .col-7.text-grey-8.text-caption.text-right Waiver Priority:
               .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
-                | {{team.info.waiver_priority}}
+                | {{yahooTeam.waiver_priority}}
             .row
               .col-7.text-grey-8.text-caption.text-right FAAB Remaining Budget:
               .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
-                | ${{team.info.faab_balance}}
+                | ${{yahooTeam.faab_balance}}
             .row
               .col-7.text-grey-8.text-caption.text-right Number of Moves:
               .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
-                | {{team.info.number_of_moves}}
+                | {{yahooTeam.number_of_moves}}
             .row
               .col-7.text-grey-8.text-caption.text-right Draft Grade:
               .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
-                | {{team.info.draft_grade}}
+                | {{yahooTeam.draft_grade}}
             .row
               .col-7.text-grey-8.text-caption.text-right Franchise Tag:
               .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
@@ -70,14 +70,14 @@
       .row.full-width.justify-center
         div(style="width: 55%")
           .row.full-width.justify-between.q-pa-sm
-            q-select(square dense v-model='selectedTeamName' :options="filteredTeams" style="width: 250px" @input="updateTeamPage")
+            q-select(square dense v-model='selectedTeam' :options="filteredTeams" style="width: 250px" @input="updateTeamPage")
             div.q-gutter-sm
               q-btn(v-if="!franchiseTag && !editSalaries" label='Franchise Tag' dense color='secondary' text-color='primary' size='sm' @click="franchiseTag = !franchiseTag")
               q-btn(v-if="franchiseTag && !editSalaries" label='Save Franchise Tag' dense color='primary' text-color='white' size='sm' @click="saveFranchiseTag()")
               q-btn(v-if="!editSalaries && !franchiseTag" label='Edit Salaries' dense color='secondary' text-color='primary' size='sm' @click="editSalaries = !editSalaries")
               q-btn(v-if="editSalaries && !franchiseTag" label='Save Salaries' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
           q-table(
-            :data='team.roster',
+            :data='yahooTeam.roster.players',
             :columns='columns',
             row-key= 'player_key',
             :pagination.sync="pagination",
@@ -113,12 +113,9 @@ export default {
   name: 'Team',
   data () {
     return {
-      team: {
-        info: {},
-        roster: []
-      },
+      scadTeam: {},
       salary: 12,
-      selectedTeamName: 'Choose a Team',
+      selectedTeam: 'Choose a Team',
       editSalaries: false,
       franchiseTag: false,
       selected: [],
@@ -168,19 +165,27 @@ export default {
     await this.getTeam(this.$route.params.team_id)
   },
   computed: {
-    teams () {
-      return this.$store.state.league.teams
+    yahooTeams () {
+      return this.$store.state.league.yahooTeams
+    },
+    yahooLeagueID () {
+      return this.$store.state.league.yahooLeagueID
+    },
+    myYahooTeamID () {
+      return this.$store.state.team.myYahooTeamID
+    },
+    yahooTeam () {
+      return this.$store.state.team.yahooTeam
     },
     filteredTeams () {
-      return this.teams.map(t => Object.assign({}, t, { value: t.name, label: t.name }))
+      return this.yahooTeams.map(t => Object.assign({}, t, { value: t.name, label: t.name }))
     }
   },
   methods: {
     async getTeam (yahooTeamID) {
       console.log(`[TEAM] - getTeam(${yahooTeamID})`)
-      await this.$store.dispatch('team/getTeam', yahooTeamID)
-      this.team.info = this.$store.state.team.info
-      this.team.roster = this.$store.state.team.roster
+      await this.$store.dispatch('team/getTeam', { yahooLeagueId: this.yahooLeagueID, yahooTeamId: yahooTeamID })
+      this.scadTeam = this.$store.state.scadTeam
     },
     async saveSalaries () {
       console.log(`[TEAM] - saveSalaries()`)
@@ -193,11 +198,9 @@ export default {
       // this.$store.dispatch('team/updateFranchiseTag')
     },
     async updateTeamPage (teamName) {
-      console.log(`[TEAM] - updateTeamPage()`)
-      this.selectedTeamID = this.getTeamID
-      // this.$forceUpdate()
-      this.$router.push(`/team:${this.selectedTeamID}`)
-      this.getTeam(this.$route.params.team_key)
+      console.log(`[TEAM] - updateTeamPage()`, this.selectedTeam.team_id)
+      this.$router.replace({ path: `/team/${this.selectedTeam.team_id}` })
+      this.getTeam(this.$route.params.team_id)
     }
   }
 

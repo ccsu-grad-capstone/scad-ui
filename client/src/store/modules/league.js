@@ -6,36 +6,31 @@ import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
 export default {
   namespaced: true,
   state: {
-    // General Info
-    isActive: true,
+    isActive: false,
     key: '',
-    yahooCommishLeagues: [],
 
-    // If Active League Info (dashboard.key === 'league')
     yahooLeagueID: '22351',
-    // yahooLeagueID: '',
-    scadLeagueID: '',
-    yahooLeague: {},
+    scadLeagueID: '1',
+
+    yahooLeagueDetails: {},
     yahooSettings: {},
     scadSettings: {},
-    standings: [],
-    teams: [],
 
+    yahooTeams: [],
+    scadTeams: [],
+
+    yahooLeagues: [],
     scadLeagues: [],
-    yahooLeagues: [] // to remove this when we have scad leagues we're allowed to register
+    yahooCommishLeagues: []
   },
   mutations: {
     dashboard (state, dashboard) {
       // console.log('[LEAGUE-MUTATION] - dashboard()')
-      state.isActive = true
       state.key = dashboard.key
       state.yahooLeagueID = dashboard.YahooLeague.league_id
       state.scadLeagueID = dashboard.SCADLeague.id
       state.yahooLeague = dashboard.YahooLeague
-      // state.yahooSettings = dashboard.???????
       state.scadSettings = dashboard.SCADLeague
-      // state.standings = dashboard.???????
-      // commit('team/updateTeam', dashboard.????????, { root: true })
     },
     dashboardRegister (state, dashboard) {
       // console.log('[LEAGUE-MUTATION] - dashboardRegister()')
@@ -43,9 +38,9 @@ export default {
       state.key = dashboard.key
       state.yahooCommishLeagues = dashboard.YahooLeagues
     },
-    updateYahooLeague (state, league) {
-      // console.log('[LEAGUE-MUTATION] - updateYahooLeague()')
-      state.yahooLeague = league
+    updateYahooLeagueDetails (state, league) {
+      // console.log('[LEAGUE-MUTATION] - updateYahooLeagueDetails()')
+      state.yahooLeagueDetails = league
       state.yahooLeagueID = league.league_id
     },
     updateYahooSettings (state, settings) {
@@ -54,41 +49,45 @@ export default {
     },
     updateScadSettings (state, settings) {
       // console.log('[LEAGUE-MUTATION] - updateScadSettings()')
+      state.isActive = true
       state.scadSettings = settings
       state.scadLeagueID = settings.id
     },
-    updateTeams (state, teams) {
-      // console.log('[LEAGUE-MUTATION] - updateTeams()')
-      state.teams = teams
+    updateYahooTeams (state, teams) {
+      // console.log('[TEAM-MUTATION] - updateYahooTeams()')
+      state.yahooTeams = teams
     },
-    updateStandings (state, standings) {
-      // console.log('[LEAGUE-MUTATION] - updateStandings()')
-      state.standings = standings
+    updateScadTeams (state, teams) {
+      // console.log('[TEAM-MUTATION] - updateScadTeams()')
+      state.scadTeams = teams
+    },
+    updateYahooLeagues (state, leagues) {
+      // console.log('[LEAGUE-MUTATION] - updateYahooLeagues()')
+      state.yahooLeagues = leagues
     },
     updateScadLeagues (state, leagues) {
       // console.log('[LEAGUE-MUTATION] - updateStandings()')
       state.scadLeagues = leagues
     },
-    // to remove this when we have scad leagues we're allowed to register
-    updateYahooLeagues (state, leagues) {
-      // console.log('[LEAGUE-MUTATION] - updateYahooLeagues()')
-      state.yahooLeagues = leagues
+    updateYahooCommishLeagues (state, leagues) {
+      // console.log('[LEAGUE-MUTATION] - updateYahooCommishLeagues()')
+      state.yahooCommishLeagues = leagues
     },
     leagueIsActiveToggle (state) {
       state.isActive = !state.isActive
     },
     logoutLeague (state) {
       console.log('[LEAGUE-MUTATION] - logoutLeague()')
-      state.isActive = false
-      state.key = ''
-      state.yahooLeagueID = ''
-      state.scadLeagueID = ''
-      state.yahooLeague = {}
-      state.yahooSettings = {}
-      state.scadSettings = {}
-      state.teams = []
-      state.standings = []
-      state.scadLeagues = []
+      // state.isActive = false
+      // state.key = ''
+      // state.yahooLeagueID = ''
+      // state.scadLeagueID = ''
+      // state.yahooLeague = {}
+      // state.yahooSettings = {}
+      // state.scadSettings = {}
+      // state.teams = []
+      // state.standings = []
+      // state.scadLeagues = []
     }
   },
   getters: {
@@ -129,62 +128,159 @@ export default {
   },
 
   actions: {
-    async registerLeague ({ rootState, commit, state }, { league }) {
-      console.log('[LEAGUE-ACTION] - registerLeague()')
+    // Calls whenever the page reloads.. Fills store with initial information needed to fill dashboard
+    async getScadInfo ({ dispatch, state, rootState }) {
+      console.log('[LEAGUE-ACTION] - getScadInfo()')
       try {
-        const res = await scad(
-          rootState.user.tokens.access_token,
-          rootState.user.tokens.id_token)
-          .post('scadleague', league)
-        console.log('POST response scadleague: ', res)
-        // commit('updateLeague', { league: league })
+        await dispatch('dashboard')
+        dispatch('getYahooTeams', state.yahooLeagueID)
+        dispatch('team/getTeam', { yahooLeagueId: state.yahooLeagueID, yahooTeamId: rootState.team.myYahooTeamID }, { root: true })
       } catch (err) {
         catchAxiosScadError(err)
       }
     },
 
-    // emailLeagueMembers (state) {
-    //   console.log('[LEAGUE-ACTION] - emailLeagueMembers()')
-    //   scad.post()
+    async dashboard ({ state, commit, rootState }) {
+      // console.log('[LEAGUE-ACTION] - dashboard()')
+      try {
+        const dashboard = await scad(
+          rootState.user.tokens.access_token,
+          rootState.user.tokens.id_token)
+          .get(`/scad/dashboard/details`)
+        console.log('DASHBOARD: ', dashboard.data)
+
+        if (dashboard.data.key === 'League') {
+          commit('updateYahooLeagueDetails', dashboard.data.YahooLeague)
+          commit('updateScadSettings', dashboard.data.SCADLeague)
+        } else {
+          commit('dashboardRegister', dashboard.data)
+        }
+      } catch (err) {
+        catchAxiosScadError(err)
+      }
+    },
+
+    async getYahooCommishLeagues ({ rootState, commit, dispatch }) {
+      // console.log('[LEAGUE-ACTION] - getCommishLeagues()')
+      try {
+        const commish = await scad(
+          rootState.user.tokens.access_token,
+          rootState.user.tokens.id_token)
+          .get(`/yahoo/league/commissioner/all`)
+        console.log('COMMISH: ', commish)
+        commit('updateYahooCommishLeagues', commish.data.commissionerLeagues)
+      } catch (err) {
+        catchAxiosScadError(err)
+      }
+    },
+
+    async getYahooSettings ({ rootState, state, commit }, leagueID) {
+      // console.log('[LEAGUE-ACTION] - getYahooSettings()')
+      try {
+        const settings = await scad(
+          rootState.user.tokens.access_token,
+          rootState.user.tokens.id_token)
+          .get(`/yahoo/league/${leagueID}/settings`)
+        console.log('SETTINGS: ', settings)
+        commit('updateYahooSettings', settings.data.settings[0])
+      } catch (err) {
+        catchAxiosScadError(err)
+      }
+    },
+
+    // async getScadSettings ({ rootState, state, commit }, id) {
+    //   console.log('[LEAGUE-ACTION] - getScadSettings()')
+    //   try {
+    //     const res = await scad(
+    //       rootState.user.tokens.access_token,
+    //       rootState.user.tokens.id_token)
+    //       .get(`/scad/league/${id}`)
+    //       // .get(`/scadleague/default`)
+    //     console.log('settings: ', res)
+    //     commit('updateScadSettings', res.data)
+    //   } catch (err) {
+    //     catchAxiosScadError(err)
+    //   }
     // },
 
-    async getScadSettings ({ rootState, state, commit }) {
-      console.log('[LEAGUE-ACTION] - getScadSettings()')
+    async getYahooTeams ({ rootState, state, commit }, leagueId) {
+      // console.log('[LEAGUE-ACTION] - getYahooTeams()')
       try {
-        const res = await scad(
+        const standings = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/scadleague/1`)
-          // .get(`/scadleague/default`)
-        console.log('settings: ', res)
-        commit('updateScadSettings', res.data)
+          .get(`/yahoo/league/${leagueId}/standings`)
+        console.log('TEAMS: ', standings.data.standings)
+        commit('updateYahooTeams', standings.data.standings)
       } catch (err) {
         catchAxiosScadError(err)
       }
     },
 
+    // async getScadTeams ({ rootState, commit }, id) {
+    //   console.log('[TEAM-ACTION] - getAllYahooLeagues()')
+    //   try {
+    //     const res = await scad(
+    //       rootState.user.tokens.access_token,
+    //       rootState.user.tokens.id_token)
+    //       .get(`/scad/league/${id}/team/all`)
+    //     // console.log('SCADTEAMS: ', res)
+    //     commit('updateScadTeams', res.data)
+    //   } catch (err) {
+    //     catchAxiosScadError(err)
+    //   }
+    // }
+
     async getAllYahooLeagues ({ rootState, commit }) {
-      console.log('[LEAGUE-ACTION] - getAllYahooLeagues()')
+      // console.log('[LEAGUE-ACTION] - getAllYahooLeagues()')
       try {
         const res = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/league/all`)
-        // console.log('leagues: ', res)
+          .get(`/yahoo/league/all`)
+        console.log('leagues: ', res)
         commit('updateYahooLeagues', res.data.leagues)
       } catch (err) {
         catchAxiosScadError(err)
       }
     },
 
+    // async getAllScadLeagues ({ rootState, commit }) {
+    //   console.log('[LEAGUE-ACTION] - getAllScadLeagues()')
+    //   try {
+    //     const scadleagues = await scad(
+    //       rootState.tokens.access_token,
+    //       rootState.tokens.id_token)
+    //       .get(`/scad/league/all`)
+    //     console.log('SCADLEAGUES: ', scadleagues)
+    //     commit('updateScadLeagues', scadleagues.data.scadLeagues)
+    //   } catch (err) {
+    //     catchAxiosScadError(err)
+    //   }
+    // },
+
     async switchLeagues ({ rootState, commit }, league) {
-      console.log('[LEAGUE-ACTION] - switchLeagues()')
+      // console.log('[LEAGUE-ACTION] - switchLeagues()')
       commit('updateScadSettings', league)
       try {
         // const res = await scad(
         //   rootState.user.tokens.access_token,
         //   rootState.user.tokens.id_token)
         //   .get(`/league/all`)
+      } catch (err) {
+        catchAxiosScadError(err)
+      }
+    },
+
+    async registerLeague ({ rootState, commit, state }, { league }) {
+      // console.log('[LEAGUE-ACTION] - registerLeague()')
+      try {
+        const res = await scad(
+          rootState.user.tokens.access_token,
+          rootState.user.tokens.id_token)
+          .post('scad/league', league)
+        console.log('POST response scadleague: ', res)
+        // commit('updateLeague', { league: league })
       } catch (err) {
         catchAxiosScadError(err)
       }

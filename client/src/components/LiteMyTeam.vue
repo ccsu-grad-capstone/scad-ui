@@ -2,7 +2,7 @@
   .q-pa-md(style="width: 50%")
     .text-h6.text-weight-bolder My Team
     q-table(
-      :data='getPlayers()',
+      :data='yahooTeam.roster.players',
       :columns='columns',
       row-key='playerName',
       :pagination.sync="pagination",
@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import { mapRoster } from '../utilities/helpers/teamHelper'
 
 export default {
   name: 'LiteMyTeam',
@@ -66,20 +65,15 @@ export default {
     team () {
       return this.$store.state.team
     },
-    roster () {
-      return this.$store.state.team.roster
+    yahooTeam () {
+      return this.team.yahooTeam
     },
-    info () {
-      return this.$store.state.team.info
+    scadTeam () {
+      return this.team.scadTeam
     }
   },
   methods: {
-    getPlayers () {
-      return mapRoster(this.roster)
-    },
-    getPic () {
 
-    }
   }
 
 }

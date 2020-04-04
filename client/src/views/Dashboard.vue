@@ -5,11 +5,11 @@
         q-avatar(size="85px")
           img(src="../statics/yahoo-ff.png")
       .column.justify-center.align-center.text-center
-        .text-h4.text-weight-bolder {{league.yahooLeague.name}}
-        a(:href='league.yahooLeague.url') {{league.yahooLeague.url}}
+        .text-h4.text-weight-bolder {{league.yahooLeagueDetails.name}}
+        a(:href='league.yahooLeagueDetails.url') {{league.yahooLeagueDetails.url}}
     .row.full-width
       //- lite-league
-      //- lite-my-team
+      lite-my-team
     my-tokens
     q-separator
     q-card.q-ma-md.q-pa-md
@@ -19,12 +19,12 @@
       | {{user.user}}
       .column.items-center.text
         .col.items-center
-          q-btn(label='Login to SCAD' dense no-caps color='secondary' text-color='primary' size='md' @click="loginToScad")
+          q-btn(label='Login to SCAD' dense no-caps color='secondary' text-color='primary' size='md' @click="dashboard")
     q-card.q-ma-md.q-pa-md
       .text-h6
         | League Yahoo Leagues:
       .text-caption
-      | {{league.yahooLeagues}}
+      | {{league.yahooLeagueDetailss}}
       .text-h6
         | League Settings:
       .text-caption
@@ -83,9 +83,9 @@ export default {
     }
   },
   methods: {
-    async loginToScad () {
-      console.log('[DASHBOARD] - loginToScad()')
-      await this.$store.dispatch('user/loginToScad')
+    async dashboard () {
+      console.log('[DASHBOARD] - dashboard()')
+      await this.$store.dispatch('user/dashboard')
     }
   }
 }
