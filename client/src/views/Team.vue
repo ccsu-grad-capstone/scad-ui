@@ -1,6 +1,6 @@
 <template lang="pug">
   body
-    .row.q-gutter-md.q-pa-md
+    .row.q-gutter-md.q-pa-md(v-if="loaded")
       .row.full-width.bg-red
       .col-4
         .row.justify-center
@@ -23,7 +23,7 @@
             .row
               .col-8.text-grey-8.text-caption.text-right Salary Cap:
               .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
-                | ${{scadTeam.salary}}
+                | ${{teamSalaryCap}}
             .row
               .col-8.text-grey-8.text-caption.text-right Current Team Salary:
               .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
@@ -89,7 +89,6 @@
             )
             template(v-slot:body='props')
               q-tr(:props='props')
-                //- q-td(v-if="franchiseTag"): q-checkbox(dense v-model='props.selected' color='secondary' keep-color)
                 q-td: q-checkbox(dense v-model='props.selected' :disable="!franchiseTag ? true : false" :color="franchiseTag ? color='info' : color='grey'"  keep-color)
                 q-td(key='pos' :props='props' auto-width) {{ props.row.display_position }}
                 q-td(key='playerName' :props='props')
@@ -102,12 +101,24 @@
                     .col.justify-center
                 q-td(key='salary' :props='props' auto-width)
                   .col(:style=" editSalaries ? 'border: 1px solid #26A69A;' : 'border: none;' ")
-                    .text-pre-wrap ${{ getPlayerSalary(props.row.player_id) }}
-                    q-popup-edit(v-if="editSalaries" color="primary" v-model='salary' title='Update Salary' buttons)
-                      q-input(type='number' v-model='salary' dense autofocus)
+                    | ${{ getPlayerSalary(props.row.player_id) }}
+                  q-popup-edit(
+                    v-if="editSalaries"
+                    color="primary"
+                    title='Update Salary'
+                    v-model.number='editPlayer.salary'
+                    buttons
+                    @before-show="editingPlayer(props.row)"
+                    @save="savePlayer"
+                    @cancel="cancelEdit()"
+                    )
+                    q-input(type='number' v-model='editPlayer.salary' dense autofocus)
 </template>
 
 <script>
+import { scad } from '../utilities/axiosScad'
+import { catchAxiosScadError } from '../utilities/catchAxiosErrors'
+import notify from '../utilities/nofity'
 
 export default {
   name: 'Team',
@@ -115,7 +126,8 @@ export default {
     return {
       loaded: false,
       scadTeam: {},
-      salary: 12,
+      editPlayer: {},
+      editPlayerInitSalary: 0,
       selectedTeam: 'Choose a Team',
       editSalaries: false,
       franchiseTag: false,
@@ -164,10 +176,11 @@ export default {
   async created () {
     // console.log('[TEAM] - created()')
     await this.getTeam(this.$route.params.team_id)
-    this.loaded = true
-    this.scadTeam = this.$store.state.team.scadTeam
   },
   computed: {
+    user () {
+      return this.$store.state.user
+    },
     yahooTeams () {
       return this.$store.state.league.yahooTeams
     },
@@ -188,12 +201,17 @@ export default {
     },
     salaryCapExemptionLimit () {
       return this.$store.state.league.scadSettings.salaryCapExemptionLimit
+    },
+    teamSalaryCap () {
+      return this.$store.state.league.scadSettings.teamSalaryCap
     }
   },
   methods: {
     async getTeam (yahooTeamID) {
       // console.log(`[TEAM] - getTeam(${yahooTeamID})`)
       await this.$store.dispatch('team/getTeam', { yahooLeagueId: this.yahooLeagueID, yahooTeamId: yahooTeamID })
+      this.scadTeam = this.$store.state.team.scadTeam
+      this.loaded = true
     },
     async saveSalaries () {
       console.log(`[TEAM] - saveSalaries()`)
@@ -208,7 +226,36 @@ export default {
     async updateTeamPage (teamName) {
       console.log(`[TEAM] - updateTeamPage()`, this.selectedTeam.team_id)
       this.$router.replace({ path: `/team/${this.selectedTeam.team_id}` })
-      this.getTeam(this.$route.params.team_id)
+      this.getTeam(this.selectedTeam.team_id)
+    },
+    editingPlayer (yahooPlayer) {
+      console.log(yahooPlayer)
+      // eslint-disable-next-line eqeqeq
+      this.editPlayer = this.scadTeam.players.scadLeaguePlayers.find(p => p.yahooLeaguePlayerId == yahooPlayer.player_id)
+      this.editPlayerInitSalary = this.editPlayer.salary
+      console.log(this.editPlayer.yahooLeaguePlayerId)
+      console.log(yahooPlayer.player_id)
+    },
+    async savePlayer () {
+      try {
+        const res = await scad(
+          this.user.tokens.access_token,
+          this.user.tokens.id_token)
+          .put(`/scad/player/${this.editPlayer.id}`, this.editPlayer)
+        console.log('SAVE-PLAYER: ', res)
+        notify.salarySaveSuccessful()
+        this.editPlayer = {}
+        this.editPlayerInitSalary = 0
+      } catch (err) {
+        catchAxiosScadError(err)
+      }
+    },
+    cancelEdit () {
+      // eslint-disable-next-line eqeqeq
+      let player = this.scadTeam.players.scadLeaguePlayers.find(p => p.yahooLeaguePlayerId == this.editPlayer.yahooLeaguePlayerId)
+      player.salary = this.editPlayerInitSalary
+      this.editPlayer = {}
+      this.editPlayerInitSalary = 0
     },
     getPlayerSalary (id) {
       if (this.loaded) {

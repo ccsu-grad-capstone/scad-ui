@@ -9,6 +9,15 @@ export default {
       icon: 'check'
     })
   },
+  salarySaveSuccessful () {
+    Notify.create({
+      message: ` Salary Saved`,
+      position: 'top',
+      color: 'green',
+      icon: 'check',
+      timeout: 1000
+    })
+  },
   loginFailed () {
     Notify.create({
       message: 'Login Failed',

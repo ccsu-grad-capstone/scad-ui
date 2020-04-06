@@ -46,7 +46,7 @@ export default {
   actions: {
     getTeam ({ dispatch }, yahooLeagueId, yahooTeamId) {
       dispatch('getYahooTeam', yahooLeagueId, yahooTeamId)
-      // dispatch('getScadTeam', yahooLeagueId, yahooTeamId)
+      dispatch('getScadTeam', yahooLeagueId, yahooTeamId)
     },
 
     async getYahooTeam ({ commit, rootState }, { yahooLeagueId, yahooTeamId }) {
@@ -61,20 +61,20 @@ export default {
       } catch (err) {
         catchAxiosScadError(err)
       }
-    }
+    },
 
-    // async getScadTeam ({ commit, rootState }, { yahooLeagueId, yahooTeamId }) {
-    //   console.log(`[TEAM-ACTION] - getScadTeam(${yahooTeamId})`)
-    //   try {
-    //     const res = await scad(
-    //       rootState.user.tokens.access_token,
-    //       rootState.user.tokens.id_token)
-    //       .get(`/scad/yahoo/league/${yahooLeagueId}/team/${yahooTeamId}`)
-    //     console.log('SCADTEAM: ', res.data)
-    //     commit('updateScadTeam', res.data)
-    //   } catch (err) {
-    //     catchAxiosScadError(err)
-    //   }
-    // }
+    async getScadTeam ({ commit, rootState }, { yahooLeagueId, yahooTeamId }) {
+      console.log(`[TEAM-ACTION] - getScadTeam(${yahooTeamId})`)
+      try {
+        const res = await scad(
+          rootState.user.tokens.access_token,
+          rootState.user.tokens.id_token)
+          .get(`/scad/yahoo/league/${yahooLeagueId}/team/${yahooTeamId}`)
+        console.log('SCADTEAM: ', res.data)
+        commit('updateScadTeam', res.data)
+      } catch (err) {
+        catchAxiosScadError(err)
+      }
+    }
   }
 }
