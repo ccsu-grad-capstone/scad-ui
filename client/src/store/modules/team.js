@@ -5,8 +5,8 @@ import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
 export default {
   namespaced: true,
   state: {
-    myYahooTeamID: '2',
-    myScadTeamID: '2',
+    myYahooTeamID: '',
+    myScadTeamID: '',
     yahooTeam: {},
     scadTeam: {}
   },
@@ -27,13 +27,20 @@ export default {
       state.yahooTeams = []
       state.scadTeams = []
     },
+    updateMyTeamIDs (state, ids) {
+      // console.log('[TEAM-MUTATION] - updateMyTeamIDs()')
+      state.myYahooTeamID = ids.myYahooTeamID
+      state.myScadTeamID = ids.myScadTeamID
+    },
     updateYahooTeam (state, team) {
       // console.log('[TEAM-MUTATION] - updateYahooTeam()')
       state.yahooTeam = team
+      // console.log('YAHOO-TEAM: ', team)
     },
     updateScadTeam (state, team) {
       // console.log('[TEAM-MUTATION] - updateScadTeam()')
       state.scadTeam = team
+      // console.log('SCAD-TEAM: ', team)
     }
   },
   actions: {
@@ -43,7 +50,7 @@ export default {
     },
 
     async getYahooTeam ({ commit, rootState }, { yahooLeagueId, yahooTeamId }) {
-      // console.log(`[TEAM-ACTION] - getYahooTeam(${yahooTeamId})`)
+      console.log(`[TEAM-ACTION] - getYahooTeam(${yahooTeamId})`)
       try {
         const res = await scad(
           rootState.user.tokens.access_token,
@@ -56,18 +63,18 @@ export default {
       }
     }
 
-    // async getScadTeam ({ commit, rootState }, yahooLeagueId, yahooTeamId) {
+    // async getScadTeam ({ commit, rootState }, { yahooLeagueId, yahooTeamId }) {
     //   console.log(`[TEAM-ACTION] - getScadTeam(${yahooTeamId})`)
     //   try {
     //     const res = await scad(
     //       rootState.user.tokens.access_token,
     //       rootState.user.tokens.id_token)
     //       .get(`/scad/yahoo/league/${yahooLeagueId}/team/${yahooTeamId}`)
-    //     console.log('getScadTeam: ', res.data)
+    //     console.log('SCADTEAM: ', res.data)
     //     commit('updateScadTeam', res.data)
     //   } catch (err) {
     //     catchAxiosScadError(err)
     //   }
-    // },
+    // }
   }
 }

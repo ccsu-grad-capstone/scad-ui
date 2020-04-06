@@ -169,8 +169,8 @@ export default {
     draftPicks () {
       return this.$store.state.draftPicks.draftPicks
     },
-    teams () {
-      return this.$store.state.league.teams
+    yahooTeams () {
+      return this.$store.state.league.yahooTeams
     },
     leagueID () {
       return this.$store.state.league.yahooLeagueID
@@ -179,7 +179,7 @@ export default {
       return referenceData
     },
     filteredTeams () {
-      return this.teams.map(t => Object.assign({}, t, { value: t.name, label: t.name }))
+      return this.yahooTeams.map(t => Object.assign({}, t, { value: t.name, label: t.name }))
     }
   },
   methods: {
