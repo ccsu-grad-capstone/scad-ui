@@ -50,7 +50,8 @@ import {
   QToggle,
   QInnerLoading,
   QSpinnerGears,
-  QSkeleton
+  QSkeleton,
+  LoadingBar
 
 } from 'quasar'
 
@@ -116,6 +117,7 @@ Vue.use(Quasar, {
   },
   plugins: {
     Loading,
+    LoadingBar,
     Notify
   }
 })

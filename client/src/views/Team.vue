@@ -27,7 +27,7 @@
             .row
               .col-8.text-grey-8.text-caption.text-right Current Team Salary:
               .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
-                | ${{getTeamSalary()}}
+                | ${{scadTeam.salary}}
             .row
               .col-8.text-grey-8.text-caption.text-right Available Cap Exemption Give:
               .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
@@ -97,17 +97,19 @@
                       q-avatar(size="25px")
                         img(:src="props.row.headshot.url" style="width: 85%")
                       | {{props.row.name.full}} ({{props.row.editorial_team_abbr}})
-                      q-badge(color='white'): q-icon( name='fas fa-tag' color='info')
+                      q-badge(v-if="checkTag(props.row.player_id)" color='white'): q-icon( name='fas fa-tag' color='info')
                     .col.justify-center
                 q-td(key='salary' :props='props' auto-width)
                   .col(:style=" editSalaries ? 'border: 1px solid #26A69A;' : 'border: none;' ")
                     | ${{ getPlayerSalary(props.row.player_id) }}
                   q-popup-edit(
                     v-if="editSalaries"
+                    :cover="false"
                     color="primary"
                     title='Update Salary'
                     v-model.number='editPlayer.salary'
                     buttons
+                    label-set="Save"
                     @before-show="editingPlayer(props.row)"
                     @save="savePlayer"
                     @cancel="cancelEdit()"
@@ -116,9 +118,6 @@
 </template>
 
 <script>
-import { scad } from '../utilities/axiosScad'
-import { catchAxiosScadError } from '../utilities/catchAxiosErrors'
-import notify from '../utilities/nofity'
 
 export default {
   name: 'Team',
@@ -196,6 +195,9 @@ export default {
     players () {
       return this.yahooTeam.roster.players
     },
+    league () {
+      return this.$store.state.league
+    },
     filteredTeams () {
       return this.yahooTeams.map(t => Object.assign({}, t, { value: t.name, label: t.name }))
     },
@@ -204,6 +206,15 @@ export default {
     },
     teamSalaryCap () {
       return this.$store.state.league.scadSettings.teamSalaryCap
+    },
+    getTeamSalary () {
+      if (this.loaded) {
+        let salary = 0
+        this.scadTeam.players.forEach(p => {
+          salary += p.salary
+        })
+        return salary
+      } else { return 0 }
     }
   },
   methods: {
@@ -220,8 +231,27 @@ export default {
     },
     async saveFranchiseTag () {
       console.log(`[TEAM] - saveFranchiseTag()`)
+      // eslint-disable-next-line eqeqeq
+      let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == this.selected[0].player_id)
+      let initSalary = player.salary
+
+      // Update franchiseTagReliefPerc to franchiseTagForgivanceAmount
+      let franchiseTagReliefPerc = this.league.scadSettings.franchiseTagReliefPerc
+      if (player.salary <= franchiseTagReliefPerc) {
+        player.salary = 0
+      } else {
+        player.salary -= franchiseTagReliefPerc
+      }
+      player.salary = player.salary * (franchiseTagReliefPerc / 100)
+      player.isFranchiseTag = true
+      this.$store.dispatch('team/savePlayer', player)
+
+      // Update SCAD-TEAM
+      this.scadTeam.isFranchiseTag = true
+      this.scadTeam.salary += (player.salary - initSalary)
+      this.$store.dispatch('team/saveTeam', this.scadTeam)
+
       this.franchiseTag = false
-      // this.$store.dispatch('team/updateFranchiseTag')
     },
     async updateTeamPage (teamName) {
       console.log(`[TEAM] - updateTeamPage()`, this.selectedTeam.team_id)
@@ -229,30 +259,23 @@ export default {
       this.getTeam(this.selectedTeam.team_id)
     },
     editingPlayer (yahooPlayer) {
-      console.log(yahooPlayer)
       // eslint-disable-next-line eqeqeq
-      this.editPlayer = this.scadTeam.players.scadLeaguePlayers.find(p => p.yahooLeaguePlayerId == yahooPlayer.player_id)
+      this.editPlayer = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == yahooPlayer.player_id)
       this.editPlayerInitSalary = this.editPlayer.salary
-      console.log(this.editPlayer.yahooLeaguePlayerId)
-      console.log(yahooPlayer.player_id)
     },
     async savePlayer () {
-      try {
-        const res = await scad(
-          this.user.tokens.access_token,
-          this.user.tokens.id_token)
-          .put(`/scad/player/${this.editPlayer.id}`, this.editPlayer)
-        console.log('SAVE-PLAYER: ', res)
-        notify.salarySaveSuccessful()
-        this.editPlayer = {}
-        this.editPlayerInitSalary = 0
-      } catch (err) {
-        catchAxiosScadError(err)
-      }
+      this.$store.dispatch('team/savePlayer', this.editPlayer)
+
+      // Update SCAD-TEAM
+      this.scadTeam.salary += (this.editPlayer.salary - this.editPlayerInitSalary)
+      this.$store.dispatch('team/saveTeam', this.scadTeam)
+
+      this.editPlayer = {}
+      this.editPlayerInitSalary = 0
     },
     cancelEdit () {
       // eslint-disable-next-line eqeqeq
-      let player = this.scadTeam.players.scadLeaguePlayers.find(p => p.yahooLeaguePlayerId == this.editPlayer.yahooLeaguePlayerId)
+      let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId === this.editPlayer.yahooLeaguePlayerId)
       player.salary = this.editPlayerInitSalary
       this.editPlayer = {}
       this.editPlayerInitSalary = 0
@@ -260,17 +283,17 @@ export default {
     getPlayerSalary (id) {
       if (this.loaded) {
         // eslint-disable-next-line eqeqeq
-        let player = this.scadTeam.players.scadLeaguePlayers.find(p => p.yahooLeaguePlayerId == id)
+        let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == id)
         return player.salary
       }
     },
-    getTeamSalary () {
-      if (this.loaded) {
-        let salary = 0
-        this.scadTeam.players.scadLeaguePlayers.forEach(p => {
-          salary += p.salary
-        })
-        return salary
+    checkTag (id) {
+      // eslint-disable-next-line eqeqeq
+      let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == id)
+      if (player.isFranchiseTag) {
+        return true
+      } else {
+        return false
       }
     }
   }

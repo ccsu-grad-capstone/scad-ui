@@ -24,13 +24,9 @@ export default {
     yahooCommishLeagues: []
   },
   mutations: {
-    dashboard (state, dashboard) {
-      // console.log('[LEAGUE-MUTATION] - dashboard()')
-      state.key = dashboard.key
-      state.yahooLeagueID = dashboard.YahooLeague.league_id
-      state.scadLeagueID = dashboard.SCADLeague.id
-      state.yahooLeague = dashboard.YahooLeague
-      state.scadSettings = dashboard.SCADLeague
+    key (state, key) {
+      // console.log('[LEAGUE-MUTATION] - key()')
+      state.key = key
     },
     dashboardRegister (state, dashboard) {
       // console.log('[LEAGUE-MUTATION] - dashboardRegister()')
@@ -153,7 +149,8 @@ export default {
           let yahooTeam = dashboard.data.yahooMyTeam
           yahooTeam.players = dashboard.data.yahooMyPlayers
           let scadTeam = dashboard.data.scadMyTeam
-          scadTeam.players = dashboard.data.scadMyPlayers
+          scadTeam.players = dashboard.data.scadMyPlayers.scadLeaguePlayers
+          commit('key', dashboard.data.key)
           commit('updateYahooLeagueDetails', dashboard.data.yahooLeague)
           commit('updateScadSettings', dashboard.data.scadLeague)
           commit('team/updateYahooTeam', yahooTeam, { root: true })

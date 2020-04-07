@@ -18,6 +18,15 @@ export default {
       timeout: 1000
     })
   },
+  teamSaveSuccessful () {
+    Notify.create({
+      message: ` Team Saved`,
+      position: 'top',
+      color: 'green',
+      icon: 'check',
+      timeout: 1000
+    })
+  },
   loginFailed () {
     Notify.create({
       message: 'Login Failed',

@@ -2,7 +2,7 @@
   .q-pa-md(style="width: 50%")
     .text-h6.text-weight-bolder My Team
     q-table(
-      :data='yahooTeam.roster.players',
+      :data='yahooTeam.players',
       :columns='columns',
       row-key='playerName',
       :pagination.sync="pagination",

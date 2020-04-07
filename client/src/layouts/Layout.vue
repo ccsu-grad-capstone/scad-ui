@@ -34,9 +34,9 @@
               q-item-label
                 | {{ link.text }}
                 q-icon(v-if="link.icon" :name="link.icon")
-    q-page-container
+    q-page-container(v-if="loaded")
       div
-        router-view(v-if="loaded")
+        router-view
 </template>
 
 <script>
@@ -74,9 +74,8 @@ export default {
       ]
     }
   },
-  async created () {
-    await this.persistState()
-    this.loaded = true
+  created () {
+    this.persistState()
   },
   computed: {
     user () {
@@ -121,7 +120,12 @@ export default {
 
     async persistState () {
       console.log('[LAYOUT] - persistState()')
-
+      this.$q.loadingBar.setDefaults({
+        color: 'primary',
+        size: '4px',
+        position: 'top'
+      })
+      this.$q.loadingBar.start()
       // console.log('[LAYOUT] - checkForTokens()')
       if (this.$route.query.access_token) {
         console.log('New Tokens - Update Cookies w/ Tokens')
@@ -144,10 +148,16 @@ export default {
       }
       await this.$store.dispatch('user/refreshToken')
       await this.$store.dispatch('user/updateUser')
-      this.$store.dispatch('league/getScadInfo')
+      await this.$store.dispatch('league/getScadInfo')
       if (this.$route.query) {
         history.pushState(null, '', location.href.split('?')[0])
       }
+      if (this.league.key !== 'League') {
+        console.log('redirecting to about..layout', this.league.key)
+        this.$router.push('about')
+      }
+      this.loaded = true
+      this.$q.loadingBar.stop()
     },
     async logout () {
       console.log('[LAYOUT] - logout()')
@@ -170,7 +180,7 @@ export default {
     },
     iconNavigate () {
       if (this.loggedIn && this.league.isActive) {
-        this.navigate('dashboard')
+        this.navigate('/dashboard')
       } else {
         this.navigate('/')
       }
