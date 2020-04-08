@@ -2,7 +2,7 @@
   .q-pa-md(style="width: 50%")
     .text-h6.text-weight-bolder Standings
     q-table(
-      :data='teams',
+      :data='yahooTeams',
       :columns='columns',
       row-key='name',
       :pagination.sync="pagination",
@@ -14,17 +14,15 @@
           .row.full-width
             .col-2
               q-avatar(size="25px")
-                img(:src="props.row.team_logos.team_logo.url")
-            .column.justify-center {{props.row.name}}
-      template(v-slot:body-cell-name='props')
+                img(:src="props.row.team_logos[0].team_logo.url")
+            .column.justify-center.text-weight-bold.q-pl-sm
+              router-link(:to="{ path: `/team/${props.row.team_id}`}") {{props.row.name}}
+      template(v-slot:body-cell-manager='props')
         q-td(:props='props')
-          .row.full-width
-            .col-2
-              q-avatar(size="25px")
-                img(:src="props.row.team_logos.team_logo.url")
-            .column.justify-center
-              router-link(:to="{ path: `team:${props.row.team_key}`}") {{props.row.name}}
-
+          .text-grey {{props.row.managers[0].manager.nickname}}
+      template(v-slot:body-cell-salary='props')
+        q-td(:props='props')
+          .text-primary.text-weight-bolder ${{getTeamSalary(props.row.team_id)}}
 </template>
 
 <script>
@@ -41,18 +39,29 @@ export default {
         {
           name: 'rank',
           required: true,
-          align: 'right',
-          field: row => row.team_standings.rank,
+          align: 'left',
+          label: 'Rank',
+          field: row => row.team_standings.team_standings.rank,
           format: val => `${val}`,
           sortable: false,
           // classes: 'bg-secondary ellipsis',
-          // style: 'max-width: 10px',
+          style: 'width: 10px',
           headerClasses: 'bg-grey-3'
         },
         {
           name: 'name',
           required: true,
-          label: 'Player:',
+          label: 'Team:',
+          align: 'left',
+          sortable: false,
+          // classes: 'bg-grey-2 ellipsis',
+          style: 'max-width: 200px',
+          headerClasses: 'bg-grey-3'
+        },
+        {
+          name: 'manager',
+          required: true,
+          label: 'Manager:',
           align: 'left',
           sortable: false,
           // classes: 'bg-grey-2 ellipsis',
@@ -63,20 +72,20 @@ export default {
           name: 'record',
           required: true,
           label: 'Record:',
-          align: 'left',
-          field: row => row.team_standings.outcome_totals,
+          align: 'center',
+          field: row => row.team_standings.team_standings.outcome_totals,
           format: val => `${val.wins}-${val.losses}-${val.ties}`,
           sortable: false,
           headerClasses: 'bg-grey-3',
           style: 'max-width: 100px'
         },
         {
-          name: 'win-percentage',
+          name: 'salary',
           required: true,
-          label: 'Salary',
-          align: 'left',
-          // field: row => row.team_standings.outcome_totals,
-          format: val => `${val}`,
+          label: 'Salary:',
+          align: 'center',
+          field: row => row.team_id,
+          // format: val => `$${this.getTeamSalary(val)}`,
           sortable: false,
           headerClasses: 'bg-grey-3',
           style: 'max-width: 100px'
@@ -88,20 +97,26 @@ export default {
     league () {
       return this.$store.state.league
     },
-    teams () {
+    yahooTeams () {
       return this.league.yahooTeams
+    },
+    scadTeams () {
+      return this.league.scadTeams
     }
   },
   methods: {
-
+    getTeamSalary (id) {
+      // eslint-disable-next-line eqeqeq
+      let team = this.scadTeams.find(t => t.yahooLeagueTeamId == id)
+      return team.salary
+    }
   }
 
 }
 </script>
 
 <style lang="stylus" scoped>
-  .scad-team-settings
-    text: $h2
-    color: $blue-1
-    background-color: $grey-5
+  a
+    color: #000000
+    text-decoration: none
 </style>

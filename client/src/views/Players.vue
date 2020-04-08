@@ -3,21 +3,39 @@
     .row.q-gutter-md.q-pa-md
       .text-h4.text-weight-bolder Players
       .row.full-width.justify-right
-        div(style="width: 100%")
+        div(style="width: 85%")
           .row.full-width.q-gutter-sm.q-pa-sm
             .col-3
-              q-input( filled dense label="Search by Name" stack-label v-model='search')
-            div.q-gutter-sm
-              q-btn.q-pa-xs(label='Search' dense color='secondary' text-color='primary' size='sm' @click="saveSalaries()")
-          .row.full-width.q-gutter-sm.q-pa-sm
+              q-input( filled dense label="Search by Name" stack-label v-model='filter.search')
             .col-3
-              q-select( filled dense label="Team" stack-label :options="referenceData.status" v-model='team')
+              q-select(filled dense label="Team" stack-label v-model='filter.team' :options="filteredTeams" @input="updateTeamFilter()")
             .col-3
-              q-select( filled dense label="Position" stack-label :options="referenceData.position" v-model='position')
-            div.q-gutter-sm
-              q-btn.q-pa-xs(label='Filter' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
+              q-select( filled dense label="Position" stack-label :options="referenceData.position" v-model='filter.position')
+            .col.q-pt-sm
+              q-btn(label='Clear' dense color='primary' text-color='white' size='sm' @click="clearFilter")
           .q-pa-md
-            q-table(title='Treats' dense :data='data' :columns='columns' row-key='name')
+            q-table(
+              dense
+              :data='filteredPlayers()'
+              :pagination.sync="pagination",
+              :columns='columns'
+              row-key='name')
+              template(v-slot:body='props')
+                q-tr(:props='props')
+                  q-td(key='pos' :props='props' auto-width) {{ props.row.display_position }}
+                  q-td(key='playerName' :props='props')
+                    .row.full-width
+                      .q-pr-sm
+                        q-avatar(size="25px")
+                          img(:src="props.row.headshot.url" style="width: 85%")
+                      .col.text-weight-bold.text-body2
+                        | {{props.row.name.full}}
+                  q-td(key='team' :props='props')
+                    .text-grey {{ props.row.editorial_team_full_name }}
+                  //- q-td(key='ffteam' :props='props' auto-width)
+                  //-   | ${{ getTeam(props.row.player_id) }}
+                  q-td(key='salary' :props='props' auto-width)
+                    .text-primary.text-weight-bolder.text-body2.q-pr-sm ${{ getPlayerSalary(props.row.player_id) }}
 
 </template>
 
@@ -26,66 +44,137 @@ import referenceData from '../utilities/referenceData'
 export default {
   data () {
     return {
-      team: '',
-      position: '',
-      search: '',
+      loaded: false,
+      filter: {
+        search: '',
+        team: '',
+        position: ''
+      },
+      pagination: {
+        page: 1,
+        rowsPerPage: 30 // 0 means all rows
+      },
       columns: [
         {
-          name: 'name',
+          name: 'pos',
           required: true,
-          label: 'Player Name',
-          align: 'left',
-          field: row => row.name,
+          label: 'POS:',
+          align: 'center',
+          field: row => row.display_position,
           format: val => `${val}`,
-          sortable: true,
-          style: 'width: 200px'
-
-        },
-        { name: 'team', align: 'left', label: 'Team', field: 'team', sortable: true, style: 'width: 200px' },
-        { name: 'salary', align: 'left', label: 'Salary', field: 'salary', sortable: true }
-      ],
-      data: [
-        {
-          name: 'Josh Allen',
-          team: 'GoldDiggers',
-          salary: 7
+          sortable: true
+          // classes: 'bg-secondary ellipsis',
+          // style: 'max-width: 10px',
+          // headerClasses: 'bg-grey-3'
         },
         {
-          name: 'Tom Brady',
-          team: 'GoldDiggers',
-          salary: 7
+          name: 'playerName',
+          required: true,
+          label: 'Player:',
+          align: 'left',
+          sortable: false,
+          field: row => row.name.full,
+          // classes: 'bg-grey-2 ellipsis',
+          style: 'width: 225px'
+          // headerClasses: 'bg-grey-3'
         },
         {
-          name: 'Russel Wilson',
-          team: 'GoldDiggers',
-          salary: 7
+          name: 'team',
+          required: true,
+          label: 'Team:',
+          align: 'left',
+          sortable: false
+          // classes: 'bg-grey-2 ellipsis',
+          // style: 'width: 150px'
+          // headerClasses: 'bg-grey-3'
         },
+        // {
+        //   name: 'ffteam',
+        //   required: true,
+        //   label: 'Team:',
+        //   align: 'left',
+        //   sortable: false
+        //   // classes: 'bg-grey-2 ellipsis',
+        //   // style: 'width: 150px'
+        //   // headerClasses: 'bg-grey-3'
+        // },
         {
-          name: 'Peyton Manning',
-          team: 'GoldDiggers',
-          salary: 7
-        },
-        {
-          name: 'Drew Brees',
-          team: 'GoldDiggers',
-          salary: 7
-        },
-        {
-          name: 'Cam Newton',
-          team: 'GoldDiggers',
-          salary: 7
-        },
-        {
-          name: 'Eli Manning',
-          team: 'GoldDiggers',
-          salary: 7
+          name: 'salary',
+          required: true,
+          label: 'Salary:',
+          align: 'center',
+          // field: row => this.yahooTeam.team_key,
+          // format: val => `${val}`,
+          sortable: true
+          // headerClasses: 'bg-grey-3',
+          // // style: 'max-width: 100px'
         }
       ]
     }
   },
+  mounted () {
+    this.loaded = true
+    this.$store.dispatch('player/getAllPlayers')
+  },
   computed: {
     referenceData () {
       return referenceData
+    },
+    scadPlayers () {
+      return this.$store.state.player.scadPlayers
+    },
+    yahooPlayers () {
+      return this.$store.state.player.yahooPlayers
+    },
+    scadTeams () {
+      return this.$store.state.league.scadTeams
+    },
+    yahooTeams () {
+      return this.$store.state.league.yahooTeams
+    },
+    filteredTeams () {
+      return this.yahooTeams.map(t => Object.assign({}, t, { value: t.name, label: t.name }))
+    }
+  },
+  methods: {
+    getPlayerSalary (id) {
+      if (this.loaded) {
+        // eslint-disable-next-line eqeqeq
+        let player = this.scadPlayers.find(p => p.yahooLeaguePlayerId == id)
+        return player.salary
+      }
+    },
+    getTeam (yahooPlayerId) {
+      if (this.loaded) {
+        // eslint-disable-next-line eqeqeq
+        let team = this.scadPlayers.find(p => p.yahooLeaguePlayerId == yahooPlayerId)
+        return team.salary
+      }
+    },
+    async updateTeamFilter () {
+      this.$store.dispatch('player/getTeamYahooPlayers', this.filter.team.team_id)
+    },
+    clearFilter () {
+      this.$store.dispatch('player/getAllPlayers')
+      this.filter = {
+        search: '',
+        team: '',
+        position: ''
+      }
+    },
+    filteredPlayers () {
+      var filtered = this.yahooPlayers
+      Object.keys(this.filter).forEach(key => {
+        if (this.filter[key] !== '') {
+          if (key === 'search') {
+            console.log(this.filter[key])
+            filtered = filtered.filter(p => p.name.full.toLowerCase().includes(this.filter[key].toLowerCase()))
+          } else if (key === 'position') {
+            filtered = filtered.filter(p => p.display_position === this.filter[key])
+          }
+        }
+      })
+      return filtered
     }
   }
 }

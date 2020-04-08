@@ -56,9 +56,9 @@
         q-item(clickable)
           .row.full-width.q-pl-lg
             .col-6.text-body1.text-left
-              | $Salary Cap Exemption Limit:
+              | Salary Cap Exemption Limit:
             .col-3.text-body1.q-pl-lg.text-weight-bolder
-              | {{settings.salaryCapExemptionLimit}}
+              | ${{settings.salaryCapExemptionLimit}}
         q-item(clickable)
           .row.full-width.q-pl-lg
             .col-6.text-body1.text-left

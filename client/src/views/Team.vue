@@ -11,9 +11,9 @@
             .row.justify-center
               .text-h6 {{yahooTeam.name}}
             .row.justify-center
-              .text-caption.text-grey-7 Manager ({{yahooTeam.managers[0].nickname}})  | team_key {{this.$route.params.team_key}}
+              .text-caption.text-grey-7 Manager ({{yahooTeam.managers[0].manager.nickname}})  | team_id: {{yahooTeam.team_id}}
             .row.justify-center
-              .text-caption: a(:href='yahooTeam.url') {{yahooTeam.url}}
+              .text-caption: a(:href='yahooTeam.url') Yahoo Team Page
       q-separator(vertical)
       .col.q-pa-sm
         .row.q-gutter-xs
@@ -67,16 +67,18 @@
               .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
                 | N/A
       q-separator
-      .row.full-width.justify-center
-        div(style="width: 55%")
-          .row.full-width.justify-between.q-pa-sm
-            q-select(square dense v-model='selectedTeam' :options="filteredTeams" style="width: 250px" @input="updateTeamPage")
-            div.q-gutter-sm
-              q-btn(v-if="!franchiseTag && !editSalaries" label='Franchise Tag' dense color='secondary' text-color='primary' size='sm' @click="franchiseTag = !franchiseTag")
-              q-btn(v-if="franchiseTag && !editSalaries" label='Save Franchise Tag' dense color='primary' text-color='white' size='sm' @click="saveFranchiseTag()")
-              q-btn(v-if="!editSalaries && !franchiseTag" label='Edit Salaries' dense color='secondary' text-color='primary' size='sm' @click="editSalaries = !editSalaries")
-              q-btn(v-if="editSalaries && !franchiseTag" label='Save Salaries' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
+      .col-8
+        .row.full-width.justify-between.q-px-sm
+          q-select(square dense v-model='selectedTeam' :options="filteredTeams" style="width: 250px" @input="updateTeamPage")
+          div.q-gutter-sm.q-pt-md
+            q-btn(v-if="!franchiseTag && !editSalaries" label='Franchise Tag' dense color='secondary' text-color='primary' size='sm' @click="franchiseTag = !franchiseTag")
+            q-btn(v-if="franchiseTag && !editSalaries" label='Save Franchise Tag' dense color='primary' text-color='white' size='sm' @click="saveFranchiseTag()")
+            q-btn(v-if="!editSalaries && !franchiseTag" label='Edit Salaries' dense color='secondary' text-color='primary' size='sm' @click="editSalaries = !editSalaries")
+            q-btn(v-if="editSalaries && !franchiseTag" label='Save Salaries' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
+      .row.full-width.q-pl-lg
+        .col-8
           q-table(
+            class="my-sticky-header-table"
             v-if="loaded"
             :data='players',
             :columns='columns',
@@ -89,19 +91,21 @@
             )
             template(v-slot:body='props')
               q-tr(:props='props')
-                q-td: q-checkbox(dense v-model='props.selected' :disable="!franchiseTag ? true : false" :color="franchiseTag ? color='info' : color='grey'"  keep-color)
+                q-td(auto-width): q-checkbox(dense v-model='props.selected' :disable="!franchiseTag ? true : false" :color="franchiseTag ? color='info' : color='grey'"  keep-color)
                 q-td(key='pos' :props='props' auto-width) {{ props.row.display_position }}
                 q-td(key='playerName' :props='props')
                   .row.full-width
-                    .col-1.q-pl-xs.-right
+                    .col-2
                       q-avatar(size="25px")
                         img(:src="props.row.headshot.url" style="width: 85%")
-                      | {{props.row.name.full}} ({{props.row.editorial_team_abbr}})
+                    .col-2.q-pl-xs.text-weight-bold.text-body2
+                      | {{props.row.name.full}}
                       q-badge(v-if="checkTag(props.row.player_id)" color='white'): q-icon( name='fas fa-tag' color='info')
-                    .col.justify-center
+                q-td(key='team' :props='props')
+                  .text-grey {{ props.row.editorial_team_full_name }}
                 q-td(key='salary' :props='props' auto-width)
                   .col(:style=" editSalaries ? 'border: 1px solid #26A69A;' : 'border: none;' ")
-                    | ${{ getPlayerSalary(props.row.player_id) }}
+                    .text-primary.text-weight-bolder.text-body2.q-pr-sm ${{ getPlayerSalary(props.row.player_id) }}
                   q-popup-edit(
                     v-if="editSalaries"
                     :cover="false"
@@ -115,12 +119,18 @@
                     @cancel="cancelEdit()"
                     )
                     q-input(type='number' v-model='editPlayer.salary' dense autofocus)
+        .col
+          team-overview(:yahooTeamId="this.$route.params.team_id")
 </template>
 
 <script>
+import TeamOverview from '../components/TeamOverview'
 
 export default {
   name: 'Team',
+  components: {
+    'team-overview': TeamOverview
+  },
   data () {
     return {
       loaded: false,
@@ -139,13 +149,13 @@ export default {
         {
           name: 'pos',
           required: true,
-          label: 'POS:',
-          // align: 'right',
+          label: 'Pos:',
+          align: 'center',
           field: row => row.display_position,
-          format: val => `${val}`,
-          sortable: true
+          format: val => `${val}`
+          // sortable: true
           // classes: 'bg-secondary ellipsis',
-          // style: 'max-width: 10px',
+          // style: 'width: 10px'
           // headerClasses: 'bg-grey-3'
         },
         {
@@ -155,14 +165,24 @@ export default {
           align: 'left',
           sortable: false,
           // classes: 'bg-grey-2 ellipsis',
-          style: 'max-width: 150px'
+          style: 'width: 225px'
+          // headerClasses: 'bg-grey-3'
+        },
+        {
+          name: 'team',
+          required: true,
+          label: 'Team:',
+          align: 'left',
+          sortable: false
+          // classes: 'bg-grey-2 ellipsis',
+          // style: 'width: 150px'
           // headerClasses: 'bg-grey-3'
         },
         {
           name: 'salary',
           required: true,
           label: 'Salary:',
-          align: 'center',
+          align: 'right',
           // field: row => this.yahooTeam.team_key,
           // format: val => `${val}`,
           sortable: true
@@ -193,7 +213,7 @@ export default {
       return this.$store.state.team.yahooTeam
     },
     players () {
-      return this.yahooTeam.roster.players
+      return this.yahooTeam.players
     },
     league () {
       return this.$store.state.league
@@ -221,7 +241,11 @@ export default {
     async getTeam (yahooTeamID) {
       // console.log(`[TEAM] - getTeam(${yahooTeamID})`)
       await this.$store.dispatch('team/getTeam', { yahooLeagueId: this.yahooLeagueID, yahooTeamId: yahooTeamID })
-      this.scadTeam = this.$store.state.team.scadTeam
+      if (yahooTeamID === this.myYahooTeamID) {
+        this.scadTeam = this.$store.state.team.myScadTeam
+      } else {
+        this.scadTeam = this.$store.state.team.scadTeam
+      }
       this.loaded = true
     },
     async saveSalaries () {
@@ -301,9 +325,13 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
-  .scad-team-settings
-    text: $h2
-    color: $blue-1
-    background-color: $grey-5
+<style lang="sass">
+a
+  color: #8f0909
+  text-decoration: none
+
+.my-sticky-header-table
+  thead
+    background-color: #e1e2e3
+
 </style>

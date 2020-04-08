@@ -2,7 +2,7 @@
   q-layout.bg-grey-1(view="hHh LpR fFf")
     q-header.bg-white.text-grey-8(elevated height-hint="64")
       q-toolbar.GNL__toolbar
-        q-btn.q-mr-sm(flat dense round @click="leftDrawerOpen = !leftDrawerOpen" aria-label="Menu" icon="menu")
+        q-btn.q-mr-sm(v-if="loggedIn" flat dense round @click="leftDrawerOpen = !leftDrawerOpen" aria-label="Menu" icon="menu")
         q-toolbar-title.row.items-center.no-wrap(v-if="$q.screen.gt.xs" shrink)
             img(src="../statics/scad-logo_v1_100x30.png" clickable @click="iconNavigate")
         q-space
@@ -145,10 +145,10 @@ export default {
           id_token: this.$cookies.get('id_token')
         }
         await this.$store.commit('user/updateTokens', tokens)
+        await this.$store.dispatch('user/refreshToken')
+        await this.$store.dispatch('user/updateUser')
+        await this.$store.dispatch('league/getScadInfo')
       }
-      await this.$store.dispatch('user/refreshToken')
-      await this.$store.dispatch('user/updateUser')
-      await this.$store.dispatch('league/getScadInfo')
       if (this.$route.query) {
         history.pushState(null, '', location.href.split('?')[0])
       }

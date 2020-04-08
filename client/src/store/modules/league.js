@@ -9,8 +9,8 @@ export default {
     isActive: false,
     key: '',
 
-    yahooLeagueID: '22351',
-    scadLeagueID: '1',
+    yahooLeagueID: '',
+    scadLeagueID: '',
 
     yahooLeagueDetails: {},
     yahooSettings: {},
@@ -153,8 +153,8 @@ export default {
           commit('key', dashboard.data.key)
           commit('updateYahooLeagueDetails', dashboard.data.yahooLeague)
           commit('updateScadSettings', dashboard.data.scadLeague)
-          commit('team/updateYahooTeam', yahooTeam, { root: true })
-          commit('team/updateScadTeam', scadTeam, { root: true })
+          commit('team/updateMyYahooTeam', yahooTeam, { root: true })
+          commit('team/updateMyScadTeam', scadTeam, { root: true })
           let id = {
             myYahooTeamID: dashboard.data.yahooMyTeam.team_id,
             myScadTeamID: dashboard.data.scadMyTeam.id
@@ -218,7 +218,7 @@ export default {
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .get(`/yahoo/league/${leagueId}/standings`)
-        console.log('YAHOO-TEAMS: ', standings.data.standings)
+        console.log('YAHOO-TEAMS: ', standings.data)
         commit('updateYahooTeams', standings.data.standings)
       } catch (err) {
         catchAxiosScadError(err)
@@ -232,7 +232,7 @@ export default {
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .get(`/scad/league/${id}/team/all`)
-        console.log('SCAD-TEAMS: ', res.data.scadLeagueTeams)
+        console.log('SCAD-TEAMS: ', res.data)
         commit('updateScadTeams', res.data.scadLeagueTeams)
       } catch (err) {
         catchAxiosScadError(err)

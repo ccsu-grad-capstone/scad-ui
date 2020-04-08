@@ -8,7 +8,7 @@
         .text-h4.text-weight-bolder {{league.yahooLeagueDetails.name}}
         a(:href='league.yahooLeagueDetails.url') {{league.yahooLeagueDetails.url}}
     .row.full-width
-      //- lite-league
+      lite-league
       lite-my-team
     my-tokens
     q-separator
@@ -91,4 +91,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="stylus" scoped>
+  a
+    color: $info
+    text-decoration: none
+</style>
