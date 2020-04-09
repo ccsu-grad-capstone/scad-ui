@@ -64,7 +64,7 @@ Vue.use(Quasar, {
 
       dark: '#1d1d1d',
 
-      positive: '#5df080',
+      positive: '#00d11f',
       negative: '#fa1a44',
       info: '#6f8da8',
       warning: '#F2C037'

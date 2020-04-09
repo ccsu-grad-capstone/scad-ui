@@ -59,14 +59,13 @@ export default {
       loaded: false
     }
   },
-  created () {
+  async created () {
+    await this.$store.dispatch('league/getScadInfo')
     if (!this.league.isActive) {
       this.$router.push('/about')
     } else {
       this.loaded = true
     }
-    // this.$store.dispatch('user/refreshToken')
-    // this.$store.dispatch('league/getDashboard')
   },
   computed: {
     user () {

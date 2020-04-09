@@ -147,15 +147,15 @@ export default {
         await this.$store.commit('user/updateTokens', tokens)
         await this.$store.dispatch('user/refreshToken')
         await this.$store.dispatch('user/updateUser')
-        await this.$store.dispatch('league/getScadInfo')
+        // await this.$store.dispatch('league/getScadInfo')
       }
       if (this.$route.query) {
         history.pushState(null, '', location.href.split('?')[0])
       }
-      if (this.league.key !== 'League') {
-        console.log('redirecting to about..layout', this.league.key)
-        this.$router.push('about')
-      }
+      // if (this.league.key !== 'League') {
+      //   console.log('redirecting to about..layout', this.league.key)
+      //   this.$router.push('about')
+      // }
       this.loaded = true
       this.$q.loadingBar.stop()
     },

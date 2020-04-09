@@ -23,6 +23,11 @@
       template(v-slot:body-cell-salary='props')
         q-td(:props='props')
           .text-primary.text-weight-bolder ${{getTeamSalary(props.row.team_id)}}
+      template(v-slot:body-cell-salaryCheck='props')
+        q-td(:props='props')
+          q-icon(v-if="checkTeamSalary(props.row.team_id) > 5" name="fas fa-check-square" color="positive")
+          q-icon(v-else-if="checkTeamSalary(props.row.team_id) < 0" name="fas fa-exclamation-triangle" color="negative")
+          q-icon(v-else name="fas fa-exclamation-triangle" color="warning")
 </template>
 
 <script>
@@ -89,6 +94,17 @@ export default {
           sortable: false,
           headerClasses: 'bg-grey-3',
           style: 'max-width: 100px'
+        },
+        {
+          name: 'salaryCheck',
+          required: true,
+          label: '',
+          align: 'center',
+          field: row => row.team_id,
+          // format: val => `$${this.getTeamSalary(val)}`,
+          sortable: false,
+          headerClasses: 'bg-grey-3',
+          style: 'max-width: 100px'
         }
       ]
     }
@@ -102,6 +118,9 @@ export default {
     },
     scadTeams () {
       return this.league.scadTeams
+    },
+    scadSettings () {
+      return this.league.scadSettings
     }
   },
   methods: {
@@ -109,6 +128,11 @@ export default {
       // eslint-disable-next-line eqeqeq
       let team = this.scadTeams.find(t => t.yahooLeagueTeamId == id)
       return team.salary
+    },
+    checkTeamSalary (id) {
+      // eslint-disable-next-line eqeqeq
+      let salary = this.getTeamSalary(id)
+      return this.scadSettings.teamSalaryCap - salary
     }
   }
 

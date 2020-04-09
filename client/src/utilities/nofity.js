@@ -27,6 +27,14 @@ export default {
       timeout: 1000
     })
   },
+  salaryLimit () {
+    Notify.create({
+      message: 'Salary Adjustment exceeds Team Salary Cap',
+      position: 'top',
+      icon: 'check',
+      color: 'red'
+    })
+  },
   loginFailed () {
     Notify.create({
       message: 'Login Failed',

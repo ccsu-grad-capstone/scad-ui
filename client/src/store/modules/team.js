@@ -115,17 +115,13 @@ export default {
 
     async saveTeam ({ rootState, dispatch, state }, t) {
       console.log(`[TEAM-ACTION] - saveTeam()`, t)
-      var team = {
-        salary: t.salary,
-        isFranchiseTag: t.isFranchiseTag
-      }
       try {
         const res = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .put(`/scad/team/${t.id}`, team)
+          .put(`/scad/team/${t.id}`, t)
         console.log('SAVE-TEAM: ', res)
-        notify.teamSaveSuccessful()
+        // notify.teamSaveSuccessful()
         dispatch('getTeam', { yahooLeagueId: t.yahooLeagueId, yahooTeamId: state.scadTeam.yahooLeagueTeamId })
       } catch (err) {
         catchAxiosScadError(err)
