@@ -105,8 +105,11 @@ export default {
       if (nav === 'logout') {
         this.logout()
       } else if (nav === '/team') {
-        // this.$router.push({ name: 'team', params: { team_id: `${this.myYahooTeamID}` } })
-        this.$router.push({ path: `/team/${this.myYahooTeamID}` })
+        this.$router.push({ path: `/team/${this.myYahooTeamID}` }).catch(error => {
+          if (error.name !== 'NavigationDuplicated') {
+            throw error
+          }
+        })
       } else {
         this.$router.push({
           path: nav
@@ -147,7 +150,7 @@ export default {
         await this.$store.commit('user/updateTokens', tokens)
         await this.$store.dispatch('user/refreshToken')
         await this.$store.dispatch('user/updateUser')
-        // await this.$store.dispatch('league/getScadInfo')
+        await this.$store.dispatch('league/getScadInfo')
       }
       if (this.$route.query) {
         history.pushState(null, '', location.href.split('?')[0])

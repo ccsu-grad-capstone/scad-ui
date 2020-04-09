@@ -46,11 +46,12 @@
 export default {
   name: 'TeamOverview',
   props: {
-    yahooTeamId: String
+    yahooTeamId: String,
+    yahooTeam: Object,
+    scadTeam: Object
   },
   data () {
     return {
-      scadTeam: {},
       detailColumns: [
         {
           name: 'pos',
@@ -76,16 +77,8 @@ export default {
     }
   },
   mounted () {
-    if (this.yahooTeamID === this.myYahooTeamId) {
-      this.scadTeam = this.$store.state.team.myScadTeam
-    } else {
-      this.scadTeam = this.$store.state.team.scadTeam
-    }
   },
   computed: {
-    yahooTeam () {
-      return this.$store.state.team.yahooTeam
-    }
   },
   methods: {
     getCount (pos) {

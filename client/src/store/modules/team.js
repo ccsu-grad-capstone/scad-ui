@@ -8,8 +8,10 @@ export default {
   state: {
     myYahooTeamID: '',
     myScadTeamID: '',
+
     myYahooTeam: {},
     myScadTeam: {},
+
     yahooTeam: {},
     scadTeam: {}
   },
@@ -24,11 +26,11 @@ export default {
     },
     logoutTeam (state) {
       // console.log('[TEAM-MUTATION] - logoutTeam()')
-      state.myYahooTeamID = ''
-      state.yahooTeam = {}
-      state.scadTeam = {}
-      state.yahooTeams = []
-      state.scadTeams = []
+      // state.myYahooTeamID = ''
+      // state.yahooTeam = {}
+      // state.scadTeam = {}
+      // state.yahooTeams = []
+      // state.scadTeams = []
     },
     updateMyTeamIDs (state, ids) {
       // console.log('[TEAM-MUTATION] - updateMyTeamIDs()')
@@ -38,12 +40,12 @@ export default {
     updateMyYahooTeam (state, team) {
       // console.log('[TEAM-MUTATION] - updateYahooTeam()')
       state.myYahooTeam = team
-      // console.log('YAHOO-TEAM: ', team)
+      // console.log('MY-YAHOO-TEAM: ', team)
     },
     updateMyScadTeam (state, team) {
       // console.log('[TEAM-MUTATION] - updateScadTeam()')
       state.myScadTeam = team
-      // console.log('SCAD-TEAM: ', team)
+      // console.log('MY-SCAD-TEAM: ', team)
     },
     updateYahooTeam (state, team) {
       // console.log('[TEAM-MUTATION] - updateYahooTeam()')
@@ -54,19 +56,12 @@ export default {
       // console.log('[TEAM-MUTATION] - updateScadTeam()')
       state.scadTeam = team
       // console.log('SCAD-TEAM: ', team)
-    },
-    viewMyTeam (state) {
-      // console.log('[TEAM-MUTATION] - updateScadTeam()')
-      state.yahooTeam = state.myYahooTeam
-      state.scadTeam = state.myScadTeam
-      console.log('YAHOO-TEAM: ', state.yahooTeam)
-      console.log('SCAD-TEAM: ', state.scadTeam)
     }
   },
   actions: {
-    getTeam ({ dispatch }, yahooLeagueId, yahooTeamId) {
-      dispatch('getYahooTeam', yahooLeagueId, yahooTeamId)
-      dispatch('getScadTeam', yahooLeagueId, yahooTeamId)
+    async getTeam ({ dispatch }, yahooLeagueId, yahooTeamId) {
+      await dispatch('getYahooTeam', yahooLeagueId, yahooTeamId)
+      await dispatch('getScadTeam', yahooLeagueId, yahooTeamId)
     },
 
     async getYahooTeam ({ commit, rootState }, { yahooLeagueId, yahooTeamId }) {
@@ -92,7 +87,7 @@ export default {
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .get(`/scad/yahoo/league/${yahooLeagueId}/team/${yahooTeamId}`)
-        console.log('SCADTEAM: ', res.data)
+        console.log('SCAD-TEAM: ', res.data)
         commit('updateScadTeam', res.data)
       } catch (err) {
         catchAxiosScadError(err)

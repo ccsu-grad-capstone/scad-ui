@@ -123,7 +123,7 @@
                     )
                     q-input(type='number' v-model='editPlayer.salary' dense autofocus)
         .col
-          team-overview(:yahooTeamId="this.$route.params.team_id")
+          team-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
 </template>
 
 <script>
@@ -208,31 +208,40 @@ export default {
       ]
     }
   },
-  async created () {
+  created () {
     // console.log('[TEAM] - created()')
-    await this.getTeam(this.$route.params.team_id)
+    this.getTeam(this.$route.params.team_id)
   },
   computed: {
     user () {
       return this.$store.state.user
     },
+    league () {
+      return this.$store.state.league
+    },
+    team () {
+      return this.$store.state.team
+    },
     yahooTeams () {
-      return this.$store.state.league.yahooTeams
+      return this.league.yahooTeams
     },
     yahooLeagueID () {
-      return this.$store.state.league.yahooLeagueID
+      return this.league.yahooLeagueID
     },
     myYahooTeamID () {
       return this.$store.state.team.myYahooTeamID
     },
+    myYahooTeam () {
+      return this.team.myYahooTeam
+    },
+    myScadTeam () {
+      return this.team.myScadTeam
+    },
     yahooTeam () {
-      return this.$store.state.team.yahooTeam
+      return this.team.yahooTeam
     },
     players () {
       return this.yahooTeam.players
-    },
-    league () {
-      return this.$store.state.league
     },
     filteredTeams () {
       return this.yahooTeams.map(t => Object.assign({}, t, { value: t.name, label: t.name }))
@@ -256,11 +265,13 @@ export default {
   methods: {
     async getTeam (yahooTeamID) {
       // console.log(`[TEAM] - getTeam(${yahooTeamID})`)
+      // Update team based on url param
       await this.$store.dispatch('team/getTeam', { yahooLeagueId: this.yahooLeagueID, yahooTeamId: yahooTeamID })
+
       if (yahooTeamID === this.myYahooTeamID) {
         this.scadTeam = JSON.parse(JSON.stringify(this.$store.state.team.myScadTeam))
       } else {
-        this.scadTeam = JSON.parse(JSON.stringify(this.$store.state.team.myScadTeam))
+        this.scadTeam = JSON.parse(JSON.stringify(this.$store.state.team.scadTeam))
       }
       this.loaded = true
     },

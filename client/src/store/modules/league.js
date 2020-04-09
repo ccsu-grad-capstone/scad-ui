@@ -126,11 +126,11 @@ export default {
   actions: {
     // Calls whenever the page reloads.. Fills store with initial information needed to fill dashboard
     async getScadInfo ({ dispatch, state, rootState }) {
-      console.log('[LEAGUE-ACTION] - getScadInfo()')
+      // console.log('[LEAGUE-ACTION] - getScadInfo()')
       try {
         await dispatch('dashboard')
-        dispatch('getYahooTeams', state.yahooLeagueID)
-        dispatch('getScadTeams', 2)
+        await dispatch('getYahooTeams', state.yahooLeagueID)
+        await dispatch('getScadTeams', state.scadLeagueID)
       } catch (err) {
         catchAxiosScadError(err)
       }
