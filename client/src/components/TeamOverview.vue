@@ -38,7 +38,7 @@
           td {{getCount('DEF')}}
           td ${{getTotal('DEF')}}
           td {{getPerc('DEF')}}%
-    .col.full-width.text-center.q-pa-sm.text-grey *team details by position
+    .col.full-width.text-center.q-pa-xs.text-grey.text-caption -team details by position-
 
 </template>
 

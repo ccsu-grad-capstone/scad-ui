@@ -1,154 +1,182 @@
 <template lang="pug">
   q-page.flex.flex-center
     q-card.q-pa-md.q-ma-lg(style='width: 100%')
-      q-card-section.row
-        .text-h4.text-weight-bolder League Settings
+      q-card-section
+        .row.full-width.q-gutter-between
+          .col
+            .text-h4.text-weight-bolder League Settings
+          div.q-pt-sm
+            q-btn(v-if="!editing" label='Edit Settings' dense color='primary' text-color='white' size='sm' @click="editing = true")
+            div.q-gutter-md(v-else)
+              q-btn( label='Cancel' dense color='secondary' text-color='primary' size='sm' @click="cancel()")
+              q-btn( label='Save Settings' dense color='primary' text-color='white' size='sm' @click="save()")
       q-separator.q-mb-lg(color='secondary' inset)
       q-list(bordered separator)
         q-item(clickable)
           .row.full-width.q-pl-lg
-            .col-6.text-body1.text-left
+            .col-5.text-body1.text-left
               | Yahoo League Name:
-            .col-3.text-body1.q-pl-lg.text-weight-bolder
-              | {{settings.yahooLeagueName}}
+            .col.text-body1.q-pl-lg.text-weight-bolder
+              | {{yahooLeagueDetails.name}}
         q-item(clickable)
           .row.full-width.q-pl-lg
-            .col-6.text-body1.text-left
+            .col-5.text-body1.text-left
               | Yahoo League ID:
-            .col-3.text-body1.q-pl-lg.text-weight-bolder
-              | {{settings.yahooLeagueId}}
+            .col.text-body1.q-pl-lg.text-weight-bolder
+              | {{scadSettings.yahooLeagueId}}
         q-item(clickable)
           .row.full-width.q-pl-lg
-            .col-6.text-body1.text-left
+            .col-5.text-body1.text-left
               | Yahoo League Homepage:
-            .col-3.text-body1.q-pl-lg.text-weight-bolder
-              a(:href='settings.url') {{league.url}}
+            .col.text-body1.q-pl-lg.text-weight-bolder
+              a(:href='yahooLeagueDetails.url') {{yahooLeagueDetails.url}}
         q-item(clickable)
           .row.full-width.q-pl-lg
-            .col-6.text-body1.text-left
+            .col-5.text-body1.text-left
               | Rookie Draft Rounds:
-            .col-3.text-body1.q-pl-lg.text-weight-bolder
-              | {{settings.rookieDraftRds}}
+            .col-2.text-body1.q-pl-lg.text-weight-bolder
+              q-select(v-if="editing" filled dense v-model='scadSettings.rookieDraftRds' :options='referenceData.rookieDraftRounds')
+              div(v-else) {{scadSettings.rookieDraftRds}}
         q-item(clickable)
           .row.full-width.q-pl-lg
-            .col-6.text-body1.text-left
+            .col-5.text-body1.text-left
               | Rookie Draft Strategy:
             .col-3.text-body1.q-pl-lg.text-weight-bolder
-              | {{settings.rookieDraftStrategy}}
+              q-select(v-if="editing" filled dense v-model='scadSettings.rookieDraftStrategy' :options='referenceData.rookieDraftStrategy')
+              div(v-else) {{scadSettings.rookieDraftStrategy}}
         q-item(clickable)
           .row.full-width.q-pl-lg
-            .col-6.text-body1.text-left
+            .col-5.text-body1.text-left
               | Rookie Wage Scale:
-            .col-3.text-body1.q-pl-lg.text-weight-bolder
-              | {{settings.rookieWageScale}}
+            .col-2.text-body1.q-pl-lg.text-weight-bolder
+              q-select(v-if="editing" filled dense v-model='scadSettings.rookieWageScale' :options='referenceData.rookieWageScale')
+              div(v-else) {{scadSettings.rookieWageScale}}
         q-item(clickable)
           .row.full-width.q-pl-lg
-            .col-6.text-body1.text-left
+            .col-5.text-body1.text-left
               | Team Salary Cap:
-            .col-3.text-body1.q-pl-lg.text-weight-bolder
-              | ${{settings.teamSalaryCap}}
+            .col-2.text-body1.q-pl-lg.text-weight-bolder
+              q-select(v-if="editing" filled dense v-model='scadSettings.teamSalaryCap' :options='referenceData.teamSalaryCap()')
+              div(v-else) ${{scadSettings.teamSalaryCap}}
         q-item(clickable)
           .row.full-width.q-pl-lg
-            .col-6.text-body1.text-left
+            .col-5.text-body1.text-left
               | League Salary Cap:
-            .col-3.text-body1.q-pl-lg.text-weight-bolder
-              | ${{settings.leagueSalaryCap}}
+            .col-2.text-body1.q-pl-lg.text-weight-bolder
+              div ${{leagueSalaryCap()}}
         q-item(clickable)
           .row.full-width.q-pl-lg
-            .col-6.text-body1.text-left
+            .col-5.text-body1.text-left
               | Salary Cap Exemption Limit:
-            .col-3.text-body1.q-pl-lg.text-weight-bolder
-              | ${{settings.salaryCapExemptionLimit}}
+            .col-2.text-body1.q-pl-lg.text-weight-bolder
+              q-select(v-if="editing" filled dense v-model='scadSettings.salaryCapExemptionLimit' :options='referenceData.salaryCapExemptionLimit()')
+              div(v-else) ${{scadSettings.salaryCapExemptionLimit}}
         q-item(clickable)
           .row.full-width.q-pl-lg
-            .col-6.text-body1.text-left
+            .col-5.text-body1.text-left
               | IR Relief Percentage:
-            .col-3.text-body1.q-pl-lg.text-weight-bolder
-              | {{settings.irReliefPerc}}%
+            .col-2.text-body1.q-pl-lg.text-weight-bolder
+              q-select(v-if="editing" filled dense v-model='scadSettings.irReliefPerc' :options='referenceData.irReliefPerc()')
+              div(v-else) {{scadSettings.irReliefPerc}}%
         q-item(clickable)
           .row.full-width.q-pl-lg
-            .col-6.text-body1.text-left
+            .col-5.text-body1.text-left
               | Franchise Tag Relief Percentage:
-            .col-3.text-body1.q-pl-lg.text-weight-bolder
-              | {{settings.franchiseTagReliefPerc}}%
+            .col-2.text-body1.q-pl-lg.text-weight-bolder
+              q-select(v-if="editing" filled dense v-model='scadSettings.franchiseTagReliefPerc' :options='referenceData.franchiseTagReliefPerc()')
+              div(v-else) {{scadSettings.franchiseTagReliefPerc}}%
         q-item(clickable)
           .row.full-width.q-pl-lg
-            .col-6.text-body1.text-left
+            .col-5.text-body1.text-left
               | Franchise Tag Spots:
-            .col-3.text-body1.q-pl-lg.text-weight-bolder
-              | {{settings.franchiseTagSpots}}
+            .col-2.text-body1.q-pl-lg.text-weight-bolder
+              q-select(v-if="editing" filled dense v-model='scadSettings.franchiseTagSpots' :options='referenceData.franchiseTags')
+              div(v-else) {{scadSettings.franchiseTagSpots}}
         q-item(clickable)
           .row.full-width.q-pl-lg
-            .col-6.text-body1.text-left
+            .col-5.text-body1.text-left
               | Year Limit on Trading Draft Picks in Advance:
-            .col-3.text-body1.q-pl-lg.text-weight-bolder
-              | {{settings.tradingDraftPickYears}}
+            .col-2.text-body1.q-pl-lg.text-weight-bolder
+              q-select(v-if="editing" filled dense v-model='scadSettings.tradingDraftPickYears' :options='referenceData.tradingDraftPickYears')
+              div(v-else) {{scadSettings.tradingDraftPickYears}}
         q-item(clickable)
           .row.full-width.q-pl-lg
-            .col-6.text-body1.text-left
+            .col-5.text-body1.text-left
               | QB Roster Limits:
-            .col-3.text-body1.q-pl-lg.text-weight-bolder
+            .col.text-body1.q-pl-lg.text-weight-bolder
               .row.align-center
-                | {{ settings.qbMin }}
+                q-select(v-if="editing" filled dense v-model='scadSettings.qbMin' :options='referenceData.rosterLimits')
+                div(v-else) {{ scadSettings.qbMin }}
                 .text-caption (min),
-                | {{ settings.qbMax }}
+                q-select(v-if="editing" filled dense v-model='scadSettings.qbMax' :options='referenceData.rosterLimits')
+                div(v-else) {{ scadSettings.qbMax }}
                 .text-caption (max)
         q-item(clickable)
           .row.full-width.q-pl-lg
-            .col-6.text-body1.text-left
+            .col-5.text-body1.text-left
               | RB Roster Limits:
-            .col-3.text-body1.q-pl-lg.text-weight-bolder
+            .col.text-body1.q-pl-lg.text-weight-bolder
               .row.align-center
-                | {{ settings.rbMin }}
+                q-select(v-if="editing" filled dense v-model='scadSettings.rbMin' :options='referenceData.rosterLimits')
+                div(v-else) {{ scadSettings.rbMin }}
                 .text-caption (min),
-                | {{ settings.rbMax }}
+                q-select(v-if="editing" filled dense v-model='scadSettings.rbMax' :options='referenceData.rosterLimits')
+                div(v-else) {{ scadSettings.rbMax }}
                 .text-caption (max)
         q-item(clickable)
           .row.full-width.q-pl-lg
-            .col-6.text-body1.text-left
+            .col-5.text-body1.text-left
               | WR Roster Limits:
-            .col-3.text-body1.q-pl-lg.text-weight-bolder
+            .col.text-body1.q-pl-lg.text-weight-bolder
               .row.align-center
-                | {{ settings.wrMin }}
+                q-select(v-if="editing" filled dense v-model='scadSettings.wrMin' :options='referenceData.rosterLimits')
+                div(v-else) {{ scadSettings.wrMin }}
                 .text-caption (min),
-                | {{ settings.wrMax }}
+                q-select(v-if="editing" filled dense v-model='scadSettings.wrMax' :options='referenceData.rosterLimits')
+                div(v-else) {{ scadSettings.wrMax }}
                 .text-caption (max)
         q-item(clickable)
           .row.full-width.q-pl-lg
-            .col-6.text-body1.text-left
+            .col-5.text-body1.text-left
               | TE Roster Limits:
-            .col-3.text-body1.q-pl-lg.text-weight-bolder
+            .col.text-body1.q-pl-lg.text-weight-bolder
               .row.align-center
-                | {{ settings.teMin }}
+                q-select(v-if="editing" filled dense v-model='scadSettings.teMin' :options='referenceData.rosterLimits')
+                div(v-else) {{ scadSettings.teMin }}
                 .text-caption (min),
-                | {{ settings.teMax }}
+                q-select(v-if="editing" filled dense v-model='scadSettings.teMax' :options='referenceData.rosterLimits')
+                div(v-else) {{ scadSettings.teMax }}
                 .text-caption (max)
         q-item(clickable)
           .row.full-width.q-pl-lg
-            .col-6.text-body1.text-left
+            .col-5.text-body1.text-left
               | K Roster Limits:
-            .col-3.text-body1.q-pl-lg.text-weight-bolder
+            .col.text-body1.q-pl-lg.text-weight-bolder
               .row.align-center
-                | {{ settings.kMin }}
+                q-select(v-if="editing" filled dense v-model='scadSettings.kMin' :options='referenceData.rosterLimits')
+                div(v-else) {{ scadSettings.kMin }}
                 .text-caption (min),
-                |
-                |
-                | {{ settings.kMax }}
+                q-select(v-if="editing" filled dense v-model='scadSettings.kMax' :options='referenceData.rosterLimits')
+                div(v-else) {{ scadSettings.kMax }}
                 .text-caption (max)
         q-item(clickable)
           .row.full-width.q-pl-lg
-            .col-6.text-body1.text-left
+            .col-5.text-body1.text-left
               | DEF Roster Limits:
-            .col-3.text-body1.q-pl-lg.text-weight-bolder
+            .col.text-body1.q-pl-lg.text-weight-bolder
               .row.align-center
-                | {{ settings.defMin }}
+                q-select(v-if="editing" filled dense v-model='scadSettings.defMin' :options='referenceData.rosterLimits')
+                div(v-else) {{ scadSettings.defMin }}
                 .text-caption (min),
-                | {{ settings.defMax }}
+                q-select(v-if="editing" filled dense v-model='scadSettings.defMax' :options='referenceData.rosterLimits')
+                div(v-else) {{ scadSettings.defMax }}
                 .text-caption (max)
 
 </template>
 
 <script>
+
+import referenceData from '../utilities/referenceData'
 
 export default {
   name: 'RegisterLeague',
@@ -156,20 +184,49 @@ export default {
   },
   data () {
     return {
+      scadSettings: {},
+      editing: false
     }
   },
   mounted () {
-    if (!this.league.scadSettings.id) { this.$store.dispatch('league/getScadSettings') }
+    this.init()
   },
   computed: {
+    referenceData () {
+      return referenceData
+    },
     league () {
       return this.$store.state.league
     },
     settings () {
-      return this.$store.state.league.scadSettings
+      return this.league.scadSettings
+    },
+    yahooLeagueDetails () {
+      return this.league.yahooLeagueDetails
     }
   },
   methods: {
+    init () {
+      this.scadSettings = JSON.parse(JSON.stringify(this.settings))
+    },
+    async save () {
+      await this.$store.dispatch('league/saveLeagueSettings', { settings: this.scadSettings })
+      this.init()
+      this.editing = false
+    },
+    cancel () {
+      console.log('CANCEL')
+      this.init()
+      this.editing = false
+    },
+    leagueSalaryCap () {
+      if (this.scadSettings.teamSalaryCap === this.settings.teamSalaryCap) {
+        return this.scadSettings.leagueSalaryCap
+      } else {
+        this.scadSettings.leagueSalaryCap = this.scadSettings.teamSalaryCap * this.yahooLeagueDetails.num_teams
+        return this.scadSettings.leagueSalaryCap
+      }
+    }
   }
 }
 </script>

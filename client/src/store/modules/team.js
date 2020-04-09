@@ -70,7 +70,7 @@ export default {
     },
 
     async getYahooTeam ({ commit, rootState }, { yahooLeagueId, yahooTeamId }) {
-      console.log(`[TEAM-ACTION] - getYahooTeam(${yahooTeamId})`)
+      // console.log(`[TEAM-ACTION] - getYahooTeam(${yahooTeamId})`)
       try {
         const res = await scad(
           rootState.user.tokens.access_token,
@@ -86,7 +86,7 @@ export default {
     },
 
     async getScadTeam ({ commit, rootState }, { yahooLeagueId, yahooTeamId }) {
-      console.log(`[TEAM-ACTION] - getScadTeam(${yahooTeamId})`)
+      // console.log(`[TEAM-ACTION] - getScadTeam(${yahooTeamId})`)
       try {
         const res = await scad(
           rootState.user.tokens.access_token,

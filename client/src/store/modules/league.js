@@ -292,6 +292,19 @@ export default {
       } catch (err) {
         catchAxiosScadError(err)
       }
+    },
+    async saveLeagueSettings ({ rootState, commit, state }, { settings }) {
+      // console.log('[LEAGUE-ACTION] - registerLeague()')
+      try {
+        const res = await scad(
+          rootState.user.tokens.access_token,
+          rootState.user.tokens.id_token)
+          .put(`scad/league/${settings.id}`, settings)
+        console.log('PUT RESPONSE - SAVE LEAGUE: ', res)
+        commit('updateScadSettings', res.data)
+      } catch (err) {
+        catchAxiosScadError(err)
+      }
     }
   }
 }
