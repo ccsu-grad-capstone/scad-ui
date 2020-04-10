@@ -64,10 +64,10 @@ Vue.use(Quasar, {
 
       dark: '#1d1d1d',
 
-      positive: '#00d11f',
+      positive: '#00c71e',
       negative: '#fa1a44',
       info: '#6f8da8',
-      warning: '#F2C037'
+      warning: '#e3a600'
     }
   },
   components: {

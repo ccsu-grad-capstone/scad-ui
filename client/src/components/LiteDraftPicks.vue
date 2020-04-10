@@ -47,7 +47,7 @@ export default {
         {
           name: 'key',
           required: true,
-          label: 'TeamID',
+          label: 'TeamId',
           align: 'right',
           field: row => row.team_key,
           format: val => `${val}`,

@@ -6,8 +6,8 @@ import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
 export default {
   namespaced: true,
   state: {
-    myYahooTeamID: '',
-    myScadTeamID: '',
+    myYahooTeamId: '',
+    myScadTeamId: '',
 
     myYahooTeam: {},
     myScadTeam: {},
@@ -20,22 +20,22 @@ export default {
   },
 
   mutations: {
-    updateMyYahooTeamID (state, id) {
-      // console.log(`[TEAM-MUTATION] - updateMyYahooTeamID()`)
-      state.myYahooTeamID = id
+    updateMyYahooTeamId (state, id) {
+      // console.log(`[TEAM-MUTATION] - updateMyYahooTeamId()`)
+      state.myYahooTeamId = id
     },
     logoutTeam (state) {
       // console.log('[TEAM-MUTATION] - logoutTeam()')
-      // state.myYahooTeamID = ''
+      // state.myYahooTeamId = ''
       // state.yahooTeam = {}
       // state.scadTeam = {}
       // state.yahooTeams = []
       // state.scadTeams = []
     },
-    updateMyTeamIDs (state, ids) {
-      // console.log('[TEAM-MUTATION] - updateMyTeamIDs()')
-      state.myYahooTeamID = ids.myYahooTeamID
-      state.myScadTeamID = ids.myScadTeamID
+    updateMyTeamIds (state, ids) {
+      // console.log('[TEAM-MUTATION] - updateMyTeamIds()')
+      state.myYahooTeamId = ids.myYahooTeamId
+      state.myScadTeamId = ids.myScadTeamId
     },
     updateMyYahooTeam (state, team) {
       // console.log('[TEAM-MUTATION] - updateYahooTeam()')
@@ -70,7 +70,7 @@ export default {
         const res = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/yahoo/league/${yahooLeagueId}/team/${yahooTeamId}`)
+          .get(`/yahoo/league/${yahooLeagueId}/team/${yahooTeamId}/roster`)
         console.log('YAHOO-TEAM: ', res.data)
         res.data.team.players = res.data.team.roster.players
         res.data.team.roster.players = {}
@@ -86,7 +86,7 @@ export default {
         const res = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/scad/yahoo/league/${yahooLeagueId}/team/${yahooTeamId}`)
+          .get(`/scad/league/yahoo/${yahooLeagueId}/team/${yahooTeamId}`)
         console.log('SCAD-TEAM: ', res.data)
         commit('updateScadTeam', res.data)
       } catch (err) {
@@ -94,7 +94,31 @@ export default {
       }
     },
 
-    async savePlayer ({ rootState, dispatch, state }, player) {
+    async getMyScadTeam ({ commit, rootState, state }) {
+      console.log(`[TEAM-ACTION] - getMyScadTeam())`)
+      try {
+        const team = await scad(
+          rootState.user.tokens.access_token,
+          rootState.user.tokens.id_token)
+          .get(`/scad/league/${rootState.league.scadLeagueId}/team/myTeam`)
+        // console.log('MY-SCAD-TEAM - TEAM INFO: ', team.data)
+
+        const players = await scad(
+          rootState.user.tokens.access_token,
+          rootState.user.tokens.id_token)
+          .get(`/scad/league/${rootState.league.scadLeagueId}/player/myPlayers`)
+        // console.log('MY-SCAD-TEAM - PLAYERS: ', players.data)
+
+        let scadTeam = team.data
+        scadTeam.players = players.data.scadLeaguePlayers
+
+        commit('updateMyScadTeam', scadTeam)
+      } catch (err) {
+        catchAxiosScadError(err)
+      }
+    },
+
+    async savePlayer ({ rootState, dispatch, state }, { player, yahooTeamId }) {
       console.log(`[TEAM-ACTION] - savePlayer()`, player)
       try {
         const res = await scad(
@@ -103,6 +127,9 @@ export default {
           .put(`/scad/player/${player.id}`, player)
         console.log('SAVE-PLAYER: ', res)
         notify.salarySaveSuccessful()
+        if (yahooTeamId == state.myYahooTeamId) {
+          dispatch('getMyScadTeam', { yahooLeagueId: rootState.league.yahooLeagueId, yahooTeamId: yahooTeamId })
+        }
       } catch (err) {
         catchAxiosScadError(err)
       }
@@ -117,6 +144,7 @@ export default {
           .put(`/scad/team/${t.id}`, t)
         console.log('SAVE-TEAM: ', res)
         // notify.teamSaveSuccessful()
+        dispatch('league/getScadTeams', rootState.league.scadLeagueId, { root: true })
         dispatch('getTeam', { yahooLeagueId: t.yahooLeagueId, yahooTeamId: state.scadTeam.yahooLeagueTeamId })
       } catch (err) {
         catchAxiosScadError(err)

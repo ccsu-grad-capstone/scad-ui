@@ -60,7 +60,7 @@ export default {
     }
   },
   async created () {
-    await this.$store.dispatch('league/getScadInfo')
+    // await this.$store.dispatch('league/getScadInfo')
     if (!this.league.isActive) {
       this.$router.push('/about')
     } else {

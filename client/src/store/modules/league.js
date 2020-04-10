@@ -9,8 +9,8 @@ export default {
     isActive: false,
     key: '',
 
-    yahooLeagueID: '',
-    scadLeagueID: '',
+    yahooLeagueId: '',
+    scadLeagueId: '',
 
     yahooLeagueDetails: {},
     yahooSettings: {},
@@ -37,7 +37,7 @@ export default {
     updateYahooLeagueDetails (state, league) {
       // console.log('[LEAGUE-MUTATION] - updateYahooLeagueDetails()')
       state.yahooLeagueDetails = league
-      state.yahooLeagueID = league.league_id
+      state.yahooLeagueId = league.league_id
     },
     updateYahooSettings (state, settings) {
       // console.log('[LEAGUE-MUTATION] - updateYahooSettings()')
@@ -47,7 +47,7 @@ export default {
       // console.log('[LEAGUE-MUTATION] - updateScadSettings()')
       state.isActive = true
       state.scadSettings = settings
-      state.scadLeagueID = settings.id
+      state.scadLeagueId = settings.id
     },
     updateYahooTeams (state, teams) {
       // console.log('[TEAM-MUTATION] - updateYahooTeams()')
@@ -76,8 +76,8 @@ export default {
       console.log('[LEAGUE-MUTATION] - logoutLeague()')
       // state.isActive = false
       // state.key = ''
-      // state.yahooLeagueID = ''
-      // state.scadLeagueID = ''
+      // state.yahooLeagueId = ''
+      // state.scadLeagueId = ''
       // state.yahooLeague = {}
       // state.yahooSettings = {}
       // state.scadSettings = {}
@@ -106,8 +106,8 @@ export default {
       })
       return teams
     },
-    getTeamID: (state) => (teamName) => {
-      console.log('[LEAGUE-GETTERS] - getTeamID(): ')
+    getTeamId: (state) => (teamName) => {
+      console.log('[LEAGUE-GETTERS] - getTeamId(): ')
       const team = state.teams.find(team => (team.name === teamName))
       return team.team_id
     },
@@ -129,8 +129,8 @@ export default {
       // console.log('[LEAGUE-ACTION] - getScadInfo()')
       try {
         await dispatch('dashboard')
-        await dispatch('getYahooTeams', state.yahooLeagueID)
-        await dispatch('getScadTeams', state.scadLeagueID)
+        await dispatch('getYahooTeams', state.yahooLeagueId)
+        await dispatch('getScadTeams', state.scadLeagueId)
       } catch (err) {
         catchAxiosScadError(err)
       }
@@ -156,10 +156,10 @@ export default {
           commit('team/updateMyYahooTeam', yahooTeam, { root: true })
           commit('team/updateMyScadTeam', scadTeam, { root: true })
           let id = {
-            myYahooTeamID: dashboard.data.yahooMyTeam.team_id,
-            myScadTeamID: dashboard.data.scadMyTeam.id
+            myYahooTeamId: dashboard.data.yahooMyTeam.team_id,
+            myScadTeamId: dashboard.data.scadMyTeam.id
           }
-          commit('team/updateMyTeamIDs', id, { root: true })
+          commit('team/updateMyTeamIds', id, { root: true })
         } else {
           commit('dashboardRegister', dashboard.data)
         }
@@ -174,7 +174,7 @@ export default {
         const commish = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/yahoo/league/commissioner/all`)
+          .get(`/league/yahoo/commissioner/all`)
         console.log('COMMISH: ', commish)
         commit('updateYahooCommishLeagues', commish.data.commissionerLeagues)
       } catch (err) {
@@ -182,13 +182,13 @@ export default {
       }
     },
 
-    async getYahooSettings ({ rootState, state, commit }, leagueID) {
+    async getYahooSettings ({ rootState, state, commit }, leagueId) {
       // console.log('[LEAGUE-ACTION] - getYahooSettings()')
       try {
         const settings = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/yahoo/league/${leagueID}/settings`)
+          .get(`/yahoo/league/${leagueId}/settings`)
         console.log('SETTINGS: ', settings)
         commit('updateYahooSettings', settings.data.settings[0])
       } catch (err) {

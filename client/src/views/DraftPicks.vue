@@ -172,8 +172,8 @@ export default {
     yahooTeams () {
       return this.$store.state.league.yahooTeams
     },
-    leagueID () {
-      return this.$store.state.league.yahooLeagueID
+    leagueId () {
+      return this.$store.state.league.yahooLeagueId
     },
     referenceData () {
       return referenceData
@@ -184,7 +184,7 @@ export default {
   },
   methods: {
     async getDraftPicks () {
-      this.$store.dispatch('draftPicks/getDraftPicksByLeague', this.leagueID)
+      this.$store.dispatch('draftPicks/getDraftPicksByLeague', this.leagueId)
     },
     editPick (dp) {
       this.edit.visable = true
@@ -237,14 +237,14 @@ export default {
     async tester () {
       referenceData.years.forEach(y => {
         referenceData.rounds.forEach(r => {
-          this.teams.forEach(async t => {
+          this.yahooTeams.forEach(async t => {
             let draftPick = {
-              yahooLeagueID: this.leagueID,
+              yahooLeagueId: this.leagueId,
               year: y,
               rd: r,
               pick: undefined,
               salary: undefined,
-              playerID: undefined,
+              playerId: undefined,
               team: t,
               originalTeam: t,
               comments: ''

@@ -23,11 +23,10 @@ export default {
   },
 
   actions: {
-    async getDraftPicksByLeague ({ commit, state, rootState }, leagueID) {
+    async getDraftPicksByLeague ({ commit, state, rootState }, leagueId) {
       console.log('[DRAFTPICK-ACTION] - getDraftPicksByLeague()')
       try {
-        const response = await server.get(`/draftPicks/${leagueID}`)
-        console.log(response)
+        const response = await server.get(`/draftPicks/${leagueId}`)
         commit('updateDraftPicks', { dp: response.data.data })
       } catch (error) {
         catchAxiosScadError(error)
@@ -38,7 +37,7 @@ export default {
       try {
         const response = await server.put(`/draftPicks/${dp._id}`, { data: dp })
         notify.saveSuccessful(response.data)
-        await dispatch('getDraftPicksByLeague', dp.yahooLeagueID)
+        await dispatch('getDraftPicksByLeague', dp.yahooLeagueId)
       } catch (error) {
         catchAxiosScadError(error)
       }

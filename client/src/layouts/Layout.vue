@@ -93,8 +93,8 @@ export default {
     scadLeagues () {
       return this.league.scadLeagues
     },
-    myYahooTeamID () {
-      return this.$store.state.team.myYahooTeamID
+    myYahooTeamId () {
+      return this.$store.state.team.myYahooTeamId
     },
     filteredLeagues () {
       return this.scadLeagues.map(l => Object.assign({}, l, { value: l.yahooLeagueId, label: l.yahooLeagueId }))
@@ -105,7 +105,7 @@ export default {
       if (nav === 'logout') {
         this.logout()
       } else if (nav === '/team') {
-        this.$router.push({ path: `/team/${this.myYahooTeamID}` }).catch(error => {
+        this.$router.push({ path: `/team/${this.myYahooTeamId}` }).catch(error => {
           if (error.name !== 'NavigationDuplicated') {
             throw error
           }
@@ -196,7 +196,7 @@ export default {
     leagueIsActiveToggle () {
       this.$store.commit('league/leagueIsActiveToggle')
     },
-    getMyYahooTeamID () {
+    getMyYahooTeamId () {
 
     }
   }

@@ -74,7 +74,7 @@
             q-btn(v-if="!franchiseTag && !editSalaries" label='Franchise Tag' dense color='secondary' text-color='primary' size='sm' @click="franchiseTag = !franchiseTag")
             q-btn(v-if="franchiseTag && !editSalaries" label='Cancel' dense color='primary' text-color='white' size='sm' @click="franchiseTag = false")
             q-btn(v-if="!editSalaries && !franchiseTag" label='Edit Salaries' dense color='secondary' text-color='primary' size='sm' @click="editSalaries = !editSalaries")
-            q-btn(v-if="editSalaries && !franchiseTag" label='Save Salaries' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
+            q-btn(v-if="editSalaries && !franchiseTag" label='Done' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
       .row.full-width.q-pl-lg
         .col-8
           q-table(
@@ -225,11 +225,11 @@ export default {
     yahooTeams () {
       return this.league.yahooTeams
     },
-    yahooLeagueID () {
-      return this.league.yahooLeagueID
+    yahooLeagueId () {
+      return this.league.yahooLeagueId
     },
-    myYahooTeamID () {
-      return this.$store.state.team.myYahooTeamID
+    myYahooTeamId () {
+      return this.$store.state.team.myYahooTeamId
     },
     myYahooTeam () {
       return this.team.myYahooTeam
@@ -263,12 +263,12 @@ export default {
     }
   },
   methods: {
-    async getTeam (yahooTeamID) {
-      // console.log(`[TEAM] - getTeam(${yahooTeamID})`)
+    async getTeam (yahooTeamId) {
+      // console.log(`[TEAM] - getTeam(${yahooTeamId})`)
       // Update team based on url param
-      await this.$store.dispatch('team/getTeam', { yahooLeagueId: this.yahooLeagueID, yahooTeamId: yahooTeamID })
+      await this.$store.dispatch('team/getTeam', { yahooLeagueId: this.yahooLeagueId, yahooTeamId: yahooTeamId })
 
-      if (yahooTeamID === this.myYahooTeamID) {
+      if (yahooTeamId === this.myYahooTeamId) {
         this.scadTeam = JSON.parse(JSON.stringify(this.$store.state.team.myScadTeam))
       } else {
         this.scadTeam = JSON.parse(JSON.stringify(this.$store.state.team.scadTeam))
@@ -350,8 +350,7 @@ export default {
 
       if (this.scadTeam.salary <= this.teamSalaryCap) {
         this.saveTeam()
-        this.editPlayer.isFranchiseTag = false
-        this.$store.dispatch('team/savePlayer', this.editPlayer)
+        this.$store.dispatch('team/savePlayer', { player: this.editPlayer, yahooTeamId: this.scadTeam.yahooLeagueTeamId })
         this.editPlayer = {}
         this.editPlayerInitSalary = 0
       } else {

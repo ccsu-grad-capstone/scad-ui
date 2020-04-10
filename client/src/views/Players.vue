@@ -167,7 +167,6 @@ export default {
       Object.keys(this.filter).forEach(key => {
         if (this.filter[key] !== '') {
           if (key === 'search') {
-            console.log(this.filter[key])
             filtered = filtered.filter(p => p.name.full.toLowerCase().includes(this.filter[key].toLowerCase()))
           } else if (key === 'position') {
             filtered = filtered.filter(p => p.display_position === this.filter[key])

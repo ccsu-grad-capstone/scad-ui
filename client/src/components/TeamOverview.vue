@@ -1,6 +1,6 @@
 <template lang="pug">
   .q-px-md
-    q-markup-table(dense)
+    q-markup-table(v-if="loaded" dense)
       thead
         tr
           th POS
@@ -52,6 +52,8 @@ export default {
   },
   data () {
     return {
+      loaded: false,
+      scadTeamClone: {},
       detailColumns: [
         {
           name: 'pos',
@@ -77,6 +79,8 @@ export default {
     }
   },
   mounted () {
+    this.scadTeamClone = JSON.parse(JSON.stringify(this.scadTeam))
+    this.loaded = true
   },
   computed: {
   },
@@ -95,14 +99,14 @@ export default {
       this.yahooTeam.players.forEach(p => {
         if (p.display_position === pos) {
           // eslint-disable-next-line eqeqeq
-          let player = this.scadTeam.players.find(sp => sp.yahooLeaguePlayerId == p.player_id)
+          let player = this.scadTeamClone.players.find(sp => sp.yahooLeaguePlayerId == p.player_id)
           total += player.salary
         }
       })
       return total
     },
     getPerc (pos) {
-      return Math.floor((this.getTotal(pos) / this.scadTeam.salary) * 100)
+      return Math.floor((this.getTotal(pos) / this.scadTeamClone.salary) * 100)
     }
   }
 }

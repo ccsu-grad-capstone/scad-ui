@@ -17,7 +17,7 @@
             | {{this.newLeague.yahooLeagueName}}
         .row.q-pb-md
           .col-3.text-subtitle2.text-right
-            | League ID:
+            | League Id:
           .col-7.q-pl-lg
             | {{this.newLeague.yahooLeagueId}}
         .row.q-pb-md
