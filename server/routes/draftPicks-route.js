@@ -25,6 +25,22 @@ function router() {
     }
   }
 
+  async function getAllByTeam (req, res) {
+    const { leagueId, teamId } = req.params
+    debug(leagueId, teamId)
+    try {
+      const result = await draftPicks.getAllByLeague(leagueId)
+      let teamPicks = result.filter(t => t.team.team_id == teamId)
+        
+      res.json({
+        data: teamPicks
+      })
+      
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   function create (req, res) {
     debug('create')
     const dp = req.body.data
@@ -63,6 +79,7 @@ function router() {
   }
 
   draftPicksRouter.get('/:leagueId', getAllByLeague)
+  draftPicksRouter.get('/:leagueId/team/:teamId', getAllByTeam)
   draftPicksRouter.post('/create', create)
   draftPicksRouter.put('/:id', update)
   draftPicksRouter.delete('/remove:id', remove)

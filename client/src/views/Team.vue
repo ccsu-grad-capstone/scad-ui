@@ -124,16 +124,19 @@
                     q-input(type='number' v-model='editPlayer.salary' dense autofocus)
         .col
           team-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
+          trade-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
 </template>
 
 <script>
 import TeamOverview from '../components/TeamOverview'
+import TradeOverview from '../components/TradeOverview'
 import notify from '../utilities/nofity'
 
 export default {
   name: 'Team',
   components: {
-    'team-overview': TeamOverview
+    'team-overview': TeamOverview,
+    'trade-overview': TradeOverview
   },
   data () {
     return {
@@ -267,6 +270,7 @@ export default {
       // console.log(`[TEAM] - getTeam(${yahooTeamId})`)
       // Update team based on url param
       await this.$store.dispatch('team/getTeam', { yahooLeagueId: this.yahooLeagueId, yahooTeamId: yahooTeamId })
+      // await this.$store.dispatch('draftPicks/getDraftPicksByTeam', yahooTeamId)
 
       if (yahooTeamId === this.myYahooTeamId) {
         this.scadTeam = JSON.parse(JSON.stringify(this.$store.state.team.myScadTeam))
