@@ -5,7 +5,7 @@
         .row.full-width.q-gutter-between
           .col
             .text-h4.text-weight-bolder League Settings
-          div.q-pt-sm
+          div.q-pt-sm(v-if="commish()")
             q-btn(v-if="!editing" label='Edit Settings' dense color='primary' text-color='white' size='sm' @click="editing = true")
             div.q-gutter-md(v-else)
               q-btn( label='Cancel' dense color='secondary' text-color='primary' size='sm' @click="cancel()")
@@ -184,6 +184,7 @@ export default {
   },
   data () {
     return {
+      loaded: false,
       scadSettings: {},
       editing: false
     }
@@ -201,13 +202,21 @@ export default {
     settings () {
       return this.league.scadSettings
     },
+    scadLeagues () {
+      return this.league.scadLeagues
+    },
     yahooLeagueDetails () {
       return this.league.yahooLeagueDetails
+    },
+    scadLeagueId () {
+      return this.league.scadLeagueId
     }
   },
   methods: {
-    init () {
+    async init () {
+      await this.$store.dispatch('league/getAllScadLeagues')
       this.scadSettings = JSON.parse(JSON.stringify(this.settings))
+      this.loaded = true
     },
     async save () {
       await this.$store.dispatch('league/saveLeagueSettings', { settings: this.scadSettings })
@@ -218,6 +227,13 @@ export default {
       console.log('CANCEL')
       this.init()
       this.editing = false
+    },
+    commish () {
+      if (this.loaded) {
+        // eslint-disable-next-line eqeqeq
+        let league = this.scadLeagues.find(l => l.id == this.scadLeagueId)
+        return league.isCurrentlyLoggedInUserACommissioner
+      }
     },
     leagueSalaryCap () {
       if (this.scadSettings.teamSalaryCap === this.settings.teamSalaryCap) {

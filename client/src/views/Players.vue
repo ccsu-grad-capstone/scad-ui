@@ -32,8 +32,8 @@
                         | {{props.row.name.full}}
                   q-td(key='team' :props='props')
                     .text-grey {{ props.row.editorial_team_full_name }}
-                  //- q-td(key='ffteam' :props='props' auto-width)
-                  //-   | ${{ getTeam(props.row.player_id) }}
+                  q-td(key='owner' :props='props' auto-width)
+                    | {{ getOwner(props.row.player_id) }}
                   q-td(key='salary' :props='props' auto-width)
                     .text-primary.text-weight-bolder.text-body2.q-pr-sm ${{ getPlayerSalary(props.row.player_id) }}
 
@@ -88,16 +88,16 @@ export default {
           // style: 'width: 150px'
           // headerClasses: 'bg-grey-3'
         },
-        // {
-        //   name: 'ffteam',
-        //   required: true,
-        //   label: 'Team:',
-        //   align: 'left',
-        //   sortable: false
-        //   // classes: 'bg-grey-2 ellipsis',
-        //   // style: 'width: 150px'
-        //   // headerClasses: 'bg-grey-3'
-        // },
+        {
+          name: 'owner',
+          required: true,
+          label: 'Owner:',
+          align: 'left',
+          sortable: false
+          // classes: 'bg-grey-2 ellipsis',
+          // style: 'width: 150px'
+          // headerClasses: 'bg-grey-3'
+        },
         {
           name: 'salary',
           required: true,
@@ -142,6 +142,17 @@ export default {
         // eslint-disable-next-line eqeqeq
         let player = this.scadPlayers.find(p => p.yahooLeaguePlayerId == id)
         return player.salary
+      }
+    },
+    getOwner (id) {
+      if (this.loaded) {
+        // eslint-disable-next-line eqeqeq
+        let player = this.scadPlayers.find(p => p.yahooLeaguePlayerId == id)
+        // eslint-disable-next-line eqeqeq
+        let scadTeam = this.scadTeams.find(t => t.id == player.scadTeamId)
+        // eslint-disable-next-line eqeqeq
+        let yahooTeam = this.yahooTeams.find(t => t.team_id == scadTeam.yahooLeagueTeamId)
+        return yahooTeam.name
       }
     },
     getTeam (yahooPlayerId) {

@@ -1,17 +1,17 @@
 <template lang="pug">
   body
-    .row.q-gutter-md.q-pa-md(v-if="loaded")
+    .row.q-gutter-md.q-pa-md
       .row.full-width.bg-red
       .col-4
         .row.justify-center
           q-avatar(size="100px")
-            img(:src="yahooTeam.team_logos[0].team_logo.url")
+            img( :src="yahooTeam.team_logos[0].team_logo.url")
         .row.justify-center
           .col
             .row.justify-center
               .text-h6 {{yahooTeam.name}}
             .row.justify-center
-              .text-caption.text-grey-7 Manager ({{yahooTeam.managers[0].manager.nickname}})  | team_id: {{yahooTeam.team_id}}
+              .text-caption.text-grey-7(v-if="loaded") Manager ({{yahooTeam.managers[0].manager.nickname}})  | team_id: {{yahooTeam.team_id}}
             .row.justify-center
               .text-caption: a(:href='yahooTeam.url') Yahoo Team Page
       q-separator(vertical)
@@ -75,7 +75,7 @@
             q-btn(v-if="franchiseTag && !editSalaries" label='Cancel' dense color='primary' text-color='white' size='sm' @click="franchiseTag = false")
             q-btn(v-if="!editSalaries && !franchiseTag" label='Edit Salaries' dense color='secondary' text-color='primary' size='sm' @click="editSalaries = !editSalaries")
             q-btn(v-if="editSalaries && !franchiseTag" label='Done' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
-      .row.full-width.q-pl-lg
+      .row.full-width.q-pl-lg(v-if="loaded")
         .col-8
           q-table(
             class="my-sticky-header-table"
@@ -234,12 +234,6 @@ export default {
     myYahooTeamId () {
       return this.$store.state.team.myYahooTeamId
     },
-    myYahooTeam () {
-      return this.team.myYahooTeam
-    },
-    myScadTeam () {
-      return this.team.myScadTeam
-    },
     yahooTeam () {
       return this.team.yahooTeam
     },
@@ -269,19 +263,15 @@ export default {
     async getTeam (yahooTeamId) {
       // console.log(`[TEAM] - getTeam(${yahooTeamId})`)
       // Update team based on url param
+      this.loaded = false
       await this.$store.dispatch('team/getTeam', { yahooLeagueId: this.yahooLeagueId, yahooTeamId: yahooTeamId })
       // await this.$store.dispatch('draftPicks/getDraftPicksByTeam', yahooTeamId)
-
-      if (yahooTeamId === this.myYahooTeamId) {
-        this.scadTeam = JSON.parse(JSON.stringify(this.$store.state.team.myScadTeam))
-      } else {
-        this.scadTeam = JSON.parse(JSON.stringify(this.$store.state.team.scadTeam))
-      }
+      this.scadTeam = JSON.parse(JSON.stringify(this.$store.state.team.scadTeam))
       this.loaded = true
     },
     updateTeamPage (teamName) {
       console.log(`[TEAM] - updateTeamPage()`, this.selectedTeam.team_id)
-      this.$router.replace({ path: `/team/${this.selectedTeam.team_id}` })
+      this.$router.push({ path: `/team/${this.selectedTeam.team_id}` })
       this.getTeam(this.selectedTeam.team_id)
     },
     saveSalaries () {
@@ -375,19 +365,25 @@ export default {
       this.$store.dispatch('team/saveTeam', team)
     },
     getPlayerSalary (id) {
+      // console.log('getPlayerSalary()')
       if (this.loaded) {
+        // console.log('getPlayerSalary() - loaded', id)
+        // console.log('getPlayerSalary() - loaded', this.scadTeam.players)
         // eslint-disable-next-line eqeqeq
         let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == id)
         return player.salary
       }
     },
     checkTag (id) {
-      // eslint-disable-next-line eqeqeq
-      let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == id)
-      if (player.isFranchiseTag) {
-        return true
-      } else {
-        return false
+      // console.log('checkTag()')
+      if (this.loaded) {
+        // eslint-disable-next-line eqeqeq
+        let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == id)
+        if (player.isFranchiseTag) {
+          return true
+        } else {
+          return false
+        }
       }
     }
   }

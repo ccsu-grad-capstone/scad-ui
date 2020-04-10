@@ -253,19 +253,19 @@ export default {
       }
     },
 
-    // async getAllScadLeagues ({ rootState, commit }) {
-    //   console.log('[LEAGUE-ACTION] - getAllScadLeagues()')
-    //   try {
-    //     const scadleagues = await scad(
-    //       rootState.tokens.access_token,
-    //       rootState.tokens.id_token)
-    //       .get(`/scad/league/all`)
-    //     console.log('SCADLEAGUES: ', scadleagues)
-    //     commit('updateScadLeagues', scadleagues.data.scadLeagues)
-    //   } catch (err) {
-    //     catchAxiosScadError(err)
-    //   }
-    // },
+    async getAllScadLeagues ({ rootState, commit }) {
+      console.log('[LEAGUE-ACTION] - getAllScadLeagues()')
+      try {
+        const scadleagues = await scad(
+          rootState.user.tokens.access_token,
+          rootState.user.tokens.id_token)
+          .get(`/scad/league/all`)
+        console.log('SCADLEAGUES: ', scadleagues.data)
+        commit('updateScadLeagues', scadleagues.data.scadLeagues)
+      } catch (err) {
+        catchAxiosScadError(err)
+      }
+    },
 
     async switchLeagues ({ rootState, commit }, league) {
       // console.log('[LEAGUE-ACTION] - switchLeagues()')
