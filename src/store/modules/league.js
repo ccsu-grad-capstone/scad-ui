@@ -129,14 +129,12 @@ export default {
       // console.log('[LEAGUE-ACTION] - getScadInfo()')
       try {
         await dispatch('dashboard')
-        await dispatch('getYahooTeams', state.yahooLeagueId)
-        await dispatch('getScadTeams', state.scadLeagueId)
       } catch (err) {
         catchAxiosScadError(err)
       }
     },
 
-    async dashboard ({ state, commit, rootState }) {
+    async dashboard ({ state, commit, rootState, dispatch }) {
       // console.log('[LEAGUE-ACTION] - dashboard()')
       try {
         const dashboard = await scad(
@@ -150,11 +148,16 @@ export default {
           yahooTeam.players = dashboard.data.yahooMyPlayers
           let scadTeam = dashboard.data.scadMyTeam
           scadTeam.players = dashboard.data.scadMyPlayers.scadLeaguePlayers
+
           commit('key', dashboard.data.key)
           commit('updateYahooLeagueDetails', dashboard.data.yahooLeague)
           commit('updateScadSettings', dashboard.data.scadLeague)
           commit('team/updateMyYahooTeam', yahooTeam, { root: true })
           commit('team/updateMyScadTeam', scadTeam, { root: true })
+
+          await dispatch('getYahooTeams', state.yahooLeagueId)
+          await dispatch('getScadTeams', state.scadLeagueId)
+
           let id = {
             myYahooTeamId: dashboard.data.yahooMyTeam.team_id,
             myScadTeamId: dashboard.data.scadMyTeam.id
