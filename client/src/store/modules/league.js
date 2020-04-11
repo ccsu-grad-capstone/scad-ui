@@ -1,5 +1,5 @@
 // import { notify } from '../../utilities/nofity'
-import { scad } from '../../utilities/axiosScad'
+import { scad } from '../../utilities/axios-scad'
 // import leagueSettings from '../../data/leagueSettings'
 import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
 

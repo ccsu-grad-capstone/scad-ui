@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 import notify from '../../utilities/nofity'
-import { scad } from '../../utilities/axiosScad'
+import { scad } from '../../utilities/axios-scad'
 import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
 
 export default {

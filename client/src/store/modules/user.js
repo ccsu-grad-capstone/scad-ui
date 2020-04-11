@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { scad } from '../../utilities/axiosScad'
+import { scad } from '../../utilities/axios-scad'
 import axios from 'axios'
 import { server } from '../../utilities/axios-server'
 import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'

@@ -10,7 +10,7 @@ const scad = (access_token, id_token) => {
 
   return axios.create({
     baseURL: 'http://localhost:8080/scadservices/api/',
-    timeout: 5000,
+    timeout: 8000,
     headers: {
       'access_token': access_token,
       'id_token': id_token,
