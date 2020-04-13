@@ -10,13 +10,19 @@
             |  SCAD Leagues
           q-separator(vertical)
           q-card-section.col-4
-            | List of user's SCAD leagues
+            q-list(bordered separator v-for="(l, index) in scadLeagues" :key="index")
+              q-item(clickable v-ripple @click.native="scadOnClick(l.id, l.yahooLeagueId)")
+                q-item-section {{getLeagueName(l.yahooLeagueId)}}
         q-card-section(horizontal)
           q-card-section.col-3
             |  Yahoo Leagues
           q-separator(vertical)
           q-card-section.col-4
-            | List of user's yahoo leagues
+            q-list(bordered separator v-for="(league, index) in yahooLeagues" :key="index")
+              q-item(clickable v-ripple)
+                q-item-section
+                  q-item-label {{league.name}}
+
 </template>
 
 <script>
@@ -26,6 +32,27 @@ export default {
 
   data () {
     return {}
+  },
+  computed: {
+    user () {
+      return this.$store.state.user
+    },
+    scadLeagues () {
+      return this.$store.state.league.scadLeagues
+    },
+    yahooLeagues () {
+      return this.$store.state.league.yahooLeagues
+    }
+  },
+  methods: {
+    getLeagueName (id) {
+      // eslint-disable-next-line eqeqeq
+      let league = this.yahooLeagues.find(l => l.league_id == id)
+      return league.name
+    },
+    scadOnClick (scadLeagueId, yahooLeaguedId) {
+
+    }
   }
 }
 </script>

@@ -25,10 +25,10 @@ export default {
   computed: {
     user () {
       return this.$store.state.user
+    },
+    scadLeagues () {
+      return this.$store.state.league.scadLeagues
     }
-    // name () {
-    //   return this.$store.getters['user/name']
-    // }
   },
   methods: {
     getProfilePic () {

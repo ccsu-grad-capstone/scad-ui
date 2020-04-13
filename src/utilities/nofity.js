@@ -31,8 +31,19 @@ export default {
     Notify.create({
       message: 'Salary Adjustment exceeds Team Salary Cap',
       position: 'top',
-      icon: 'check',
+      icon: 'error',
       color: 'red'
+    })
+  },
+  leagueAlreadyRegistered () {
+    Notify.create({
+      message: 'This league is already registered',
+      position: 'top',
+      icon: 'error',
+      color: 'red',
+      actions: [
+        { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+      ]
     })
   },
   loginFailed () {
@@ -61,6 +72,9 @@ export default {
       ]
     })
   },
+
+  // ERROR RESPONSES
+
   genericServerIssueWithResponse (code, message) {
     Notify.create({
       message: `[${code}] ${message}, please try again soon`,

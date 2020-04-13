@@ -3,13 +3,16 @@
     q-card.q-pa-md.q-ma-lg(v-if="yahooCommishLeagues" style='width: 100%')
       q-card-section.row.justify-center
         .text-h4.text-weight-bolder Register Your Yahoo League With SCAD
+      q-card-section.row.justify-center
+        .text-body2.text-center To register your league with SCAD you must be an eligable commissioner of your Yahoo League.  If the league you're looking to register is not listed below, please reach out to the league commissioner to register with SCAD.
+        router-link.text-primary.text-weight-bold(to="my-profile") View your profile for more information.
       q-form(@submit='onSubmit')
         q-separator.q-mb-lg(color='secondary' inset)
         .row.q-pb-md
           .col-3.text-subtitle2.text-right.q-pt-sm
             | Choose your league:
           .col-7.q-pl-lg
-            q-select( filled dense v-model='$v.selectedLeague.$model' :options="filteredLeagues" @input="update()" :error='$v.selectedLeague.$error' error-message='Required Field')
+            q-select( filled dense v-model='$v.selectedLeague.$model' :options="filteredLeagues" hint="Commissioned leagues shown here" @input="update()" :error='$v.selectedLeague.$error' error-message='Required Field')
         .row.q-pb-md
           .col-3.text-subtitle2.text-right
             | League Name:
@@ -189,6 +192,8 @@ import { required } from 'vuelidate/lib/validators'
 import referenceData from '../utilities/referenceData'
 import RegisterLeagueInvites from '../components/dialogs/registerLeagueInvites'
 import notify from '../utilities/nofity'
+import { scad } from '../utilities/axios-scad'
+import { catchAxiosScadError } from '../utilities/catchAxiosErrors'
 
 import { createHelpers } from 'vuex-map-fields'
 const { mapFields } = createHelpers({
@@ -263,8 +268,8 @@ export default {
       defMax: { required }
     }
   },
-  mounted () {
-
+  async mounted () {
+    await this.$store.dispatch('league/getAllYahooCommishLeagues')
   },
   computed: {
     ...mapFields([
@@ -272,6 +277,9 @@ export default {
     ]),
     referenceData () {
       return referenceData
+    },
+    tokens () {
+      return this.$store.state.user.tokens
     },
     calcLeagueCap () {
       this.setLeagueCap()
@@ -303,16 +311,15 @@ export default {
         this.$q.loading.show({
           message: 'Sit tight while we put together a SCAD league for you'
         })
+        await this.$store.dispatch('league/registerLeague', { league: this.newLeague })
         this.timer = setTimeout(() => {
           this.$q.loading.hide()
           this.timer = void 0
-          this.$router.push('/dashboard')
         }, 5000)
+        this.$router.push('/dashboard')
 
         // Used to open dialog for emailing league about SCAD league
         // this.registerLeagueInvites = true
-
-        await this.$store.dispatch('league/registerLeague', { league: this.newLeague })
       }
     },
     setLeagueCap () {
@@ -325,11 +332,31 @@ export default {
         this.$v.$reset()
       })
     },
-    update () {
+    async update () {
       console.log('[REGISTERLEAGUE - Methods] - update()')
-      this.newLeague.yahooLeagueId = this.selectedLeague.league_id
-      this.newLeague.yahooLeagueName = this.selectedLeague.name
-      this.newLeague.leagueManagers = this.selectedLeague.num_teams
+
+      // check if league already exists
+      try {
+        const response = await scad(
+          this.tokens.access_token,
+          this.tokens.id_token)
+          .get(`scad/league/yahoo/${this.selectedLeague.league_id}`)
+        console.log('LEAGUE ALREADY EXISTS: ', response)
+        notify.leagueAlreadyRegistered()
+        this.selectedLeague = ''
+        this.newLeague.yahooLeagueId = ''
+        this.newLeague.yahooLeagueName = ''
+        this.newLeague.leagueManagers = ''
+      } catch (err) {
+        if (err.response.status === 404) {
+          console.log('League not found, you may proceed registering..')
+          this.newLeague.yahooLeagueId = this.selectedLeague.league_id
+          this.newLeague.yahooLeagueName = this.selectedLeague.name
+          this.newLeague.leagueManagers = this.selectedLeague.num_teams
+        } else {
+          catchAxiosScadError(err)
+        }
+      }
     },
     sendEmail () {
       console.log('[REGISTERLEAGUE - Methods] - sendEmail()')

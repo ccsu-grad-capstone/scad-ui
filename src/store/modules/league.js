@@ -171,20 +171,6 @@ export default {
       }
     },
 
-    async getYahooCommishLeagues ({ rootState, commit, dispatch }) {
-      // console.log('[LEAGUE-ACTION] - getCommishLeagues()')
-      try {
-        const commish = await scad(
-          rootState.user.tokens.access_token,
-          rootState.user.tokens.id_token)
-          .get(`/league/yahoo/commissioner/all`)
-        console.log('COMMISH: ', commish)
-        commit('updateYahooCommishLeagues', commish.data.commissionerLeagues)
-      } catch (err) {
-        catchAxiosScadError(err)
-      }
-    },
-
     async getYahooSettings ({ rootState, state, commit }, leagueId) {
       // console.log('[LEAGUE-ACTION] - getYahooSettings()')
       try {
@@ -249,7 +235,7 @@ export default {
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .get(`/yahoo/league/all`)
-        console.log('leagues: ', res)
+        console.log('YAHOO-LEAGUES: ', res.data)
         commit('updateYahooLeagues', res.data.leagues)
       } catch (err) {
         catchAxiosScadError(err)
@@ -257,14 +243,28 @@ export default {
     },
 
     async getAllScadLeagues ({ rootState, commit }) {
-      console.log('[LEAGUE-ACTION] - getAllScadLeagues()')
+      // console.log('[LEAGUE-ACTION] - getAllScadLeagues()')
       try {
         const scadleagues = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .get(`/scad/league/all`)
-        console.log('SCADLEAGUES: ', scadleagues.data)
+        console.log('SCAD-LEAGUES: ', scadleagues.data)
         commit('updateScadLeagues', scadleagues.data.scadLeagues)
+      } catch (err) {
+        catchAxiosScadError(err)
+      }
+    },
+
+    async getAllYahooCommishLeagues ({ rootState, commit }) {
+      // console.log('[LEAGUE-ACTION] - getAllYahooCommishLeagues()')
+      try {
+        const commishLeagues = await scad(
+          rootState.user.tokens.access_token,
+          rootState.user.tokens.id_token)
+          .get(`/yahoo/league/commissioner/all`)
+        console.log('YAHOO-COMMISH-LEAGUES: ', commishLeagues.data)
+        commit('updateYahooCommishLeagues', commishLeagues.data.commissionerLeagues)
       } catch (err) {
         catchAxiosScadError(err)
       }
