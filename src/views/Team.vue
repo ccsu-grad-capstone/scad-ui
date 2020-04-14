@@ -124,19 +124,19 @@
                     q-input(type='number' v-model='editPlayer.salary' dense autofocus)
         .col
           team-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
-          trade-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
+          draft-pick-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
 </template>
 
 <script>
 import TeamOverview from '../components/TeamOverview'
-import TradeOverview from '../components/TradeOverview'
 import notify from '../utilities/nofity'
+import DraftPickOverview from '../components/DraftPickOverview.vue'
 
 export default {
   name: 'Team',
   components: {
     'team-overview': TeamOverview,
-    'trade-overview': TradeOverview
+    'draft-pick-overview': DraftPickOverview
   },
   data () {
     return {

@@ -21,8 +21,10 @@
             q-list(bordered separator v-for="(league, index) in yahooLeagues" :key="index")
               q-item(clickable v-ripple)
                 q-item-section
-                  q-item-label {{league.name}}
-
+                  q-item-label {{league.name }}
+                    q-space
+                    q-badge(v-if="checkIfScadLeague(league.league_id)")
+                      q-icon( name="star")
 </template>
 
 <script>
@@ -52,6 +54,13 @@ export default {
     },
     scadOnClick (scadLeagueId, yahooLeaguedId) {
 
+    },
+    checkIfScadLeague (id) {
+      // eslint-disable-next-line eqeqeq
+      let league = this.scadLeagues.find(l => l.yahooLeagueId == id)
+      if (league) {
+        return true
+      }
     }
   }
 }

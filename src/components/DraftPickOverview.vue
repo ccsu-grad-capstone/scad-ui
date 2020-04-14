@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name: 'TradeOverview',
+  name: 'DraftPickOverview',
   props: {
     yahooTeamId: String,
     yahooTeam: Object,

@@ -46,6 +46,31 @@ export default {
       ]
     })
   },
+  rosterMaxError (pos, count, max) {
+    console.log('rosterMaxError()')
+    Notify.create({
+      message: `Invalid Roster [${pos}]: Current Count: ${count}, League Max: ${max}`,
+      position: 'top',
+      icon: 'error',
+      color: 'red',
+      timeout: 10000,
+      actions: [
+        { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+      ]
+    })
+  },
+  rosterMinError (pos, count, min) {
+    Notify.create({
+      message: `Invalid ${pos.toUppercase()}`,
+      position: 'top',
+      icon: 'error',
+      color: 'red',
+      timeout: 10000,
+      actions: [
+        { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+      ]
+    })
+  },
   loginFailed () {
     Notify.create({
       message: 'Login Failed',
