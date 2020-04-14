@@ -177,6 +177,7 @@
 <script>
 
 import referenceData from '../utilities/referenceData'
+import notify from '../utilities/nofity'
 
 export default {
   name: 'RegisterLeague',
@@ -220,6 +221,7 @@ export default {
     },
     async save () {
       await this.$store.dispatch('league/saveLeagueSettings', { settings: this.scadSettings })
+      notify.saveSuccessful('SCAD settings saved successfully')
       this.init()
       this.editing = false
     },
