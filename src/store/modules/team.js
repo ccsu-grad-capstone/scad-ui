@@ -106,6 +106,31 @@ export default {
       }
     },
 
+    async getMyYahooTeam ({ commit, rootState, state }) {
+      console.log(`[TEAM-ACTION] - getMyYahooTeam())`)
+      try {
+        const team = await scad(
+          rootState.user.tokens.access_token,
+          rootState.user.tokens.id_token)
+          .get(`/yahoo/league/${rootState.league.yahooLeagueId}/myTeam`)
+        // console.log('MY-YAHOO-TEAM - TEAM INFO: ', team.data)
+
+        const players = await scad(
+          rootState.user.tokens.access_token,
+          rootState.user.tokens.id_token)
+          .get(`/yahoo/league/${rootState.league.yahooLeagueId}/myPlayers`)
+        // console.log('MY-YAHOO-TEAM - PLAYERS: ', players.data)
+
+        let yahooTeam = team.data
+        yahooTeam.players = players.data
+
+        console.log('MY-YAHOO-TEAM: ', yahooTeam)
+        commit('updateMyYahooTeam', yahooTeam)
+      } catch (err) {
+        catchAxiosScadError(err)
+      }
+    },
+
     async getMyScadTeam ({ commit, rootState, state }) {
       console.log(`[TEAM-ACTION] - getMyScadTeam())`)
       try {

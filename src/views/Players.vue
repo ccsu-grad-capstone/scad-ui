@@ -93,9 +93,9 @@ export default {
           required: true,
           label: 'Owner:',
           align: 'left',
-          sortable: false
+          sortable: false,
           // classes: 'bg-grey-2 ellipsis',
-          // style: 'width: 150px'
+          style: 'width: 200px'
           // headerClasses: 'bg-grey-3'
         },
         {

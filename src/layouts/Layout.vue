@@ -67,9 +67,9 @@ export default {
         { icon: 'dashboard', text: 'Dashboard', route: 'dashboard' }
       ],
       links3: [
-        { icon: '', text: 'My Profile', click: 'my-profile' },
-        { icon: '', text: 'Register League', click: 'register-league' },
-        { icon: '', text: 'About', click: 'about' },
+        { icon: '', text: 'My Profile', click: '/my-profile' },
+        { icon: '', text: 'Register League', click: '/register-league' },
+        { icon: '', text: 'About', click: '/about' },
         { icon: 'logout', text: 'Logout', click: 'logout' }
       ]
     }
@@ -151,6 +151,7 @@ export default {
         await this.$store.dispatch('user/refreshToken')
         await this.$store.dispatch('user/updateUser')
         await this.$store.dispatch('league/getScadInfo')
+        // this.$store.dispatch('team/getMyYahooTeam', '22351')
       }
       if (this.$route.query) {
         history.pushState(null, '', location.href.split('?')[0])
