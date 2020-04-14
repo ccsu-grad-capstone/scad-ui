@@ -4,15 +4,12 @@
       .col-3.q-pa-md
         .row.justify-center
           img(:src="getProfilePic()" style="width: 60%")
-          .text-h6 {{ user.user.name }}
       .col-7.q-px-md(horizontal)
-        div.text-body1 {{user.email}}
+        div.text-body1
         q-card-section
         q-card-section
-          |  User Since:
-        q-separator(vertical)
-        q-card-section.col-4
-          | Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          .text-h4.text-weight-bolder {{ user.user.name }}
+          | {{user.user.email}}
 </template>
 
 <script>

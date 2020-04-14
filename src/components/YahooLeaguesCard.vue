@@ -1,5 +1,5 @@
 <template lang="pug">
-  div.q-pa-md.row.items-start.q-gutter-md
+  div.q-pa-md.row.items-start.q-gutter-md(v-if="loaded")
     q-card.q-pa-md.row(style='width: 100%')
       q-item-section
         div.text-body1
@@ -9,7 +9,8 @@
             |  SCAD Leagues
           q-separator(vertical)
           q-card-section(style='width: 100%')
-            q-list( separator v-for="(league, index) in scadLeagues" :key="index")
+            q-separator
+            q-list( v-for="(league, index) in scadLeagues" :key="index")
               q-item(clickable  @click.native="switchLeague(league.id, league.yahooLeagueId)")
                 .row.full-width.q-pt-sm
                   .col.text-body1.text-weight-bolder
@@ -18,12 +19,14 @@
                   .col.text-left
                     .text-primary.text-weight-bold(v-if="!isActive(league.id)") Switch to League
                     .text-primary.text-weight-bold(v-else) Active League
+              q-separator
         q-card-section(horizontal)
           q-card-section.col-3.text-h6.text-weight-bolder.q-pt-md
             |  Yahoo Leagues
           q-separator(vertical)
           q-card-section(style='width: 100%')
-            q-list( separator v-for="(league, index) in yahooLeagues" :key="index")
+            q-separator
+            q-list( v-for="(league, index) in yahooLeagues" :key="index")
               q-item(clickable  @click.native="yahooHome(league.league_id, league.url)")
                 .row.full-width.q-pt-sm
                   .col.text-body1.text-weight-bolder
@@ -32,6 +35,7 @@
                       q-badge.q-ml-sm(v-if="checkIfScadLeague(league.league_id)") SCAD
                   .col.text-left
                     .text-primary.text-weight-bold(v-if="isCommish(league.league_id)") Register League with SCAD
+              q-separator
 
 </template>
 <script>
