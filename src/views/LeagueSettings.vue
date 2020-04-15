@@ -81,10 +81,10 @@
         q-item(clickable)
           .row.full-width.q-pl-lg
             .col-5.text-body1.text-left
-              | Franchise Tag Relief Percentage:
+              | Franchise Tag Discount:
             .col-2.text-body1.q-pl-lg.text-weight-bolder
-              q-select(v-if="editing" filled dense v-model='scadSettings.franchiseTagReliefPerc' :options='referenceData.franchiseTagReliefPerc()')
-              div(v-else) {{scadSettings.franchiseTagReliefPerc}}%
+              q-select(v-if="editing" filled dense v-model='scadSettings.franchiseTagDiscount' :options='referenceData.franchiseTagDiscount()')
+              div(v-else) ${{scadSettings.franchiseTagDiscount}}
         q-item(clickable)
           .row.full-width.q-pl-lg
             .col-5.text-body1.text-left

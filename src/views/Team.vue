@@ -21,25 +21,26 @@
             .text-primary.text-center.text-weight-bolder
               | SCAD Details
             .row
-              .col-8.text-grey-8.text-caption.text-right Salary Cap:
+              .col-7.text-grey-8.text-caption.text-right Salary Cap:
               .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
                 | ${{teamSalaryCap}}
             .row
-              .col-8.text-grey-8.text-caption.text-right Current Team Salary:
+              .col-7.text-grey-8.text-caption.text-right Current Team Salary:
               .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
                 | ${{scadTeam.salary}}
             .row
-              .col-8.text-grey-8.text-caption.text-right Available Cap Exemption Give:
+              .col-7.text-grey-8.text-caption.text-right Available Cap Exemption Give:
               .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
                 | ${{salaryCapExemptionLimit - scadTeam.exceptionOut}}
             .row
-              .col-8.text-grey-8.text-caption.text-right Available Cap Exemption Take:
+              .col-7.text-grey-8.text-caption.text-right Available Cap Exemption Take:
               .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
                 | ${{salaryCapExemptionLimit - scadTeam.exceptionIn}}
             .row
-              .col-8.text-grey-8.text-caption.text-right Franchise Tag:
+              .col-7.text-grey-8.text-caption.text-right Franchise Tag:
               .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
-                | {{scadTeam.isFranchiseTag}}
+                span(v-if="scadSettings.franchiseTagSpots > 0") {{franchiseTagDisplay()}}
+                span(v-else) N/A
 
           q-separator(vertical)
 
@@ -62,17 +63,14 @@
               .col-8.text-grey-8.text-caption.text-right Draft Grade:
               .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
                 | {{yahooTeam.draft_grade}}
-            .row
-              .col-8.text-grey-8.text-caption.text-right Franchise Tag:
-              .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
-                | N/A
       q-separator
       .col-8
         .row.full-width.justify-between.q-px-sm
           q-select(square dense v-model='selectedTeam' :options="filteredTeams" style="width: 250px" @input="updateTeamPage")
           div.q-gutter-sm.q-pt-md
-            q-btn(v-if="!franchiseTag && !editSalaries" label='Franchise Tag' dense color='secondary' text-color='primary' size='sm' @click="franchiseTag = !franchiseTag")
-            q-btn(v-if="franchiseTag && !editSalaries" label='Cancel' dense color='primary' text-color='white' size='sm' @click="franchiseTag = false")
+            div
+            q-btn(v-if="!franchiseTag && !editSalaries && scadSettings.franchiseTagSpots > 0" label='Franchise Tag' dense color='secondary' text-color='primary' size='sm' @click="franchiseTag = !franchiseTag")
+            q-btn(v-if="franchiseTag && !editSalaries && scadSettings.franchiseTagSpots > 0" label='Cancel' dense color='primary' text-color='white' size='sm' @click="franchiseTag = false")
             q-btn(v-if="!editSalaries && !franchiseTag" label='Edit Salaries' dense color='secondary' text-color='primary' size='sm' @click="editSalaries = !editSalaries")
             q-btn(v-if="editSalaries && !franchiseTag" label='Done' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
       .row.full-width.q-pl-lg(v-if="loaded")
@@ -106,22 +104,26 @@
                       q-badge(v-if="checkTag(props.row.player_id)" color='white'): q-icon( name='fas fa-tag' color='info')
                 q-td(key='team' :props='props')
                   .text-grey {{ props.row.editorial_team_full_name }}
-                q-td(key='salary' :props='props' auto-width)
-                  .col(:style=" editSalaries ? 'border: 1px solid #26A69A;' : 'border: none;' ")
-                    .text-primary.text-weight-bolder.text-body2.q-pr-sm ${{ getPlayerSalary(props.row.player_id) }}
-                  q-popup-edit(
-                    v-if="editSalaries"
-                    :cover="false"
-                    color="primary"
-                    title='Update Salary'
-                    v-model.number='editPlayer.salary'
-                    buttons
-                    label-set="Save"
-                    @before-show="editingPlayer(props.row)"
-                    @save="savePlayer"
-                    @cancel="cancelEdit()"
-                    )
-                    q-input(type='number' v-model='editPlayer.salary' dense autofocus)
+                q-td(key='salary' :props='props')
+                  .row(v-if="isFranchiseTagged(props.row.player_id)")
+                    .col.text-grey.q-pr-sm Original: ${{getPlayerSalary(props.row.player_id)}}
+                    .col.text-primary.text-weight-bolder.text-body2.q-pr-sm ${{displayTagAmount(props.row.player_id)}}
+                  div(v-else)
+                    .col(:style=" editSalaries ? 'border: 1px solid #26A69A;' : 'border: none;' ")
+                      .text-primary.text-weight-bolder.text-body2.q-pr-sm ${{ getPlayerSalary(props.row.player_id) }}
+                    q-popup-edit(
+                      v-if="editSalaries"
+                      :cover="false"
+                      color="primary"
+                      title='Update Salary'
+                      v-model.number='editPlayer.salary'
+                      buttons
+                      label-set="Save"
+                      @before-show="editingPlayer(props.row)"
+                      @save="savePlayer"
+                      @cancel="cancelEdit()"
+                      )
+                      q-input(type='number' v-model='editPlayer.salary' dense autofocus)
         .col
           team-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
           draft-pick-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
@@ -240,6 +242,9 @@ export default {
     players () {
       return this.yahooTeam.players
     },
+    scadSettings () {
+      return this.league.scadSettings
+    },
     filteredTeams () {
       return this.yahooTeams.map(t => Object.assign({}, t, { value: t.name, label: t.name }))
     },
@@ -290,26 +295,26 @@ export default {
       this.editPlayer = {}
       this.editPlayerInitSalary = 0
     },
-    async saveFranchiseTag (team) {
+    async saveFranchiseTag (row) {
       console.log(`[TEAM] - saveFranchiseTag()`)
       // eslint-disable-next-line eqeqeq
-      let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == team.player_id)
+      let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == row.player_id)
       let initSalary = player.salary
+      let salary = player.salary
 
-      // Update franchiseTagReliefPerc to franchiseTagForgivanceAmount
-      let franchiseTagReliefPerc = this.league.scadSettings.franchiseTagReliefPerc
-      // if (player.salary <= franchiseTagReliefPerc) {
-      //   player.salary = 0
-      // } else {
-      //   player.salary -= franchiseTagReliefPerc
-      // }
-      player.salary = player.salary * (franchiseTagReliefPerc / 100)
       player.isFranchiseTag = true
-      this.$store.dispatch('team/savePlayer', player)
+      await this.$store.dispatch('team/savePlayer', { player: player, yahooTeamId: this.scadTeam.yahooLeagueTeamId })
+
+      let franchiseTagDiscount = this.league.scadSettings.franchiseTagDiscount
+      if (salary <= franchiseTagDiscount) {
+        salary = 0
+      } else {
+        salary = (salary -= franchiseTagDiscount)
+      }
 
       // Update SCAD-TEAM
       this.scadTeam.isFranchiseTag = true
-      this.scadTeam.salary += (player.salary - initSalary)
+      this.scadTeam.salary += (salary - initSalary)
       this.saveTeam()
 
       this.franchiseTag = false
@@ -318,22 +323,22 @@ export default {
       console.log(`[TEAM] - removeFranchiseTag()`)
       // eslint-disable-next-line eqeqeq
       let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == team.player_id)
-      // let initSalary = player.salary
+      let salary = player.salary
+      let adjustment = 0
 
-      // Update franchiseTagReliefPerc to franchiseTagForgivanceAmount
-      // let franchiseTagReliefPerc = this.league.scadSettings.franchiseTagReliefPerc
-      // if (player.salary <= franchiseTagReliefPerc) {
-      //   player.salary = 0
-      // } else {
-      //   player.salary -= franchiseTagReliefPerc
-      // }
-      // player.salary = player.salary * (franchiseTagReliefPerc / 100)
+      let franchiseTagDiscount = this.league.scadSettings.franchiseTagDiscount
+      if (salary <= franchiseTagDiscount) {
+        adjustment = salary
+      } else {
+        adjustment = franchiseTagDiscount
+      }
+
       player.isFranchiseTag = false
-      this.$store.dispatch('team/savePlayer', player)
+      this.$store.dispatch('team/savePlayer', { player: player, yahooTeamId: this.scadTeam.yahooLeagueTeamId })
 
       // Update SCAD-TEAM
       this.scadTeam.isFranchiseTag = false
-      // this.scadTeam.salary += (player.salary - initSalary)
+      this.scadTeam.salary += adjustment
       this.saveTeam()
 
       this.franchiseTag = false
@@ -364,14 +369,42 @@ export default {
       }
       this.$store.dispatch('team/saveTeam', team)
     },
+    franchiseTagDisplay () {
+      if (this.scadTeam.isFranchiseTag) {
+        let scadPlayer = this.scadTeam.players.find(p => p.isFranchiseTag)
+        // eslint-disable-next-line eqeqeq
+        let yahooPlayer = this.players.find(p => p.player_id == scadPlayer.yahooLeaguePlayerId)
+        return yahooPlayer.name.full
+      } else {
+        return '-'
+      }
+    },
+    isFranchiseTagged (id) {
+      // eslint-disable-next-line eqeqeq
+      let scadPlayer = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == id)
+      if (scadPlayer.isFranchiseTag) { return true } else { return false }
+    },
     getPlayerSalary (id) {
       // console.log('getPlayerSalary()')
       if (this.loaded) {
-        // console.log('getPlayerSalary() - loaded', id)
-        // console.log('getPlayerSalary() - loaded', this.scadTeam.players)
         // eslint-disable-next-line eqeqeq
         let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == id)
         return player.salary
+      }
+    },
+    displayTagAmount (id) {
+      // console.log('getPlayerSalary()')
+      if (this.loaded) {
+        // eslint-disable-next-line eqeqeq
+        let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == id)
+        let franchiseTagDiscount = this.league.scadSettings.franchiseTagDiscount
+        let salary = player.salary
+
+        if (salary <= franchiseTagDiscount) {
+          return 0
+        } else {
+          return (salary -= franchiseTagDiscount)
+        }
       }
     },
     checkTag (id) {
