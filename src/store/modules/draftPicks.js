@@ -2,8 +2,8 @@
 import notify from '../../utilities/nofity'
 // import { scad } from '../../utilities/axios-scad'
 // import leagueStandings from '../../data/leagueStandings'
-import { server } from '../../utilities/axios-server'
-import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
+import { node } from '../../utilities/axios-node'
+import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
 
 export default {
   namespaced: true,
@@ -32,30 +32,30 @@ export default {
     async getDraftPicksByLeague ({ commit, state, rootState }, leagueId) {
       // console.log('[DRAFTPICK-ACTION] - getDraftPicksByLeague()')
       try {
-        const response = await server.get(`/draftPicks/${leagueId}`)
+        const response = await node.get(`/draftPicks/${leagueId}`)
         commit('updateDraftPicks', { dp: response.data.data })
       } catch (error) {
-        catchAxiosScadError(error)
+        catchAxiosNodeError(error)
       }
     },
     async getDraftPicksByTeam ({ commit, state, rootState }, teamId) {
       // console.log('[DRAFTPICK-ACTION] - getDraftPicksByTeam()')
       try {
-        const response = await server.get(`/draftPicks/${rootState.league.yahooLeagueId}/team/${teamId}`)
+        const response = await node.get(`/draftPicks/${rootState.league.yahooLeagueId}/team/${teamId}`)
         console.log('DRAFTPICKS-team', response.data.data)
         commit('updateDraftPicksByTeam', { dp: response.data.data })
       } catch (error) {
-        catchAxiosScadError(error)
+        catchAxiosNodeError(error)
       }
     },
     async saveDraftPick ({ dispatch }, dp) {
       // console.log('[DRAFTPICK-ACTION] - saveDraftPick()')
       try {
-        const response = await server.put(`/draftPicks/${dp._id}`, { data: dp })
+        const response = await node.put(`/draftPicks/${dp._id}`, { data: dp })
         notify.saveSuccessful(response.data)
         await dispatch('getDraftPicksByLeague', dp.yahooLeagueId)
       } catch (error) {
-        catchAxiosScadError(error)
+        catchAxiosNodeError(error)
       }
     }
   }

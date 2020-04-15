@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import { scad } from '../../utilities/axios-scad'
 import axios from 'axios'
-import { server } from '../../utilities/axios-server'
-import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
+import { node } from '../../utilities/axios-node'
+import { catchAxiosScadError, catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
 
 export default {
   namespaced: true,
@@ -73,13 +73,13 @@ export default {
     // refresh tokens with OAuth
     async refreshToken ({ commit, state }) {
       console.log('[USER-ACTION] - refreshToken()')
-      await server.get(`auth/yahoo/refresh?refresh_token=${state.tokens.refresh_token}`)
+      await node.get(`auth/yahoo/refresh?refresh_token=${state.tokens.refresh_token}`)
         .then((response) => {
           Vue.$cookies.set('access_token', response.data.access_token)
           commit('refreshToken', response.data)
         })
         .catch(error => {
-          catchAxiosScadError(error)
+          catchAxiosNodeError(error)
         })
     },
     async updateUser ({ state, commit }) {

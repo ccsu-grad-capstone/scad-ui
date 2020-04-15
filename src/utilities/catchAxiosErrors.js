@@ -28,4 +28,18 @@ const catchAxiosScadError = (error) => {
   console.log(error)
 }
 
-export { catchAxiosError, catchAxiosScadError }
+const catchAxiosNodeError = (error) => {
+  if (error.response) {
+    notify.nnodeServerIssueWithResponse(error.response.status, error.message)
+    console.log(error.response)
+  } else if (error.request) {
+    notify.nodeServerIssue(error.message)
+    console.log(error.request)
+  } else {
+    notify.nodeServerIssue(error.message)
+    console.log('Error', error.message)
+  }
+  console.log(error)
+}
+
+export { catchAxiosError, catchAxiosScadError, catchAxiosNodeError }

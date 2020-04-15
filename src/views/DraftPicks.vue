@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import { server } from '../utilities/axios-server'
+import { node } from '../utilities/axios-node'
 import { catchAxiosScadError } from '../utilities/catchAxiosErrors'
 import referenceData from '../utilities/referenceData'
 
@@ -250,7 +250,7 @@ export default {
               comments: ''
             }
             try {
-              await server.post('/draftPicks/create', { data: draftPick })
+              await node.post('/draftPicks/create', { data: draftPick })
             } catch (error) {
               catchAxiosScadError(error)
             }

@@ -1,7 +1,7 @@
 // import { notify } from '../../utilities/nofity'
 // import { scad } from '../../utilities/axios-scad'
 // import axios from 'axios'
-// import { server } from '../../utilities/axios-server'
+// import { node } from '../../utilities/axios-node'
 import { getField, updateField } from 'vuex-map-fields'
 
 export default {

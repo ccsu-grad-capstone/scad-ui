@@ -131,5 +131,21 @@ export default {
       timeout: 2500,
       color: 'red'
     })
+  },
+  nodeServerIssueWithResponse (code, message) {
+    Notify.create({
+      message: `[${code}] ${message}. Unable to retrieve NODE details. Please try again soon`,
+      position: 'top',
+      timeout: 2500,
+      color: 'red'
+    })
+  },
+  nodeServerIssue (message) {
+    Notify.create({
+      message: `[${message}] Unable to retrieve NODE details. Please try again soon`,
+      position: 'top',
+      timeout: 2500,
+      color: 'red'
+    })
   }
 }

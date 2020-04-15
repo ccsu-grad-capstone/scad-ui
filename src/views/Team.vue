@@ -89,7 +89,7 @@
                 q-btn(v-if="!editSalaries && !franchiseTag" label='Edit Salaries' dense color='secondary' text-color='primary' size='sm' @click="editSalaries = !editSalaries")
                 q-btn(v-if="editSalaries && !franchiseTag" label='Done' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
         .row.full-width.q-pl-lg
-          .col-8
+          .col-8.q-pb-lg
             q-table(
               class="my-sticky-header-table"
               v-if="loaded"
