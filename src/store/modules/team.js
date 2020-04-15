@@ -60,8 +60,8 @@ export default {
   },
   actions: {
     async getTeam ({ dispatch }, { yahooLeagueId, yahooTeamId }) {
-      console.log('yahooLeagueId', yahooLeagueId)
-      console.log('yahooTeamId', yahooTeamId)
+      // console.log('yahooLeagueId', yahooLeagueId)
+      // console.log('yahooTeamId', yahooTeamId)
       await dispatch('getYahooTeam', { yahooLeagueId: yahooLeagueId, yahooTeamId: yahooTeamId })
       await dispatch('getScadTeam', { yahooLeagueId: yahooLeagueId, yahooTeamId: yahooTeamId })
     },

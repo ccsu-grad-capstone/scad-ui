@@ -34,8 +34,21 @@
               q-item-label
                 | {{ link.text }}
                 q-icon(v-if="link.icon" :name="link.icon")
-    q-page-container(v-if="loaded")
-      div
+    q-page-container
+      .row.full-width(v-if="!loaded")
+        .row.full-width.justify-center
+          q-circular-progress.q-mt-xl(
+            indeterminate
+            size="90px"
+            :thickness="0.2"
+            color="primary"
+            center-color="grey-5"
+            track-color="transparent"
+            class="q-ma-md"
+            )
+        .row.full-width.justify-center
+          .text-grey Fetching SCAD data...
+      div(v-else)
         router-view
 </template>
 

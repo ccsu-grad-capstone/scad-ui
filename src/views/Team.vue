@@ -1,118 +1,132 @@
 <template lang="pug">
   body
-    .row.q-gutter-md.q-pa-md
-      .row.full-width.bg-red
-      .col-4
-        .row.justify-center
-          q-avatar(size="100px")
-            img( :src="yahooTeam.team_logos[0].team_logo.url")
-        .row.justify-center
-          .col
+    .row.full-width(v-if="!loaded")
+      .row.full-width.justify-center
+        q-circular-progress.q-mt-xl(
+          indeterminate
+          size="90px"
+          :thickness="0.2"
+          color="primary"
+          center-color="grey-5"
+          track-color="transparent"
+          class="q-ma-md"
+          )
+      .row.full-width.justify-center
+        .text-grey Fetching SCAD team...
+    .row.full-width(v-else)
+      .row.full-width.q-gutter-md.q-pa-md
+        .col-4
+          .col-4
             .row.justify-center
-              .text-h6 {{yahooTeam.name}}
+              q-avatar(size="100px")
+                img( :src="yahooTeam.team_logos[0].team_logo.url")
             .row.justify-center
-              .text-caption.text-grey-7(v-if="loaded") Manager ({{yahooTeam.managers[0].manager.nickname}})  | team_id: {{yahooTeam.team_id}}
-            .row.justify-center
-              .text-caption: a(:href='yahooTeam.url') Yahoo Team Page
-      q-separator(vertical)
-      .col.q-pa-sm
-        .row.q-gutter-xs
-          .col
-            .text-primary.text-center.text-weight-bolder
-              | SCAD Details
-            .row
-              .col-7.text-grey-8.text-caption.text-right Salary Cap:
-              .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
-                | ${{teamSalaryCap}}
-            .row
-              .col-7.text-grey-8.text-caption.text-right Current Team Salary:
-              .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
-                | ${{scadTeam.salary}}
-            .row
-              .col-7.text-grey-8.text-caption.text-right Available Cap Exemption Give:
-              .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
-                | ${{salaryCapExemptionLimit - scadTeam.exceptionOut}}
-            .row
-              .col-7.text-grey-8.text-caption.text-right Available Cap Exemption Take:
-              .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
-                | ${{salaryCapExemptionLimit - scadTeam.exceptionIn}}
-            .row
-              .col-7.text-grey-8.text-caption.text-right Franchise Tag:
-              .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
-                span(v-if="scadSettings.franchiseTagSpots > 0") {{franchiseTagDisplay()}}
-                span(v-else) N/A
+              .col
+                .row.justify-center
+                  .text-h6 {{yahooTeam.name}}
+                .row.justify-center
+                  .text-caption.text-grey-7 Manager ({{yahooTeam.managers[0].manager.nickname}})  | team_id: {{yahooTeam.team_id}}
+                .row.justify-center
+                  .text-caption: a(:href='yahooTeam.url') Yahoo Team Page
+        q-separator(vertical)
+        .col.q-pa-sm
+          .row.q-gutter-xs
+            .col
+              .text-primary.text-center.text-weight-bolder
+                | SCAD Details
+              .row
+                .col-7.text-grey-8.text-caption.text-right Salary Cap:
+                .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
+                  | ${{teamSalaryCap}}
+              .row
+                .col-7.text-grey-8.text-caption.text-right Current Team Salary:
+                .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
+                  | ${{scadTeam.salary}}
+              .row
+                .col-7.text-grey-8.text-caption.text-right Available Cap Exemption Give:
+                .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
+                  | ${{salaryCapExemptionLimit - scadTeam.exceptionOut}}
+              .row
+                .col-7.text-grey-8.text-caption.text-right Available Cap Exemption Take:
+                .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
+                  | ${{salaryCapExemptionLimit - scadTeam.exceptionIn}}
+              .row
+                .col-7.text-grey-8.text-caption.text-right Franchise Tag:
+                .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
+                  span(v-if="scadSettings.franchiseTagSpots > 0") {{franchiseTagDisplay()}}
+                  span(v-else) N/A
 
-          q-separator(vertical)
+            q-separator(vertical)
 
-          .col
-            .text-primary.text-center.text-weight-bolder
-              | Yahoo Details
-            .row
-              .col-8.text-grey-8.text-caption.text-right Waiver Priority:
-              .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
-                | {{yahooTeam.waiver_priority}}
-            .row
-              .col-8.text-grey-8.text-caption.text-right FAAB Remaining Budget:
-              .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
-                | ${{yahooTeam.faab_balance}}
-            .row
-              .col-8.text-grey-8.text-caption.text-right Number of Moves:
-              .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
-                | {{yahooTeam.number_of_moves}}
-            .row
-              .col-8.text-grey-8.text-caption.text-right Draft Grade:
-              .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
-                | {{yahooTeam.draft_grade}}
-      q-separator
-      .col-8
-        .row.full-width.justify-between.q-px-sm
-          q-select(square dense v-model='selectedTeam' :options="filteredTeams" style="width: 250px" @input="updateTeamPage")
-          div.q-gutter-sm.q-pt-md
-            div
-            q-btn(v-if="!franchiseTag && !editSalaries && scadSettings.franchiseTagSpots > 0" label='Franchise Tag' dense color='secondary' text-color='primary' size='sm' @click="franchiseTag = !franchiseTag")
-            q-btn(v-if="franchiseTag && !editSalaries && scadSettings.franchiseTagSpots > 0" label='Cancel' dense color='primary' text-color='white' size='sm' @click="franchiseTag = false")
-            q-btn(v-if="!editSalaries && !franchiseTag" label='Edit Salaries' dense color='secondary' text-color='primary' size='sm' @click="editSalaries = !editSalaries")
-            q-btn(v-if="editSalaries && !franchiseTag" label='Done' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
-      .row.full-width.q-pl-lg(v-if="loaded")
-        .col-8
-          q-table(
-            class="my-sticky-header-table"
-            v-if="loaded"
-            :data='players',
-            :columns='columns',
-            row-key= 'player_key',
-            :pagination.sync="pagination",
-            hide-bottom,
-            dense
-            )
-            template(v-slot:body='props')
-              q-tr(:props='props')
-                q-td(auto-width)
-                  div(v-if="franchiseTag")
-                    div(v-if="scadTeam.isFranchiseTag")
-                      q-btn(v-if="checkTag(props.row.player_id)" size='xs' color='negative' round dense @click='removeFranchiseTag(props.row)' icon="fas fa-minus")
-                    div(v-else)
-                      q-btn( size='xs' color='info' round dense @click='saveFranchiseTag(props.row)' icon="fas fa-tag")
-                q-td(key='pos' :props='props' auto-width) {{ props.row.display_position }}
-                q-td(key='playerName' :props='props')
-                  .row.full-width
-                    .col-2
-                      q-avatar(size="25px")
-                        img(:src="props.row.headshot.url" style="width: 85%")
-                    .col-2.q-pl-xs.text-weight-bold.text-body2
-                      | {{props.row.name.full}}
-                      q-badge(v-if="checkTag(props.row.player_id)" color='white'): q-icon( name='fas fa-tag' color='info')
-                q-td(key='team' :props='props')
-                  .text-grey {{ props.row.editorial_team_full_name }}
-                q-td(key='salary' :props='props')
-                  .row(v-if="isFranchiseTagged(props.row.player_id)")
-                    .col.text-grey.q-pr-sm Original: ${{getPlayerSalary(props.row.player_id)}}
-                    .col.text-primary.text-weight-bolder.text-body2.q-pr-sm ${{displayTagAmount(props.row.player_id)}}
-                  div(v-else)
-                    .col(:style=" editSalaries ? 'border: 1px solid #26A69A;' : 'border: none;' ")
+            .col
+              .text-primary.text-center.text-weight-bolder
+                | Yahoo Details
+              .row
+                .col-8.text-grey-8.text-caption.text-right Waiver Priority:
+                .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
+                  | {{yahooTeam.waiver_priority}}
+              .row
+                .col-8.text-grey-8.text-caption.text-right FAAB Remaining Budget:
+                .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
+                  | ${{yahooTeam.faab_balance}}
+              .row
+                .col-8.text-grey-8.text-caption.text-right Number of Moves:
+                .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
+                  | {{yahooTeam.number_of_moves}}
+              .row
+                .col-8.text-grey-8.text-caption.text-right Draft Grade:
+                .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
+                  | {{yahooTeam.draft_grade}}
+      .row
+        .row.full-width.q-pl-lg
+          .col-8.q-pb-md
+            .row.full-width.justify-between
+              q-select(square dense v-model='selectedTeam' :options="filteredTeams" style="width: 250px" @input="updateTeamPage")
+              div.q-gutter-sm.q-pt-sm
+                div
+                q-btn(v-if="!franchiseTag && !editSalaries && scadSettings.franchiseTagSpots > 0" label='Franchise Tag' dense color='secondary' text-color='primary' size='sm' @click="franchiseTag = !franchiseTag")
+                q-btn(v-if="franchiseTag && !editSalaries && scadSettings.franchiseTagSpots > 0" label='Cancel' dense color='primary' text-color='white' size='sm' @click="franchiseTag = false")
+                q-btn(v-if="!editSalaries && !franchiseTag" label='Edit Salaries' dense color='secondary' text-color='primary' size='sm' @click="editSalaries = !editSalaries")
+                q-btn(v-if="editSalaries && !franchiseTag" label='Done' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
+        .row.full-width.q-pl-lg
+          .col-8
+            q-table(
+              class="my-sticky-header-table"
+              v-if="loaded"
+              :data='players',
+              :columns='columns',
+              row-key= 'player_key',
+              :pagination.sync="pagination",
+              hide-bottom,
+              dense
+              )
+              template(v-slot:body='props')
+                q-tr(:props='props')
+                  q-td(auto-width)
+                    div(v-if="franchiseTag")
+                      div(v-if="scadTeam.isFranchiseTag")
+                        q-btn(v-if="checkTag(props.row.player_id)" size='xs' color='negative' round dense @click='removeFranchiseTag(props.row)' icon="fas fa-minus")
+                      div(v-else)
+                        q-btn( size='xs' color='info' round dense @click='saveFranchiseTag(props.row)' icon="fas fa-tag")
+                  q-td(key='pos' :props='props' auto-width) {{ props.row.display_position }}
+                  q-td(key='playerName' :props='props')
+                    .row.full-width
+                      .col-2
+                        q-avatar(size="25px")
+                          img(:src="props.row.headshot.url" style="width: 85%")
+                      .col-2.q-pl-xs.text-weight-bold.text-body2
+                        | {{props.row.name.full}}
+                        q-badge(v-if="checkTag(props.row.player_id)" color='white'): q-icon( name='fas fa-tag' color='info')
+                  q-td(key='team' :props='props')
+                    .text-grey {{ props.row.editorial_team_full_name }}
+                  q-td(key='pretag' :props='props')
+                    .row(v-if="isFranchiseTagged(props.row.player_id)")
+                      .col.text-grey.q-pr-sm Original: ${{getOriginalSalary(props.row.player_id)}}
+                  q-td( key='salary' :props='props' auto-width)
+                    .col(:style=" (editSalaries && !isFranchiseTagged(props.row.player_id)) ? 'border: 1px solid #26A69A;' : 'border: none;' ")
                       .text-primary.text-weight-bolder.text-body2.q-pr-sm ${{ getPlayerSalary(props.row.player_id) }}
                     q-popup-edit(
-                      v-if="editSalaries"
+                      v-if="editSalaries && !isFranchiseTagged(props.row.player_id)"
                       :cover="false"
                       color="primary"
                       title='Update Salary'
@@ -124,9 +138,9 @@
                       @cancel="cancelEdit()"
                       )
                       q-input(type='number' v-model='editPlayer.salary' dense autofocus)
-        .col
-          team-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
-          draft-pick-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
+          .col
+            team-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
+            draft-pick-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
 </template>
 
 <script>
@@ -193,6 +207,16 @@ export default {
           name: 'team',
           required: true,
           label: 'Team:',
+          align: 'left',
+          sortable: false
+          // classes: 'bg-grey-2 ellipsis',
+          // style: 'width: 150px'
+          // headerClasses: 'bg-grey-3'
+        },
+        {
+          name: 'pretag',
+          required: true,
+          label: '',
           align: 'left',
           sortable: false
           // classes: 'bg-grey-2 ellipsis',
@@ -370,7 +394,7 @@ export default {
       this.$store.dispatch('team/saveTeam', team)
     },
     franchiseTagDisplay () {
-      if (this.scadTeam.isFranchiseTag) {
+      if (this.scadTeam.isFranchiseTag && this.loaded) {
         let scadPlayer = this.scadTeam.players.find(p => p.isFranchiseTag)
         // eslint-disable-next-line eqeqeq
         let yahooPlayer = this.players.find(p => p.player_id == scadPlayer.yahooLeaguePlayerId)
@@ -389,22 +413,25 @@ export default {
       if (this.loaded) {
         // eslint-disable-next-line eqeqeq
         let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == id)
-        return player.salary
+        if (player.isFranchiseTag) {
+          let franchiseTagDiscount = this.league.scadSettings.franchiseTagDiscount
+          let salary = player.salary
+
+          if (salary <= franchiseTagDiscount) {
+            return 0
+          } else {
+            return (salary -= franchiseTagDiscount)
+          }
+        } else {
+          return player.salary
+        }
       }
     },
-    displayTagAmount (id) {
-      // console.log('getPlayerSalary()')
+    getOriginalSalary (id) {
       if (this.loaded) {
         // eslint-disable-next-line eqeqeq
         let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == id)
-        let franchiseTagDiscount = this.league.scadSettings.franchiseTagDiscount
-        let salary = player.salary
-
-        if (salary <= franchiseTagDiscount) {
-          return 0
-        } else {
-          return (salary -= franchiseTagDiscount)
-        }
+        return player.salary
       }
     },
     checkTag (id) {
