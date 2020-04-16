@@ -2,18 +2,22 @@
 // import { scad } from '../../utilities/axios-scad'
 // import axios from 'axios'
 // import { node } from '../../utilities/axios-node'
-import { getField, updateField } from 'vuex-map-fields'
+// import { getField, updateField } from 'vuex-map-fields'
 
 export default {
   namespaced: true,
   state: {
-    registerLeagueInvites: false
+    registerLeagueInvites: false,
+    editDraftPick: false
   },
   getters: {
-    getField
+    // getField
   },
   mutations: {
-    updateField
+    editDraftPick (state) {
+      state.editDraftPick = !state.editDraftPick
+      console.log('editDraftPick:', state.editDraftPick)
+    }
   },
   actions: {
 

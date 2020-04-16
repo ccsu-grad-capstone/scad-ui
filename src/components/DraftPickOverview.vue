@@ -13,13 +13,19 @@
       template(v-slot:body-cell-edit='props')
         q-td.q-pr-md(:props='props' auto-width)
           q-btn(size='xs' color='accent' round dense @click='editPick(props.row)' icon="edit")
+    edit-draft-pick-dialog(v-if="editDraftPick" :dp="edit.dp" @saved="getPicks")
 
     .col.full-width.text-center.q-pa-xs.text-grey.text-caption {{yahooTeam.name}} draft picks
 </template>
 
 <script>
+import editDraftPickDialog from '../components/dialogs/editDraftPickDialog'
+
 export default {
   name: 'DraftPickOverview',
+  components: {
+    'edit-draft-pick-dialog': editDraftPickDialog
+  },
   props: {
     yahooTeamId: String,
     yahooTeam: Object,
@@ -66,8 +72,8 @@ export default {
           align: 'center',
           field: row => row.pick,
           format: val => {
-            if (val !== undefined) {
-              return `${val}`
+            if (val) {
+              return val
             } else {
               return '-'
             }
@@ -101,18 +107,24 @@ export default {
       ]
     }
   },
-  mounted () {
-    this.$store.dispatch('draftPicks/getDraftPicksByTeam', this.yahooTeamId)
+  async mounted () {
+    await this.getPicks()
     this.loaded = true
   },
   computed: {
     draftPicksByTeam () {
       return this.$store.state.draftPicks.draftPicksByTeam
+    },
+    editDraftPick () {
+      return this.$store.state.dialog.editDraftPick
     }
   },
   methods: {
+    getPicks () {
+      this.$store.dispatch('draftPicks/getDraftPicksByTeam', this.yahooTeamId)
+    },
     editPick (dp) {
-      this.edit.visable = true
+      this.$store.commit('dialog/editDraftPick')
       this.edit.dp = dp
     }
   }

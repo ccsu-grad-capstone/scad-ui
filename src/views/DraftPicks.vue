@@ -34,42 +34,27 @@
               | {{ props.row.rd }}
           template(v-slot:body-cell-pick='props')
             q-td(:props='props' auto-width)
-              | {{ props.row.pick }}
+              | {{ displayPick(props.row.pick) }}
           template(v-slot:body-cell-owner='props')
             q-td(:props='props')
               | {{ props.row.team.name }}
           template(v-slot:body-cell-originalOwner='props')
             q-td(:props='props' auto-width)
               | {{ props.row.originalTeam.name }}
-    q-dialog(v-if="edit.visable" v-model='edit.visable')
-      q-card(style="width: 500px; max-width: 80vw;")
-        q-card-section.row
-          .col.text-center.text-h5.text-weight-bolder  {{ edit.dp.year }} - {{ outputRound(edit.dp.rd) }} Round
-        q-card-section.row.items-center
-          .row.full-width
-            .col-3.text-body.text-right.text-weight-bold.q-ma-sm Pick:
-            .col-3.q-pl-sm: q-select(dense v-model='edit.dp.pick' :options='referenceData.twelveTeams')
-          .row.full-width
-            .col-3.text-body.text-right.text-weight-bold.q-ma-sm Owner:
-            .col.q-pl-sm: q-select(dense v-model='edit.dp.team' :options='filteredTeams' :display-value='displayTeam()')
-          .row.full-width.q-mt-sm
-            .col-3.text-body.text-right.text-weight-bold.q-ma-sm Original Owner:
-            .col.q-ma-sm.text-grey {{edit.dp.originalTeam.name}}
-          .row.full-width.q-mt-sm
-            .col-3.text-body.text-right.text-weight-bold.q-ma-sm Comments:
-            .col.q-ma-sm.text-grey: q-input(v-model='edit.dp.comments' filled type='textarea')
-        q-card-actions.row.justify-around
-          q-btn(flat label='Cancel' color='primary' @click="edit.visable = false")
-          q-btn(flat label='Save' color='primary' @click="savePick()")
+    edit-draft-pick-dialog(v-if="editDraftPick" :dp="edit.dp")
 </template>
 
 <script>
 import { node } from '../utilities/axios-node'
 import { catchAxiosScadError } from '../utilities/catchAxiosErrors'
 import referenceData from '../utilities/referenceData'
+import editDraftPickDialog from '../components/dialogs/editDraftPickDialog'
 
 export default {
   name: 'DraftPicks',
+  components: {
+    'edit-draft-pick-dialog': editDraftPickDialog
+  },
   data () {
     return {
       edit: {
@@ -180,6 +165,9 @@ export default {
     },
     filteredTeams () {
       return this.yahooTeams.map(t => Object.assign({}, t, { value: t.name, label: t.name }))
+    },
+    editDraftPick () {
+      return this.$store.state.dialog.editDraftPick
     }
   },
   methods: {
@@ -187,17 +175,17 @@ export default {
       this.$store.dispatch('draftPicks/getDraftPicksByLeague', this.leagueId)
     },
     editPick (dp) {
-      this.edit.visable = true
       this.edit.dp = dp
+      this.$store.commit('dialog/editDraftPick')
     },
     async savePick () {
       console.log('[DRAFTPICK] Method - savePick()')
       this.edit.visable = false
       await this.$store.dispatch('draftPicks/saveDraftPick', this.edit.dp)
     },
-    displayPick () {
-      if (this.edit.dp.pick) {
-        return this.edit.dp.pick
+    displayPick (pick) {
+      if (pick) {
+        return pick
       } else {
         return '-'
       }
