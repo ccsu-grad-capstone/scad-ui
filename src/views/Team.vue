@@ -133,11 +133,19 @@
                       v-model.number='editPlayer.salary'
                       buttons
                       label-set="Save"
+                      :validate="editPlayerValidation"
                       @before-show="editingPlayer(props.row)"
                       @save="savePlayer"
                       @cancel="cancelEdit()"
                       )
-                      q-input(type='number' v-model='editPlayer.salary' dense autofocus)
+                      q-input(
+                        type='number'
+                        v-model='editPlayer.salary'
+                        :error="error"
+                        :error-message="errorMessage"
+                        dense
+                        autofocus
+                        )
           .col
             team-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
             draft-pick-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
@@ -157,6 +165,8 @@ export default {
   data () {
     return {
       loaded: false,
+      error: false,
+      errorMessage: '',
       scadTeam: {},
       editPlayer: {},
       editPlayerInitSalary: 0,
@@ -312,12 +322,24 @@ export default {
       this.editPlayer = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == yahooPlayer.player_id)
       this.editPlayerInitSalary = this.editPlayer.salary
     },
+    editPlayerValidation (val) {
+      if (val < 0 || val === '') {
+        this.error = true
+        this.errorMessage = 'Value must be positive'
+        return false
+      }
+      this.error = false
+      this.errorMessage = ''
+      return true
+    },
     cancelEdit () {
       // eslint-disable-next-line eqeqeq
       let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId === this.editPlayer.yahooLeaguePlayerId)
       player.salary = this.editPlayerInitSalary
       this.editPlayer = {}
       this.editPlayerInitSalary = 0
+      this.error = false
+      this.errorMessage = ''
     },
     async saveFranchiseTag (row) {
       console.log(`[TEAM] - saveFranchiseTag()`)

@@ -26,7 +26,7 @@
           q-separator(vertical)
           q-card-section(style='width: 100%')
             q-separator
-            q-list( v-for="(league, index) in yahooLeagues" :key="index")
+            q-list( v-for="(league, index) in filterYahooLeagues()" :key="index")
               q-item(clickable  @click.native="yahooHome(league.league_id, league.url)")
                 .row.full-width.q-pt-sm
                   .col.text-body1.text-weight-bolder
@@ -108,6 +108,16 @@ export default {
         await this.$store.dispatch('league/switchLeagues', yahooLeagueId)
         this.$router.push('dashboard')
       }
+    },
+    filterYahooLeagues () {
+      let leagues = []
+      this.yahooLeagues.forEach(l => {
+        if (l.name.includes('Queef')) {
+        } else {
+          leagues.push(l)
+        }
+      })
+      return leagues
     },
     yahooHome (id, url) {
       if (this.isCommish(id)) {

@@ -46,7 +46,7 @@ export default {
           sortable: false,
           field: row => row.year,
           format: val => `${val}`,
-          style: 'max-width: 150px'
+          style: 'background-color: #f0f0f0'
           // headerClasses: 'bg-grey-3'
         },
         {
