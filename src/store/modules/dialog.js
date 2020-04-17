@@ -16,7 +16,6 @@ export default {
   mutations: {
     editDraftPick (state) {
       state.editDraftPick = !state.editDraftPick
-      console.log('editDraftPick:', state.editDraftPick)
     }
   },
   actions: {

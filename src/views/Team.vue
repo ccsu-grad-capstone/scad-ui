@@ -13,9 +13,9 @@
           )
       .row.full-width.justify-center
         .text-grey Fetching SCAD team...
-    .row.full-width(v-else)
-      .row.full-width.q-gutter-md.q-pa-md
-        .col-4
+    .row.full-width.justify-center(v-else)
+      .row.team-area.q-gutter-md.q-pa-md
+        .col-3
           .col-4
             .row.justify-center
               q-avatar(size="100px")
@@ -29,7 +29,7 @@
                 .row.justify-center
                   .text-caption: a(:href='yahooTeam.url') Yahoo Team Page
         q-separator(vertical)
-        .col.q-pa-sm
+        .col.q-pa-sm.q-pt-lg
           .row.q-gutter-xs
             .col
               .text-primary.text-center.text-weight-bolder
@@ -77,78 +77,77 @@
                 .col-8.text-grey-8.text-caption.text-right Draft Grade:
                 .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
                   | {{yahooTeam.draft_grade}}
-      .row
-        .row.full-width.q-pl-lg
-          .col-8.q-pb-md
-            .row.full-width.justify-between
-              q-select(square dense v-model='selectedTeam' :options="filteredTeams" style="width: 250px" @input="updateTeamPage")
-              div.q-gutter-sm.q-pt-sm
-                div
-                q-btn(v-if="!franchiseTag && !editSalaries && scadSettings.franchiseTagSpots > 0" label='Franchise Tag' dense color='secondary' text-color='primary' size='sm' @click="franchiseTag = !franchiseTag")
-                q-btn(v-if="franchiseTag && !editSalaries && scadSettings.franchiseTagSpots > 0" label='Cancel' dense color='primary' text-color='white' size='sm' @click="franchiseTag = false")
-                q-btn(v-if="!editSalaries && !franchiseTag" label='Edit Salaries' dense color='secondary' text-color='primary' size='sm' @click="editSalaries = !editSalaries")
-                q-btn(v-if="editSalaries && !franchiseTag" label='Done' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
-        .row.full-width.q-pl-lg
-          .col-8.q-pb-lg
-            q-table(
-              class="my-sticky-header-table"
-              v-if="loaded"
-              :data='players',
-              :columns='columns',
-              row-key= 'player_key',
-              :pagination.sync="pagination",
-              hide-bottom,
-              dense
-              )
-              template(v-slot:body='props')
-                q-tr(:props='props')
-                  q-td(auto-width)
-                    div(v-if="franchiseTag")
-                      div(v-if="scadTeam.isFranchiseTag")
-                        q-btn(v-if="checkTag(props.row.player_id)" size='xs' color='negative' round dense @click='removeFranchiseTag(props.row)' icon="fas fa-minus")
-                      div(v-else)
-                        q-btn( size='xs' color='info' round dense @click='saveFranchiseTag(props.row)' icon="fas fa-tag")
-                  q-td(key='pos' :props='props' auto-width) {{ props.row.display_position }}
-                  q-td(key='playerName' :props='props')
-                    .row.full-width
-                      .col-2
-                        q-avatar(size="25px")
-                          img(:src="props.row.headshot.url" style="width: 85%")
-                      .col-2.q-pl-xs.text-weight-bold.text-body2
-                        | {{props.row.name.full}}
-                        q-badge(v-if="checkTag(props.row.player_id)" color='white'): q-icon( name='fas fa-tag' color='info')
-                  q-td(key='team' :props='props')
-                    .text-grey {{ props.row.editorial_team_full_name }}
-                  q-td(key='pretag' :props='props')
-                    .row(v-if="isFranchiseTagged(props.row.player_id)")
-                      .col.text-grey.q-pr-sm Original: ${{getOriginalSalary(props.row.player_id)}}
-                  q-td( key='salary' :props='props' auto-width)
-                    .col(:style=" (editSalaries && !isFranchiseTagged(props.row.player_id)) ? 'border: 1px solid #26A69A;' : 'border: none;' ")
-                      .text-primary.text-weight-bolder.text-body2.q-pr-sm ${{ getPlayerSalary(props.row.player_id) }}
-                    q-popup-edit(
-                      v-if="editSalaries && !isFranchiseTagged(props.row.player_id)"
-                      :cover="false"
-                      color="primary"
-                      title='Update Salary'
-                      v-model.number='editPlayer.salary'
-                      buttons
-                      label-set="Save"
-                      :validate="editPlayerValidation"
-                      @before-show="editingPlayer(props.row)"
-                      @save="savePlayer"
-                      @cancel="cancelEdit()"
-                      )
-                      q-input(
-                        type='number'
-                        v-model='editPlayer.salary'
-                        :error="error"
-                        :error-message="errorMessage"
-                        dense
-                        autofocus
+      .row.full-width.justify-center
+        .row.team-area
+          .row.team-table.justify-between.q-pl-lg.q-pb-md
+            q-select(square dense v-model='selectedTeam' :options="filteredTeams" style="width: 250px" @input="updateTeamPage")
+            div.q-gutter-sm.q-pt-sm
+              div
+              q-btn(v-if="!franchiseTag && !editSalaries && scadSettings.franchiseTagSpots > 0" label='Franchise Tag' dense color='secondary' text-color='primary' size='sm' @click="franchiseTag = !franchiseTag")
+              q-btn(v-if="franchiseTag && !editSalaries && scadSettings.franchiseTagSpots > 0" label='Cancel' dense color='primary' text-color='white' size='sm' @click="franchiseTag = false")
+              q-btn(v-if="!editSalaries && !franchiseTag" label='Edit Salaries' dense color='secondary' text-color='primary' size='sm' @click="editSalaries = !editSalaries")
+              q-btn(v-if="editSalaries && !franchiseTag" label='Done' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
+          .row.q-pl-lg
+            .q-pb-lg.team-table
+              q-table(
+                class="my-sticky-header-table"
+                v-if="loaded"
+                :data='players',
+                :columns='columns',
+                row-key= 'player_key',
+                :pagination.sync="pagination",
+                hide-bottom,
+                dense
+                )
+                template(v-slot:body='props')
+                  q-tr(:props='props')
+                    q-td(auto-width)
+                      div(v-if="franchiseTag")
+                        div(v-if="scadTeam.isFranchiseTag")
+                          q-btn(v-if="checkTag(props.row.player_id)" size='xs' color='negative' round dense @click='removeFranchiseTag(props.row)' icon="fas fa-minus")
+                        div(v-else)
+                          q-btn( size='xs' color='info' round dense @click='saveFranchiseTag(props.row)' icon="fas fa-tag")
+                    q-td(key='pos' :props='props' auto-width) {{ props.row.display_position }}
+                    q-td(key='playerName' :props='props')
+                      .row.full-width
+                        .col-2
+                          q-avatar(size="25px")
+                            img(:src="props.row.headshot.url" style="width: 85%")
+                        .col-2.q-pl-xs.text-weight-bold.text-body2
+                          | {{props.row.name.full}}
+                          q-badge(v-if="checkTag(props.row.player_id)" color='white'): q-icon( name='fas fa-tag' color='info')
+                    q-td(key='team' :props='props')
+                      .text-grey {{ props.row.editorial_team_full_name }}
+                    q-td(key='pretag' :props='props')
+                      .row(v-if="isFranchiseTagged(props.row.player_id)")
+                        .col.text-grey.q-pr-sm Original: ${{getOriginalSalary(props.row.player_id)}}
+                    q-td( key='salary' :props='props' auto-width)
+                      .col(:style=" (editSalaries && !isFranchiseTagged(props.row.player_id)) ? 'border: 1px solid #26A69A;' : 'border: none;' ")
+                        .text-primary.text-weight-bolder.text-body2.q-pr-sm ${{ getPlayerSalary(props.row.player_id) }}
+                      q-popup-edit(
+                        v-if="editSalaries && !isFranchiseTagged(props.row.player_id)"
+                        :cover="false"
+                        color="primary"
+                        title='Update Salary'
+                        v-model.number='editPlayer.salary'
+                        buttons
+                        label-set="Save"
+                        :validate="editPlayerValidation"
+                        @before-show="editingPlayer(props.row)"
+                        @save="savePlayer"
+                        @cancel="cancelEdit()"
                         )
-          .col
-            team-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
-            draft-pick-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
+                        q-input(
+                          type='number'
+                          v-model='editPlayer.salary'
+                          :error="error"
+                          :error-message="errorMessage"
+                          dense
+                          autofocus
+                          )
+            .div
+              team-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
+              draft-pick-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
 </template>
 
 <script>
@@ -478,6 +477,10 @@ a
   color: #8f0909
   text-decoration: none
 
+.team-area
+  width: 1100px
+.team-table
+  width: 700px
 .my-sticky-header-table
   thead
     background-color: #e1e2e3
