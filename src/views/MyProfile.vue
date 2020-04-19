@@ -1,6 +1,7 @@
 <template lang="pug">
   div.q-pa-md
-    .q-px-md.text-h4.text-weight-bolder My Profile
+    .row.full-width.q-gutter-md.q-pa-md
+      .text-h4.text-weight-bolder My Profile
     my-profile-card
     yahoo-leagues-card
     my-tokens

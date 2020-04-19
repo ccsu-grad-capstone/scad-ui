@@ -1,19 +1,21 @@
 <template lang="pug">
-  body
-    .row.q-gutter-md.q-pa-md
-      .text-h4.text-weight-bolder Players
-      .row.full-width.justify-right
-        div(style="width: 85%")
-          .row.full-width.q-gutter-sm.q-pa-sm
-            .col-3
+  q-page
+    .row.full-width.justify-center
+      .row.players-width
+        .row.full-width.q-gutter-md.q-pa-md
+          .text-h4.text-weight-bolder Players
+        .row.full-width.justify-center.q-pt-md
+          .row.full-width.q-gutter-sm.q-px-sm
+            .col-2
               q-input( filled dense label="Search by Name" stack-label v-model='filter.search')
-            .col-3
+            .col-2
               q-select(filled dense label="Team" stack-label v-model='filter.team' :options="filteredTeams" @input="updateTeamFilter()")
-            .col-3
+            .col-2
               q-select( filled dense label="Position" stack-label :options="referenceData.position" v-model='filter.position')
-            .col.q-pt-sm
-              q-btn(label='Clear' dense color='primary' text-color='white' size='sm' @click="clearFilter")
-          .q-pa-md
+            div.q-gutter-sm
+              q-btn.q-pa-xs(label='Clear' dense color='primary' text-color='white' size='sm' @click="clearFilter")
+        .row.full-width.q-pa-md
+          div(style="width:100%")
             q-table(
               dense
               :data='filteredPlayers()'
@@ -32,7 +34,7 @@
                         | {{props.row.name.full}}
                   q-td(key='team' :props='props')
                     .text-grey {{ props.row.editorial_team_full_name }}
-                  q-td(key='owner' :props='props' auto-width)
+                  q-td(key='owner' :props='props')
                     | {{ getOwner(props.row.player_id) }}
                   q-td(key='salary' :props='props' auto-width)
                     .text-primary.text-weight-bolder.text-body2.q-pr-sm ${{ getPlayerSalary(props.row.player_id) }}
@@ -75,7 +77,7 @@ export default {
           sortable: false,
           field: row => row.name.full,
           // classes: 'bg-grey-2 ellipsis',
-          style: 'width: 225px'
+          style: 'width: 275px'
           // headerClasses: 'bg-grey-3'
         },
         {
@@ -83,9 +85,9 @@ export default {
           required: true,
           label: 'Team:',
           align: 'left',
-          sortable: false
+          sortable: false,
           // classes: 'bg-grey-2 ellipsis',
-          // style: 'width: 150px'
+          style: 'width: 275px'
           // headerClasses: 'bg-grey-3'
         },
         {
@@ -95,7 +97,7 @@ export default {
           align: 'left',
           sortable: false,
           // classes: 'bg-grey-2 ellipsis',
-          style: 'width: 200px'
+          style: 'width: 250px'
           // headerClasses: 'bg-grey-3'
         },
         {
@@ -112,9 +114,9 @@ export default {
       ]
     }
   },
-  mounted () {
+  async mounted () {
+    await this.$store.dispatch('player/getAllPlayers')
     this.loaded = true
-    this.$store.dispatch('player/getAllPlayers')
   },
   computed: {
     referenceData () {
@@ -191,8 +193,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .scad-team-settings
-    text: $h2
-    color: $blue-1
-    background-color: $grey-5
+  .players-width
+    width: 1100px
 </style>

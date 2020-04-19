@@ -1,47 +1,49 @@
 <template lang="pug">
-  .q-pa-md
-    .row.q-gutter-md.q-pa-md
-      .text-h4.text-weight-bolder Draft Picks
-      q-btn.q-mr-sm(dense @click="tester" size='sm' label="UPLOAD")
-      .row.full-width.justify-center
-          .row.full-width.q-gutter-sm.q-pa-sm
-            .col-2
-              q-select( filled dense label="Owner" stack-label v-model='filter.team' :options='filteredTeams')
-            .col-2
-              q-select( filled dense label="Year" stack-label v-model='filter.year' :options='referenceData.years')
-            .col-2
-              q-select( filled dense label="Round" stack-label v-model='filter.rd' :options='referenceData.rounds')
-            div.q-gutter-sm
-              q-btn.q-pa-xs(label='Clear' dense color='primary' text-color='white' size='sm' @click="clearFilter")
+  q-page
+    .row.full-width.justify-center
+      .row.draft-picks-width
+        .row.full-width.q-gutter-md.q-pa-md
+          .text-h4.text-weight-bolder Draft Picks
+          //- q-btn.q-mr-sm(dense @click="tester" size='sm' label="UPLOAD")
+        .row.full-width.justify-center.q-pt-md
+            .row.full-width.q-gutter-sm.q-px-sm
+              .col-2
+                q-select( filled dense label="Owner" stack-label v-model='filter.team' :options='filteredTeams')
+              .col-2
+                q-select( filled dense label="Year" stack-label v-model='filter.year' :options='referenceData.years')
+              .col-2
+                q-select( filled dense label="Round" stack-label v-model='filter.rd' :options='referenceData.rounds')
+              div.q-gutter-sm
+                q-btn.q-pa-xs(label='Clear' dense color='primary' text-color='white' size='sm' @click="clearFilter")
 
-    .row.full-width.q-pa-md
-      div(style="width:100%")
-        q-table(
-          :data='filteredPicks()',
-          :columns='columns',
-          row-key= '_id',
-          :pagination.sync="pagination",
-          dense,
-        )
-          template(v-slot:body-cell-edit='props')
-            q-td.q-pr-md(:props='props' auto-width)
-              q-btn(size='xs' color='accent' round dense @click='editPick(props.row)' icon="edit")
-          template(v-slot:body-cell-year='props')
-            q-td(:props='props' auto-width)
-              | {{ props.row.year }}
-          template(v-slot:body-cell-rd='props')
-            q-td(:props='props' auto-width)
-              | {{ props.row.rd }}
-          template(v-slot:body-cell-pick='props')
-            q-td(:props='props' auto-width)
-              | {{ displayPick(props.row.pick) }}
-          template(v-slot:body-cell-owner='props')
-            q-td(:props='props')
-              | {{ props.row.team.name }}
-          template(v-slot:body-cell-originalOwner='props')
-            q-td(:props='props' auto-width)
-              | {{ props.row.originalTeam.name }}
-    edit-draft-pick-dialog(v-if="editDraftPick" :dp="edit.dp")
+        .row.full-width.q-pa-md
+          div(style="width:100%")
+            q-table(
+              :data='filteredPicks()',
+              :columns='columns',
+              row-key= '_id',
+              :pagination.sync="pagination",
+              dense,
+            )
+              template(v-slot:body-cell-edit='props')
+                q-td.q-pr-md(:props='props' auto-width)
+                  q-btn(size='xs' color='accent' round dense @click='editPick(props.row)' icon="edit")
+              template(v-slot:body-cell-year='props')
+                q-td(:props='props' auto-width)
+                  | {{ props.row.year }}
+              template(v-slot:body-cell-rd='props')
+                q-td(:props='props' auto-width)
+                  | {{ props.row.rd }}
+              template(v-slot:body-cell-pick='props')
+                q-td(:props='props' auto-width)
+                  | {{ displayPick(props.row.pick) }}
+              template(v-slot:body-cell-owner='props')
+                q-td(:props='props')
+                  | {{ props.row.team.name }}
+              template(v-slot:body-cell-originalOwner='props')
+                q-td(:props='props' auto-width)
+                  | {{ props.row.originalTeam.name }}
+        edit-draft-pick-dialog(v-if="editDraftPick" :dp="edit.dp")
 </template>
 
 <script>
@@ -250,4 +252,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="stylus" scoped>
+.draft-picks-width
+  width: 1100px
+
+</style>

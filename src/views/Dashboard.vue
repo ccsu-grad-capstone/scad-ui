@@ -1,15 +1,17 @@
 <template lang="pug">
   q-page.flex(v-if="loaded")
     .row.q-gutter-md.full-width.justify-center.q-pt-lg(v-if="league.isActive")
-      .div
-        q-avatar(size="85px")
-          img(src="../statics/yahoo-ff.png")
-      .column.justify-center.align-center.text-center
-        .text-h4.text-weight-bolder {{league.yahooLeagueDetails.name}}
-        a(:href='league.yahooLeagueDetails.url') {{league.yahooLeagueDetails.url}}
-    .row.full-width
-      lite-league
-      lite-my-team
+      .row.dashboard-width.justify-center
+        .row
+          .div
+            q-avatar(size="85px")
+              img(src="../statics/yahoo-ff.png")
+          .column.justify-center.align-center.text-center
+            .text-h4.text-weight-bolder {{league.yahooLeagueDetails.name}}
+            a(:href='league.yahooLeagueDetails.url') {{league.yahooLeagueDetails.url}}
+        .row.full-width
+          lite-league
+          lite-my-team
 
 </template>
 
@@ -65,4 +67,6 @@ export default {
   a
     color: $info
     text-decoration: none
+  .dashboard-width
+    width: 1100px
 </style>
