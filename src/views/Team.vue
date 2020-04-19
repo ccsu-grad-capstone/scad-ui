@@ -125,8 +125,7 @@
                     q-td(key='team' :props='props')
                       .text-grey {{ props.row.editorial_team_full_name }}
                     q-td( key='previousSalary' :props='props' auto-width)
-                      .col(:style=" (editSalaries && !isFranchiseTagged(props.row.player_id)) ? 'border: 1px solid #26A69A;' : 'border: none;' ")
-                        .text-primary.text-weight-bolder.text-body2.q-pr-sm ${{ getPlayerPrevSalary(props.row.player_id) }}
+                      .text-primary.text-weight-bolder.text-body2.q-pr-sm ${{ getPlayerPrevSalary(props.row.player_id) }}
                     q-td(key='pretag' :props='props' auto-width)
                       .row(v-if="isFranchiseTagged(props.row.player_id)")
                         .col.text-grey.q-pr-sm Original: ${{getOriginalSalary(props.row.player_id)}}
@@ -334,7 +333,7 @@ export default {
       this.getTeam(this.selectedTeam.team_id)
     },
     saveSalaries () {
-      console.log(`[TEAM] - saveSalaries()`)
+      // console.log(`[TEAM] - saveSalaries()`)
       this.editSalaries = false
     },
     editingPlayer (yahooPlayer) {

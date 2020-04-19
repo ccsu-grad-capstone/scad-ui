@@ -8,7 +8,8 @@ export default {
   namespaced: true,
   state: {
     registerLeagueInvites: false,
-    editDraftPick: false
+    editDraftPick: false,
+    editCapExemption: false
   },
   getters: {
     // getField
@@ -16,6 +17,9 @@ export default {
   mutations: {
     editDraftPick (state) {
       state.editDraftPick = !state.editDraftPick
+    },
+    editCapExemption (state) {
+      state.editCapExemption = !state.editCapExemption
     }
   },
   actions: {

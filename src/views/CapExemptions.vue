@@ -1,25 +1,24 @@
 <template lang="pug">
   q-page
     .row.full-width.justify-center
-      .row.draft-picks-width
+      .row.cap-exemption-width
         .row.full-width.q-gutter-md.q-pa-md
-          .text-h4.text-weight-bolder Draft Picks
-          //- q-btn.q-mr-sm(dense @click="tester" size='sm' label="UPLOAD")
-        .row.full-width.justify-center.q-pt-md
-          .row.full-width.q-gutter-sm.q-px-sm
-            .col-2
-              q-select( filled dense label="Owner" stack-label v-model='filter.team' :options='filteredTeams')
-            .col-2
-              q-select( filled dense label="Year" stack-label v-model='filter.year' :options='referenceData.years')
-            .col-2
-              q-select( filled dense label="Round" stack-label v-model='filter.rd' :options='referenceData.rounds')
-            div.q-gutter-sm
-              q-btn.q-pa-xs(label='Clear' dense color='primary' text-color='white' size='sm' @click="clearFilter")
-
+          .text-h4.text-weight-bolder Cap Exemptions
+        .row.full-width.q-gutter-between.q-pt-md
+          .col.q-px-md
+            .row.q-gutter-sm
+              .col-3
+                q-select( filled dense label="Owner" stack-label v-model='filter.team' :options='filteredTeams')
+              .col-3
+                q-select( filled dense label="Year" stack-label v-model='filter.year' :options='referenceData.years')
+              div.q-gutter-sm
+                q-btn.q-pa-xs(label='Clear' dense color='primary' text-color='white' size='sm' @click="clearFilter")
+          .col-2.q-pt-sm
+                q-btn.q-pa-xs(label='New Cap Exception' dense color='secondary' text-color='primary' size='sm' @click="addCE()")
         .row.full-width.q-pa-md
           div(style="width:100%")
             q-table(
-              :data='filteredPicks()',
+              :data='filteredCapExemptions()',
               :columns='columns',
               row-key= '_id',
               :pagination.sync="pagination",
@@ -27,7 +26,7 @@
             )
               template(v-slot:body-cell-edit='props')
                 q-td.q-pr-md(:props='props' auto-width)
-                  q-btn(size='xs' color='accent' round dense @click='editPick(props.row)' icon="edit")
+                  q-btn(size='xs' color='accent' round dense @click='editCE(props.row)' icon="edit")
               template(v-slot:body-cell-year='props')
                 q-td(:props='props' auto-width)
                   | {{ props.row.year }}
@@ -43,12 +42,10 @@
               template(v-slot:body-cell-originalOwner='props')
                 q-td(:props='props' auto-width)
                   | {{ props.row.originalTeam.name }}
-        edit-draft-pick-dialog(v-if="editDraftPick" :dp="edit.dp")
+        edit-draft-pick-dialog(v-if="editCapExemption" :ce="edit.ce")
 </template>
 
 <script>
-import { node } from '../utilities/axios-node'
-import { catchAxiosScadError } from '../utilities/catchAxiosErrors'
 import referenceData from '../utilities/referenceData'
 import editDraftPickDialog from '../components/dialogs/editDraftPickDialog'
 
@@ -61,12 +58,11 @@ export default {
     return {
       edit: {
         visable: false,
-        dp: {}
+        ce: {}
       },
       filter: {
         team: '',
-        year: '',
-        rd: ''
+        year: ''
       },
       pagination: {
         page: 1,
@@ -90,9 +86,9 @@ export default {
           // headerClasses: 'bg-grey-3'
         },
         {
-          name: 'rd',
+          name: 'giving',
           required: true,
-          label: 'Round:',
+          label: 'Giving:',
           align: 'center',
           sortable: false,
           field: row => row.rd,
@@ -100,9 +96,9 @@ export default {
           // headerClasses: 'bg-grey-3'
         },
         {
-          name: 'pick',
+          name: 'revieving',
           required: true,
-          label: 'Pick:',
+          label: 'Recieving:',
           align: 'center',
           field: row => row.pick,
           format: val => {
@@ -117,21 +113,12 @@ export default {
           // // style: 'max-width: 100px'
         },
         {
-          name: 'owner',
+          name: 'amount',
           required: true,
-          label: 'Owner:',
+          label: 'Amount:',
           align: 'left',
-          style: 'width: 200px',
+          style: 'width: 250px',
           field: row => row.team.name,
-          format: val => `${val}`
-        },
-        {
-          name: 'originalOwner',
-          required: true,
-          label: 'Original Owner',
-          align: 'left',
-          style: 'color: grey; width: 200px',
-          field: row => row.originalTeam.name,
           format: val => `${val}`
         },
         {
@@ -147,14 +134,14 @@ export default {
     }
   },
   async mounted () {
-    await this.getDraftPicks()
+    await this.getCapExemptions()
   },
   computed: {
     user () {
       return this.$store.state.user
     },
-    draftPicks () {
-      return this.$store.state.draftPicks.draftPicks
+    capExemptions () {
+      return this.$store.state.capExemptions.capExemptions
     },
     yahooTeams () {
       return this.$store.state.league.yahooTeams
@@ -168,22 +155,22 @@ export default {
     filteredTeams () {
       return this.yahooTeams.map(t => Object.assign({}, t, { value: t.name, label: t.name }))
     },
-    editDraftPick () {
-      return this.$store.state.dialog.editDraftPick
+    editCapExemption () {
+      return this.$store.state.dialog.editCapExemption
     }
   },
   methods: {
-    async getDraftPicks () {
-      this.$store.dispatch('draftPicks/getDraftPicksByLeague', this.leagueId)
+    async getCapExemptions () {
+      this.$store.dispatch('capExemptions/getCapExemptionsByLeague', this.leagueId)
     },
-    editPick (dp) {
-      this.edit.dp = dp
-      this.$store.commit('dialog/editDraftPick')
+    editCE (ce) {
+      this.edit.ce = ce
+      this.$store.commit('dialog/editCapExemption')
     },
-    async savePick () {
-      console.log('[DRAFTPICK] Method - savePick()')
+    async saveCE () {
+      console.log('[CAPEXCEPTION] Method - saveCE()')
       this.edit.visable = false
-      await this.$store.dispatch('draftPicks/saveDraftPick', this.edit.dp)
+      await this.$store.dispatch('capException/saveCapExemption', this.edit.ce)
     },
     displayPick (pick) {
       if (pick) {
@@ -206,8 +193,8 @@ export default {
         return '4th'
       }
     },
-    filteredPicks () {
-      var filtered = this.draftPicks
+    filteredCapExemptions () {
+      var filtered = this.capExemptions
       Object.keys(this.filter).forEach(key => {
         if (this.filter[key] !== '') {
           if (key === 'team') {
@@ -222,38 +209,16 @@ export default {
     clearFilter () {
       this.filter.team = ''
       this.filter.year = ''
-      this.filter.rd = ''
     },
-    async tester () {
-      referenceData.years.forEach(y => {
-        referenceData.rounds.forEach(r => {
-          this.yahooTeams.forEach(async t => {
-            let draftPick = {
-              yahooLeagueId: this.leagueId,
-              year: y,
-              rd: r,
-              pick: undefined,
-              salary: undefined,
-              playerId: undefined,
-              team: t,
-              originalTeam: t,
-              comments: ''
-            }
-            try {
-              await node.post('/draftPicks/create', { data: draftPick })
-            } catch (error) {
-              catchAxiosScadError(error)
-            }
-          })
-        })
-      })
+    addCE () {
+
     }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-.draft-picks-width
+.cap-exemption-width
   width: 1100px
 
 </style>

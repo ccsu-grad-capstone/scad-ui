@@ -31,6 +31,17 @@ const routes = [
     }
   },
   {
+    path: '/cap-exemptions',
+    component: () => import('../layouts/Layout.vue'),
+    children: [
+      { path: '', component: () => import('../views/CapExemptions.vue') }
+    ],
+    meta: {
+      requiresAuth: true,
+      requiresLeague: true
+    }
+  },
+  {
     path: '/league-home',
     component: () => import('../layouts/Layout.vue'),
     children: [

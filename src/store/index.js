@@ -7,6 +7,7 @@ import dialog from './modules/dialog'
 import team from './modules/team'
 import player from './modules/player'
 import draftPicks from './modules/draftPicks'
+import capExemptions from './modules/capExemptions'
 
 Vue.use(Vuex)
 
@@ -17,6 +18,7 @@ const store = new Vuex.Store({
     dialog,
     team,
     draftPicks,
+    capExemptions,
     player
   }
 })
