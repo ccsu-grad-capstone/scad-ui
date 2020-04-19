@@ -268,6 +268,7 @@ export default {
   },
   created () {
     // console.log('[TEAM] - created()')
+    this.$store.dispatch('league/getYahooSettings', this.yahooLeagueId)
     this.getTeam(this.$route.params.team_id)
   },
   computed: {

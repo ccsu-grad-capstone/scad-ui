@@ -192,7 +192,7 @@ export default {
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .get(`/yahoo/league/${leagueId}/settings`)
-        console.log('SETTINGS: ', settings)
+        console.log('YAHOO-SETTINGS: ', settings.data.settings)
         commit('updateYahooSettings', settings.data.settings[0])
       } catch (err) {
         catchAxiosScadError(err)

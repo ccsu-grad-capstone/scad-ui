@@ -81,25 +81,36 @@
                 | Salary Cap discount given to IR player
         .row.q-py-md
           .col-3.text-subtitle2.text-right
-            | Franchise Tag Relief: {{ newLeague.franchiseTagReliefPerc }}%
+            | Franchise Tag Discount: ${{ newLeague.franchiseTagDiscount }}
           .col-7.q-pl-lg
-            q-slider(v-model='newLeague.franchiseTagReliefPerc' :min='0' :max='100' :step='5' label dense :label-value='`${newLeague.franchiseTagReliefPerc}%`' color='primary')
+            q-slider(v-model='newLeague.franchiseTagDiscount' :min='0' :max='50' :step='1' label dense :label-value='`$${newLeague.franchiseTagDiscount}`' color='primary')
           .col-2.q-px-sm
             q-btn(rounded dense color='info' size='xs' label="What's This?")
               q-tooltip
-                | Salary Cap discount given to franchise tagged player(s)
+                | Salary Cap discount given to franchise tagged player(s).
         .row
           .col-3.text-subtitle2.text-right.q-pt-sm
             | Franchise Tags:
           .col-2.q-pl-lg
             q-select( filled dense v-model='newLeague.franchiseTagSpots' :options='referenceData.franchiseTags' :error='$v.newLeague.franchiseTagSpots.$error' error-message='Required Field')
+          .col-2.q-px-sm.q-pt-sm
+            q-btn(rounded dense color='info' size='xs' label="What's This?")
+              q-tooltip
+                | When a player is franchise tagged, their salary is discounted for the year, but you must cut them after the season.
         .row
           .col-3.text-subtitle2.text-right.q-pt-sm
             | Draft Pick Trading Limit:
           .col-2.q-pl-lg
-            q-select( filled dense v-model='newLeague.tradingDraftPickYears' :options='referenceData.tradingDraftPickYears' :error='$v.newLeague.tradingDraftPickYears.$error' error-message='Required Field')
-          .col-3.text.text-left.q-pt-sm.q-pl-sm
-            | Years
+            q-select( filled dense label='Years' stack-label v-model='newLeague.tradingDraftPickYears' :options='referenceData.tradingDraftPickYears' :error='$v.newLeague.tradingDraftPickYears.$error' error-message='Required Field')
+          .col-2.q-px-sm.q-pt-sm
+            q-btn(rounded dense color='info' size='xs' label="What's This?")
+              q-tooltip
+                | Limit the number of years teams can trade future draft picks.
+        .row
+          .col-3.text-subtitle2.text-right.q-pt-sm
+            | Roster Spot Limit:
+          .col-2.q-pl-lg
+            q-select( filled dense v-model='newLeague.rosterSpotLimit' :options='referenceData.rosterSpotLimit()' :error='$v.newLeague.rosterSpotLimit.$error' error-message='Required Field')
         .row
           .col-3.text-subtitle2.text-right.q-pt-sm
             | Roster Limits:
@@ -214,9 +225,10 @@ export default {
         leagueSalaryCap: 1600,
         salaryCapExemptionLimit: 25,
         irReliefPerc: 50,
-        franchiseTagReliefPerc: 50,
+        franchiseTagDiscount: 50,
         franchiseTagSpots: '',
         tradingDraftPickYears: '',
+        rosterSpotLimit: '',
         qbMin: '2',
         qbMax: '4',
         rbMin: '4',
@@ -245,9 +257,10 @@ export default {
       leagueSalaryCap: { required },
       salaryCapExemptionLimit: { required },
       irReliefPerc: { required },
-      franchiseTagReliefPerc: { required },
+      franchiseTagDiscount: { required },
       franchiseTagSpots: { required },
       tradingDraftPickYears: { required },
+      rosterSpotLimit: { required },
       qbMin: { required },
       qbMax: { required },
       rbMin: { required },
