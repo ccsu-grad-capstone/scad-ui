@@ -99,6 +99,12 @@
                 hide-bottom,
                 dense
                 )
+                template(v-slot:header-cell-salary="props")
+                  q-th(:props='props')
+                    | {{ scadSettings.seasonYear }}
+                template(v-slot:header-cell-previousSalary="props")
+                  q-th(:props='props')
+                    | {{ scadSettings.seasonYear - 1 }}
                 template(v-slot:body='props')
                   q-tr(:props='props')
                     q-td(auto-width)
@@ -118,7 +124,10 @@
                           q-badge(v-if="checkTag(props.row.player_id)" color='white'): q-icon( name='fas fa-tag' color='info')
                     q-td(key='team' :props='props')
                       .text-grey {{ props.row.editorial_team_full_name }}
-                    q-td(key='pretag' :props='props')
+                    q-td( key='previousSalary' :props='props' auto-width)
+                      .col(:style=" (editSalaries && !isFranchiseTagged(props.row.player_id)) ? 'border: 1px solid #26A69A;' : 'border: none;' ")
+                        .text-primary.text-weight-bolder.text-body2.q-pr-sm ${{ getPlayerPrevSalary(props.row.player_id) }}
+                    q-td(key='pretag' :props='props' auto-width)
                       .row(v-if="isFranchiseTagged(props.row.player_id)")
                         .col.text-grey.q-pr-sm Original: ${{getOriginalSalary(props.row.player_id)}}
                     q-td( key='salary' :props='props' auto-width)
@@ -223,10 +232,21 @@ export default {
           // headerClasses: 'bg-grey-3'
         },
         {
+          name: 'previousSalary',
+          required: true,
+          label: 'Salary:',
+          align: 'right',
+          // field: row => this.yahooTeam.team_key,
+          // format: val => `${val}`,
+          sortable: true
+          // headerClasses: 'bg-grey-3',
+          // // style: 'max-width: 100px'
+        },
+        {
           name: 'pretag',
           required: true,
           label: '',
-          align: 'left',
+          align: 'right',
           sortable: false
           // classes: 'bg-grey-2 ellipsis',
           // style: 'width: 150px'
@@ -235,7 +255,7 @@ export default {
         {
           name: 'salary',
           required: true,
-          label: 'Salary:',
+          label: `Salary:`,
           align: 'right',
           // field: row => this.yahooTeam.team_key,
           // format: val => `${val}`,
@@ -446,6 +466,14 @@ export default {
         } else {
           return player.salary
         }
+      }
+    },
+    getPlayerPrevSalary (id) {
+      // console.log('getPlayerSalary()')
+      if (this.loaded) {
+        // eslint-disable-next-line eqeqeq
+        let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == id)
+        return player.previousYearSalary
       }
     },
     getOriginalSalary (id) {

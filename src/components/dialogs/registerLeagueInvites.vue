@@ -14,8 +14,6 @@
 <script>
 import { createHelpers } from 'vuex-map-fields'
 const { mapFields } = createHelpers({
-  getterType: 'dialog/getField',
-  mutationType: 'dialog/updateField'
 })
 
 export default {

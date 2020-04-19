@@ -52,7 +52,8 @@ import {
   QSpinnerGears,
   QSkeleton,
   LoadingBar,
-  QCircularProgress
+  QCircularProgress,
+  QTh
 
 } from 'quasar'
 
@@ -112,7 +113,8 @@ Vue.use(Quasar, {
     QInnerLoading,
     QSpinnerGears,
     QSkeleton,
-    QCircularProgress
+    QCircularProgress,
+    QTh
   },
   directives: {
     Ripple

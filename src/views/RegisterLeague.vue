@@ -155,8 +155,8 @@
         .col-3
           q-btn-group(spread)
             q-btn(label='Submit' type='submit' dense no-caps color='primary' size='md' @click="onSubmit")
-      q-dialog(v-model='registerLeagueInvites' persistent)
-        register-league-invites
+      //- q-dialog(v-model='registerLeagueInvites' persistent)
+      //-   register-league-invites
     q-card.q-pa-md.q-ma-lg(v-else style='width: 100%')
       q-card-section.row.justify-center
         .row.full-width.justify-center
@@ -194,12 +194,6 @@ import RegisterLeagueInvites from '../components/dialogs/registerLeagueInvites'
 import notify from '../utilities/nofity'
 import { scad } from '../utilities/axios-scad'
 import { catchAxiosScadError } from '../utilities/catchAxiosErrors'
-
-import { createHelpers } from 'vuex-map-fields'
-const { mapFields } = createHelpers({
-  getterType: 'dialog/getField',
-  mutationType: 'dialog/updateField'
-})
 
 export default {
   name: 'RegisterLeague',
@@ -272,9 +266,6 @@ export default {
     await this.$store.dispatch('league/getAllYahooCommishLeagues')
   },
   computed: {
-    ...mapFields([
-      'registerLeagueInvites'
-    ]),
     referenceData () {
       return referenceData
     },
@@ -292,10 +283,13 @@ export default {
       return this.league.yahooCommishLeagues
     },
     yahooTeams () {
-      return this.$store.getters['league/getLeagues']
+      return this.$store.state.yahooTeams
     },
     filteredLeagues () {
       return this.yahooCommishLeagues.map(l => Object.assign({}, l, { value: l.name, label: l.name }))
+    },
+    registerLeagueInvites () {
+      return this.$store.state.dialog.registerLeagueInvites
     }
   },
   methods: {
