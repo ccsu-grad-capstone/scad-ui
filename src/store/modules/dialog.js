@@ -9,6 +9,7 @@ export default {
   state: {
     registerLeagueInvites: false,
     editDraftPick: false,
+    addCapExemption: false,
     editCapExemption: false
   },
   getters: {
@@ -17,6 +18,9 @@ export default {
   mutations: {
     editDraftPick (state) {
       state.editDraftPick = !state.editDraftPick
+    },
+    addCapExemption (state) {
+      state.addCapExemption = !state.addCapExemption
     },
     editCapExemption (state) {
       state.editCapExemption = !state.editCapExemption

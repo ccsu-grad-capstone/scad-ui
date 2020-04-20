@@ -45,6 +45,13 @@ export default {
       list.push(i)
     }
     return list
+  },
+  capExemptionAmount (limit) {
+    var list = []
+    for (var i = 1; i <= limit; i += 1) {
+      list.push(i)
+    }
+    return list
   }
 
 }

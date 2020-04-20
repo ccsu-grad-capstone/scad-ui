@@ -42,17 +42,20 @@
               template(v-slot:body-cell-originalOwner='props')
                 q-td(:props='props' auto-width)
                   | {{ props.row.originalTeam.name }}
-        edit-draft-pick-dialog(v-if="editCapExemption" :ce="edit.ce")
+        add-cap-exemption-dialog(v-if="addCapExemption" :ce="edit.ce")
+        edit-cap-exemption-dialog(v-if="editCapExemption" :capExemption="edit.ce")
 </template>
 
 <script>
 import referenceData from '../utilities/referenceData'
-import editDraftPickDialog from '../components/dialogs/editDraftPickDialog'
+import addCapExemptionDialog from '../components/dialogs/addCapExemptionDialog'
+import editCapExemptionDialog from '../components/dialogs/editCapExemptionDialog'
 
 export default {
   name: 'DraftPicks',
   components: {
-    'edit-draft-pick-dialog': editDraftPickDialog
+    'add-cap-exemption-dialog': addCapExemptionDialog,
+    'edit-cap-exemption-dialog': editCapExemptionDialog
   },
   data () {
     return {
@@ -81,17 +84,17 @@ export default {
           align: 'left',
           sortable: false,
           field: row => row.year,
-          format: val => `${val}`,
-          style: 'max-width: 150px'
+          format: val => `${val}`
+          // style: 'width: 20px'
           // headerClasses: 'bg-grey-3'
         },
         {
           name: 'giving',
           required: true,
           label: 'Giving:',
-          align: 'center',
+          align: 'left',
           sortable: false,
-          field: row => row.rd,
+          field: row => row.yahooTeamGive.name,
           format: val => `${val}`
           // headerClasses: 'bg-grey-3'
         },
@@ -99,8 +102,8 @@ export default {
           name: 'revieving',
           required: true,
           label: 'Recieving:',
-          align: 'center',
-          field: row => row.pick,
+          align: 'left',
+          field: row => row.yahooTeamRecieve.name,
           format: val => {
             if (val !== undefined) {
               return `${val}`
@@ -118,8 +121,8 @@ export default {
           label: 'Amount:',
           align: 'left',
           style: 'width: 250px',
-          field: row => row.team.name,
-          format: val => `${val}`
+          field: row => row.amount,
+          format: val => `$${val}`
         },
         {
           name: 'comments',
@@ -155,6 +158,9 @@ export default {
     filteredTeams () {
       return this.yahooTeams.map(t => Object.assign({}, t, { value: t.name, label: t.name }))
     },
+    addCapExemption () {
+      return this.$store.state.dialog.addCapExemption
+    },
     editCapExemption () {
       return this.$store.state.dialog.editCapExemption
     }
@@ -162,6 +168,9 @@ export default {
   methods: {
     async getCapExemptions () {
       this.$store.dispatch('capExemptions/getCapExemptionsByLeague', this.leagueId)
+    },
+    addCE () {
+      this.$store.commit('dialog/addCapExemption')
     },
     editCE (ce) {
       this.edit.ce = ce
@@ -209,9 +218,6 @@ export default {
     clearFilter () {
       this.filter.team = ''
       this.filter.year = ''
-    },
-    addCE () {
-
     }
   }
 }

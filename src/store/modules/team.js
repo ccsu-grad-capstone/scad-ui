@@ -181,8 +181,6 @@ export default {
           .put(`/scad/team/${t.id}`, t)
         console.log('SAVE-TEAM: ', res)
         // notify.teamSaveSuccessful()
-        dispatch('league/getScadTeams', rootState.league.scadLeagueId, { root: true })
-        dispatch('getTeam', { yahooLeagueId: t.yahooLeagueId, yahooTeamId: state.scadTeam.yahooLeagueTeamId })
       } catch (err) {
         catchAxiosScadError(err)
       }

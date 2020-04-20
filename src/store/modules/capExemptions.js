@@ -49,12 +49,32 @@ export default {
         catchAxiosNodeError(error)
       }
     },
+    async addCapExemption ({ dispatch }, ce) {
+      // console.log('[CAPEXEMPTIONS-ACTION] - addCapExemption()')
+      try {
+        const response = await node.post(`/capExemptions/create`, { data: ce })
+        notify.saveSuccessful(response.data)
+        await dispatch('getCapExemptionsByLeague', ce.yahooLeagueId)
+      } catch (error) {
+        catchAxiosNodeError(error)
+      }
+    },
     async saveCapExemption ({ dispatch }, ce) {
       // console.log('[CAPEXEMPTIONS-ACTION] - saveCapExemption()')
       try {
         const response = await node.put(`/capExemptions/${ce._id}`, { data: ce })
         notify.saveSuccessful(response.data)
-        await dispatch('getDraftPicksByLeague', ce.yahooLeagueId)
+        await dispatch('getCapExemptionsByLeague', ce.yahooLeagueId)
+      } catch (error) {
+        catchAxiosNodeError(error)
+      }
+    },
+    async removeCapExemption ({ dispatch, rootState }, id) {
+      // console.log('[CAPEXEMPTIONS-ACTION] - saveCapExemption()')
+      try {
+        const response = await node.delete(`/capExemptions/remove/${id}`)
+        notify.saveSuccessful(response.data)
+        await dispatch('getCapExemptionsByLeague', rootState.league.yahooLeagueId)
       } catch (error) {
         catchAxiosNodeError(error)
       }

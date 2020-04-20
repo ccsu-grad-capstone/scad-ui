@@ -78,6 +78,20 @@ export default {
       color: 'red'
     })
   },
+  exemptionGiverError (name) {
+    Notify.create({
+      message: `[Cap Exemption Error] - ${name} exceeds exception out limit`,
+      position: 'top',
+      color: 'red'
+    })
+  },
+  exemptionRecieverError (name) {
+    Notify.create({
+      message: `[Cap Exemption Error] - ${name} exceeds exception in limit`,
+      position: 'top',
+      color: 'red'
+    })
+  },
   loginSuccessful () {
     Notify.create({
       message: 'Login Successful',

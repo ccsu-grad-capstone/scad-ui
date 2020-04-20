@@ -43,13 +43,13 @@
                 .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
                   | ${{scadTeam.salary}}
               .row
-                .col-7.text-grey-8.text-caption.text-right Available Cap Exemption Give:
+                .col-7.text-grey-8.text-caption.text-right Cap Exemption Give:
                 .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
-                  | ${{salaryCapExemptionLimit - scadTeam.exceptionOut}}
+                  | ${{scadTeam.exceptionOut}}
               .row
-                .col-7.text-grey-8.text-caption.text-right Available Cap Exemption Take:
+                .col-7.text-grey-8.text-caption.text-right Cap Exemption Recieve:
                 .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
-                  | ${{salaryCapExemptionLimit - scadTeam.exceptionIn}}
+                  | ${{scadTeam.exceptionIn}}
               .row
                 .col-7.text-grey-8.text-caption.text-right Franchise Tag:
                 .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
@@ -423,7 +423,7 @@ export default {
         this.cancelEdit()
       }
     },
-    saveTeam () {
+    async saveTeam () {
       var team = {
         id: this.scadTeam.id,
         yahooLeagueId: this.scadTeam.yahooLeagueId,
@@ -432,7 +432,9 @@ export default {
         exceptionIn: this.scadTeam.exceptionIn,
         exceptionOut: this.scadTeam.exceptionOut
       }
-      this.$store.dispatch('team/saveTeam', team)
+      await this.$store.dispatch('team/saveTeam', team)
+      await this.$store.dispatch('league/getScadTeams', this.league.scadLeagueId)
+      await this.$store.dispatch('team/getTeam', { yahooLeagueId: this.scadTeam.yahooLeagueId, yahooTeamId: this.scadTeam.yahooLeagueTeamId })
     },
     franchiseTagDisplay () {
       if (this.scadTeam.isFranchiseTag && this.loaded) {
