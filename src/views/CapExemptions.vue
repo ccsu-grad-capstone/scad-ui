@@ -2,8 +2,10 @@
   q-page
     .row.full-width.justify-center
       .row.cap-exemption-width
-        .row.full-width.q-gutter-md.q-pa-md
-          .text-h4.text-weight-bolder Cap Exemptions
+        .row.full-width.q-pa-md
+          div.text-h4.text-weight-bolder Cap Exemptions
+        .row.full-width.q-px-md
+          .text-subtitle2.text-grey Cap Exceptions are transactions of salaries between two teams, typically as part of a larger trade.  Amount is added or deducted from participating team's salary for the given year. Each team has ${{salaryCapExemptionLimit}} to both give and recieve throughout the course of a season.
         .row.full-width.q-gutter-between.q-pt-md
           .col.q-px-md
             .row.q-gutter-sm
@@ -29,19 +31,16 @@
                   q-btn(size='xs' color='accent' round dense @click='editCE(props.row)' icon="edit")
               template(v-slot:body-cell-year='props')
                 q-td(:props='props' auto-width)
-                  | {{ props.row.year }}
-              template(v-slot:body-cell-rd='props')
+                  div.q-pr-lg {{ props.row.year }}
+              template(v-slot:body-cell-giving='props')
                 q-td(:props='props' auto-width)
-                  | {{ props.row.rd }}
-              template(v-slot:body-cell-pick='props')
+                  div.q-pr-lg {{ props.row.yahooTeamGive.name }}
+              template(v-slot:body-cell-recieving='props')
                 q-td(:props='props' auto-width)
-                  | {{ displayPick(props.row.pick) }}
-              template(v-slot:body-cell-owner='props')
-                q-td(:props='props')
-                  | {{ props.row.team.name }}
-              template(v-slot:body-cell-originalOwner='props')
+                  div.q-pr-lg {{ props.row.yahooTeamRecieve.name }}
+              template(v-slot:body-cell-amount='props')
                 q-td(:props='props' auto-width)
-                  | {{ props.row.originalTeam.name }}
+                  div.q-pr-lg ${{ props.row.amount }}
         add-cap-exemption-dialog(v-if="addCapExemption" :ce="edit.ce")
         edit-cap-exemption-dialog(v-if="editCapExemption" :capExemption="edit.ce")
 </template>
@@ -69,7 +68,7 @@ export default {
       },
       pagination: {
         page: 1,
-        rowsPerPage: 36 // 0 means all rows
+        rowsPerPage: 20 // 0 means all rows
       },
       columns: [
         {
@@ -82,47 +81,27 @@ export default {
           required: true,
           label: 'Year:',
           align: 'left',
-          sortable: false,
-          field: row => row.year,
-          format: val => `${val}`
-          // style: 'width: 20px'
-          // headerClasses: 'bg-grey-3'
+          sortable: false
         },
         {
           name: 'giving',
           required: true,
           label: 'Giving:',
           align: 'left',
-          sortable: false,
-          field: row => row.yahooTeamGive.name,
-          format: val => `${val}`
-          // headerClasses: 'bg-grey-3'
+          sortable: false
         },
         {
-          name: 'revieving',
+          name: 'recieving',
           required: true,
           label: 'Recieving:',
           align: 'left',
-          field: row => row.yahooTeamRecieve.name,
-          format: val => {
-            if (val !== undefined) {
-              return `${val}`
-            } else {
-              return '-'
-            }
-          },
           sortable: true
-          // headerClasses: 'bg-grey-3',
-          // // style: 'max-width: 100px'
         },
         {
           name: 'amount',
           required: true,
           label: 'Amount:',
-          align: 'left',
-          style: 'width: 250px',
-          field: row => row.amount,
-          format: val => `$${val}`
+          align: 'left'
         },
         {
           name: 'comments',
@@ -157,6 +136,9 @@ export default {
     },
     filteredTeams () {
       return this.yahooTeams.map(t => Object.assign({}, t, { value: t.name, label: t.name }))
+    },
+    salaryCapExemptionLimit () {
+      return this.$store.state.league.scadSettings.salaryCapExemptionLimit
     },
     addCapExemption () {
       return this.$store.state.dialog.addCapExemption
@@ -207,9 +189,9 @@ export default {
       Object.keys(this.filter).forEach(key => {
         if (this.filter[key] !== '') {
           if (key === 'team') {
-            filtered = filtered.filter(dp => dp.team.name === this.filter.team.name)
+            filtered = filtered.filter(ce => ce.yahooTeamGive.name === this.filter.team.name || ce.yahooTeamRecieve.name === this.filter.team.name)
           } else {
-            filtered = filtered.filter(dp => dp[key] === this.filter[key])
+            filtered = filtered.filter(ce => ce[key] === this.filter[key])
           }
         }
       })

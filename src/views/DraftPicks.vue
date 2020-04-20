@@ -2,8 +2,10 @@
   q-page
     .row.full-width.justify-center
       .row.draft-picks-width
-        .row.full-width.q-gutter-md.q-pa-md
-          .text-h4.text-weight-bolder Draft Picks
+        .row.full-width.q-pa-md
+          div.text-h4.text-weight-bolder Draft Picks
+        .row.full-width.q-px-md
+          .text-subtitle2.text-grey  List of draft picks for drafting incoming rookies for next {{scadSettings.tradingDraftPickYears}} years.  Each rookie draft is {{scadSettings.rookieDraftRds}} rounds.  Each year, all owners are given {{scadSettings.rookieDraftRds}} picks, 1 for each round. Pick value for each draft pick is entered upon completion of fantasy season.
           //- q-btn.q-mr-sm(dense @click="tester" size='sm' label="UPLOAD")
         .row.full-width.justify-center.q-pt-md
           .row.full-width.q-gutter-sm.q-px-sm
@@ -30,19 +32,19 @@
                   q-btn(size='xs' color='accent' round dense @click='editPick(props.row)' icon="edit")
               template(v-slot:body-cell-year='props')
                 q-td(:props='props' auto-width)
-                  | {{ props.row.year }}
+                  div.q-pr-md {{ props.row.year }}
               template(v-slot:body-cell-rd='props')
                 q-td(:props='props' auto-width)
-                  | {{ props.row.rd }}
+                  div.q-pr-md {{ props.row.rd }}
               template(v-slot:body-cell-pick='props')
                 q-td(:props='props' auto-width)
-                  | {{ displayPick(props.row.pick) }}
+                  div.q-pr-lg {{ displayPick(props.row.pick) }}
               template(v-slot:body-cell-owner='props')
-                q-td(:props='props')
-                  | {{ props.row.team.name }}
+                q-td(:props='props' auto-width)
+                  div.q-pr-lg.text-weight-bold {{ props.row.team.name }}
               template(v-slot:body-cell-originalOwner='props')
                 q-td(:props='props' auto-width)
-                  | {{ props.row.originalTeam.name }}
+                  div.q-pr-lg.text-grey {{ props.row.originalTeam.name }}
         edit-draft-pick-dialog(v-if="editDraftPick" :dp="edit.dp")
 </template>
 
@@ -83,56 +85,33 @@ export default {
           required: true,
           label: 'Year:',
           align: 'left',
-          sortable: false,
-          field: row => row.year,
-          format: val => `${val}`,
-          style: 'max-width: 150px'
-          // headerClasses: 'bg-grey-3'
+          sortable: false
         },
         {
           name: 'rd',
           required: true,
           label: 'Round:',
           align: 'center',
-          sortable: false,
-          field: row => row.rd,
-          format: val => `${val}`
-          // headerClasses: 'bg-grey-3'
+          sortable: false
         },
         {
           name: 'pick',
           required: true,
           label: 'Pick:',
           align: 'center',
-          field: row => row.pick,
-          format: val => {
-            if (val !== undefined) {
-              return `${val}`
-            } else {
-              return '-'
-            }
-          },
           sortable: true
-          // headerClasses: 'bg-grey-3',
-          // // style: 'max-width: 100px'
         },
         {
           name: 'owner',
           required: true,
           label: 'Owner:',
-          align: 'left',
-          style: 'width: 200px',
-          field: row => row.team.name,
-          format: val => `${val}`
+          align: 'left'
         },
         {
           name: 'originalOwner',
           required: true,
           label: 'Original Owner',
-          align: 'left',
-          style: 'color: grey; width: 200px',
-          field: row => row.originalTeam.name,
-          format: val => `${val}`
+          align: 'left'
         },
         {
           name: 'comments',
@@ -161,6 +140,9 @@ export default {
     },
     leagueId () {
       return this.$store.state.league.yahooLeagueId
+    },
+    scadSettings () {
+      return this.$store.state.league.scadSettings
     },
     referenceData () {
       return referenceData

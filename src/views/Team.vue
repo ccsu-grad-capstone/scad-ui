@@ -190,35 +190,20 @@ export default {
           name: 'tag',
           required: true,
           label: '',
-          align: 'center',
-          field: row => row.display_position,
-          format: val => `${val}`
-          // sortable: true
-          // classes: 'bg-secondary ellipsis',
-          // style: 'width: 10px'
-          // headerClasses: 'bg-grey-3'
+          align: 'center'
         },
         {
           name: 'pos',
           required: true,
           label: 'Pos:',
-          align: 'center',
-          field: row => row.display_position,
-          format: val => `${val}`
-          // sortable: true
-          // classes: 'bg-secondary ellipsis',
-          // style: 'width: 10px'
-          // headerClasses: 'bg-grey-3'
+          align: 'left'
         },
         {
           name: 'playerName',
           required: true,
           label: 'Player:',
           align: 'left',
-          sortable: false,
-          // classes: 'bg-grey-2 ellipsis',
-          style: 'width: 225px'
-          // headerClasses: 'bg-grey-3'
+          sortable: false
         },
         {
           name: 'team',
@@ -226,41 +211,27 @@ export default {
           label: 'Team:',
           align: 'left',
           sortable: false
-          // classes: 'bg-grey-2 ellipsis',
-          // style: 'width: 150px'
-          // headerClasses: 'bg-grey-3'
         },
         {
           name: 'previousSalary',
           required: true,
           label: 'Salary:',
-          align: 'right',
-          // field: row => this.yahooTeam.team_key,
-          // format: val => `${val}`,
-          sortable: true
-          // headerClasses: 'bg-grey-3',
-          // // style: 'max-width: 100px'
+          align: 'left',
+          sortable: false
         },
         {
           name: 'pretag',
           required: true,
           label: '',
-          align: 'right',
+          align: 'left',
           sortable: false
-          // classes: 'bg-grey-2 ellipsis',
-          // style: 'width: 150px'
-          // headerClasses: 'bg-grey-3'
         },
         {
           name: 'salary',
           required: true,
           label: `Salary:`,
-          align: 'right',
-          // field: row => this.yahooTeam.team_key,
-          // format: val => `${val}`,
-          sortable: true
-          // headerClasses: 'bg-grey-3',
-          // // style: 'max-width: 100px'
+          align: 'left',
+          sortable: false
         }
       ]
     }

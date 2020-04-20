@@ -2,8 +2,10 @@
   q-page
     .row.full-width.justify-center
       .row.players-width
-        .row.full-width.q-gutter-md.q-pa-md
-          .text-h4.text-weight-bolder Players
+        .row.full-width.q-pa-md
+          div.text-h4.text-weight-bolder Players
+        .row.full-width.q-px-md
+          .text-subtitle2.text-grey Current list of all players in SCAD database with their corresponding salaries and team.
         .row.full-width.justify-center.q-pt-md
           .row.full-width.q-gutter-sm.q-px-sm
             .col-2

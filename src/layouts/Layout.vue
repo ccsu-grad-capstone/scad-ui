@@ -68,7 +68,7 @@ export default {
         // { icon: 'list', text: 'My Team', route: `team/1` },
         { icon: 'list', text: `My Team`, route: `/team` },
         { icon: 'ballot', text: 'Draft Picks', route: '/draft-picks' },
-        { icon: 'ballot', text: 'Cap Exemptions', route: '/cap-exemptions' },
+        { icon: 'swap_horizontal_circle', text: 'Cap Exemptions', route: '/cap-exemptions' },
         { icon: 'people', text: 'Players', route: '/players' },
         // { icon: 'home', text: 'League Home', route: 'league-home' },
         {
