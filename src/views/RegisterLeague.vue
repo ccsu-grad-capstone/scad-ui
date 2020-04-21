@@ -1,7 +1,18 @@
 <template lang="pug">
   q-page.flex
     .row.full-width.justify-center
-      .row.register-width
+      .row.full-width(v-if="!loaded")
+        .row.full-width.justify-center
+          q-circular-progress.q-mt-xl(
+            indeterminate
+            size="90px"
+            :thickness="0.2"
+            color="primary"
+            center-color="grey-5"
+            track-color="transparent"
+            class="q-ma-md"
+            )
+      .row.register-width(v-else)
         q-card.q-pa-md.q-ma-lg(v-if="yahooCommishLeagues")
           q-card-section.row.justify-center
             .text-h4.text-weight-bolder Register Your Yahoo League With SCAD
@@ -215,6 +226,7 @@ export default {
   },
   data () {
     return {
+      loaded: false,
       selectedLeague: '',
       newLeague: {
         yahooLeagueId: '',
@@ -227,10 +239,11 @@ export default {
         leagueSalaryCap: 1600,
         salaryCapExemptionLimit: 25,
         irReliefPerc: 50,
-        franchiseTagDiscount: 50,
+        franchiseTagDiscount: 25,
         franchiseTagSpots: '',
         tradingDraftPickYears: '',
-        rosterSpotLimit: '',
+        rosterSpotLimit: 25,
+        renewSCADLeagueId: 0,
         qbMin: '2',
         qbMax: '4',
         rbMin: '4',
@@ -279,6 +292,7 @@ export default {
   },
   async mounted () {
     await this.$store.dispatch('league/getAllYahooCommishLeagues')
+    this.loaded = true
   },
   computed: {
     referenceData () {
@@ -321,11 +335,12 @@ export default {
           message: 'Sit tight while we put together a SCAD league for you'
         })
         await this.$store.dispatch('league/registerLeague', { league: this.newLeague })
+        await this.$store.dispatch('league/dashboard')
+        this.$router.push('/dashboard')
         this.timer = setTimeout(() => {
           this.$q.loading.hide()
           this.timer = void 0
         }, 5000)
-        this.$router.push('/dashboard')
 
         // Used to open dialog for emailing league about SCAD league
         // this.registerLeagueInvites = true

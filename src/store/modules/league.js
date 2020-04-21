@@ -327,7 +327,7 @@ export default {
       }
     },
     async saveLeagueSettings ({ rootState, commit, state }, { settings }) {
-      // console.log('[LEAGUE-ACTION] - registerLeague()')
+      console.log('[LEAGUE-ACTION] - saveLeagueSettings(): ', settings)
       try {
         const res = await scad(
           rootState.user.tokens.access_token,

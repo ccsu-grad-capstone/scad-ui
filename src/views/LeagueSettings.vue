@@ -103,6 +103,13 @@
             q-item(clickable)
               .row.full-width.q-pl-lg
                 .col-5.text-body1.text-left
+                  | Team Roster Spot Limit:
+                .col-2.text-body1.q-pl-lg.text-weight-bolder
+                  q-select(v-if="editing" filled dense v-model='scadSettings.rosterSpotLimit' :options='referenceData.rosterSpotLimit()')
+                  div(v-else) {{scadSettings.rosterSpotLimit}}
+            q-item(clickable)
+              .row.full-width.q-pl-lg
+                .col-5.text-body1.text-left
                   | QB Roster Limits:
                 .col.text-body1.q-pl-lg.text-weight-bolder
                   .row.align-center

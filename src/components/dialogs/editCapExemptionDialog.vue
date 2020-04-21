@@ -75,7 +75,7 @@ export default {
     },
     async remove () {
       await this.$store.dispatch('capExemptions/removeCapExemption', this.capExemption._id)
-      // await this.saveTeamsOnRemove()
+      await this.saveTeamsOnRemove()
       this.$emit('saved')
       this.close()
     },

@@ -17,7 +17,20 @@
                 q-btn.q-pa-xs(label='Clear' dense color='primary' text-color='white' size='sm' @click="clearFilter")
           .col-2.q-pt-sm
                 q-btn.q-pa-xs(label='New Cap Exception' dense color='secondary' text-color='primary' size='sm' @click="addCE()")
-        .row.full-width.q-pa-md
+        .row.full-width(v-if="!loaded")
+          .row.full-width.justify-center
+            q-circular-progress.q-mt-xl(
+              indeterminate
+              size="90px"
+              :thickness="0.2"
+              color="primary"
+              center-color="grey-5"
+              track-color="transparent"
+              class="q-mt-xl"
+              )
+          .row.full-width.justify-center.q-mt-lg
+            .text-grey Fetching SCAD cap exemptions...
+        .row.full-width.q-pa-md(v-else)
           div(style="width:100%")
             q-table(
               :data='filteredCapExemptions()',
@@ -58,6 +71,7 @@ export default {
   },
   data () {
     return {
+      loaded: false,
       edit: {
         visable: false,
         ce: {}
@@ -149,7 +163,8 @@ export default {
   },
   methods: {
     async getCapExemptions () {
-      this.$store.dispatch('capExemptions/getCapExemptionsByLeague', this.leagueId)
+      await this.$store.dispatch('capExemptions/getCapExemptionsByLeague', this.leagueId)
+      this.loaded = true
     },
     addCE () {
       this.$store.commit('dialog/addCapExemption')

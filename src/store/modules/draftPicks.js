@@ -29,10 +29,10 @@ export default {
   },
 
   actions: {
-    async getDraftPicksByLeague ({ commit, state, rootState }, leagueId) {
+    async getDraftPicksByLeague ({ commit, state, rootState }, { leagueId, year }) {
       // console.log('[DRAFTPICK-ACTION] - getDraftPicksByLeague()')
       try {
-        const response = await node.get(`/draftPicks/${leagueId}`)
+        const response = await node.get(`/draftPicks/${leagueId}/${year}`)
         commit('updateDraftPicks', { dp: response.data.data })
       } catch (error) {
         catchAxiosNodeError(error)

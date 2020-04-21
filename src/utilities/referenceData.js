@@ -46,6 +46,28 @@ export default {
     }
     return list
   },
+  draftPickYearsFilter (currentYear, tradingYears) {
+    var list = []
+    for (var i = currentYear; i < currentYear + tradingYears; i += 1) {
+      list.push(i)
+    }
+    return list
+  },
+  draftPickYears (currentYear) {
+    let year = parseInt(currentYear)
+    var list = []
+    for (var i = year; i <= year + 10; i += 1) {
+      list.push(i)
+    }
+    return list
+  },
+  draftPickRounds (rds) {
+    var list = []
+    for (var i = 1; i <= rds; i += 1) {
+      list.push(i)
+    }
+    return list
+  },
   capExemptionAmount (limit) {
     var list = []
     for (var i = 1; i <= limit; i += 1) {

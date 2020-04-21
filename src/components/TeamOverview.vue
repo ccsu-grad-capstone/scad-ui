@@ -1,5 +1,6 @@
 <template lang="pug">
   .q-px-md
+    .text-weight-bold Roster: {{getCount()}}/{{scadSettings.rosterSpotLimit}}
     q-markup-table(v-if="loaded" dense)
       thead
         tr
@@ -10,32 +11,32 @@
       tbody
         tr
           td.pos QB
-          td.text-weight-bold(v-bind:class="{ 'text-red': checkPos('qb') }") {{getCount('QB')}}
+          td.text-weight-bold(v-bind:class="{ 'text-red': checkPos('qb') }") {{getPosCount('QB')}}
           td ${{getTotal('QB')}}
           td {{getPerc('QB')}}%
         tr
           td.pos WR
-          td.text-weight-bold(v-bind:class="{ 'text-red': checkPos('wr') }") {{getCount('WR')}}
+          td.text-weight-bold(v-bind:class="{ 'text-red': checkPos('wr') }") {{getPosCount('WR')}}
           td ${{getTotal('WR')}}
           td {{getPerc('WR')}}%
         tr
           td.pos RB
-          td.text-weight-bold(v-bind:class="{ 'text-red': checkPos('rb') }") {{getCount('RB')}}
+          td.text-weight-bold(v-bind:class="{ 'text-red': checkPos('rb') }") {{getPosCount('RB')}}
           td ${{getTotal('RB')}}
           td {{getPerc('RB')}}%
         tr
           td.pos TE
-          td.text-weight-bold(v-bind:class="{ 'text-red': checkPos('te') }") {{getCount('TE')}}
+          td.text-weight-bold(v-bind:class="{ 'text-red': checkPos('te') }") {{getPosCount('TE')}}
           td ${{getTotal('TE')}}
           td {{getPerc('TE')}}%
         tr
           td.pos K
-          td.text-weight-bold(v-bind:class="{ 'text-red': checkPos('k') }") {{getCount('K')}}
+          td.text-weight-bold(v-bind:class="{ 'text-red': checkPos('k') }") {{getPosCount('K')}}
           td ${{getTotal('K')}}
           td {{getPerc('K')}}%
         tr
           td.pos DEF
-          td.text-weight-bold(v-bind:class="{ 'text-red': checkPos('def') }") {{getCount('DEF')}}
+          td.text-weight-bold(v-bind:class="{ 'text-red': checkPos('def') }") {{getPosCount('DEF')}}
           td ${{getTotal('DEF')}}
           td {{getPerc('DEF')}}%
     .col.full-width.text-center.q-pa-xs.text-grey.text-caption {{yahooTeam.name}} details by position
@@ -92,12 +93,19 @@ export default {
     }
   },
   methods: {
-    getCount (pos) {
+    getPosCount (pos) {
       let count = 0
       this.yahooTeam.players.forEach(p => {
         if (p.display_position === pos) {
           count++
         }
+      })
+      return count
+    },
+    getCount () {
+      let count = 0
+      this.yahooTeam.players.forEach(p => {
+        count++
       })
       return count
     },
@@ -107,7 +115,17 @@ export default {
         if (p.display_position === pos) {
           // eslint-disable-next-line eqeqeq
           let player = this.scadTeamClone.players.find(sp => sp.yahooLeaguePlayerId == p.player_id)
-          total += player.salary
+          if (player.isFranchiseTag) {
+            let franchiseTagDiscount = this.scadSettings.franchiseTagDiscount
+            let salary = player.salary
+
+            if (salary > franchiseTagDiscount) {
+              let ftsalary = (salary -= franchiseTagDiscount)
+              total += ftsalary
+            }
+          } else {
+            total += player.salary
+          }
         }
       })
       return total
@@ -116,7 +134,7 @@ export default {
       return Math.floor((this.getTotal(pos) / this.scadTeamClone.salary) * 100)
     },
     checkPos (pos) {
-      let count = this.getCount(pos.toUpperCase())
+      let count = this.getPosCount(pos.toUpperCase())
       if ((count <= this.scadSettings[`${pos}Max`]) && (count >= this.scadSettings[`${pos}Min`])) {
         return false
       } else {
@@ -125,7 +143,7 @@ export default {
     },
     notifyIllegalRoster () {
       referenceData.positionChecks.forEach(pos => {
-        let count = this.getCount(pos.toUpperCase())
+        let count = this.getPosCount(pos.toUpperCase())
         if (count > this.scadSettings[`${pos}Max`]) {
           notify.rosterMaxError(pos.toUpperCase(), count, this.scadSettings[`${pos}Max`])
         } else if (count < this.scadSettings[`${pos}Min`]) {
