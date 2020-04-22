@@ -1,6 +1,19 @@
 <template lang="pug">
   q-page
-    .row.full-width.justify-center
+    .row.full-width(v-if="!loaded")
+      .row.full-width.justify-center
+        q-circular-progress.q-mt-xl(
+          indeterminate
+          size="90px"
+          :thickness="0.2"
+          color="primary"
+          center-color="grey-5"
+          track-color="transparent"
+          class="q-ma-md"
+          )
+      .row.full-width.justify-center
+        .text-grey Fetching SCAD settings...
+    .row.full-width.justify-center(v-else)
       .row.settings-width
         q-card.q-pa-md.q-ma-lg(style='width: 100%')
           q-card-section

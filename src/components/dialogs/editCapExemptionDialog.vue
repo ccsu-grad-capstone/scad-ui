@@ -31,7 +31,7 @@
 import referenceData from '../../utilities/referenceData'
 
 export default {
-  name: 'AddCapExemptionDialog',
+  name: 'EditCapExemptionDialog',
   props: {
     capExemption: Object
   },

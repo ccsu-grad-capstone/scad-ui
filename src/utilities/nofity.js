@@ -27,6 +27,15 @@ export default {
       timeout: 1000
     })
   },
+  updateDefaultLeague () {
+    Notify.create({
+      message: `Default League Updated`,
+      position: 'top',
+      color: 'green',
+      icon: 'check',
+      timeout: 1000
+    })
+  },
   salaryLimit () {
     Notify.create({
       message: 'Salary Adjustment exceeds Team Salary Cap',

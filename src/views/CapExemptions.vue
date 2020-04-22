@@ -38,6 +38,7 @@
               row-key= '_id',
               :pagination.sync="pagination",
               dense,
+              no-data-label='No cap exemptions available yet..'
             )
               template(v-slot:body-cell-edit='props')
                 q-td.q-pr-md(:props='props' auto-width)
@@ -54,8 +55,8 @@
               template(v-slot:body-cell-amount='props')
                 q-td(:props='props' auto-width)
                   div.q-pr-lg ${{ props.row.amount }}
-        add-cap-exemption-dialog(v-if="addCapExemption" :ce="edit.ce")
-        edit-cap-exemption-dialog(v-if="editCapExemption" :capExemption="edit.ce")
+        add-cap-exemption-dialog(v-if="addCapExemption" :ce="edit.ce" @saved="getCapExemptions()")
+        edit-cap-exemption-dialog(v-if="editCapExemption" :capExemption="edit.ce" @saved="getCapExemptions()")
 </template>
 
 <script>
@@ -157,13 +158,16 @@ export default {
     addCapExemption () {
       return this.$store.state.dialog.addCapExemption
     },
+    scadSettings () {
+      return this.$store.state.league.scadSettings
+    },
     editCapExemption () {
       return this.$store.state.dialog.editCapExemption
     }
   },
   methods: {
     async getCapExemptions () {
-      await this.$store.dispatch('capExemptions/getCapExemptionsByLeague', this.leagueId)
+      await this.$store.dispatch('capExemptions/getCapExemptionsByLeague', { leagueId: this.leagueId, year: this.scadSettings.seasonYear })
       this.loaded = true
     },
     addCE () {
@@ -172,11 +176,6 @@ export default {
     editCE (ce) {
       this.edit.ce = ce
       this.$store.commit('dialog/editCapExemption')
-    },
-    async saveCE () {
-      console.log('[CAPEXCEPTION] Method - saveCE()')
-      this.edit.visable = false
-      await this.$store.dispatch('capException/saveCapExemption', this.edit.ce)
     },
     displayPick (pick) {
       if (pick) {

@@ -41,6 +41,7 @@
               row-key= '_id',
               :pagination.sync="pagination",
               dense,
+              no-data-label='Click the button above to create draft picks'
             )
               template(v-slot:body-cell-edit='props')
                 q-td.q-pr-md(:props='props' auto-width)

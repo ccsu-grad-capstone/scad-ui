@@ -9,6 +9,7 @@
             |  SCAD Leagues
           q-separator(vertical)
           q-card-section(style='width: 100%')
+            .text-grey.q-pl-md Select row to change leagues
             q-separator
             q-list( v-for="(league, index) in scadLeagues" :key="index")
               q-item(clickable  @click.native="switchLeague(league.id, league.yahooLeagueId)")
@@ -17,8 +18,12 @@
                     div
                       | {{getLeagueName(league.yahooLeagueId)}}
                   .col.text-left
-                    .text-primary.text-weight-bold(v-if="!isActive(league.id)") Switch to League
-                    .text-primary.text-weight-bold(v-else) Active League
+                    .row.full-width.q-gutter-md
+                      .text-primary.text-weight-bold(v-if="isActive(league.id)") Active League
+                      .text-primary.text-weight-bold(v-else) Switch to League
+                      .text-accent.text-weight-bold(v-if="league.isDefault") Default League
+                      q-btn.q-px-xs(v-else label='Set as Default League' flat dense color='white' text-color='accent' size='sm' @click="setAsDefault(league.id)")
+
               q-separator
         q-card-section(horizontal)
           q-card-section.col-3.text-h6.text-weight-bolder.q-pt-md
@@ -40,6 +45,9 @@
 </template>
 <script>
 import { openURL } from 'quasar'
+import { scad } from '../utilities/axios-scad'
+import { catchAxiosScadError } from '../utilities/catchAxiosErrors'
+import notify from '../utilities/nofity'
 
 export default {
   name: 'YahooLeaguesCard',
@@ -56,6 +64,9 @@ export default {
   computed: {
     user () {
       return this.$store.state.user
+    },
+    tokens () {
+      return this.user.tokens
     },
     scadLeagueId () {
       return this.$store.state.league.scadLeagueId
@@ -124,6 +135,19 @@ export default {
         this.$router.push('register-league')
       } else {
         openURL(url)
+      }
+    },
+    async setAsDefault (id) {
+      try {
+        const response = await scad(
+          this.tokens.access_token,
+          this.tokens.id_token)
+          .get(`/scad/league/default/update/${id}`)
+        console.log('Update Default League Response: ', response)
+        notify.updateDefaultLeague()
+        await this.$store.dispatch('league/getAllScadLeagues')
+      } catch (err) {
+        catchAxiosScadError(err)
       }
     }
   }

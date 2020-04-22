@@ -1,5 +1,6 @@
 <template lang="pug">
-  .q-pa-md
+  .q-px-md
+    .text-weight-bold Draft Picks:
     q-table(
       class="my-sticky-header-table"
       v-if="loaded"
@@ -9,6 +10,8 @@
       :pagination.sync="pagination",
       hide-bottom,
       dense
+      :hide-bottom="draftPicksByTeam.length > 0",
+      no-data-label='No draft picks available'
       )
       template(v-slot:body-cell-edit='props')
         q-td.q-pr-md(:props='props' auto-width)
@@ -53,7 +56,6 @@ export default {
           field: row => row.year,
           format: val => `${val}`,
           style: 'background-color: #f0f0f0'
-          // headerClasses: 'bg-grey-3'
         },
         {
           name: 'rd',
@@ -63,7 +65,6 @@ export default {
           sortable: false,
           field: row => row.rd,
           format: val => `${val}`
-          // headerClasses: 'bg-grey-3'
         },
         {
           name: 'pick',
@@ -79,18 +80,7 @@ export default {
             }
           },
           sortable: true
-          // headerClasses: 'bg-grey-3',
-          // // style: 'max-width: 100px'
         },
-        // {
-        //   name: 'owner',
-        //   required: true,
-        //   label: 'Owner:',
-        //   align: 'left',
-        //   style: 'width: 200px',
-        //   field: row => row.team.name,
-        //   format: val => `${val}`
-        // },
         {
           name: 'comments',
           label: 'Comments',
@@ -117,11 +107,14 @@ export default {
     },
     editDraftPick () {
       return this.$store.state.dialog.editDraftPick
+    },
+    scadSettings () {
+      return this.$store.state.league.scadSettings
     }
   },
   methods: {
     getPicks () {
-      this.$store.dispatch('draftPicks/getDraftPicksByTeam', this.yahooTeamId)
+      this.$store.dispatch('draftPicks/getDraftPicksByTeam', { teamId: this.yahooTeamId, year: this.scadSettings.seasonYear })
     },
     editPick (dp) {
       this.$store.commit('dialog/editDraftPick')

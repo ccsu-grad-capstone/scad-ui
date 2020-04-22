@@ -79,7 +79,7 @@
                   | {{yahooTeam.draft_grade}}
       .row.full-width.justify-center
         .row.team-area
-          .row.team-table.justify-between.q-pl-lg.q-pb-md
+          .row.team-table.justify-between.q-pl-lg
             q-select(square dense v-model='selectedTeam' :options="filteredTeams" style="width: 250px" @input="updateTeamPage")
             div.q-gutter-sm.q-pt-sm
               div
@@ -88,7 +88,7 @@
               q-btn(v-if="!editSalaries && !franchiseTag" label='Edit Salaries' dense color='secondary' text-color='primary' size='sm' @click="editSalaries = !editSalaries")
               q-btn(v-if="editSalaries && !franchiseTag" label='Done' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
           .row.q-pl-lg
-            .q-pb-lg.team-table
+            .q-py-md.team-table
               q-table(
                 class="my-sticky-header-table"
                 v-if="loaded"
@@ -156,18 +156,22 @@
             .div
               team-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
               draft-pick-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
+              cap-exemption-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
+
 </template>
 
 <script>
 import TeamOverview from '../components/TeamOverview'
 import notify from '../utilities/nofity'
 import DraftPickOverview from '../components/DraftPickOverview.vue'
+import CapExemptionOverview from '../components/CapExemptionOverview.vue'
 
 export default {
   name: 'Team',
   components: {
     'team-overview': TeamOverview,
-    'draft-pick-overview': DraftPickOverview
+    'draft-pick-overview': DraftPickOverview,
+    'cap-exemption-overview': CapExemptionOverview
   },
   data () {
     return {

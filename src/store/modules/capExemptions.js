@@ -9,7 +9,7 @@ export default {
   namespaced: true,
   state: {
     capExemptions: [],
-    capExemptionsTeam: []
+    capExemptionsByTeam: []
   },
   getters: {
 
@@ -24,25 +24,25 @@ export default {
     updateCapExemptionsTeam (state, { ce }) {
       // console.log('[CAPEXEMPTIONS-MUTATION] - updateCapExemptionsTeam()')
 
-      state.capExemptionsTeam = ce
+      state.capExemptionsByTeam = ce
     }
   },
 
   actions: {
-    async getCapExemptionsByLeague ({ commit, state, rootState }, leagueId) {
+    async getCapExemptionsByLeague ({ commit, state, rootState }, { leagueId, year }) {
       // console.log('[CAPEXEMPTIONS-ACTION] - getCapExemptionsByLeague()')
       try {
-        const response = await node.get(`/capExemptions/${leagueId}`)
+        const response = await node.get(`/capExemptions/${leagueId}/${year}`)
         console.log('CAP-EXEMPTIONS-league', response.data.data)
         commit('updateCapExemptions', { ce: response.data.data })
       } catch (error) {
         catchAxiosNodeError(error)
       }
     },
-    async getCapExemptionsByTeam ({ commit, state, rootState }, teamId) {
+    async getCapExemptionsByTeam ({ commit, state, rootState }, { teamId, year }) {
       // console.log('[CAPEXEMPTIONS-ACTION] - getCapExemptionsByTeam()')
       try {
-        const response = await node.get(`/capExemptions/${rootState.league.yahooLeagueId}/team/${teamId}`)
+        const response = await node.get(`/capExemptions/${rootState.league.yahooLeagueId}/${year}/${teamId}`)
         console.log('CAP-EXEMPTIONS-team', response.data.data)
         commit('updateCapExemptionsTeam', { ce: response.data.data })
       } catch (error) {
@@ -54,7 +54,6 @@ export default {
       try {
         const response = await node.post(`/capExemptions/create`, { data: ce })
         notify.saveSuccessful(response.data)
-        await dispatch('getCapExemptionsByLeague', ce.yahooLeagueId)
       } catch (error) {
         catchAxiosNodeError(error)
       }
@@ -64,7 +63,6 @@ export default {
       try {
         const response = await node.put(`/capExemptions/${ce._id}`, { data: ce })
         notify.saveSuccessful(response.data)
-        await dispatch('getCapExemptionsByLeague', ce.yahooLeagueId)
       } catch (error) {
         catchAxiosNodeError(error)
       }
@@ -74,7 +72,6 @@ export default {
       try {
         const response = await node.delete(`/capExemptions/remove/${id}`)
         notify.saveSuccessful(response.data)
-        await dispatch('getCapExemptionsByLeague', rootState.league.yahooLeagueId)
       } catch (error) {
         catchAxiosNodeError(error)
       }

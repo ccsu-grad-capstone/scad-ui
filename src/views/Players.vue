@@ -9,11 +9,11 @@
         .row.full-width.justify-center.q-pt-md
           .row.full-width.q-gutter-sm.q-px-sm
             .col-2
-              q-input( filled dense label="Search by Name" stack-label v-model='filter.search')
+              q-input(clearable filled dense label="Search by Name" stack-label v-model='filter.search')
             .col-2
               q-select(filled dense label="Team" stack-label v-model='filter.team' :options="filteredTeams" @input="updateTeamFilter()")
             .col-2
-              q-select( filled dense label="Position" stack-label :options="referenceData.position" v-model='filter.position')
+              q-select(clearable filled dense label="Position" stack-label :options="referenceData.positionFilter" v-model='filter.position')
             div.q-gutter-sm
               q-btn.q-pa-xs(label='Clear' dense color='primary' text-color='white' size='sm' @click="clearFilter")
         .row.full-width(v-if="!loaded")
@@ -34,7 +34,7 @@
             q-table(
               v-if="loaded"
               dense
-              :data='scadPlayers'
+              :data='filteredPlayers()'
               :pagination.sync="pagination",
               :columns='columns'
               row-key='name')
@@ -84,9 +84,6 @@ export default {
           field: row => row.display_position,
           format: val => `${val}`,
           sortable: true
-          // classes: 'bg-secondary ellipsis',
-          // style: 'max-width: 10px',
-          // headerClasses: 'bg-grey-3'
         },
         {
           name: 'playerName',
@@ -95,9 +92,7 @@ export default {
           align: 'left',
           sortable: false,
           field: row => row.name.full,
-          // classes: 'bg-grey-2 ellipsis',
           style: 'width: 275px'
-          // headerClasses: 'bg-grey-3'
         },
         {
           name: 'team',
@@ -105,9 +100,7 @@ export default {
           label: 'Team:',
           align: 'left',
           sortable: false,
-          // classes: 'bg-grey-2 ellipsis',
           style: 'width: 275px'
-          // headerClasses: 'bg-grey-3'
         },
         {
           name: 'owner',
@@ -115,15 +108,14 @@ export default {
           label: 'Owner:',
           align: 'left',
           sortable: false,
-          // classes: 'bg-grey-2 ellipsis',
           style: 'width: 250px'
-          // headerClasses: 'bg-grey-3'
         },
         {
           name: 'salary',
           required: true,
           label: 'Salary:',
           align: 'center',
+          field: row => row.salary,
           sortable: true
         }
       ]
@@ -211,13 +203,23 @@ export default {
       Object.keys(this.filter).forEach(key => {
         if (this.filter[key] !== '') {
           if (key === 'search') {
-            filtered = filtered.filter(p => p.name.full.toLowerCase().includes(this.filter[key].toLowerCase()))
+            filtered = filtered.filter(p => this.searchFilter(p))
+            // filtered = filtered.filter(p => p.name.full.toLowerCase().includes(this.filter[key].toLowerCase()))
           } else if (key === 'position') {
-            filtered = filtered.filter(p => p.display_position === this.filter[key])
+            filtered = filtered.filter(p => this.positionFilter(p))
+            // filtered = filtered.filter(p => p.display_position === this.filter[key])
           }
         }
       })
       return filtered
+    },
+    searchFilter (scadPlayer) {
+      let player = this.yahooPlayers.find(p => p.player_id == scadPlayer.yahooLeaguePlayerId)
+      return player.name.full.toLowerCase().includes(this.filter['search'].toLowerCase())
+    },
+    positionFilter (scadPlayer) {
+      let player = this.yahooPlayers.find(p => p.player_id == scadPlayer.yahooLeaguePlayerId)
+      return player.display_position === this.filter['position']
     }
   }
 }

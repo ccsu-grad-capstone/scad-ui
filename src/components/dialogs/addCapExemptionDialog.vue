@@ -92,8 +92,9 @@ export default {
         console.log('SAVE-CE Validation Failed')
       } else {
         if (this.checkTeams()) {
-          await this.$store.dispatch('capExemptions/addCapExemption', this.capExemption)
           await this.saveTeams()
+          this.capExemption.appliedToTeamSalary = true
+          await this.$store.dispatch('capExemptions/addCapExemption', this.capExemption)
           this.$emit('saved')
           this.close()
         }

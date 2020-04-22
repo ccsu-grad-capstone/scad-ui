@@ -1,6 +1,6 @@
 <template lang="pug">
   .q-px-md
-    .text-weight-bold Roster: {{getCount()}}/{{scadSettings.rosterSpotLimit}}
+    .text-weight-bold Roster Availability: {{getCount()}}/{{scadSettings.rosterSpotLimit}}
     q-markup-table(v-if="loaded" dense)
       thead
         tr
@@ -39,7 +39,7 @@
           td.text-weight-bold(v-bind:class="{ 'text-red': checkPos('def') }") {{getPosCount('DEF')}}
           td ${{getTotal('DEF')}}
           td {{getPerc('DEF')}}%
-    .col.full-width.text-center.q-pa-xs.text-grey.text-caption {{yahooTeam.name}} details by position
+    .col.full-width.text-center.q-pa-xs.text-grey.text-caption Visit league settings for min / max position details
 
 </template>
 
