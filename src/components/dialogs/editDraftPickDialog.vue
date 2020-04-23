@@ -47,6 +47,9 @@ export default {
     yahooTeams () {
       return this.$store.state.league.yahooTeams
     },
+    seasonYear () {
+      return this.$store.state.league.scadSettings.seasonYear
+    },
     filteredTeams () {
       return this.yahooTeams.map(t => Object.assign({}, t, { value: t.name, label: t.name }))
     }
@@ -55,7 +58,7 @@ export default {
     async savePick () {
       // console.log('[DRAFTPICK] Method - savePick()')
       await this.$store.dispatch('draftPicks/saveDraftPick', this.dp)
-      this.$store.dispatch('draftPicks/getDraftPicksByLeague', this.leagueId)
+      this.$store.dispatch('draftPicks/getDraftPicksByLeague', { leagueId: this.leagueId, year: this.seasonYear })
       this.$emit('saved')
       this.close()
     },

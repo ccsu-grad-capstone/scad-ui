@@ -50,6 +50,14 @@
           .text-grey Fetching SCAD data...
       div(v-else)
         router-view
+    q-footer.row.q-pa-sm.bg-grey-2.footer
+      .col
+        .text-grey-6.text-center Copyright 2020
+      .col
+        .text-grey-6.text-center
+      .col
+        .text-grey-6.text-center Version 1.0.0
+
 </template>
 
 <script>
@@ -219,6 +227,15 @@ export default {
 </script>
 
 <style lang="sass">
+.footer
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: red;
+  color: white;
+  text-align: center;
+
 .GNL
 
   &__toolbar

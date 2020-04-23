@@ -9,11 +9,11 @@
         .row.full-width.justify-center.q-pt-md
           .row.full-width.q-gutter-sm.q-px-sm
             .col-2
-              q-input(clearable filled dense label="Search by Name" stack-label v-model='filter.search')
+              q-input(filled dense label="Search by Name" stack-label v-model='filter.search')
             .col-2
               q-select(filled dense label="Team" stack-label v-model='filter.team' :options="filteredTeams" @input="updateTeamFilter()")
             .col-2
-              q-select(clearable filled dense label="Position" stack-label :options="referenceData.positionFilter" v-model='filter.position')
+              q-select(filled dense label="Position" stack-label :options="referenceData.positionFilter" v-model='filter.position')
             div.q-gutter-sm
               q-btn.q-pa-xs(label='Clear' dense color='primary' text-color='white' size='sm' @click="clearFilter")
         .row.full-width(v-if="!loaded")

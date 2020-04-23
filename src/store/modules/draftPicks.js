@@ -53,7 +53,6 @@ export default {
       try {
         const response = await node.put(`/draftPicks/${dp._id}`, { data: dp })
         notify.saveSuccessful(response.data)
-        await dispatch('getDraftPicksByLeague', dp.yahooLeagueId)
       } catch (error) {
         catchAxiosNodeError(error)
       }

@@ -1,7 +1,20 @@
 <template lang="pug">
-  div.q-pa-md.row.items-start.q-gutter-md(v-if="loaded")
+  div.q-pa-md.row.items-start.q-gutter-md
     q-card.q-pa-md.row(style='width: 100%')
-      q-item-section
+      .row.full-width(v-if="!loaded")
+        .row.full-width.justify-center
+          q-circular-progress.q-mt-xl(
+            indeterminate
+            size="90px"
+            :thickness="0.2"
+            color="primary"
+            center-color="grey-5"
+            track-color="transparent"
+            class="q-ma-md"
+            )
+        .row.full-width.justify-center
+          .text-grey Fetching SCAD team...
+      q-item-section(v-else)
         div.text-body1
         q-separator
         q-card-section(horizontal)

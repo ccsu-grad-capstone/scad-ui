@@ -180,11 +180,6 @@ export default {
       this.edit.dp = dp
       this.$store.commit('dialog/editDraftPick')
     },
-    async savePick () {
-      console.log('[DRAFTPICK] Method - savePick()')
-      this.edit.visable = false
-      await this.$store.dispatch('draftPicks/saveDraftPick', this.edit.dp)
-    },
     displayPick (pick) {
       if (pick) {
         return pick
