@@ -41,7 +41,8 @@
               .row
                 .col-7.text-grey-8.text-caption.text-right Current Team Salary:
                 .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
-                  | ${{scadTeam.salary}}
+                  //- | ${{scadTeam.salary}}
+                  | ${{teamSalary}}
               .row
                 .col-7.text-grey-8.text-caption.text-right Cap Exemption Give:
                 .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
@@ -110,7 +111,7 @@
                     q-td(:class="bn(props.row.selected_position.position, 'edit')" auto-width)
                       div(v-if="franchiseTag")
                         div(v-if="scadTeam.isFranchiseTag")
-                          q-btn(v-if="checkTag(props.row.player_id)" size='xs' color='negative' round dense @click='removeFranchiseTag(props.row)' icon="fas fa-minus")
+                          q-btn(v-if="isFranchiseTagged(props.row.player_id)" size='xs' color='negative' round dense @click='removeFranchiseTag(props.row)' icon="fas fa-minus")
                         div(v-else)
                           q-btn( size='xs' color='info' round dense @click='saveFranchiseTag(props.row)' icon="fas fa-tag")
                     q-td(:class="bn(props.row.selected_position.position, 'pos')" key='pos' :props='props' auto-width)
@@ -122,7 +123,7 @@
                             img(:src="props.row.headshot.url" style="width: 85%")
                         .col-2.q-pl-xs.text-body2.text-weight-bold
                           | {{props.row.name.full}}
-                          q-badge(v-if="checkTag(props.row.player_id)" color='white'): q-icon( name='fas fa-tag' color='info')
+                          q-badge(v-if="isFranchiseTagged(props.row.player_id)" color='white'): q-icon( name='fas fa-tag' color='info')
                     q-td(:class="bn(props.row.selected_position.position, 'team')" key='team' :props='props')
                       | {{ props.row.editorial_team_full_name }}
                     q-td(:class="bn(props.row.selected_position.position, 'previousSalary')" key='previousSalary' :props='props' auto-width)
@@ -166,6 +167,7 @@ import TeamOverview from '../components/TeamOverview'
 import notify from '../utilities/nofity'
 import DraftPickOverview from '../components/DraftPickOverview.vue'
 import CapExemptionOverview from '../components/CapExemptionOverview.vue'
+/* eslint-disable eqeqeq */
 
 export default {
   name: 'Team',
@@ -176,6 +178,7 @@ export default {
   },
   data () {
     return {
+      teamSalary: 0,
       loaded: false,
       error: false,
       errorMessage: '',
@@ -242,11 +245,6 @@ export default {
       ]
     }
   },
-  created () {
-    // console.log('[TEAM] - created()')
-    this.$store.dispatch('league/getYahooSettings', this.yahooLeagueId)
-    this.getTeam(this.$route.params.team_id)
-  },
   computed: {
     user () {
       return this.$store.state.user
@@ -294,17 +292,78 @@ export default {
     salaryCapExemptionLimit () {
       return this.$store.state.league.scadSettings.salaryCapExemptionLimit
     },
-    getTeamSalary () {
-      if (this.loaded) {
-        let salary = 0
-        this.scadTeam.players.forEach(p => {
-          salary += p.salary
-        })
-        return salary
-      } else { return 0 }
+    capExemptionsByTeam () {
+      return this.$store.state.capExemptions.capExemptionsByTeam
     }
   },
+  async created () {
+    // console.log('[TEAM] - mounted()')
+    this.$store.dispatch('league/getYahooSettings', this.yahooLeagueId)
+    this.getTeam(this.$route.params.team_id)
+  },
   methods: {
+    async getTeam (yahooTeamId) {
+      // console.log(`[TEAM] - getTeam(${yahooTeamId})`)
+      // Update team based on url param
+      this.loaded = false
+      await this.$store.dispatch('team/getTeam', { yahooLeagueId: this.yahooLeagueId, yahooTeamId: yahooTeamId })
+      await this.getExemptions()
+      await this.updateTeamSalary()
+      this.scadTeam = JSON.parse(JSON.stringify(this.$store.state.team.scadTeam))
+      this.loaded = true
+    },
+    updateTeamPage (teamName) {
+      console.log(`[TEAM] - updateTeamPage()`, this.selectedTeam.team_id)
+      this.$router.push({ path: `/team/${this.selectedTeam.team_id}` })
+      this.getTeam(this.selectedTeam.team_id)
+    },
+    getExemptions () {
+      this.$store.dispatch('capExemptions/getCapExemptionsByTeam', { teamId: this.$route.params.team_id, year: this.scadSettings.seasonYear })
+    },
+    updateTeamSalary () {
+      if (this.loaded) {
+        let salary = 0
+        this.players.forEach(p => {
+          salary += this.getPlayerSalary(p.player_id, p.selected_position.position)
+        })
+        if (this.capExemptionsByTeam) {
+          this.capExemptionsByTeam.foreach(ce => {
+            if (ce.yahooTeamGive.team_id === this.yahooTeam.team_id) {
+              salary -= ce.amount
+            } else { salary += ce.amount }
+          })
+        }
+        this.teamSalary = salary
+      }
+    },
+    getPlayerSalary (id, pos) {
+      // console.log('getPlayerSalary()')
+      if (this.loaded) {
+        let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == id)
+        let salary = player.salary
+        if (player.isFranchiseTag) {
+          return this.getFranchiseTagSalary(salary)
+        } else if (pos === 'IR') {
+          console.log(id, pos)
+          return this.getIrSalary(salary)
+        } else {
+          return player.salary
+        }
+      }
+    },
+    getFranchiseTagSalary (salary) {
+      let franchiseTagDiscount = this.league.scadSettings.franchiseTagDiscount
+      if (salary <= franchiseTagDiscount) {
+        return 0
+      } else {
+        return (salary -= franchiseTagDiscount)
+      }
+    },
+    getIrSalary (salary) {
+      let irReliefPerc = this.league.scadSettings.irReliefPerc / 100
+      salary = salary * irReliefPerc
+      return salary
+    },
     bn (pos, col) {
       return {
         'text-primary': col === 'salary',
@@ -315,26 +374,11 @@ export default {
         'bg-red-1': pos === 'IR'
       }
     },
-    async getTeam (yahooTeamId) {
-      // console.log(`[TEAM] - getTeam(${yahooTeamId})`)
-      // Update team based on url param
-      this.loaded = false
-      await this.$store.dispatch('team/getTeam', { yahooLeagueId: this.yahooLeagueId, yahooTeamId: yahooTeamId })
-      // await this.$store.dispatch('draftPicks/getDraftPicksByTeam', yahooTeamId)
-      this.scadTeam = JSON.parse(JSON.stringify(this.$store.state.team.scadTeam))
-      this.loaded = true
-    },
-    updateTeamPage (teamName) {
-      console.log(`[TEAM] - updateTeamPage()`, this.selectedTeam.team_id)
-      this.$router.push({ path: `/team/${this.selectedTeam.team_id}` })
-      this.getTeam(this.selectedTeam.team_id)
-    },
     saveSalaries () {
       // console.log(`[TEAM] - saveSalaries()`)
       this.editSalaries = false
     },
     editingPlayer (yahooPlayer) {
-      // eslint-disable-next-line eqeqeq
       this.editPlayer = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == yahooPlayer.player_id)
       this.editPlayerInitSalary = this.editPlayer.salary
     },
@@ -349,7 +393,6 @@ export default {
       return true
     },
     cancelEdit () {
-      // eslint-disable-next-line eqeqeq
       let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId === this.editPlayer.yahooLeaguePlayerId)
       player.salary = this.editPlayerInitSalary
       this.editPlayer = {}
@@ -359,7 +402,7 @@ export default {
     },
     async saveFranchiseTag (row) {
       console.log(`[TEAM] - saveFranchiseTag()`)
-      // eslint-disable-next-line eqeqeq
+
       let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == row.player_id)
       let initSalary = player.salary
       let salary = player.salary
@@ -383,7 +426,7 @@ export default {
     },
     async removeFranchiseTag (team) {
       console.log(`[TEAM] - removeFranchiseTag()`)
-      // eslint-disable-next-line eqeqeq
+
       let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == team.player_id)
       let salary = player.salary
       let adjustment = 0
@@ -419,6 +462,7 @@ export default {
         notify.salaryLimit()
         this.cancelEdit()
       }
+      this.updateTeamSalary()
     },
     async saveTeam () {
       var team = {
@@ -436,7 +480,7 @@ export default {
     franchiseTagDisplay () {
       if (this.scadTeam.isFranchiseTag && this.loaded) {
         let scadPlayer = this.scadTeam.players.find(p => p.isFranchiseTag)
-        // eslint-disable-next-line eqeqeq
+
         let yahooPlayer = this.players.find(p => p.player_id == scadPlayer.yahooLeaguePlayerId)
         return yahooPlayer.name.full
       } else {
@@ -444,46 +488,21 @@ export default {
       }
     },
     isFranchiseTagged (id) {
-      // eslint-disable-next-line eqeqeq
       let scadPlayer = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == id)
       if (scadPlayer.isFranchiseTag) { return true } else { return false }
     },
     isIR (pos) {
       if (pos === 'IR') { return true } else { return false }
     },
-    getPlayerSalary (id, pos) {
-      // console.log('getPlayerSalary()')
-      if (this.loaded) {
-        // eslint-disable-next-line eqeqeq
-        let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == id)
-        let irReliefPerc = this.league.scadSettings.irReliefPerc / 100
-        let franchiseTagDiscount = this.league.scadSettings.franchiseTagDiscount
-        let salary = player.salary
-        if (player.isFranchiseTag) {
-          if (salary <= franchiseTagDiscount) {
-            return 0
-          } else {
-            return (salary -= franchiseTagDiscount)
-          }
-        } else if (pos === 'IR') {
-          salary = salary * irReliefPerc
-          return salary
-        } else {
-          return player.salary
-        }
-      }
-    },
     getPlayerPrevSalary (id) {
       // console.log('getPlayerSalary()')
       if (this.loaded) {
-        // eslint-disable-next-line eqeqeq
         let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == id)
         return player.previousYearSalary
       }
     },
     getOriginalSalary (id) {
       if (this.loaded) {
-        // eslint-disable-next-line eqeqeq
         let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == id)
         return player.salary
       }
@@ -491,7 +510,6 @@ export default {
     checkTag (id) {
       // console.log('checkTag()')
       if (this.loaded) {
-        // eslint-disable-next-line eqeqeq
         let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == id)
         if (player.isFranchiseTag) {
           return true
