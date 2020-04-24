@@ -121,9 +121,11 @@
                         .col-2
                           q-avatar(size="25px")
                             img(:src="props.row.headshot.url" style="width: 85%")
-                        .col-2.q-pl-xs.text-body2.text-weight-bold
-                          | {{props.row.name.full}}
-                          q-badge(v-if="isFranchiseTagged(props.row.player_id)" color='white'): q-icon( name='fas fa-tag' color='info')
+                        .col.q-pl-xs.text-body2.text-weight-bold
+                          .row.full-width
+                            | {{props.row.name.full}}
+                            .text-grey.text-caption.q-pl-sm ({{props.row.display_position}})
+                            q-badge(v-if="isFranchiseTagged(props.row.player_id)" color='white'): q-icon( name='fas fa-tag' color='info')
                     q-td(:class="bn(props.row.selected_position.position, 'team')" key='team' :props='props')
                       | {{ props.row.editorial_team_full_name }}
                     q-td(:class="bn(props.row.selected_position.position, 'previousSalary')" key='previousSalary' :props='props' auto-width)
@@ -330,7 +332,7 @@ export default {
     getPlayerSalary (id, pos) {
       return calcPlayerSalary(id, pos, this.scadTeam.players, this.franchiseTagDiscount, this.irReliefPerc, this.yahooTeam)
     },
-    bn (pos, col) {
+    bn (pos, col, ft) {
       return {
         'text-primary': col === 'salary',
         'text-grey': col === 'previousSalary' || col === 'team',
