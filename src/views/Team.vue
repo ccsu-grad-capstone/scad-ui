@@ -167,6 +167,7 @@ import TeamOverview from '../components/TeamOverview'
 import notify from '../utilities/nofity'
 import DraftPickOverview from '../components/DraftPickOverview.vue'
 import CapExemptionOverview from '../components/CapExemptionOverview.vue'
+import { calcTeamSalary, calcPlayerSalary } from '../utilities/calculator'
 /* eslint-disable eqeqeq */
 
 export default {
@@ -294,6 +295,12 @@ export default {
     },
     capExemptionsByTeam () {
       return this.$store.state.capExemptions.capExemptionsByTeam
+    },
+    franchiseTagDiscount () {
+      return this.league.scadSettings.franchiseTagDiscount
+    },
+    irReliefPerc () {
+      return this.league.scadSettings.irReliefPerc / 100
     }
   },
   async created () {
@@ -307,9 +314,9 @@ export default {
       // Update team based on url param
       this.loaded = false
       await this.$store.dispatch('team/getTeam', { yahooLeagueId: this.yahooLeagueId, yahooTeamId: yahooTeamId })
-      await this.getExemptions()
-      await this.updateTeamSalary()
+      await this.$store.dispatch('capExemptions/getCapExemptionsByTeam', { teamId: this.$route.params.team_id, year: this.scadSettings.seasonYear })
       this.scadTeam = JSON.parse(JSON.stringify(this.$store.state.team.scadTeam))
+      await this.updateTeamSalary()
       this.loaded = true
     },
     updateTeamPage (teamName) {
@@ -317,52 +324,11 @@ export default {
       this.$router.push({ path: `/team/${this.selectedTeam.team_id}` })
       this.getTeam(this.selectedTeam.team_id)
     },
-    getExemptions () {
-      this.$store.dispatch('capExemptions/getCapExemptionsByTeam', { teamId: this.$route.params.team_id, year: this.scadSettings.seasonYear })
-    },
     updateTeamSalary () {
-      if (this.loaded) {
-        let salary = 0
-        this.players.forEach(p => {
-          salary += this.getPlayerSalary(p.player_id, p.selected_position.position)
-        })
-        if (this.capExemptionsByTeam) {
-          this.capExemptionsByTeam.foreach(ce => {
-            if (ce.yahooTeamGive.team_id === this.yahooTeam.team_id) {
-              salary -= ce.amount
-            } else { salary += ce.amount }
-          })
-        }
-        this.teamSalary = salary
-      }
+      this.teamSalary = calcTeamSalary(this.players, this.scadTeam.players, this.capExemptionsByTeam, this.yahooTeam.team_id, this.franchiseTagDiscount, this.irReliefPerc)
     },
     getPlayerSalary (id, pos) {
-      // console.log('getPlayerSalary()')
-      if (this.loaded) {
-        let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == id)
-        let salary = player.salary
-        if (player.isFranchiseTag) {
-          return this.getFranchiseTagSalary(salary)
-        } else if (pos === 'IR') {
-          console.log(id, pos)
-          return this.getIrSalary(salary)
-        } else {
-          return player.salary
-        }
-      }
-    },
-    getFranchiseTagSalary (salary) {
-      let franchiseTagDiscount = this.league.scadSettings.franchiseTagDiscount
-      if (salary <= franchiseTagDiscount) {
-        return 0
-      } else {
-        return (salary -= franchiseTagDiscount)
-      }
-    },
-    getIrSalary (salary) {
-      let irReliefPerc = this.league.scadSettings.irReliefPerc / 100
-      salary = salary * irReliefPerc
-      return salary
+      return calcPlayerSalary(id, pos, this.scadTeam.players, this.franchiseTagDiscount, this.irReliefPerc)
     },
     bn (pos, col) {
       return {
