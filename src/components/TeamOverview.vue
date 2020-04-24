@@ -1,6 +1,6 @@
 <template lang="pug">
   .q-px-md
-    .text-weight-bold Roster Availability: {{getCount()}}/{{scadSettings.rosterSpotLimit}}
+    .text-weight-bold(:class="countStyle(getCount())") Roster Availability: {{getCount()}}/{{scadSettings.rosterSpotLimit}}
     q-markup-table(v-if="loaded" dense)
       thead
         tr
@@ -93,6 +93,11 @@ export default {
     }
   },
   methods: {
+    countStyle (count) {
+      return {
+        'text-red': count > 25
+      }
+    },
     getPosCount (pos) {
       let count = 0
       this.yahooTeam.players.forEach(p => {
@@ -105,7 +110,7 @@ export default {
     getCount () {
       let count = 0
       this.yahooTeam.players.forEach(p => {
-        count++
+        if (p.selected_position.position !== 'IR') { count++ }
       })
       return count
     },

@@ -107,31 +107,32 @@
                     | {{ scadSettings.seasonYear - 1 }}
                 template(v-slot:body='props')
                   q-tr(:props='props')
-                    q-td(auto-width)
+                    q-td(:class="bn(props.row.selected_position.position, 'edit')" auto-width)
                       div(v-if="franchiseTag")
                         div(v-if="scadTeam.isFranchiseTag")
                           q-btn(v-if="checkTag(props.row.player_id)" size='xs' color='negative' round dense @click='removeFranchiseTag(props.row)' icon="fas fa-minus")
                         div(v-else)
                           q-btn( size='xs' color='info' round dense @click='saveFranchiseTag(props.row)' icon="fas fa-tag")
-                    q-td(key='pos' :props='props' auto-width) {{ props.row.display_position }}
-                    q-td(key='playerName' :props='props')
+                    q-td(:class="bn(props.row.selected_position.position, 'pos')" key='pos' :props='props' auto-width)
+                      | {{ props.row.selected_position.position }}
+                    q-td(:class="bn(props.row.selected_position.position, 'playerName')" key='playerName' :props='props')
                       .row.full-width
                         .col-2
                           q-avatar(size="25px")
                             img(:src="props.row.headshot.url" style="width: 85%")
-                        .col-2.q-pl-xs.text-weight-bold.text-body2
+                        .col-2.q-pl-xs.text-body2.text-weight-bold
                           | {{props.row.name.full}}
                           q-badge(v-if="checkTag(props.row.player_id)" color='white'): q-icon( name='fas fa-tag' color='info')
-                    q-td(key='team' :props='props')
-                      .text-grey {{ props.row.editorial_team_full_name }}
-                    q-td( key='previousSalary' :props='props' auto-width)
-                      .text-primary.text-weight-bolder.text-body2.q-pr-sm ${{ getPlayerPrevSalary(props.row.player_id) }}
-                    q-td(key='pretag' :props='props' auto-width)
-                      .row(v-if="isFranchiseTagged(props.row.player_id)")
+                    q-td(:class="bn(props.row.selected_position.position, 'team')" key='team' :props='props')
+                      | {{ props.row.editorial_team_full_name }}
+                    q-td(:class="bn(props.row.selected_position.position, 'previousSalary')" key='previousSalary' :props='props' auto-width)
+                      .text-body2.q-pr-sm ${{ getPlayerPrevSalary(props.row.player_id) }}
+                    q-td(:class="bn(props.row.selected_position.position, 'originalSalary')" key='originalSalary' :props='props' auto-width)
+                      .row(v-if="isFranchiseTagged(props.row.player_id) || isIR(props.row.selected_position.position)")
                         .col.text-grey.q-pr-sm Original: ${{getOriginalSalary(props.row.player_id)}}
-                    q-td( key='salary' :props='props' auto-width)
+                    q-td(:class="bn(props.row.selected_position.position, 'salary')" key='salary' :props='props' auto-width)
                       .col(:style=" (editSalaries && !isFranchiseTagged(props.row.player_id)) ? 'border: 1px solid #26A69A;' : 'border: none;' ")
-                        .text-primary.text-weight-bolder.text-body2.q-pr-sm ${{ getPlayerSalary(props.row.player_id) }}
+                        .text-weight-bolder.text-body2.q-pr-sm ${{ getPlayerSalary(props.row.player_id, props.row.selected_position.position) }}
                       q-popup-edit(
                         v-if="editSalaries && !isFranchiseTagged(props.row.player_id)"
                         :cover="false"
@@ -194,7 +195,8 @@ export default {
           name: 'tag',
           required: true,
           label: '',
-          align: 'center'
+          align: 'center',
+          field: row => row.selected_position.position
         },
         {
           name: 'pos',
@@ -224,7 +226,7 @@ export default {
           sortable: false
         },
         {
-          name: 'pretag',
+          name: 'originalSalary',
           required: true,
           label: '',
           align: 'left',
@@ -268,7 +270,17 @@ export default {
       return this.team.yahooTeam
     },
     players () {
-      return this.yahooTeam.players
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      return this.yahooTeam.players.sort(function (a, b) {
+        if (b.selected_position.position === 'BN') {
+          if (a.selected_position.position === 'DEF' ||
+              a.selected_position.position === 'K') {
+            return -1
+          }
+        } else {
+          return 1
+        }
+      })
     },
     scadSettings () {
       return this.league.scadSettings
@@ -293,6 +305,16 @@ export default {
     }
   },
   methods: {
+    bn (pos, col) {
+      return {
+        'text-primary': col === 'salary',
+        'text-grey': col === 'previousSalary' || col === 'team',
+        'text-weight-bold': col === 'pos' || col === 'playerName',
+        'text-red': pos === 'IR',
+        'bg-grey-3': pos === 'BN',
+        'bg-red-1': pos === 'IR'
+      }
+    },
     async getTeam (yahooTeamId) {
       // console.log(`[TEAM] - getTeam(${yahooTeamId})`)
       // Update team based on url param
@@ -426,20 +448,26 @@ export default {
       let scadPlayer = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == id)
       if (scadPlayer.isFranchiseTag) { return true } else { return false }
     },
-    getPlayerSalary (id) {
+    isIR (pos) {
+      if (pos === 'IR') { return true } else { return false }
+    },
+    getPlayerSalary (id, pos) {
       // console.log('getPlayerSalary()')
       if (this.loaded) {
         // eslint-disable-next-line eqeqeq
         let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == id)
+        let irReliefPerc = this.league.scadSettings.irReliefPerc / 100
+        let franchiseTagDiscount = this.league.scadSettings.franchiseTagDiscount
+        let salary = player.salary
         if (player.isFranchiseTag) {
-          let franchiseTagDiscount = this.league.scadSettings.franchiseTagDiscount
-          let salary = player.salary
-
           if (salary <= franchiseTagDiscount) {
             return 0
           } else {
             return (salary -= franchiseTagDiscount)
           }
+        } else if (pos === 'IR') {
+          salary = salary * irReliefPerc
+          return salary
         } else {
           return player.salary
         }
@@ -481,7 +509,8 @@ export default {
 a
   color: #8f0909
   text-decoration: none
-
+.bn
+  background-color: #e1e2e3
 .team-area
   width: 1100px
 .team-table
