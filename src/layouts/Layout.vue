@@ -47,7 +47,7 @@
             class="q-ma-md"
             )
         .row.full-width.justify-center
-          .text-grey Fetching SCAD data...
+          .text-grey Updating SCAD with latest Yahoo info...
       div(v-else)
         router-view
     q-footer.row.q-pa-sm.bg-grey-2.footer

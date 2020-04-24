@@ -325,10 +325,10 @@ export default {
       this.getTeam(this.selectedTeam.team_id)
     },
     updateTeamSalary () {
-      this.teamSalary = calcTeamSalary(this.players, this.scadTeam.players, this.capExemptionsByTeam, this.yahooTeam.team_id, this.franchiseTagDiscount, this.irReliefPerc)
+      this.teamSalary = calcTeamSalary(this.players, this.scadTeam.players, this.capExemptionsByTeam, this.franchiseTagDiscount, this.irReliefPerc, this.yahooTeam)
     },
     getPlayerSalary (id, pos) {
-      return calcPlayerSalary(id, pos, this.scadTeam.players, this.franchiseTagDiscount, this.irReliefPerc)
+      return calcPlayerSalary(id, pos, this.scadTeam.players, this.franchiseTagDiscount, this.irReliefPerc, this.yahooTeam)
     },
     bn (pos, col) {
       return {

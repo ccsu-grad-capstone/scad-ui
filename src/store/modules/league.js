@@ -1,7 +1,9 @@
+/* eslint-disable eqeqeq */
 // import { notify } from '../../utilities/nofity'
 import { scad } from '../../utilities/axios-scad'
 // import leagueSettings from '../../data/leagueSettings'
 import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
+import { calcTeamSalary } from '../../utilities/calculator'
 
 export default {
   namespaced: true,
@@ -129,6 +131,7 @@ export default {
       // console.log('[LEAGUE-ACTION] - getScadInfo()')
       try {
         await dispatch('dashboard')
+        // await dispatch('updateTeamSalaries')
       } catch (err) {
         catchAxiosScadError(err)
       }
@@ -169,6 +172,25 @@ export default {
       } catch (err) {
         catchAxiosScadError(err)
       }
+    },
+
+    async updateTeamSalaries ({ rootState, state, commit, dispatch }) {
+      for (var yt of state.yahooTeams) {
+        let st = state.scadTeams.find(st => st.yahooLeagueTeamId == yt.team_id)
+        await dispatch('team/getTeam', { yahooLeagueId: state.yahooLeagueId, yahooTeamId: yt.team_id }, { root: true })
+        await dispatch('capExemptions/getCapExemptionsByTeam', { teamId: yt.team_id, year: state.scadSettings.seasonYear }, { root: true })
+        st.salary = calcTeamSalary(
+          rootState.team.yahooTeam.players,
+          rootState.team.scadTeam.players,
+          rootState.capExemptions.capExemptionsByTeam,
+          state.scadSettings.franchiseTagDiscount,
+          state.scadSettings.irReliefPerc / 100,
+          yt
+        )
+        await dispatch('team/saveTeam', st, { root: true })
+      }
+      await dispatch('getYahooTeams', state.yahooLeagueId)
+      await dispatch('getScadTeams', state.scadLeagueId)
     },
 
     async getYahooLeagueDetails ({ rootState, state, commit }, leagueId) {

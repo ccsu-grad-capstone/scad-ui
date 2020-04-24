@@ -44,6 +44,15 @@ export default {
       color: 'red'
     })
   },
+  salaryUpdateOnPlayerRequired (team) {
+    Notify.create({
+      message: `[${team}] - has players that require salary updates.`,
+      position: 'top',
+      icon: 'error',
+      color: 'orange',
+      timeout: 10000
+    })
+  },
   leagueAlreadyRegistered () {
     Notify.create({
       message: 'This league is already registered',
