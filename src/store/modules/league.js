@@ -160,6 +160,8 @@ export default {
 
           await dispatch('getYahooTeams', state.yahooLeagueId)
           await dispatch('getScadTeams', state.scadLeagueId)
+          await dispatch('getAllScadLeagues')
+          await dispatch('getAllYahooLeagues')
 
           let id = {
             myYahooTeamId: dashboard.data.yahooMyTeam.team_id,

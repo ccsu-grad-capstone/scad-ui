@@ -21,7 +21,7 @@
       q-scroll-area.fit
         q-list.text-grey-8(padding)
           q-item.justify-center
-            .col
+            .col(v-if="loaded")
               q-select( filled dense label="League" v-model='activeLeague' :options='filteredLeagues' @input="switchLeagues()")
           q-item.GNL__drawer-item(@click="navigate(link.route)" v-if="league.isActive" v-ripple v-for="link in hasLeagueLinks" :key="link.text" clickable)
             q-item-section(avatar)
@@ -61,6 +61,7 @@
 </template>
 
 <script>
+/* eslint-disable eqeqeq */
 
 export default {
   name: 'DefaultLayout',
@@ -70,7 +71,7 @@ export default {
       loaded: false,
       leftDrawerOpen: true,
       showDateOptions: false,
-      activeLeague: 'Please Register Below',
+      activeLeague: '',
       hasLeagueLinks: [
         { icon: 'dashboard', text: 'Dashboard', route: '/dashboard' },
         // { icon: 'list', text: 'My Team', route: `team/1` },
@@ -112,14 +113,21 @@ export default {
     league () {
       return this.$store.state.league
     },
+    scadLeagueId () {
+      return this.league.scadLeagueId
+    },
     scadLeagues () {
       return this.league.scadLeagues
+    },
+    yahooLeagues () {
+      return this.league.yahooLeagues
     },
     myYahooTeamId () {
       return this.$store.state.team.myYahooTeamId
     },
     filteredLeagues () {
-      return this.scadLeagues.map(l => Object.assign({}, l, { value: l.yahooLeagueId, label: l.yahooLeagueId }))
+      console.log('scadLeagues: ', this.scadLeagues)
+      return this.scadLeagues.map(l => Object.assign({}, l, { value: l.yahooLeagueId, label: this.getLeagueName(l.yahooLeagueId) }))
     }
   },
   methods: {
@@ -182,6 +190,7 @@ export default {
       //   console.log('redirecting to about..layout', this.league.key)
       //   this.$router.push('about')
       // }
+      this.activeLeague = this.league.yahooLeagueDetails.name
       this.loaded = true
       this.$q.loadingBar.stop()
     },
@@ -200,9 +209,12 @@ export default {
       })
     },
     async switchLeagues () {
+      this.loaded = false
       console.log('[LAYOUT] - switchLeagues()')
-      await this.$store.dispatch('league/switchLeagues', this.activeLeague)
+      console.log('ActiveLeague', this.activeLeague)
+      await this.$store.dispatch('league/switchLeagues', this.activeLeague.yahooLeagueId)
       this.navigate('/dashboard')
+      this.loaded = true
     },
     iconNavigate () {
       if (this.loggedIn && this.league.isActive) {
@@ -219,8 +231,9 @@ export default {
     leagueIsActiveToggle () {
       this.$store.commit('league/leagueIsActiveToggle')
     },
-    getMyYahooTeamId () {
-
+    getLeagueName (id) {
+      let league = this.yahooLeagues.find(l => l.league_id == id)
+      return league.name
     }
   }
 }

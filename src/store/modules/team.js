@@ -73,9 +73,9 @@ export default {
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .get(`/yahoo/league/${yahooLeagueId}/team/${yahooTeamId}/roster`)
-        console.log('YAHOO-TEAM: ', res.data)
         res.data.team.players = res.data.team.roster.players
         res.data.team.roster.players = {}
+        console.log('YAHOO-TEAM: ', res.data)
         commit('updateYahooTeam', res.data.team)
       } catch (err) {
         catchAxiosScadError(err)
@@ -89,17 +89,18 @@ export default {
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .get(`/scad/league/yahoo/${yahooLeagueId}/team/${yahooTeamId}`)
-        console.log('SCAD-TEAM: ', team.data)
+        // console.log('SCAD-TEAM: ', team.data)
 
         const players = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .get(`/scad/league/yahoo/${yahooLeagueId}/team/${yahooTeamId}/players`)
-        console.log('SCAD-TEAM - PLAYERS: ', players.data)
+        // console.log('SCAD-TEAM - PLAYERS: ', players.data)
 
         let scadTeam = team.data
         scadTeam.players = players.data.scadLeaguePlayers
 
+        console.log('SCAD-TEAM: ', scadTeam)
         commit('updateScadTeam', scadTeam)
       } catch (err) {
         catchAxiosScadError(err)
@@ -107,7 +108,7 @@ export default {
     },
 
     async getMyYahooTeam ({ commit, rootState, state }) {
-      console.log(`[TEAM-ACTION] - getMyYahooTeam())`)
+      // console.log(`[TEAM-ACTION] - getMyYahooTeam())`)
       try {
         const team = await scad(
           rootState.user.tokens.access_token,
@@ -132,7 +133,7 @@ export default {
     },
 
     async getMyScadTeam ({ commit, rootState, state }) {
-      console.log(`[TEAM-ACTION] - getMyScadTeam())`)
+      // console.log(`[TEAM-ACTION] - getMyScadTeam())`)
       try {
         const team = await scad(
           rootState.user.tokens.access_token,
@@ -149,6 +150,7 @@ export default {
         let scadTeam = team.data
         scadTeam.players = players.data.scadLeaguePlayers
 
+        console.log('MY-SCAD-TEAM: ', scadTeam)
         commit('updateMyScadTeam', scadTeam)
       } catch (err) {
         catchAxiosScadError(err)
