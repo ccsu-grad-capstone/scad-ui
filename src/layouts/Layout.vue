@@ -135,11 +135,12 @@ export default {
       if (nav === 'logout') {
         this.logout()
       } else if (nav === '/team') {
-        this.$router.push({ path: `/team/${this.myYahooTeamId}` }).catch(error => {
-          if (error.name !== 'NavigationDuplicated') {
-            throw error
-          }
-        })
+        this.$router.push({ path: `/team/${this.myYahooTeamId}` })
+          .catch(error => {
+            if (error.name !== 'NavigationDuplicated') {
+              throw error
+            }
+          })
       } else {
         this.$router.push({
           path: nav

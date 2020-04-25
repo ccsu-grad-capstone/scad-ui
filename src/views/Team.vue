@@ -310,6 +310,10 @@ export default {
     this.$store.dispatch('league/getYahooSettings', this.yahooLeagueId)
     this.getTeam(this.$route.params.team_id)
   },
+  beforeRouteUpdate (to, from, next) {
+    this.getTeam(to.params.team_id)
+    next()
+  },
   methods: {
     async getTeam (yahooTeamId) {
       // console.log(`[TEAM] - getTeam(${yahooTeamId})`)
@@ -324,7 +328,6 @@ export default {
     updateTeamPage (teamName) {
       console.log(`[TEAM] - updateTeamPage()`, this.selectedTeam.team_id)
       this.$router.push({ path: `/team/${this.selectedTeam.team_id}` })
-      this.getTeam(this.selectedTeam.team_id)
     },
     updateTeamSalary () {
       this.teamSalary = calcTeamSalary(this.players, this.scadTeam.players, this.capExemptionsByTeam, this.franchiseTagDiscount, this.irReliefPerc, this.yahooTeam)
