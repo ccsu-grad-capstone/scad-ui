@@ -42,7 +42,8 @@
             )
               template(v-slot:body-cell-edit='props')
                 q-td.q-pr-md(:props='props' auto-width)
-                  q-btn(size='xs' color='accent' round dense @click='editCE(props.row)' icon="edit")
+                  q-btn(v-if="checkYear(props.row)" size='xs' color='info' round dense @click='addCeToTeam(props.row)' icon="add")
+                  q-btn(v-else size='xs' color='accent' round dense @click='editCE(props.row)' icon="edit")
               template(v-slot:body-cell-year='props')
                 q-td(:props='props' auto-width)
                   div.q-pr-lg {{ props.row.year }}
@@ -63,6 +64,7 @@
 import referenceData from '../utilities/referenceData'
 import addCapExemptionDialog from '../components/dialogs/addCapExemptionDialog'
 import editCapExemptionDialog from '../components/dialogs/editCapExemptionDialog'
+/* eslint-disable eqeqeq */
 
 export default {
   name: 'DraftPicks',
@@ -149,6 +151,9 @@ export default {
     referenceData () {
       return referenceData
     },
+    scadTeams () {
+      return this.$store.state.league.scadTeams
+    },
     filteredTeams () {
       return this.yahooTeams.map(t => Object.assign({}, t, { value: t.name, label: t.name }))
     },
@@ -161,12 +166,16 @@ export default {
     scadSettings () {
       return this.$store.state.league.scadSettings
     },
+    seasonYear () {
+      return this.$store.state.league.scadSettings.seasonYear
+    },
     editCapExemption () {
       return this.$store.state.dialog.editCapExemption
     }
   },
   methods: {
     async getCapExemptions () {
+      // console.log('**************')
       await this.$store.dispatch('capExemptions/getCapExemptionsByLeague', { leagueId: this.leagueId, year: this.scadSettings.seasonYear })
       this.loaded = true
     },
@@ -214,6 +223,29 @@ export default {
     clearFilter () {
       this.filter.team = ''
       this.filter.year = ''
+    },
+    checkYear (ce) {
+      if (this.seasonYear == ce.year && !ce.appliedToTeamSalary) {
+        return true
+      } else {
+        return false
+      }
+    },
+    async addCeToTeam (ce) {
+      if (ce.year == this.seasonYear) {
+        let giver = this.scadTeams.find(t => t.yahooLeagueTeamId == ce.yahooTeamGive.team_id)
+        giver.exceptionOut += ce.amount
+        giver.salary += ce.amount
+        await this.$store.dispatch('team/saveTeam', giver)
+
+        let reciever = this.scadTeams.find(t => t.yahooLeagueTeamId == ce.yahooTeamRecieve.team_id)
+        reciever.exceptionIn += ce.amount
+        reciever.salary -= ce.amount
+        await this.$store.dispatch('team/saveTeam', reciever)
+
+        ce.appliedToTeamSalary = true
+        await this.$store.dispatch('capExemptions/addCapExemption', this.capExemption)
+      }
     }
   }
 }

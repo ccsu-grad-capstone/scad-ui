@@ -93,13 +93,13 @@ export default {
       } else {
         if (this.checkTeams()) {
           await this.saveTeams()
-          this.capExemption.appliedToTeamSalary = true
           await this.$store.dispatch('capExemptions/addCapExemption', this.capExemption)
           this.$emit('saved')
           this.close()
         }
       }
     },
+    // updates the teams salary and cap exemptions total only if the current year matches this year.
     async saveTeams () {
       if (this.capExemption.year == this.seasonYear) {
         let giver = this.scadTeams.find(t => t.yahooLeagueTeamId == this.capExemption.yahooTeamGive.team_id)
@@ -111,8 +111,11 @@ export default {
         reciever.exceptionIn += this.capExemption.amount
         reciever.salary -= this.capExemption.amount
         await this.$store.dispatch('team/saveTeam', reciever)
+
+        this.capExemption.appliedToTeamSalary = true
       }
     },
+    // Checks to confirm this transaction does take a team over thier cap exemptions limit
     checkTeams () {
       let giver = this.scadTeams.find(t => t.yahooLeagueTeamId == this.capExemption.yahooTeamGive.team_id)
       let reciever = this.scadTeams.find(t => t.yahooLeagueTeamId == this.capExemption.yahooTeamRecieve.team_id)

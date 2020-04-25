@@ -126,7 +126,6 @@ export default {
       return this.$store.state.team.myYahooTeamId
     },
     filteredLeagues () {
-      console.log('scadLeagues: ', this.scadLeagues)
       return this.scadLeagues.map(l => Object.assign({}, l, { value: l.yahooLeagueId, label: this.getLeagueName(l.yahooLeagueId) }))
     }
   },
@@ -153,7 +152,7 @@ export default {
     },
 
     async persistState () {
-      console.log('[LAYOUT] - persistState()')
+      // console.log('[LAYOUT] - persistState()')
       this.$q.loadingBar.setDefaults({
         color: 'primary',
         size: '4px',

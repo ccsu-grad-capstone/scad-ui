@@ -1,7 +1,7 @@
 // import notify from './nofity'
 
 /* eslint-disable eqeqeq */
-function calcTeamSalary (yahooPlayers, scadPlayers, capExemptions, franchiseTagDiscount, irRelieftPerc, yahooTeam) {
+function calcTeamSalary (yahooPlayers, scadPlayers, capExemptions, franchiseTagDiscount, irRelieftPerc, yahooTeam, year) {
   let salary = 0
   // console.log(yahooPlayers)
   // console.log(scadPlayers)
@@ -13,9 +13,11 @@ function calcTeamSalary (yahooPlayers, scadPlayers, capExemptions, franchiseTagD
   })
   if (capExemptions) {
     capExemptions.forEach(ce => {
-      if (ce.yahooTeamGive.team_id === yahooTeam.team_id) {
-        salary += ce.amount
-      } else { salary -= ce.amount }
+      if (year == ce.year) {
+        if (ce.yahooTeamGive.team_id === yahooTeam.team_id) {
+          salary += ce.amount
+        } else { salary -= ce.amount }
+      }
     })
   }
   return salary

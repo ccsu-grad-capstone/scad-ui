@@ -311,6 +311,7 @@ export default {
     this.getTeam(this.$route.params.team_id)
   },
   beforeRouteUpdate (to, from, next) {
+    this.selectedTeam = 'Choose a Team'
     this.getTeam(to.params.team_id)
     next()
   },
@@ -330,7 +331,7 @@ export default {
       this.$router.push({ path: `/team/${this.selectedTeam.team_id}` })
     },
     updateTeamSalary () {
-      this.teamSalary = calcTeamSalary(this.players, this.scadTeam.players, this.capExemptionsByTeam, this.franchiseTagDiscount, this.irReliefPerc, this.yahooTeam)
+      this.teamSalary = calcTeamSalary(this.players, this.scadTeam.players, this.capExemptionsByTeam, this.franchiseTagDiscount, this.irReliefPerc, this.yahooTeam, this.scadSettings.seasonYear)
     },
     getPlayerSalary (id, pos) {
       return calcPlayerSalary(id, pos, this.scadTeam.players, this.franchiseTagDiscount, this.irReliefPerc, this.yahooTeam)
