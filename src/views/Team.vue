@@ -342,8 +342,10 @@ export default {
         'bg-red-1': pos === 'IR'
       }
     },
-    saveSalaries () {
+    async saveSalaries () {
       // console.log(`[TEAM] - saveSalaries()`)
+      await this.getTeam(this.$route.params.team_id)
+      this.updateTeamSalary()
       this.editSalaries = false
     },
     editingPlayer (yahooPlayer) {
@@ -430,7 +432,7 @@ export default {
         notify.salaryLimit()
         this.cancelEdit()
       }
-      this.updateTeamSalary()
+      // this.updateTeamSalary()
     },
     async saveTeam () {
       var team = {

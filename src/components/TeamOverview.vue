@@ -46,6 +46,7 @@
 <script>
 import notify from '../utilities/nofity'
 import referenceData from '../utilities/referenceData'
+import { calcPlayerSalary } from '../utilities/calculator'
 
 export default {
   name: 'TeamOverview',
@@ -90,6 +91,12 @@ export default {
   computed: {
     scadSettings () {
       return this.$store.state.league.scadSettings
+    },
+    irReliefPerc () {
+      return this.$store.state.league.scadSettings.irReliefPerc / 100
+    },
+    capExemptionsByTeam () {
+      return this.$store.state.capExemptions.capExemptionsByTeam
     }
   },
   methods: {
@@ -102,6 +109,7 @@ export default {
       let count = 0
       this.yahooTeam.players.forEach(p => {
         if (p.display_position === pos) {
+          // if (p.selected_position.position !== 'IR') { count++ }
           count++
         }
       })
@@ -118,25 +126,28 @@ export default {
       let total = 0
       this.yahooTeam.players.forEach(p => {
         if (p.display_position === pos) {
-          // eslint-disable-next-line eqeqeq
-          let player = this.scadTeamClone.players.find(sp => sp.yahooLeaguePlayerId == p.player_id)
-          if (player.isFranchiseTag) {
-            let franchiseTagDiscount = this.scadSettings.franchiseTagDiscount
-            let salary = player.salary
-
-            if (salary > franchiseTagDiscount) {
-              let ftsalary = (salary -= franchiseTagDiscount)
-              total += ftsalary
-            }
+          let position
+          if (p.selected_position.position === 'IR') {
+            position = p.selected_position.position
           } else {
-            total += player.salary
+            position = p.display_position
           }
+          let salary = calcPlayerSalary(p.player_id, position, this.scadTeamClone.players, this.scadSettings.franchiseTagDiscount, this.irReliefPerc)
+          total += salary
         }
       })
       return total
     },
     getPerc (pos) {
-      return Math.floor((this.getTotal(pos) / this.scadTeamClone.salary) * 100)
+      let salary = this.scadTeamClone.salary
+      if (this.capExemptionsByTeam) {
+        this.capExemptionsByTeam.forEach(ce => {
+          if (ce.yahooTeamGive.team_id === this.yahooTeamId) {
+            salary -= ce.amount
+          } else { salary += ce.amount }
+        })
+      }
+      return Math.floor((this.getTotal(pos) / salary) * 100)
     },
     checkPos (pos) {
       let count = this.getPosCount(pos.toUpperCase())
