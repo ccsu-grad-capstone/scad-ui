@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import { scad } from '../../utilities/axios-scad'
-import axios from 'axios'
 import { node } from '../../utilities/axios-node'
 import { catchAxiosScadError, catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
 
@@ -57,18 +56,6 @@ export default {
     }
   },
   actions: {
-    // initiate OAuth Call
-    async loginWithYahoo () {
-      console.log('[USER-ACTION] - loginWithYahoo()')
-      var nonce = Math.floor(Math.random() * 1000000 + 1)
-      await axios.get(`https://api.login.yahoo.com/oauth2/request_auth?client_id=dj0yJmk9a1pBOHVpblRxME9PJmQ9WVdrOVpFaDZWVmxyTkcwbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWE3&redirect_uri=https://localhost:3000/auth/yahoo/redirect&response_type=code&language=en-us&scope=openid,fspt-w,sdpp-r&nonce=${nonce}`)
-        .then((response) => {
-          console.log(response.data)
-        })
-        .catch(error => {
-          catchAxiosScadError(error)
-        })
-    },
 
     // refresh tokens with OAuth
     async refreshToken ({ commit, state }) {

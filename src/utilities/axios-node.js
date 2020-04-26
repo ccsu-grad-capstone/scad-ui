@@ -1,8 +1,8 @@
-import Vue from 'vue'
 import axios from 'axios'
+import { getBaseURL } from '../utilities/enviornment'
 
 const node = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: getBaseURL('NODE'),
   timeout: 8000,
   headers: {
     'Authorization': 'Basic dXNlcjpub2RlLWFwaS1yZWFkd3JpdGU='
@@ -10,5 +10,3 @@ const node = axios.create({
 })
 
 export { node }
-
-Vue.prototype.$axios = node

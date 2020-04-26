@@ -48,6 +48,8 @@
 </template>
 
 <script>
+import { getBaseURL } from '../utilities/enviornment'
+
 export default {
   name: 'About',
   data () {
@@ -61,7 +63,7 @@ export default {
   methods: {
     loginWithYahoo () {
       console.log('[ABOUT] - loginWithYahoo()')
-      window.location = 'http://localhost:3000/auth/yahoo'
+      window.location = `${getBaseURL('NODE')}/auth/yahoo`
     },
     registerLeague () {
       this.$router.push('register-league')

@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import axios from 'axios'
+import { getBaseURL } from '../utilities/enviornment'
 
 const scad = (access_token, id_token) => {
   // id_token = undefined
@@ -9,7 +10,7 @@ const scad = (access_token, id_token) => {
   }
 
   return axios.create({
-    baseURL: 'http://localhost:8080/scadservices/api/',
+    baseURL: getBaseURL('SCAD'),
     timeout: 15000,
     headers: {
       'access_token': access_token,

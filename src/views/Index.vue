@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import { getBaseURL } from '../utilities/enviornment'
+
 export default {
   name: 'LandingPage',
   data () {
@@ -18,7 +20,7 @@ export default {
   methods: {
     loginWithYahoo () {
       console.log('[INDEX] - loginWithYahoo()')
-      window.location = 'http://localhost:3000/auth/yahoo'
+      window.location = `${getBaseURL('NODE')}/auth/yahoo`
       // this.$store.dispatch('user/loginWithYahoo')
     }
   }
