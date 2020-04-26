@@ -53,7 +53,11 @@ function calcFranchiseTagSalary (salary, franchiseTagDiscount) {
 
 function calcIrSalary (salary, irReliefPerc) {
   salary = salary * irReliefPerc
-  return salary
+  if (Number.isInteger(salary)) {
+    return salary
+  } else {
+    return Math.round(salary)
+  }
 }
 
 export { calcTeamSalary, calcPlayerSalary, calcFranchiseTagSalary, calcIrSalary }

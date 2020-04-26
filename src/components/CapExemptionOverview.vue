@@ -28,7 +28,7 @@
       template(v-slot:body-cell-edit='props')
         q-td.q-pr-md(:props='props' auto-width)
           q-btn(size='xs' color='accent' round dense @click='editCE(props.row)' icon="edit")
-    edit-cap-exemption-dialog(v-if="editCapExemption" :capExemption="edit.ce" @saved="getExemptions")
+    edit-cap-exemption-dialog(v-if="editCapExemption" :capExemption="edit.ce" @saved="getExemptions" @updateTeam="this.updateTeam")
 
     .col.full-width.text-center.q-pa-xs.text-grey.text-caption {{yahooTeam.name}} cap exemptions
 </template>
@@ -126,6 +126,9 @@ export default {
       } else {
         return ce.yahooTeamGive.name
       }
+    },
+    updateTeam () {
+      this.$emit('updateTeam')
     }
   }
 }

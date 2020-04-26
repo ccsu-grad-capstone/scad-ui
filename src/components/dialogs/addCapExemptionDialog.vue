@@ -15,7 +15,7 @@
           .col.q-pl-sm: q-select(dense v-model='$v.capExemption.yahooTeamRecieve.$model' :options='filteredTeams' :display-value='displayTeam(capExemption.yahooTeamRecieve)' :error='$v.capExemption.yahooTeamRecieve.$error' error-message='Required Field')
         .row.full-width
           .col-3.text-body.text-right.text-weight-bold.q-ma-sm Amount:
-          .col-2.q-pl-sm: q-select(dense v-model='$v.capExemption.amount.$model' :options='referenceData.capExemptionAmount(80)' :error='$v.capExemption.amount.$error' error-message='Required Field')
+          .col-2.q-pl-sm: q-select(dense v-model='$v.capExemption.amount.$model' :options='referenceData.capExemptionAmount(this.salaryCapExemptionLimit)' :error='$v.capExemption.amount.$error' error-message='Required Field')
           .text-caption.q-pt-md dollars
         .row.full-width.q-mt-sm
           .col-3.text-body.text-right.text-weight-bold.q-ma-sm Comments:
@@ -45,6 +45,7 @@ export default {
         yahooTeamGive: '',
         yahooTeamRecieve: '',
         amount: '',
+        appliedToTeamSalary: false,
         comments: ''
       }
     }
@@ -130,6 +131,7 @@ export default {
       } else {
         return true
       }
+      // return true
     },
     close () {
       this.$store.commit('dialog/addCapExemption')

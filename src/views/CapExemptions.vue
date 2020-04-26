@@ -42,8 +42,8 @@
             )
               template(v-slot:body-cell-edit='props')
                 q-td.q-pr-md(:props='props' auto-width)
-                  q-btn(v-if="checkYear(props.row)" size='xs' color='info' round dense @click='addCeToTeam(props.row)' icon="add")
-                  q-btn(v-else size='xs' color='accent' round dense @click='editCE(props.row)' icon="edit")
+                  //- q-btn(v-if="checkYear(props.row)" size='xs' color='info' round dense @click='addCeToTeam(props.row)' icon="add")
+                  q-btn( size='xs' color='accent' round dense @click='editCE(props.row)' icon="edit")
               template(v-slot:body-cell-year='props')
                 q-td(:props='props' auto-width)
                   div.q-pr-lg {{ props.row.year }}
@@ -175,7 +175,7 @@ export default {
   },
   methods: {
     async getCapExemptions () {
-      // console.log('**************')
+      console.log('getCapExemptions()')
       await this.$store.dispatch('capExemptions/getCapExemptionsByLeague', { leagueId: this.leagueId, year: this.scadSettings.seasonYear })
       this.loaded = true
     },
@@ -226,12 +226,19 @@ export default {
     },
     checkYear (ce) {
       if (this.seasonYear == ce.year && !ce.appliedToTeamSalary) {
+        console.log(ce.appliedToTeamSalary)
         return true
       } else {
         return false
       }
     },
     async addCeToTeam (ce) {
+      ce = await this.saveTeams(ce)
+      console.log(ce)
+      await this.$store.dispatch('capExemptions/addCapExemption', ce)
+      this.getCapExemptions()
+    },
+    async saveTeams (ce) {
       if (ce.year == this.seasonYear) {
         let giver = this.scadTeams.find(t => t.yahooLeagueTeamId == ce.yahooTeamGive.team_id)
         giver.exceptionOut += ce.amount
@@ -242,10 +249,9 @@ export default {
         reciever.exceptionIn += ce.amount
         reciever.salary -= ce.amount
         await this.$store.dispatch('team/saveTeam', reciever)
-
         ce.appliedToTeamSalary = true
-        await this.$store.dispatch('capExemptions/addCapExemption', this.capExemption)
       }
+      return ce
     }
   }
 }

@@ -187,7 +187,8 @@ export default {
           rootState.capExemptions.capExemptionsByTeam,
           state.scadSettings.franchiseTagDiscount,
           state.scadSettings.irReliefPerc / 100,
-          yt
+          rootState.team.yahooTeam,
+          state.scadSettings.seasonYear
         )
         await dispatch('team/saveTeam', st, { root: true })
       }

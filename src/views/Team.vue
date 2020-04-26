@@ -32,35 +32,39 @@
         .col.q-pa-sm.q-pt-lg
           .row.q-gutter-xs
             .col
-              .text-primary.text-center.text-weight-bolder
+              .text-primary.text-center.text-weight-bolder.text-subtitle1
                 | SCAD Details
               .row
-                .col-7.text-grey-8.text-caption.text-right Salary Cap:
+                .col-7.text-grey-8.text-caption.text-right Salary Cap Limit:
                 .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
                   | ${{teamSalaryCap}}
               .row
-                .col-7.text-grey-8.text-caption.text-right Current Team Salary:
-                .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
-                  //- | ${{scadTeam.salary}}
-                  | ${{teamSalary}}
-              .row
                 .col-7.text-grey-8.text-caption.text-right Cap Exemption Give:
-                .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
+                .text-negative.text-weight-bold.text-body-1.q-pl-sm
                   | ${{scadTeam.exceptionOut}}
+                //- .text-grey.text-caption.q-pl-xs
+                //-   | (+)
               .row
                 .col-7.text-grey-8.text-caption.text-right Cap Exemption Recieve:
-                .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
+                .text-positive.text-weight-bold.text-body-1.q-pl-sm
                   | ${{scadTeam.exceptionIn}}
+                //- .text-grey.text-caption.q-pl-xs
+                //-   | (-)
               .row
                 .col-7.text-grey-8.text-caption.text-right Franchise Tag:
                 .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
                   span(v-if="scadSettings.franchiseTagSpots > 0") {{franchiseTagDisplay()}}
                   span(v-else) N/A
+              .row
+                .col-7.text-grey-6.text-weight-bold.text-subtitle1.text-right.q-pt-sm Current Team Salary:
+                .col.text-primary.text-weight-bold.text-subtitle1.q-pl-sm.q-pt-sm
+                  //- | ${{scadTeam.salary}}
+                  | ${{teamSalary}}
 
             q-separator(vertical)
 
             .col
-              .text-primary.text-center.text-weight-bolder
+              .text-primary.text-center.text-weight-bolder.text-subtitle1
                 | Yahoo Details
               .row
                 .col-8.text-grey-8.text-caption.text-right Waiver Priority:
@@ -160,7 +164,7 @@
             .div
               team-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
               draft-pick-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
-              cap-exemption-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
+              cap-exemption-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam" @updateTeam="getTeam($route.params.team_id)")
 
 </template>
 

@@ -47,6 +47,9 @@ export default {
     referenceData () {
       return referenceData
     },
+    team () {
+      return this.$store.state.team
+    },
     leagueId () {
       return this.$store.state.league.yahooLeagueId
     },
@@ -76,7 +79,9 @@ export default {
     async remove () {
       await this.$store.dispatch('capExemptions/removeCapExemption', this.capExemption._id)
       await this.saveTeamsOnRemove()
+      if (this.team.yahooTeam.team_id) { await this.$store.dispatch('team/getTeam', { yahooLeagueId: this.leagueId, yahooTeamId: this.team.yahooTeam.team_id }) }
       this.$emit('saved')
+      this.$emit('updateTeam')
       this.close()
     },
     async saveTeamsOnRemove () {

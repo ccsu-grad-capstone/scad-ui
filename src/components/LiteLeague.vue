@@ -1,5 +1,5 @@
 <template lang="pug">
-  .q-pa-md(style="width: 50%")
+  .q-pa-sm.table-width
     .text-h6.text-weight-bolder Standings
     q-table(
       :data='yahooTeams',
@@ -9,7 +9,10 @@
       hide-bottom,
       dense
       )
-      template(v-slot:body-cell-name='props')
+      template(v-slot:body-cell-rank='props' auto-width)
+        q-td(:props='props' auto-width)
+          | {{props.row.team_standings.team_standings.rank}}
+      template(v-slot:body-cell-name='props' auto-width)
         q-td(:props='props')
           .row.full-width
             .col-2
@@ -18,10 +21,20 @@
             .column.justify-center.text-weight-bold.q-pl-sm
               router-link(:to="{ path: `/team/${props.row.team_id}`}") {{props.row.name}}
       template(v-slot:body-cell-manager='props')
-        q-td(:props='props')
+        q-td(:props='props' auto-width)
           .text-grey {{props.row.managers[0].manager.nickname}}
+      template(v-slot:body-cell-give='props')
+        q-td(:props='props' auto-width)
+          //- .text-grey-8.text-weight-bold() ${{getTeamGive(props.row.team_id)}}
+          .text-grey-8.text-weight-bold(v-if="checkTeamCEGive(props.row.team_id) > 5") ${{getTeamGive(props.row.team_id)}}
+          .text-warning.text-weight-bold(v-else) ${{getTeamGive(props.row.team_id)}}
+      template(v-slot:body-cell-recieve='props')
+        q-td(:props='props' auto-width)
+          //- .text-grey-8.text-weight-bold() ${{getTeamRecieve(props.row.team_id)}}
+          .text-grey-8.text-weight-bold(v-if="checkTeamCERecieve(props.row.team_id) > 5") ${{getTeamRecieve(props.row.team_id)}}
+          .text-warning.text-weight-bold(v-else) ${{getTeamRecieve(props.row.team_id)}}
       template(v-slot:body-cell-salary='props')
-        q-td(:props='props')
+        q-td(:props='props' auto-width)
           .text-positive.text-weight-bolder(v-if="checkTeamSalary(props.row.team_id) > 5") ${{getTeamSalary(props.row.team_id)}}
           .text-negative.text-weight-bolder(v-else-if="checkTeamSalary(props.row.team_id) < 0") ${{getTeamSalary(props.row.team_id)}}
           .text-warning.text-weight-bolder(v-else) ${{getTeamSalary(props.row.team_id)}}
@@ -29,6 +42,7 @@
 </template>
 
 <script>
+/* eslint-disable eqeqeq */
 
 export default {
   name: 'LiteLeague',
@@ -44,11 +58,6 @@ export default {
           required: true,
           align: 'left',
           label: 'Rank',
-          field: row => row.team_standings.team_standings.rank,
-          format: val => `${val}`,
-          sortable: false,
-          // classes: 'bg-secondary ellipsis',
-          style: 'width: 10px',
           headerClasses: 'bg-grey-3'
         },
         {
@@ -57,8 +66,6 @@ export default {
           label: 'Team:',
           align: 'left',
           sortable: false,
-          // classes: 'bg-grey-2 ellipsis',
-          style: 'max-width: 200px',
           headerClasses: 'bg-grey-3'
         },
         {
@@ -67,31 +74,37 @@ export default {
           label: 'Manager:',
           align: 'left',
           sortable: false,
-          // classes: 'bg-grey-2 ellipsis',
-          style: 'max-width: 200px',
           headerClasses: 'bg-grey-3'
         },
         {
           name: 'record',
           required: true,
           label: 'Record:',
-          align: 'center',
+          align: 'left',
           field: row => row.team_standings.team_standings.outcome_totals,
           format: val => `${val.wins}-${val.losses}-${val.ties}`,
-          sortable: false,
-          headerClasses: 'bg-grey-3',
-          style: 'max-width: 100px'
+          headerClasses: 'bg-grey-3'
+        },
+        {
+          name: 'give',
+          required: true,
+          label: 'Give:',
+          align: 'left',
+          headerClasses: 'bg-grey-3'
+        },
+        {
+          name: 'recieve',
+          required: true,
+          label: 'Rec:',
+          align: 'left',
+          headerClasses: 'bg-grey-3'
         },
         {
           name: 'salary',
           required: true,
           label: 'Salary:',
-          align: 'center',
-          field: row => row.team_id,
-          // format: val => `$${this.getTeamSalary(val)}`,
-          sortable: false,
-          headerClasses: 'bg-grey-3',
-          style: 'max-width: 100px'
+          align: 'left',
+          headerClasses: 'bg-grey-3'
         }
       ]
     }
@@ -112,14 +125,28 @@ export default {
   },
   methods: {
     getTeamSalary (id) {
-      // eslint-disable-next-line eqeqeq
       let team = this.scadTeams.find(t => t.yahooLeagueTeamId == id)
       return team.salary
     },
     checkTeamSalary (id) {
-      // eslint-disable-next-line eqeqeq
       let salary = this.getTeamSalary(id)
       return this.scadSettings.teamSalaryCap - salary
+    },
+    checkTeamCEGive (id) {
+      let ce = this.getTeamGive(id)
+      return this.scadSettings.salaryCapExemptionLimit - ce
+    },
+    checkTeamCERecieve (id) {
+      let ce = this.getTeamRecieve(id)
+      return this.scadSettings.salaryCapExemptionLimit - ce
+    },
+    getTeamGive (id) {
+      let team = this.scadTeams.find(t => t.yahooLeagueTeamId == id)
+      return team.exceptionOut
+    },
+    getTeamRecieve (id) {
+      let team = this.scadTeams.find(t => t.yahooLeagueTeamId == id)
+      return team.exceptionIn
     }
   }
 
@@ -130,4 +157,6 @@ export default {
   a
     color: #000000
     text-decoration: none
+  .table-width
+    width: 600px
 </style>
