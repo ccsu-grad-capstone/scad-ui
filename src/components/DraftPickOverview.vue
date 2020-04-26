@@ -103,7 +103,10 @@ export default {
   },
   computed: {
     draftPicksByTeam () {
-      return this.$store.state.draftPicks.draftPicksByTeam
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      return this.$store.state.draftPicks.draftPicksByTeam.sort(function (a, b) {
+        if (a.rd === b.rd) { return a.pick > b.pick ? 1 : a.pick < b.pick ? -1 : 0 }
+      })
     },
     editDraftPick () {
       return this.$store.state.dialog.editDraftPick

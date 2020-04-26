@@ -49,9 +49,10 @@ export default {
         catchAxiosNodeError(error)
       }
     },
-    async addCapExemption ({ dispatch }, ce) {
+    async addCapExemption ({ dispatch, rootState }, ce) {
       // console.log('[CAPEXEMPTIONS-ACTION] - addCapExemption()')
       try {
+        ce.addedBy = `${rootState.user.user.givenName} ${rootState.user.user.familyName}`
         const response = await node.post(`/capExemptions/create`, { data: ce })
         notify.saveSuccessful(response.data)
       } catch (error) {

@@ -176,6 +176,25 @@ export default {
       }
     },
 
+    async switchLeagues ({ rootState, state, dispatch, commit }, yahooLeagueId) {
+      // console.log('[LEAGUE-ACTION] - switchLeagues()')
+      try {
+        await dispatch('getYahooLeagueDetails', yahooLeagueId)
+        await dispatch('getScadSettingsByYahooId', yahooLeagueId)
+        await dispatch('team/getMyScadTeam', null, { root: true })
+        await dispatch('team/getMyYahooTeam', null, { root: true })
+        await dispatch('getYahooTeams', yahooLeagueId)
+        await dispatch('getScadTeams', state.scadLeagueId)
+        let id = {
+          myYahooTeamId: rootState.team.myYahooTeam.team_id,
+          myScadTeamId: rootState.team.myScadTeam.id
+        }
+        commit('team/updateMyTeamIds', id, { root: true })
+      } catch (err) {
+        catchAxiosScadError(err)
+      }
+    },
+
     async updateTeamSalaries ({ rootState, state, commit, dispatch }) {
       for (var yt of state.yahooTeams) {
         let st = state.scadTeams.find(st => st.yahooLeagueTeamId == yt.team_id)
@@ -319,20 +338,6 @@ export default {
           .get(`/yahoo/league/commissioner/all`)
         console.log('YAHOO-COMMISH-LEAGUES: ', commishLeagues.data)
         commit('updateYahooCommishLeagues', commishLeagues.data.commissionerLeagues)
-      } catch (err) {
-        catchAxiosScadError(err)
-      }
-    },
-
-    async switchLeagues ({ rootState, state, dispatch }, yahooLeagueId) {
-      // console.log('[LEAGUE-ACTION] - switchLeagues()')
-      try {
-        await dispatch('getYahooLeagueDetails', yahooLeagueId)
-        await dispatch('getScadSettingsByYahooId', yahooLeagueId)
-        await dispatch('getYahooTeams', yahooLeagueId)
-        await dispatch('getScadTeams', state.scadLeagueId)
-        await dispatch('team/getMyScadTeam', null, { root: true })
-        await dispatch('team/getMyYahooTeam', null, { root: true })
       } catch (err) {
         catchAxiosScadError(err)
       }

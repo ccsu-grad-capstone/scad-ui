@@ -20,6 +20,8 @@
         .row.full-width.q-mt-sm
           .col-3.text-body.text-right.text-weight-bold.q-ma-sm Comments:
           .col.q-ma-sm.text-grey: q-input(v-model='capExemption.comments' filled type='textarea')
+        .row.full-width.q-mt-sm
+          .q-pr-lg.col.text-grey-5.text-right Added: {{fmtDate(capExemption.timestamp)}} ({{capExemption.addedBy}})
       q-card-actions.row.justify-around
         q-btn(flat label='Cancel' color='primary' @click="close()")
         q-btn(flat label='Delete' color='primary' @click="remove()")
@@ -29,6 +31,7 @@
 <script>
 /* eslint-disable eqeqeq */
 import referenceData from '../../utilities/referenceData'
+import moment from 'moment'
 
 export default {
   name: 'EditCapExemptionDialog',
@@ -112,6 +115,9 @@ export default {
         years.push(this.seasonYear + i)
       }
       return years
+    },
+    fmtDate (date) {
+      return moment(date).format('LLL')
     }
   }
 }

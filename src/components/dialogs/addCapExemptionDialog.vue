@@ -42,6 +42,7 @@ export default {
         yahooLeagueId: '',
         year: '',
         timestamp: '',
+        addedBy: '',
         yahooTeamGive: '',
         yahooTeamRecieve: '',
         amount: '',

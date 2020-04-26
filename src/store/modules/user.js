@@ -83,13 +83,13 @@ export default {
         })
     },
     async updateUser ({ state, commit }) {
-      console.log('[USER-ACTION] - updateUser()')
       try {
         const res = await scad(
           state.tokens.access_token,
           state.tokens.id_token)
           .get('/user')
         commit('updateUser', res.data)
+        console.log('[USER-ACTION] - updateUser(): ', res.data)
       } catch (error) {
         catchAxiosScadError(error)
       }
