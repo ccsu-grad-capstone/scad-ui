@@ -429,20 +429,28 @@ export default {
       this.franchiseTag = false
     },
     async savePlayer () {
-      let initTeamSalary = this.scadTeam.salary
+      // let initTeamSalary = this.scadTeam.salary
       this.scadTeam.salary += (this.editPlayer.salary - this.editPlayerInitSalary)
 
-      if (this.scadTeam.salary <= this.teamSalaryCap) {
-        this.saveTeam()
-        this.$store.dispatch('team/savePlayer', { player: this.editPlayer, yahooTeamId: this.scadTeam.yahooLeagueTeamId })
-        this.editPlayer = {}
-        this.editPlayerInitSalary = 0
-      } else {
-        this.scadTeam.salary = initTeamSalary
+      // if (this.scadTeam.salary <= this.teamSalaryCap) {
+      //   this.saveTeam()
+      //   this.$store.dispatch('team/savePlayer', { player: this.editPlayer, yahooTeamId: this.scadTeam.yahooLeagueTeamId })
+      //   this.editPlayer = {}
+      //   this.editPlayerInitSalary = 0
+      // } else {
+      //   this.scadTeam.salary = initTeamSalary
+      //   notify.salaryLimit()
+      //   this.cancelEdit()
+      // }
+
+      // Above code would restrict an edit exceeding salary cap
+      this.saveTeam()
+      this.$store.dispatch('team/savePlayer', { player: this.editPlayer, yahooTeamId: this.scadTeam.yahooLeagueTeamId })
+      this.editPlayer = {}
+      this.editPlayerInitSalary = 0
+      if (this.scadTeam.salary > this.teamSalaryCap) {
         notify.salaryLimit()
-        this.cancelEdit()
       }
-      // this.updateTeamSalary()
     },
     async saveTeam () {
       var team = {
