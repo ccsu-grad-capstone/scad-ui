@@ -399,6 +399,7 @@ export default {
       this.scadTeam.isFranchiseTag = true
       this.scadTeam.salary += (salary - initSalary)
       this.saveTeam()
+      this.updateTeamSalary()
 
       this.franchiseTag = false
     },
@@ -423,6 +424,7 @@ export default {
       this.scadTeam.isFranchiseTag = false
       this.scadTeam.salary += adjustment
       this.saveTeam()
+      this.updateTeamSalary()
 
       this.franchiseTag = false
     },

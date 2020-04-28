@@ -33,7 +33,7 @@ export default {
       // console.log('[CAPEXEMPTIONS-ACTION] - getCapExemptionsByLeague()')
       try {
         const response = await node.get(`/capExemptions/${leagueId}/${year}`)
-        console.log('CAP-EXEMPTIONS-league', response.data.data)
+        // console.log('CAP-EXEMPTIONS-league', response.data.data)
         commit('updateCapExemptions', { ce: response.data.data })
       } catch (error) {
         catchAxiosNodeError(error)
@@ -43,7 +43,7 @@ export default {
       // console.log('[CAPEXEMPTIONS-ACTION] - getCapExemptionsByTeam()')
       try {
         const response = await node.get(`/capExemptions/${rootState.league.yahooLeagueId}/${year}/${teamId}`)
-        console.log('CAP-EXEMPTIONS-team', response.data.data)
+        // console.log('CAP-EXEMPTIONS-team', response.data.data)
         commit('updateCapExemptionsTeam', { ce: response.data.data })
       } catch (error) {
         catchAxiosNodeError(error)
