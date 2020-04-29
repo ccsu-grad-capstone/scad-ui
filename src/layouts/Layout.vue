@@ -6,13 +6,8 @@
         q-toolbar-title.row.items-center.no-wrap(v-if="$q.screen.gt.xs" shrink)
             img(src="../statics/scad-logo_v1_100x30.png" clickable @click="iconNavigate")
         q-space
-        q-item
-          q-item-section
-            q-item-label
-              | league.isActive
-              q-toggle(v-model="league.isActive")
         .q-gutter-sm.row.items-center.no-wrap(v-if="tokens.access_token")
-          .text-weight-bold.text-body1 Welcome, {{ user.user.givenName }}
+          .text-weight-bold.text-body1 Welcome {{ user.user.givenName }}
           q-btn(round flat @click="navigate('my-profile')")
             q-avatar(size="40px")
               img(:src="getProfilePic()")

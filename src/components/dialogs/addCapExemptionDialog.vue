@@ -87,6 +87,9 @@ export default {
     },
     filteredTeams () {
       return this.yahooTeams.map(t => Object.assign({}, t, { value: t.name, label: t.name }))
+    },
+    leagueCapExemptions () {
+      return this.$store.state.capExemptions.capExemptions
     }
   },
   methods: {
@@ -96,34 +99,36 @@ export default {
       if (this.$v.$invalid) {
         console.log('SAVE-CE Validation Failed')
       } else {
-        if (this.checkTeams()) {
-          await this.saveTeams()
-          await this.$store.dispatch('capExemptions/addCapExemption', this.capExemption)
-          await this.$store.dispatch('capExemptions/getCapExemptionsByLeague', { leagueId: this.leagueId, year: this.seasonYear })
-          this.close()
-        }
+        await this.saveTeams()
+        await this.$store.dispatch('capExemptions/addCapExemption', this.capExemption)
+        await this.$store.dispatch('capExemptions/getCapExemptionsByLeague', { leagueId: this.leagueId, year: this.seasonYear })
+        this.close()
       }
     },
     // updates the teams salary and cap exemptions total only if the current year matches this year.
     async saveTeams () {
+      let giver = this.scadTeams.find(t => t.yahooLeagueTeamId == this.capExemption.yahooTeamGive.team_id)
+      let reciever = this.scadTeams.find(t => t.yahooLeagueTeamId == this.capExemption.yahooTeamRecieve.team_id)
+
       if (this.capExemption.year == this.seasonYear) {
-        let giver = this.scadTeams.find(t => t.yahooLeagueTeamId == this.capExemption.yahooTeamGive.team_id)
-        giver.exceptionOut += this.capExemption.amount
-        giver.salary += this.capExemption.amount
-        await this.$store.dispatch('team/saveTeam', giver)
+        if (this.checkTeams(giver, reciever)) {
+          giver.exceptionOut += this.capExemption.amount
+          giver.salary += this.capExemption.amount
+          await this.$store.dispatch('team/saveTeam', giver)
 
-        let reciever = this.scadTeams.find(t => t.yahooLeagueTeamId == this.capExemption.yahooTeamRecieve.team_id)
-        reciever.exceptionIn += this.capExemption.amount
-        reciever.salary -= this.capExemption.amount
-        await this.$store.dispatch('team/saveTeam', reciever)
+          reciever.exceptionIn += this.capExemption.amount
+          reciever.salary -= this.capExemption.amount
+          await this.$store.dispatch('team/saveTeam', reciever)
 
-        this.capExemption.appliedToTeams = true
+          this.capExemption.appliedToTeams = true
+        }
+        // else {
+        //   this.checkTeamsFuture(giver, reciever, this.capExemption.year)
+        // }
       }
     },
     // Checks to confirm this transaction does take a team over thier cap exemptions limit
-    checkTeams () {
-      let giver = this.scadTeams.find(t => t.yahooLeagueTeamId == this.capExemption.yahooTeamGive.team_id)
-      let reciever = this.scadTeams.find(t => t.yahooLeagueTeamId == this.capExemption.yahooTeamRecieve.team_id)
+    checkTeams (giver, reciever) {
       if (this.salaryCapExemptionLimit - giver.exceptionOut - this.capExemption.amount < 0) {
         console.log('SAVE-CE CheckTeams Failed')
         notify.exemptionGiverError(this.capExemption.yahooTeamGive.name)
@@ -135,8 +140,22 @@ export default {
       } else {
         return true
       }
-      // return true
     },
+    // checkTeamsFuture (giver, reciever, year) {
+    //   let giverCEByYear = this.leagueCapExemptions.filter(ce => ce.year === year && (ce.yahooTeamGive.team_id == giver.team_id || ce.yahooTeamRecieve.team_id == giver.team_id)) // If team_id changes year to year this wouldn't work
+    //   let recieverCEByYear = this.leagueCapExemptions.filter(ce => ce.year === year && (ce.yahooTeamGive.team_id == reciever.team_id || ce.yahooTeamRecieve.team_id == reciever.team_id))
+    //   if (this.salaryCapExemptionLimit - giver.exceptionOut - this.capExemption.amount < 0) {
+    //     console.log('SAVE-CE CheckTeams Failed')
+    //     notify.exemptionGiverError(this.capExemption.yahooTeamGive.name)
+    //     return false
+    //   } else if (this.salaryCapExemptionLimit - reciever.exceptionIn - this.capExemption.amount < 0) {
+    //     console.log('SAVE-CE CheckTeams Failed')
+    //     notify.exemptionRecieverError(this.capExemption.yahooTeamReciever.name)
+    //     return false
+    //   } else {
+    //     return true
+    //   }
+    // },
     close () {
       this.$store.commit('dialog/addCapExemption')
       this.visable = false
