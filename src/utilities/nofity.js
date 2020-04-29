@@ -137,7 +137,10 @@ export default {
       message: `[${code}] ${message}, please try again soon`,
       position: 'top',
       timeout: 2500,
-      color: 'red'
+      color: 'red',
+      actions: [
+        { label: 'Refresh', color: 'white', handler: () => { window.location.reload() } }
+      ]
     })
   },
   genericServerIssue (message) {
@@ -153,7 +156,10 @@ export default {
       message: `[${code}] ${message}. Unable to retrieve SCAD details. Please try again soon`,
       position: 'top',
       timeout: 2500,
-      color: 'red'
+      color: 'red',
+      actions: [
+        { label: 'Refresh', color: 'white', handler: () => { window.location.reload() } }
+      ]
     })
   },
   scadServerIssue (message) {
@@ -161,7 +167,10 @@ export default {
       message: `[${message}] Unable to retrieve SCAD details. Please try again soon`,
       position: 'top',
       timeout: 2500,
-      color: 'red'
+      color: 'red',
+      actions: [
+        { label: 'Refresh', color: 'white', handler: () => { window.location.reload() } }
+      ]
     })
   },
   nodeServerIssueWithResponse (code, message) {
@@ -169,7 +178,10 @@ export default {
       message: `[${code}] ${message}. Unable to retrieve NODE details. Please try again soon`,
       position: 'top',
       timeout: 2500,
-      color: 'red'
+      color: 'red',
+      actions: [
+        { label: 'Refresh', color: 'white', handler: () => { window.location.reload() } }
+      ]
     })
   },
   nodeServerIssue (message) {
@@ -177,7 +189,10 @@ export default {
       message: `[${message}] Unable to retrieve NODE details. Please try again soon`,
       position: 'top',
       timeout: 2500,
-      color: 'red'
+      color: 'red',
+      actions: [
+        { label: 'Refresh', color: 'white', handler: () => { window.location.reload() } }
+      ]
     })
   }
 }
