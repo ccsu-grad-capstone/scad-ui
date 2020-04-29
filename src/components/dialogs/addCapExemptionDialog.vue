@@ -40,14 +40,16 @@ export default {
       visable: false,
       capExemption: {
         yahooLeagueId: '',
+        yahooLeagueYear: '',
         year: '',
         timestamp: '',
         addedBy: '',
         yahooTeamGive: '',
         yahooTeamRecieve: '',
         amount: '',
-        appliedToTeamSalary: false,
-        comments: ''
+        appliedToTeams: false,
+        comments: '',
+        prevLeagueIds: []
       }
     }
   },
@@ -62,6 +64,7 @@ export default {
   mounted () {
     this.visable = true
     this.capExemption.yahooLeagueId = this.leagueId
+    this.capExemption.yahooLeagueYear = this.seasonYear
   },
   computed: {
     referenceData () {
@@ -96,7 +99,7 @@ export default {
         if (this.checkTeams()) {
           await this.saveTeams()
           await this.$store.dispatch('capExemptions/addCapExemption', this.capExemption)
-          this.$emit('saved')
+          await this.$store.dispatch('capExemptions/getCapExemptionsByLeague', { leagueId: this.leagueId, year: this.seasonYear })
           this.close()
         }
       }
@@ -114,7 +117,7 @@ export default {
         reciever.salary -= this.capExemption.amount
         await this.$store.dispatch('team/saveTeam', reciever)
 
-        this.capExemption.appliedToTeamSalary = true
+        this.capExemption.appliedToTeams = true
       }
     },
     // Checks to confirm this transaction does take a team over thier cap exemptions limit

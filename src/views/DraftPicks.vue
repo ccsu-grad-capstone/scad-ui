@@ -6,7 +6,7 @@
           div.text-h4.text-weight-bolder Draft Picks
           q-space
           div(v-if="loaded")
-            q-btn.q-mt-sm(v-if="draftPicks.length === 0" label='CLICK HERE TO CREATE DRAFT PICKS' dense color='primary' text-color='white' size='sm' @click="updateMongoWithDraftPicks")
+            q-btn.q-mt-sm(v-if="draftPicks.length === 0 && this.scadSettings.isCurrentlyLoggedInUserACommissioner" label='CLICK HERE TO CREATE DRAFT PICKS' dense color='primary' text-color='white' size='sm' @click="updateMongoWithDraftPicks")
         .row.full-width.q-px-md
           .text-subtitle2.text-grey  List of draft picks for drafting incoming rookies for next {{scadSettings.tradingDraftPickYears}} years.  Each rookie draft is {{scadSettings.rookieDraftRds}} rounds.  Each year, all owners are given {{scadSettings.rookieDraftRds}} picks, 1 for each round. Pick value for each draft pick is entered upon completion of fantasy season.
           //- q-btn.q-mr-sm(dense @click="tester" size='sm' label="UPLOAD")
@@ -67,8 +67,6 @@
 <script>
 import referenceData from '../utilities/referenceData'
 import editDraftPickDialog from '../components/dialogs/editDraftPickDialog'
-import { node } from '../utilities/axios-node'
-import { catchAxiosScadError } from '../utilities/catchAxiosErrors'
 
 export default {
   name: 'DraftPicks',
@@ -173,7 +171,7 @@ export default {
   },
   methods: {
     async getDraftPicks () {
-      await this.$store.dispatch('draftPicks/getDraftPicksByLeague', { leagueId: this.leagueId, year: this.scadSettings.seasonYear })
+      await this.$store.dispatch('draftPicks/getDraftPicksByLeague', { yahooLeagueId: this.leagueId, year: this.scadSettings.seasonYear })
       this.loaded = true
     },
     editPick (dp) {
@@ -215,31 +213,9 @@ export default {
       return filtered
     },
     async updateMongoWithDraftPicks () {
-      console.log('updateMongoWithDraftPicks', referenceData.draftPickYears(this.scadSettings.seasonYear))
-      referenceData.draftPickYears(this.scadSettings.seasonYear).forEach(y => {
-        referenceData.draftPickRounds(this.scadSettings.rookieDraftRds).forEach(r => {
-          this.yahooTeams.forEach(async t => {
-            let draftPick = {
-              yahooLeagueId: this.leagueId,
-              year: y,
-              rd: r,
-              pick: undefined,
-              salary: undefined,
-              playerId: undefined,
-              team: t,
-              originalTeam: t,
-              comments: ''
-            }
-            try {
-              await node.post('/draftPicks/create', { data: draftPick })
-            } catch (error) {
-              catchAxiosScadError(error)
-            }
-          })
-        })
-      })
-      this.$store.dispatch('draftPicks/getDraftPicksByLeague', this.leagueId)
-      console.log('COMPLETE')
+      this.loaded = false
+      await this.$store.dispatch('draftPicks/updateMongoWithDraftPicks')
+      this.getDraftPicks()
     },
     clearFilter () {
       this.filter.team = ''

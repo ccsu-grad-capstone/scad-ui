@@ -58,7 +58,7 @@ export default {
     async savePick () {
       // console.log('[DRAFTPICK] Method - savePick()')
       await this.$store.dispatch('draftPicks/saveDraftPick', this.dp)
-      this.$store.dispatch('draftPicks/getDraftPicksByLeague', { leagueId: this.leagueId, year: this.seasonYear })
+      this.$store.dispatch('draftPicks/getDraftPicksByLeague', { yahooLeagueId: this.leagueId, year: this.seasonYear })
       this.$emit('saved')
       this.close()
     },
