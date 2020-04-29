@@ -1,6 +1,21 @@
 <template lang="pug">
-  q-page.flex(v-if="loaded")
-    .row.q-gutter-md.full-width.justify-center.q-pt-lg(v-if="league.isActive")
+  q-page(v-if="loaded")
+    .row.full-width(v-if="refresh")
+      .row.full-width.justify-center
+        q-circular-progress.q-mt-xl(
+          indeterminate
+          size="90px"
+          :thickness="0.2"
+          color="primary"
+          center-color="grey-5"
+          track-color="transparent"
+          class="q-ma-md"
+          )
+      .row.full-width.justify-center
+        .text-grey Updating SCAD with lastest Yahoo updates
+      .row.full-width.justify-center
+        .text-primary This may take a moment
+    .row.q-gutter-md.full-width.justify-center.q-pt-lg(v-if="league.isActive && !refresh")
       .row.dashboard-width.justify-center
         .row
           .div
@@ -10,7 +25,7 @@
             .text-h4.text-weight-bolder {{league.yahooLeagueDetails.name}}
             a(:href='league.yahooLeagueDetails.url') {{league.yahooLeagueDetails.url}}
         .row.full-width
-          lite-league
+          lite-league(@updateTeamSalaries="updateTeamSalaries")
           lite-my-team
 
 </template>
@@ -29,7 +44,8 @@ export default {
   },
   data () {
     return {
-      loaded: false
+      loaded: false,
+      refresh: false
     }
   },
   async created () {
@@ -55,9 +71,10 @@ export default {
     }
   },
   methods: {
-    async dashboard () {
-      console.log('[DASHBOARD] - dashboard()')
-      await this.$store.dispatch('user/dashboard')
+    async updateTeamSalaries () {
+      this.refresh = true
+      await this.$store.dispatch('league/updateTeamSalaries')
+      this.refresh = false
     }
   }
 }
