@@ -1,4 +1,4 @@
-import notify from './nofity'
+// import notify from './nofity'
 
 /* eslint-disable eqeqeq */
 function calcTeamSalary (yahooPlayers, scadPlayers, capExemptions, franchiseTagDiscount, irRelieftPerc, yahooTeam, year) {
@@ -33,12 +33,12 @@ function calcPlayerSalary (id, pos, scadPlayers, franchiseTagDiscount, irRelieft
       return calcIrSalary(salary, irRelieftPerc)
     } else {
       if (salary === 0) {
-        notify.salaryUpdateOnPlayerRequired(yahooTeam.name)
+        // notify.salaryUpdateOnPlayerRequired(yahooTeam.name)
       }
       return player.salary
     }
   } else {
-    notify.salaryUpdateOnPlayerRequired(yahooTeam.name)
+    // notify.salaryUpdateOnPlayerRequired(yahooTeam.name)
     return 0
   }
 }

@@ -36,7 +36,7 @@
         .row.full-width.q-pa-md(v-else)
           div(style="width:100%")
             q-table(
-              :data='filteredPicks()',
+              :data='filteredPicks',
               :columns='columns',
               row-key= '_id',
               :pagination.sync="pagination",
@@ -167,6 +167,21 @@ export default {
     },
     editDraftPick () {
       return this.$store.state.dialog.editDraftPick
+    },
+    filteredPicks () {
+      var filtered = this.draftPicks
+      Object.keys(this.filter).forEach(key => {
+        if (this.filter[key] !== '') {
+          if (key === 'team') {
+            filtered = filtered.filter(dp => dp.team.name === this.filter.team.name)
+          } else {
+            filtered = filtered.filter(dp => dp[key] === this.filter[key])
+          }
+        }
+      })
+      return filtered.sort(function (a, b) {
+        if (a.rd === b.rd) { return a.pick > b.pick ? 1 : a.pick < b.pick ? -1 : 0 }
+      })
     }
   },
   methods: {
@@ -199,19 +214,7 @@ export default {
         return '4th'
       }
     },
-    filteredPicks () {
-      var filtered = this.draftPicks
-      Object.keys(this.filter).forEach(key => {
-        if (this.filter[key] !== '') {
-          if (key === 'team') {
-            filtered = filtered.filter(dp => dp.team.name === this.filter.team.name)
-          } else {
-            filtered = filtered.filter(dp => dp[key] === this.filter[key])
-          }
-        }
-      })
-      return filtered
-    },
+
     async updateMongoWithDraftPicks () {
       this.loaded = false
       await this.$store.dispatch('draftPicks/updateMongoWithDraftPicks')
