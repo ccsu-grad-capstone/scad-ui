@@ -11,7 +11,7 @@
           q-btn(round flat @click="navigate('my-profile')")
             q-avatar(size="40px")
               img(:src="getProfilePic()")
-            q-tooltip Account
+        q-btn(v-else label="Log In" flat color="primary" size="md" @click="loginWithYahoo")
     q-drawer(v-if="this.loggedIn" v-model="leftDrawerOpen" show-if-above bordered content-class="bg-white" :width="230" elevated)
       q-scroll-area.fit
         q-list.text-grey-8(padding)
@@ -57,6 +57,7 @@
 
 <script>
 /* eslint-disable eqeqeq */
+import { getBaseURL } from '../utilities/enviornment'
 
 export default {
   name: 'DefaultLayout',
@@ -225,6 +226,10 @@ export default {
     },
     leagueIsActiveToggle () {
       this.$store.commit('league/leagueIsActiveToggle')
+    },
+    loginWithYahoo () {
+      console.log('[LAYOUT] - loginWithYahoo()')
+      window.location = `${getBaseURL('NODE')}/auth/yahoo`
     },
     getLeagueName (id) {
       let league = this.yahooLeagues.find(l => l.league_id == id)
