@@ -1,6 +1,6 @@
 <template lang="pug">
   q-page.flex.justify-center
-    img(src="../statics/background.jpeg" style="width: 100%")
+    img(src="../statics/background.jpg" style="width: 100%")
     q-card.q-ma-md(style="width: 100%")
       q-card-section
         .row.full-width.justify-center.q-gutter-sm
