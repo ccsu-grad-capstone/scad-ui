@@ -11,7 +11,7 @@
       )
       template(v-slot:body-cell-rank='props' auto-width)
         q-td(:props='props' auto-width)
-          | {{props.row.team_standings.team_standings.rank}}
+          | {{getTeamRank(props.row.team_standings.team_standings.rank)}}
       template(v-slot:body-cell-name='props' auto-width)
         q-td(:props='props')
           .row.full-width
@@ -150,6 +150,13 @@ export default {
     getTeamRecieve (id) {
       let team = this.scadTeams.find(t => t.yahooLeagueTeamId == id)
       return team.exceptionIn
+    },
+    getTeamRank (rank) {
+      if (rank) {
+        return rank
+      } else {
+        return '-'
+      }
     },
     async updateTeamSalaries () {
       this.$emit('updateTeamSalaries')
