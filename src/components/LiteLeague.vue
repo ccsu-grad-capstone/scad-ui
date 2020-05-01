@@ -14,9 +14,9 @@
           | {{getTeamRank(props.row.team_standings.team_standings.rank)}}
       template(v-slot:body-cell-name='props' auto-width)
         q-td(:props='props')
-          .row.full-width
+          .row.full-width.q-py-xs
             .col-2
-              q-avatar(size="25px")
+              q-avatar(size="27px")
                 img(:src="props.row.team_logos[0].team_logo.url")
             .column.justify-center.text-weight-bold.q-pl-sm
               router-link(:to="{ path: `/team/${props.row.team_id}`}") {{props.row.name}}
