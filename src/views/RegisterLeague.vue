@@ -13,7 +13,7 @@
             class="q-ma-md"
             )
       .row.register-width(v-else)
-        q-card.q-pa-md.q-ma-lg(v-if="yahooCommishLeagues.length > 0")
+        q-card.q-pa-md.q-ma-lg(v-if="!yahooCommishLeagues.length > 0")
           q-card-section.row.justify-center
             .text-h4.text-weight-bolder Register Your Yahoo League With SCAD
           q-card-section.row.justify-center
@@ -190,7 +190,7 @@
                 | In order to create a league with #[strong.text-body1.text-primary.text-weight-bolder SCAD], you must be a league commissioner for one of your pre-existing
             .row.full-width.justify-center
               .text-body1
-                | Yahoo Fantasy Football leagues.  Based on our information, that doesn't not appear to be the case.
+                | Yahoo! Fantasy Football leagues.  Based on our information, that doesn't not appear to be the case.
             .row.full-width.justify-center.q-pt-lg
               .text-body1.text-weight-bolder.text-primary.text-uppercase
                 | We appologize for the inconvenience.
@@ -199,7 +199,7 @@
                 | Feel free to choose your league below, and we'll send along an email to the commissioner on your behalf.
             .row.full-width.justify-center.q-pt-lg
               .col-3.text-subtitle2.text-right.q-pt-sm
-                | Your Yahoo leagues:
+                | Your Yahoo! leagues:
               .col-7.q-pl-lg
                 q-select( filled dense v-model='$v.selectedLeague.$model' :options="yahooFilteredLeagues" @input="update()" :error='$v.selectedLeague.$error' error-message='Required Field')
               .col.q-pl-lg.q-pt-xs

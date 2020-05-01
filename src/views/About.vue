@@ -12,7 +12,7 @@
           .col.q-px-sm
             .row.justify-center.q-gutter-lg
               img(src="../statics/yahoo-ff.png" style="height: 125px")
-              .text-center.text-body1 Built on top of Yahoo, we let them do what they do best and we take care of the rest.
+              .text-center.text-body1 Built on top of Yahoo!, we let them do what they do best and we take care of the rest.
           q-separator(vertical)
           .col.q-px-sm
             .row.justify-center.q-gutter-lg
@@ -27,24 +27,24 @@
       .col-5.q-mr-lg.q-mt-lg
         q-card.q-pa-md.card-opacity.shadow-24
           .text-h6.info-title What is SCAD?
-          .info-body SCAD is a GM tool designed to assist #[strong.text-primary Salary Cap and Dynasty (SCAD)] fantasy football leagues hosted on Yahoo.  SCAD gives its users a way to manage salaries and dynasty settings year to year.  SCAD understands the value Yahoo offers its users and does nothing to take away from that experience by building its application on top of Yahoo.
+          .info-body SCAD is a General Manager tool designed to assist #[strong.text-primary Salary Cap and Dynasty (SCAD)] Fantasy Football leagues hosted on Yahoo!!.  SCAD gives its users a way to manage salaries and dynasty settings year to year.  SCAD understands the value Yahoo! offers its users and does nothing to take away from that experience by building its application on top of Yahoo!.
           .text-h6.info-title Who is SCAD for?
-          .info-body SCAD is developed for the avid fantasy football leagues that struggle managing their leagues salaries, consistent draft pick trading and salary cap exemptions.
+          .info-body SCAD is developed for the avid fantasy football leagues that struggle managing their league's salaries, consistent draft pick trading and salary cap exemptions.
           .text-h6.info-title How does SCAD work?
-          .info-body SCAD leverages #[strong.yahoo Yahoo's Fantasy Sports API] to retrieve user, league, team and player data from Yahoo to manage and store players’ salaries.  SCAD has its own database to manage salaries and other specific dynasty league settings not available through Yahoo.  Users simply log into SCAD through Yahoo, register their Yahoo league with SCAD, and all their league information will be made available to manage.
+          .info-body SCAD leverages #[strong.yahoo Yahoo!'s Fantasy Sports API] to retrieve user, league, team and player data from Yahoo! to manage and store players’ salaries.  SCAD has its own database to manage salaries and other specific dynasty league settings not available through Yahoo!.  Users simply log into SCAD through Yahoo!, register their Yahoo! league with SCAD, and all their league information will be made available to manage.
           .text-h6.info-title Why SCAD?
-          .info-body Unlike other sites, SCAD does not recreate the wheel.  Built on top of Yahoo, users still use Yahoo for roster management, free agent and waiver transactions, live scoring updates etc.  SCAD is here as a GM tool to specifically manage player and team salaries, rookie draft pick trading, salary cap exemption trading, franchise tagging players and more.
+          .info-body Unlike other sites, SCAD does not recreate the wheel.  Built on top of Yahoo!, users still use Yahoo! for roster management, free agent and waiver transactions, live scoring updates etc.  SCAD is here as a GM tool to specifically manage player and team salaries, rookie draft pick trading, salary cap exemption trading, franchise tagging players and more.
 
         div.q-py-lg(v-if="!loggedIn")
           .row.full-width.justify-center.text-body2
-            | Click here to login with your Yahoo account
+            | Click here to login with your Yahoo! account
           .row.full-width.justify-center.q-pt-sm
             .col-3
               q-btn-group(spread)
                 q-btn(label="Log In" color="primary" size="md" @click="loginWithYahoo")
         div.q-py-lg(v-else)
           .row.full-width.justify-center.text-body2
-            | Register your Yahoo Fantasy Football League with us here!
+            | Register your Yahoo! Fantasy Football League with us here!
           .row.full-width.justify-center.q-pt-sm
             .col-5
               q-btn-group(spread)

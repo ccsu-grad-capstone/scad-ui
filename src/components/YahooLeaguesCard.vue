@@ -40,7 +40,7 @@
               q-separator
         q-card-section(horizontal)
           q-card-section.col-3.text-h6.text-weight-bolder.q-pt-md
-            |  Yahoo Leagues
+            |  Yahoo! Leagues
           q-separator(vertical)
           q-card-section(style='width: 100%')
             q-separator

@@ -29,19 +29,19 @@
             q-item(clickable)
               .row.full-width.q-pl-lg
                 .col-5.text-body1.text-left
-                  | Yahoo League Name:
+                  | Yahoo! League Name:
                 .col.text-body1.q-pl-lg.text-weight-bolder
                   | {{yahooLeagueDetails.name}}
             q-item(clickable)
               .row.full-width.q-pl-lg
                 .col-5.text-body1.text-left
-                  | Yahoo League Id:
+                  | Yahoo! League Id:
                 .col.text-body1.q-pl-lg.text-weight-bolder
                   | {{scadSettings.yahooLeagueId}}
             q-item(clickable)
               .row.full-width.q-pl-lg
                 .col-5.text-body1.text-left
-                  | Yahoo League Homepage:
+                  | Yahoo! League Homepage:
                 .col.text-body1.q-pl-lg.text-weight-bolder
                   a(:href='yahooLeagueDetails.url') {{yahooLeagueDetails.url}}
             q-item(clickable)

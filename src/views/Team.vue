@@ -27,7 +27,7 @@
                 .row.justify-center
                   .text-caption.text-grey-7 Manager ({{yahooTeam.managers[0].manager.nickname}})  | team_id: {{yahooTeam.team_id}}
                 .row.justify-center
-                  .text-caption: a(:href='yahooTeam.url') Yahoo Team Page
+                  .text-caption: a(:href='yahooTeam.url') Yahoo! Team Page
         q-separator(vertical)
         .col.q-pa-sm.q-pt-lg
           .row.q-gutter-xs
@@ -65,7 +65,7 @@
 
             .col
               .text-primary.text-center.text-weight-bolder.text-subtitle1
-                | Yahoo Details
+                | Yahoo! Details
               .row
                 .col-8.text-grey-8.text-caption.text-right Waiver Priority:
                 .col.text-primary.text-weight-bold.text-body-1.q-pl-sm

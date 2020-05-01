@@ -12,7 +12,7 @@
           class="q-ma-md"
           )
       .row.full-width.justify-center
-        .text-grey Updating SCAD with lastest Yahoo updates
+        .text-grey Updating SCAD with lastest Yahoo! updates
       .row.full-width.justify-center
         .text-primary This may take a moment
     .row.q-gutter-md.full-width.justify-center.q-pt-lg(v-if="league.isActive && !refresh")
