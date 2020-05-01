@@ -1,39 +1,39 @@
 <template lang="pug">
   q-page.justify-center
-    img(src="../statics/background.jpg" style="width: 100%")
+    img(src="../statics/background4.jpg" style="width: 100%")
     .bg-white
-      q-card-section
+      q-card.shadow-20.q-pa-md
         .row.full-width.justify-center.q-gutter-sm
-          .col
+          .col.q-px-sm
             .row.justify-center.q-gutter-lg
               img(src="../statics/salaries.png" style="height: 125px")
-              .text-center.text-body1 Manage your team like a real GM with player salaries, team salary caps, and more..
+              .text-center.text-body1 Manage your team like a real GM with player salaries, team salary caps, and more.
           q-separator(vertical)
-          .col
+          .col.q-px-sm
             .row.justify-center.q-gutter-lg
               img(src="../statics/yahoo-ff.png" style="height: 125px")
               .text-center.text-body1 Built on top of Yahoo, we let them do what they do best and we take care of the rest.
           q-separator(vertical)
-          .col
+          .col.q-px-sm
             .row.justify-center.q-gutter-lg
-              img(src="../statics/calculator.png" style="height: 125px")
-              .text-center.text-body1 Simply set your keepers with Yahoo and we'll re-evalute new salaries year to year based on projections.
+              img(src="../statics/handshake.png" style="height: 125px")
+              .text-center.text-body1 Let keep track of the exhausted draft pick and salary cap exemption trade details.
           q-separator(vertical)
-          .col
+          .col.q-px-sm
             .row.justify-center.q-gutter-lg
               img(src="../statics/spreadsheet.png" style="height: 125px")
               .text-center.text-body1 Designed to replace those hard to keep track of spreadsheets.
     .row.full-width.justify-end.items-center.bgimg
       .col-5.q-mr-lg.q-mt-lg
-        q-card.q-pa-md.card-opacity
+        q-card.q-pa-md.card-opacity.shadow-24
           .text-h6.info-title What is SCAD?
-          .info-body SCAD is a GM tool designed to assist #[strong.text-primary Salary Cap and Dynasty (SCAD)] fantasy football leagues hosted on Yahoo.  SCAD gives it's users a way manage salaries and dynasty settings year to year.  SCAD understands the value Yahoo offers it's users and does nothing to take away from that experience by building it's application on top of Yahoo.
+          .info-body SCAD is a GM tool designed to assist #[strong.text-primary Salary Cap and Dynasty (SCAD)] fantasy football leagues hosted on Yahoo.  SCAD gives its users a way to manage salaries and dynasty settings year to year.  SCAD understands the value Yahoo offers its users and does nothing to take away from that experience by building its application on top of Yahoo.
           .text-h6.info-title Who is SCAD for?
-          .info-body SCAD is developed for the avid fantasy football leagues that struggle managing their leagues salaries, consistant draft pick trading and salary cap exemptions.
+          .info-body SCAD is developed for the avid fantasy football leagues that struggle managing their leagues salaries, consistent draft pick trading and salary cap exemptions.
           .text-h6.info-title How does SCAD work?
-          .info-body SCAD leverages #[strong.yahoo Yahoo's Fantasy Sports API] to retrieve user, league, team and player data from Yahoo to manage and store players salaries.  SCAD has it's own database to manage salaries and other specifc dynasty league settings not available through Yahoo.  Users simply log into SCAD through Yahoo, register their Yahoo league with SCAD, and all their league information will be made available to manage.
+          .info-body SCAD leverages #[strong.yahoo Yahoo's Fantasy Sports API] to retrieve user, league, team and player data from Yahoo to manage and store players’ salaries.  SCAD has its own database to manage salaries and other specific dynasty league settings not available through Yahoo.  Users simply log into SCAD through Yahoo, register their Yahoo league with SCAD, and all their league information will be made available to manage.
           .text-h6.info-title Why SCAD?
-          .info-body Unlike other sites, SCAD does not recreate the wheel.  Built on top of Yahoo, users still use Yahoo for roster management, free agent and waiver transactions, live scoring updates ect.  SCAD is here as a GM tool to specficlly manage player and team salaries, rookie draft pick trading, salary cap exemption trading, franchise tagging players and more.
+          .info-body Unlike other sites, SCAD does not recreate the wheel.  Built on top of Yahoo, users still use Yahoo for roster management, free agent and waiver transactions, live scoring updates etc.  SCAD is here as a GM tool to specifically manage player and team salaries, rookie draft pick trading, salary cap exemption trading, franchise tagging players and more.
 
         div.q-py-lg(v-if="!loggedIn")
           .row.full-width.justify-center.text-body2

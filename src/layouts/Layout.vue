@@ -12,7 +12,7 @@
             q-avatar(size="40px")
               img(:src="getProfilePic()")
         q-btn(v-else label="Log In" flat color="primary" size="md" @click="loginWithYahoo")
-    q-drawer(v-if="this.loggedIn" v-model="leftDrawerOpen" show-if-above bordered content-class="bg-white" :width="230" elevated)
+    q-drawer(v-if="this.loggedIn" v-model="leftDrawerOpen" show-if-above bordered content-class="bg-white" :width="245" elevated)
       q-scroll-area.fit
         q-list.text-grey-8(padding)
           q-item.justify-center
