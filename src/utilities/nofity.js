@@ -117,9 +117,9 @@ export default {
       color: 'green'
     })
   },
-  emailCommissioner (email) {
+  emailCommissioner (message) {
     Notify.create({
-      message: `Email Sent to ${email}.  We look forward to serving your SCAD needs soon!`,
+      message: `${message}.  We look forward to serving your SCAD needs soon!`,
       position: 'top',
       color: 'info',
       timeout: 10000,

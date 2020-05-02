@@ -10,7 +10,7 @@
           .text-weight-bold.text-body1 Welcome {{ user.user.givenName }}
           q-btn(round flat @click="navigate('my-profile')")
             q-avatar(size="40px")
-              img(:src="getProfilePic()")
+              img(v-if="loaded" :src="getProfilePic()")
         q-btn(v-else label="Log In" flat color="primary" size="md" @click="loginWithYahoo")
     q-drawer(v-if="this.loggedIn" v-model="leftDrawerOpen" show-if-above bordered content-class="bg-white" :width="245" elevated)
       q-scroll-area.fit
@@ -220,9 +220,7 @@ export default {
       }
     },
     getProfilePic () {
-      if (this.loaded) {
-        return this.user.user.profileImages.image64
-      }
+      return this.user.user.profileImages.image64
     },
     leagueIsActiveToggle () {
       this.$store.commit('league/leagueIsActiveToggle')

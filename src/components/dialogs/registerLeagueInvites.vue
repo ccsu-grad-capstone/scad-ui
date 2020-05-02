@@ -1,50 +1,59 @@
 <template lang="pug">
-  q-card(style="width: 500px; max-width: 80vw;")
+  q-card(style="width: 600px; max-width: 80vw;")
     q-card-section.row.items-center
       .col-1
-        q-avatar(icon='check' color='primary' text-color='white')
+        q-avatar(icon='email' color='primary' text-color='white')
       .col.text-center
-        .text-h6.q-pl-md Your league is now registered with SCAD.
+        .text-h6.q-pl-md Thanks for registering your league with SCAD!
         .text-body1.q-pl-lg Would you like us to email everyone an invite?
     q-card-actions.row.justify-around
-      q-btn(flat label='No Thanks' color='primary' @click="noThanks()")
-      q-btn(flat label='Yes Please' color='primary' @click="yesPlease()")
+      q-btn(flat label='No Thanks' color='primary' @click="triggerDialog()")
+      q-btn(flat label='Yes Please' color='primary' @click="sendEmail()")
 </template>
 
 <script>
-import { createHelpers } from 'vuex-map-fields'
-const { mapFields } = createHelpers({
-})
+import { scad } from '../../utilities/axios-scad'
+import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
+import notify from '../../utilities/nofity'
 
 export default {
   name: 'RegisterLeagueInvites',
-
+  props: {
+    emailLeagueId: Number
+  },
   data () {
     return {
       emails: []
     }
   },
   computed: {
-    ...mapFields([
-      'registerLeagueInvites'
-    ]),
+    tokens () {
+      return this.$store.state.user.tokens
+    },
     league () {
       return this.$store.state.league.yahooLeague
+    },
+    registerLeagueInvites () {
+      return this.$store.state.dialog.registerLeagueInvites
     }
   },
   methods: {
-    noThanks () {
-      this.registerLeagueInvites = false
-      this.$router.push({
-        path: 'dashboard'
-      })
+
+    async sendEmail () {
+      console.log('[REGISTERLEAGUE - Methods] - sendInviteEmail()')
+      try {
+        const response = await scad(
+          this.tokens.access_token,
+          this.tokens.id_token)
+          .post(`/scad/email/registered/${this.emailLeagueId}`)
+        this.$store.commit('dialog/registerLeagueInvites')
+        notify.emailCommissioner(response.data.msg)
+      } catch (err) {
+        catchAxiosScadError(err)
+      }
     },
-    yesPlease () {
-      this.$store.dispatch('league/emailLeagueMembers')
-      this.registerLeagueInvites = false
-      this.$router.push({
-        path: 'dashboard'
-      })
+    triggerDialog () {
+      this.$store.commit('dialog/registerLeagueInvites')
     }
   }
 }

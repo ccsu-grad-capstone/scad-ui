@@ -2,7 +2,6 @@
 // import { scad } from '../../utilities/axios-scad'
 // import axios from 'axios'
 // import { node } from '../../utilities/axios-node'
-// import { getField, updateField } from 'vuex-map-fields'
 
 export default {
   namespaced: true,
@@ -13,7 +12,6 @@ export default {
     editCapExemption: false
   },
   getters: {
-    // getField
   },
   mutations: {
     editDraftPick (state) {
@@ -24,6 +22,9 @@ export default {
     },
     editCapExemption (state) {
       state.editCapExemption = !state.editCapExemption
+    },
+    registerLeagueInvites (state) {
+      state.registerLeagueInvites = !state.registerLeagueInvites
     }
   },
   actions: {

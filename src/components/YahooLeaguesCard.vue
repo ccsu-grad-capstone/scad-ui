@@ -36,7 +36,8 @@
                       .text-primary.text-weight-bold(v-else) Switch to League
                       .text-accent.text-weight-bold(v-if="league.isDefault") Default League
                       q-btn.q-px-xs(v-else label='Set as Default League' flat dense color='white' text-color='accent' size='sm' @click="setAsDefault(league.id)")
-
+                  .col-1.text-right
+                      q-btn.q-px-xs(icon='email' flat dense color='white' text-color='accent' size='sm' @click="triggerDialog(league.yahooLeagueId)")
               q-separator
         q-card-section(horizontal)
           q-card-section.col-3.text-h6.text-weight-bolder.q-pt-md
@@ -54,6 +55,8 @@
                   .col.text-left
                     .text-primary.text-weight-bold(v-if="isCommish(league.league_id)") Register League with SCAD
               q-separator
+          q-dialog(v-model='registerLeagueInvites' persistent)
+            register-league-invites(:emailLeagueId="emailLeagueId")
 
 </template>
 <script>
@@ -61,13 +64,18 @@ import { openURL } from 'quasar'
 import { scad } from '../utilities/axios-scad'
 import { catchAxiosScadError } from '../utilities/catchAxiosErrors'
 import notify from '../utilities/nofity'
+import RegisterLeagueInvites from '../components/dialogs/registerLeagueInvites'
 
 export default {
   name: 'YahooLeaguesCard',
+  components: {
+    'register-league-invites': RegisterLeagueInvites
+  },
 
   data () {
     return {
-      loaded: false
+      loaded: false,
+      emailLeagueId: ''
     }
   },
   async mounted () {
@@ -92,6 +100,9 @@ export default {
     },
     yahooCommishLeagues () {
       return this.$store.state.league.yahooCommishLeagues
+    },
+    registerLeagueInvites () {
+      return this.$store.state.dialog.registerLeagueInvites
     }
   },
   methods: {
@@ -162,6 +173,10 @@ export default {
       } catch (err) {
         catchAxiosScadError(err)
       }
+    },
+    async triggerDialog (yahooLeagueId) {
+      this.emailLeagueId = yahooLeagueId
+      await this.$store.commit('dialog/registerLeagueInvites')
     }
   }
 }

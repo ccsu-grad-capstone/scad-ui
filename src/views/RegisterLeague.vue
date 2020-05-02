@@ -13,7 +13,7 @@
             class="q-ma-md"
             )
       .row.register-width(v-else)
-        q-card.q-pa-md.q-ma-lg(v-if="!yahooCommishLeagues.length > 0")
+        q-card.q-pa-md.q-ma-lg(v-if="yahooCommishLeagues.length > 0")
           q-card-section.row.justify-center
             .text-h4.text-weight-bolder Register Your Yahoo League With SCAD
           q-card-section.row.justify-center
@@ -381,11 +381,18 @@ export default {
         }
       }
     },
-    sendEmail () {
-      console.log('[REGISTERLEAGUE - Methods] - sendEmail()')
-      // this.$store.dispatch('')
-      notify.emailCommissioner('emailAddress..')
-      this.$router.push('/about')
+    async sendEmail () {
+      console.log('[REGISTERLEAGUE - Methods] - sendRequestEmail()')
+      try {
+        const response = await scad(
+          this.tokens.access_token,
+          this.tokens.id_token)
+          .post(`/scad/email/request/${this.selectedLeague.league_id}`)
+        notify.emailCommissioner(response.data.msg)
+        this.$router.push('/about')
+      } catch (err) {
+        catchAxiosScadError(err)
+      }
     }
   }
 }
