@@ -468,7 +468,6 @@ export default {
     franchiseTagDisplay () {
       if (this.scadTeam.isFranchiseTag && this.loaded) {
         let scadPlayer = this.scadTeam.players.find(p => p.isFranchiseTag)
-
         let yahooPlayer = this.players.find(p => p.player_id == scadPlayer.yahooLeaguePlayerId)
         return yahooPlayer.name.full
       } else {

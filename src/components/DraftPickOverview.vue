@@ -1,7 +1,7 @@
 <template lang="pug">
   .q-px-md
     .text-weight-bold Draft Picks:
-    q-table(
+    q-table.table-width(
       class="my-sticky-header-table"
       v-if="loaded"
       :data='draftPicksByTeam',
@@ -16,6 +16,9 @@
       template(v-slot:body-cell-edit='props')
         q-td.q-pr-md(:props='props' auto-width)
           q-btn(size='xs' color='accent' round dense @click='editPick(props.row)' icon="edit")
+      template(v-slot:body-cell-comments='props')
+        q-td.q-pr-md(:props='props')
+          | {{props.row.comments}}
     edit-draft-pick-dialog(v-if="editDraftPick" :dp="edit.dp" @saved="getPicks")
 
     .col.full-width.text-center.q-pa-xs.text-grey.text-caption {{yahooTeam.name}} draft picks
@@ -47,6 +50,12 @@ export default {
         rowsPerPage: 36 // 0 means all rows
       },
       columns: [
+        {
+          name: 'edit',
+          label: '',
+          align: 'left',
+          style: 'background-color: #f0f0f0'
+        },
         {
           name: 'year',
           required: true,
@@ -87,12 +96,7 @@ export default {
           align: 'left',
           field: row => row.comments,
           format: val => `${val}`,
-          style: 'color: grey'
-        },
-        {
-          name: 'edit',
-          label: '',
-          align: 'left'
+          style: 'color: grey;'
         }
       ]
     }
@@ -136,5 +140,6 @@ tr
 .pos
   font-weight: bold
   background-color: #f0f0f0
-
+.table-width
+  width: 342px
 </style>

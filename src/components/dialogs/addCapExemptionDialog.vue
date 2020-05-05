@@ -100,7 +100,6 @@ export default {
         console.log('SAVE-CE Validation Failed')
       } else {
         await this.saveTeams()
-        await this.$store.dispatch('capExemptions/addCapExemption', this.capExemption)
         await this.$store.dispatch('capExemptions/getCapExemptionsByLeague', { leagueId: this.leagueId, year: this.seasonYear })
         this.close()
       }
@@ -121,6 +120,8 @@ export default {
           await this.$store.dispatch('team/saveTeam', reciever)
 
           this.capExemption.appliedToTeams = true
+
+          await this.$store.dispatch('capExemptions/addCapExemption', this.capExemption)
         }
         // else {
         //   this.checkTeamsFuture(giver, reciever, this.capExemption.year)
