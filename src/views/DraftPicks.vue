@@ -9,7 +9,6 @@
             q-btn.q-mt-sm(v-if="draftPicks.length === 0 && this.scadSettings.isCurrentlyLoggedInUserACommissioner" label='CLICK HERE TO CREATE DRAFT PICKS' dense color='primary' text-color='white' size='sm' @click="updateMongoWithDraftPicks")
         .row.full-width.q-px-md
           .text-subtitle2.text-grey  List of draft picks for drafting incoming rookies for next {{scadSettings.tradingDraftPickYears}} years.  Each rookie draft is {{scadSettings.rookieDraftRds}} rounds.  Each year, all owners are given {{scadSettings.rookieDraftRds}} picks, 1 for each round. Pick value for each draft pick is entered upon completion of fantasy season.
-          //- q-btn.q-mr-sm(dense @click="tester" size='sm' label="UPLOAD")
         .row.full-width.justify-center.q-pt-md
           .row.full-width.q-gutter-sm.q-px-sm
             .col-2
@@ -61,7 +60,7 @@
               template(v-slot:body-cell-originalOwner='props')
                 q-td(:props='props' auto-width)
                   div.q-pr-lg.text-grey {{ props.row.originalTeam.name }}
-        edit-draft-pick-dialog(v-if="editDraftPick" :dp="edit.dp")
+        edit-draft-pick-dialog(v-if="editDraftPick" :dp="edit.dp" @saved="getDraftPicks")
 </template>
 
 <script>

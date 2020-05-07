@@ -225,7 +225,7 @@ export default {
           if (key === 'team') {
             filtered = filtered.filter(ce => ce.yahooTeamGive.name === this.filter.team.name || ce.yahooTeamRecieve.name === this.filter.team.name)
           } else {
-            filtered = filtered.filter(ce => ce[key] === this.filter[key])
+            filtered = filtered.filter(ce => ce[key] == this.filter[key])
           }
         }
       })

@@ -4,7 +4,7 @@
       .text-h4.text-weight-bolder My Profile
     my-profile-card
     yahoo-leagues-card
-    my-tokens
+    //- my-tokens(v-if='inDevelopment()')
 
 </template>
 
@@ -12,6 +12,7 @@
 import MyProfileCard from '../components/MyProfileCard'
 import YahooLeaguesCard from '../components/YahooLeaguesCard'
 import MyTokens from '../components/MyTokens'
+import { inDevelopment } from '../utilities/enviornment'
 
 export default {
   name: 'MyProfile',
@@ -28,6 +29,11 @@ export default {
   mounted () {
     this.$store.dispatch('league/getAllYahooLeagues')
     this.$store.dispatch('league/getAllScadLeagues')
+  },
+  computed: {
+    inDevelopment () {
+      return inDevelopment
+    }
   }
 }
 </script>

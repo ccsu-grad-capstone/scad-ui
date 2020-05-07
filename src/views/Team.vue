@@ -23,7 +23,8 @@
             .row.justify-center
               .col
                 .row.justify-center
-                  .text-h6 {{yahooTeam.name}}
+                  //- .text-h6 {{yahooTeam.name}}
+                  .text-h6 {{getTeamName(yahooTeam.name)}}
                 .row.justify-center
                   .text-caption.text-grey-7 Manager ({{yahooTeam.managers[0].manager.nickname}})  | team_id: {{yahooTeam.team_id}}
                 .row.justify-center
@@ -503,6 +504,14 @@ export default {
         } else {
           return false
         }
+      }
+    },
+    getTeamName (name) {
+      console.log('**************', name)
+      if (name === 'Honolulu Blue Myself') {
+        return 'Springfield Atoms'
+      } else {
+        return name
       }
     }
   }

@@ -1,5 +1,5 @@
 <template lang="pug">
-  q-dialog(v-model='visable')
+  q-dialog(v-model='visable' persistent)
     q-card(style="width: 500px; max-width: 80vw;")
       q-card-section.row
         .col.text-center.text-h5.text-weight-bolder  {{ dp.year }} - {{ outputRound(dp.rd) }} Round
@@ -58,12 +58,12 @@ export default {
     async savePick () {
       // console.log('[DRAFTPICK] Method - savePick()')
       await this.$store.dispatch('draftPicks/saveDraftPick', this.dp)
-      this.$store.dispatch('draftPicks/getDraftPicksByLeague', { yahooLeagueId: this.leagueId, year: this.seasonYear })
       this.$emit('saved')
       this.close()
     },
     close () {
       this.$store.commit('dialog/editDraftPick')
+      this.$emit('saved')
       this.visable = false
     },
     displayPick () {
