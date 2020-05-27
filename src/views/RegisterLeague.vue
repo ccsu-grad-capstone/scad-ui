@@ -227,6 +227,7 @@ export default {
       newLeague: {
         yahooLeagueId: '',
         yahooLeagueName: '',
+        yahooGameId: '',
         leagueManagers: '',
         rookieDraftRds: '',
         rookieDraftStrategy: '',
@@ -370,12 +371,14 @@ export default {
         this.newLeague.yahooLeagueId = ''
         this.newLeague.yahooLeagueName = ''
         this.newLeague.leagueManagers = ''
+        this.newLeague.yahooGameId = ''
       } catch (err) {
         if (err.response.status === 404) {
           console.log('League not found, you may proceed registering..')
           this.newLeague.yahooLeagueId = this.selectedLeague.league_id
           this.newLeague.yahooLeagueName = this.selectedLeague.name
           this.newLeague.leagueManagers = this.selectedLeague.num_teams
+          this.newLeague.yahooGameId = this.selectedLeague.league_key.split('.')[0]
         } else {
           catchAxiosScadError(err)
         }

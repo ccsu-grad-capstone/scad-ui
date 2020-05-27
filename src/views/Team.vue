@@ -507,7 +507,6 @@ export default {
       }
     },
     getTeamName (name) {
-      console.log('**************', name)
       if (name === 'Honolulu Blue Myself') {
         return 'Springfield Atoms'
       } else {
