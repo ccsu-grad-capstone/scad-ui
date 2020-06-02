@@ -147,10 +147,7 @@ export default {
     filterYahooLeagues () {
       let leagues = []
       this.yahooLeagues.forEach(l => {
-        if (l.name.includes('Queef')) {
-        } else {
-          leagues.push(l)
-        }
+        leagues.push(l)
       })
       return leagues
     },
