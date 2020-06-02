@@ -179,7 +179,11 @@ export default {
         }
       })
       return filtered.sort(function (a, b) {
-        if (a.rd === b.rd) { return a.pick > b.pick ? 1 : a.pick < b.pick ? -1 : 0 }
+        if (a.rd === b.rd && a.year === b.year) {
+          return a.pick > b.pick ? 1 : a.pick < b.pick ? -1 : 0
+        } else if (a.year === b.year) {
+          return a.rd > b.rd ? 1 : a.rd < b.rd ? -1 : 0
+        }
       })
     }
   },
