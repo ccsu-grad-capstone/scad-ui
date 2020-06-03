@@ -2,6 +2,7 @@
 import notify from '../../utilities/nofity'
 // import { scad } from '../../utilities/axios-scad'
 // import leagueStandings from '../../data/leagueStandings'
+import moment from 'moment'
 import { node } from '../../utilities/axios-node'
 import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
 import referenceData from '../../utilities/referenceData'
@@ -101,7 +102,8 @@ export default {
                     team: t,
                     originalTeam: t,
                     comments: '',
-                    prevLeagueIds: []
+                    prevLeagueIds: [],
+                    log: []
                   }
                   await node.post('/draftPicks/create', { data: draftPick })
                 })
