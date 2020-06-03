@@ -157,6 +157,20 @@ export default {
       }
     },
 
+    async addPlayer ({ rootState, dispatch, state }, { player }) {
+      console.log(`[TEAM-ACTION] - addPlayer()`, player)
+      try {
+        const res = await scad(
+          rootState.user.tokens.access_token,
+          rootState.user.tokens.id_token)
+          .post(`/scad/player`, player)
+        console.log('ADD-PLAYER: ', res)
+        // notify.salarySaveSuccessful()
+      } catch (err) {
+        catchAxiosScadError(err)
+      }
+    },
+
     async savePlayer ({ rootState, dispatch, state }, { player, yahooTeamId }) {
       console.log(`[TEAM-ACTION] - savePlayer()`, player)
       try {

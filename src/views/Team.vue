@@ -139,8 +139,10 @@
                       .row(v-if="isFranchiseTagged(props.row.player_id) || isIR(props.row.selected_position.position)")
                         .col.text-grey.q-pr-sm Original: ${{getOriginalSalary(props.row.player_id)}}
                     q-td(:class="bn(props.row.selected_position.position, 'salary')" key='salary' :props='props' auto-width)
-                      .col(:style=" (editSalaries && !isFranchiseTagged(props.row.player_id)) ? 'border: 1px solid #26A69A;' : 'border: none;' ")
+                      .col(v-if="(isScadPlayer(props.row.player_id))" :style=" (editSalaries && !isFranchiseTagged(props.row.player_id)) ? 'border: 1px solid #26A69A;' : 'border: none;' ")
                         .text-weight-bolder.text-body2.q-pr-sm ${{ getPlayerSalary(props.row.player_id, props.row.selected_position.position) }}
+                      .col(v-else)
+                        q-btn(size='xs' color='positive' round dense @click='addScadPlayer(props.row.player_id)' icon="fas fa-plus")
                       q-popup-edit(
                         v-if="editSalaries && !isFranchiseTagged(props.row.player_id)"
                         :cover="false"
@@ -477,7 +479,9 @@ export default {
     },
     isFranchiseTagged (id) {
       let scadPlayer = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == id)
-      if (scadPlayer.isFranchiseTag) { return true } else { return false }
+      if (scadPlayer) {
+        if (scadPlayer.isFranchiseTag) { return true } else { return false }
+      } else { return false }
     },
     isIR (pos) {
       if (pos === 'IR') { return true } else { return false }
@@ -486,7 +490,9 @@ export default {
       // console.log('getPlayerSalary()')
       if (this.loaded) {
         let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == id)
-        return player.previousYearSalary
+        if (player) {
+          return player.previousYearSalary
+        }
       }
     },
     getOriginalSalary (id) {
@@ -512,6 +518,25 @@ export default {
       } else {
         return name
       }
+    },
+    isScadPlayer (id) {
+      let scadPlayer = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == id)
+      if (scadPlayer) { return true } else { return false }
+    },
+    async addScadPlayer (id) {
+      let player = {
+        yahooLeaguePlayerId: id,
+        yahooLeagueId: this.scadTeam.yahooLeagueId,
+        scadLeagueId: this.scadTeam.scadLeagueId,
+        yahooTeamId: this.scadTeam.yahooLeagueTeamId,
+        scadTeamId: this.scadTeam.id,
+        salary: 0,
+        isFranchiseTag: false,
+        renewSCADLeaguePlayerId: 0,
+        previousYearSalary: 0
+      }
+      await this.$store.dispatch('team/addPlayer', { player: player })
+      await this.getTeam(this.scadTeam.yahooLeagueTeamId)
     }
   }
 
