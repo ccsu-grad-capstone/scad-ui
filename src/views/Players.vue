@@ -155,25 +155,33 @@ export default {
     getHeadshot (id) {
       if (this.loaded) {
         let player = this.yahooPlayers.find(p => p.player_id == id)
-        return player.headshot.url
+        if (player) {
+          return player.headshot.url
+        }
       }
     },
     getPos (id) {
       if (this.loaded) {
         let player = this.yahooPlayers.find(p => p.player_id == id)
-        return player.display_position
+        if (player) {
+          return player.display_position
+        }
       }
     },
     getPlayerName (id) {
       if (this.loaded) {
         let player = this.yahooPlayers.find(p => p.player_id == id)
-        return `${player.name.full}`
+        if (player) {
+          return `${player.name.full}`
+        }
       }
     },
     getNFLTeam (id) {
       if (this.loaded) {
         let player = this.yahooPlayers.find(p => p.player_id == id)
-        return `${player.editorial_team_full_name}`
+        if (player) {
+          return `${player.editorial_team_full_name}`
+        }
       }
     },
     getOwner (id) {
@@ -185,7 +193,9 @@ export default {
     getTeam (yahooPlayerId) {
       if (this.loaded) {
         let team = this.scadPlayers.find(p => p.yahooLeaguePlayerId == yahooPlayerId)
-        return team.salary
+        if (team) {
+          return team.salary
+        }
       }
     },
     async updateTeamFilter () {
