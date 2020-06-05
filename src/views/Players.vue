@@ -50,7 +50,7 @@
                         | {{getPlayerName(props.row.yahooLeaguePlayerId)}}
                   q-td(key='team' :props='props')
                     .text-grey {{getNFLTeam(props.row.yahooLeaguePlayerId)}}
-                  q-td(:class="myTeam(props.row.yahooTeamId)" key='owner' :props='props')
+                  q-td(:class="myTeamStyle(props.row.yahooTeamId, myYahooTeamId)" key='owner' :props='props')
                     | {{ getOwner(props.row.yahooTeamId) }}
                   q-td(key='salary' :props='props' auto-width)
                     .text-primary.text-weight-bolder.text-body2.q-pr-sm ${{props.row.salary}}
@@ -60,6 +60,8 @@
 <script>
 /* eslint-disable eqeqeq */
 import referenceData from '../utilities/referenceData'
+import { myTeamStyle } from '../utilities/formatters'
+
 export default {
   data () {
     return {
@@ -127,6 +129,9 @@ export default {
   computed: {
     referenceData () {
       return referenceData
+    },
+    myTeamStyle () {
+      return myTeamStyle
     },
     scadPlayers () {
       return this.$store.state.player.scadPlayers
@@ -233,12 +238,6 @@ export default {
     positionFilter (scadPlayer) {
       let player = this.yahooPlayers.find(p => p.player_id == scadPlayer.yahooLeaguePlayerId)
       return player.display_position === this.filter['position']
-    },
-    myTeam (id) {
-      return {
-        'text-accent': id == this.myYahooTeamId,
-        'text-weight-bold': id == this.myYahooTeamId
-      }
     }
   }
 }
