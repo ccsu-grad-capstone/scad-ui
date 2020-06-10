@@ -61,6 +61,7 @@
 /* eslint-disable eqeqeq */
 import referenceData from '../utilities/referenceData'
 import { myTeamStyle } from '../utilities/formatters'
+import { getYahooPlayer } from '../utilities/functions'
 
 export default {
   data () {
@@ -159,7 +160,7 @@ export default {
     },
     getHeadshot (id) {
       if (this.loaded) {
-        let player = this.yahooPlayers.find(p => p.player_id == id)
+        let player = getYahooPlayer(this.yahooPlayers, id)
         if (player) {
           return player.headshot.url
         }
@@ -167,7 +168,7 @@ export default {
     },
     getPos (id) {
       if (this.loaded) {
-        let player = this.yahooPlayers.find(p => p.player_id == id)
+        let player = getYahooPlayer(this.yahooPlayers, id)
         if (player) {
           return player.display_position
         }
@@ -175,7 +176,7 @@ export default {
     },
     getPlayerName (id) {
       if (this.loaded) {
-        let player = this.yahooPlayers.find(p => p.player_id == id)
+        let player = getYahooPlayer(this.yahooPlayers, id)
         if (player) {
           return `${player.name.full}`
         }
@@ -183,7 +184,7 @@ export default {
     },
     getNFLTeam (id) {
       if (this.loaded) {
-        let player = this.yahooPlayers.find(p => p.player_id == id)
+        let player = getYahooPlayer(this.yahooPlayers, id)
         if (player) {
           return `${player.editorial_team_full_name}`
         }
@@ -221,22 +222,22 @@ export default {
       Object.keys(this.filter).forEach(key => {
         if (this.filter[key] !== '') {
           if (key === 'search') {
-            filtered = filtered.filter(p => this.searchFilter(p))
+            filtered = filtered.filter(p => this.searchFilter(p.yahooLeaguePlayerId))
             // filtered = filtered.filter(p => p.name.full.toLowerCase().includes(this.filter[key].toLowerCase()))
           } else if (key === 'position') {
-            filtered = filtered.filter(p => this.positionFilter(p))
+            filtered = filtered.filter(p => this.positionFilter(p.yahooLeaguePlayerId))
             // filtered = filtered.filter(p => p.display_position === this.filter[key])
           }
         }
       })
       return filtered
     },
-    searchFilter (scadPlayer) {
-      let player = this.yahooPlayers.find(p => p.player_id == scadPlayer.yahooLeaguePlayerId)
+    searchFilter (id) {
+      let player = getYahooPlayer(this.yahooPlayers, id)
       return player.name.full.toLowerCase().includes(this.filter['search'].toLowerCase())
     },
-    positionFilter (scadPlayer) {
-      let player = this.yahooPlayers.find(p => p.player_id == scadPlayer.yahooLeaguePlayerId)
+    positionFilter (id) {
+      let player = getYahooPlayer(this.yahooPlayers, id)
       return player.display_position === this.filter['position']
     }
   }
