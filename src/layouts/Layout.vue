@@ -51,13 +51,14 @@
       .col
         .text-grey-6.text-center
       .col
-        .text-grey-6.text-center Version 1.0.0
+        .text-grey-6.text-center Version {{ p.version }}
 
 </template>
 
 <script>
 /* eslint-disable eqeqeq */
 import { getBaseURL } from '../utilities/enviornment'
+import p from '../../package.json'
 
 export default {
   name: 'DefaultLayout',
@@ -97,6 +98,9 @@ export default {
     this.persistState()
   },
   computed: {
+    p () {
+      return p
+    },
     user () {
       return this.$store.state.user
     },

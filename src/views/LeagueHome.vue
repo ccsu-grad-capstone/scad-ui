@@ -30,7 +30,6 @@
 </template>
 
 <script>
-import { mapRoster, mapTeam } from '../utilities/helpers/teamHelper'
 
 export default {
   name: 'LeagueHome',
@@ -99,12 +98,6 @@ export default {
     }
   },
   methods: {
-    getPlayers () {
-      return mapRoster(this.roster)
-    },
-    getTeam () {
-      return mapTeam(this.team)
-    }
   }
 
 }
