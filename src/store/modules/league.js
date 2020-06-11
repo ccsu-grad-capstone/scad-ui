@@ -319,7 +319,7 @@ export default {
       // console.log('[LEAGUE-ACTION] - getAllScadLeagues()')
       try {
         const scadleagues = await scad(
-          rootState.user.tokens.acess_token,
+          rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .get(`/api/scad/league/all`)
         console.log('SCAD-LEAGUES: ', scadleagues.data)
