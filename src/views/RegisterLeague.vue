@@ -390,7 +390,7 @@ export default {
         const response = await scad(
           this.tokens.access_token,
           this.tokens.id_token)
-          .post(`/scad/email/request/${this.selectedLeague.league_id}`)
+          .post(`/api/scad/email/request/${this.selectedLeague.league_id}`)
         notify.emailCommissioner(response.data.msg)
         this.$router.push('/about')
       } catch (err) {

@@ -163,7 +163,7 @@ export default {
         const response = await scad(
           this.tokens.access_token,
           this.tokens.id_token)
-          .put(`/scad/league/default/update/${id}`)
+          .put(`/api/scad/league/default/update/${id}`)
         console.log('Update Default League Response: ', response)
         notify.updateDefaultLeague()
         await this.$store.dispatch('league/getAllScadLeagues')

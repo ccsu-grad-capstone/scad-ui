@@ -72,7 +72,7 @@ export default {
         const res = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/yahoo/league/${yahooLeagueId}/team/${yahooTeamId}/roster`)
+          .get(`/api/yahoo/league/${yahooLeagueId}/team/${yahooTeamId}/roster`)
         res.data.team.players = res.data.team.roster.players
         res.data.team.roster.players = {}
         console.log('YAHOO-TEAM: ', res.data)
@@ -88,13 +88,13 @@ export default {
         const team = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/scad/league/yahoo/${yahooLeagueId}/team/${yahooTeamId}`)
+          .get(`/api/scad/league/yahoo/${yahooLeagueId}/team/${yahooTeamId}`)
         // console.log('SCAD-TEAM: ', team.data)
 
         const players = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/scad/league/yahoo/${yahooLeagueId}/team/${yahooTeamId}/players`)
+          .get(`/api/scad/league/yahoo/${yahooLeagueId}/team/${yahooTeamId}/players`)
         // console.log('SCAD-TEAM - PLAYERS: ', players.data)
 
         let scadTeam = team.data
@@ -113,13 +113,13 @@ export default {
         const team = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/yahoo/league/${rootState.league.yahooLeagueId}/myTeam`)
+          .get(`/api/yahoo/league/${rootState.league.yahooLeagueId}/myTeam`)
         // console.log('MY-YAHOO-TEAM - TEAM INFO: ', team.data)
 
         const players = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/yahoo/league/${rootState.league.yahooLeagueId}/myPlayers`)
+          .get(`/api/yahoo/league/${rootState.league.yahooLeagueId}/myPlayers`)
         // console.log('MY-YAHOO-TEAM - PLAYERS: ', players.data)
 
         let yahooTeam = team.data
@@ -138,13 +138,13 @@ export default {
         const team = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/scad/league/${rootState.league.scadLeagueId}/team/myTeam`)
+          .get(`/api/scad/league/${rootState.league.scadLeagueId}/team/myTeam`)
         // console.log('MY-SCAD-TEAM - TEAM INFO: ', team.data)
 
         const players = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/scad/league/${rootState.league.scadLeagueId}/player/myPlayers`)
+          .get(`/api/scad/league/${rootState.league.scadLeagueId}/player/myPlayers`)
         // console.log('MY-SCAD-TEAM - PLAYERS: ', players.data)
 
         let scadTeam = team.data
@@ -163,7 +163,7 @@ export default {
         const res = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .post(`/scad/player`, player)
+          .post(`/api/scad/player`, player)
         console.log('ADD-PLAYER: ', res)
         // notify.salarySaveSuccessful()
       } catch (err) {
@@ -177,7 +177,7 @@ export default {
         const res = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .put(`/scad/player/${player.id}`, player)
+          .put(`/api/scad/player/${player.id}`, player)
         console.log('SAVE-PLAYER: ', res)
         notify.salarySaveSuccessful()
         if (yahooTeamId == state.myYahooTeamId) {
@@ -194,7 +194,7 @@ export default {
         const res = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .put(`/scad/team/${t.id}`, t)
+          .put(`/api/scad/team/${t.id}`, t)
         console.log('SAVE-TEAM: ', res)
         // notify.teamSaveSuccessful()
       } catch (err) {
