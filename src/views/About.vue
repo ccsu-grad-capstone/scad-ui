@@ -4,26 +4,42 @@
     .bg-white
       q-card.shadow-20.q-pa-md
         .row.full-width.justify-center.q-gutter-sm
-          .col.q-px-sm
+          .col-xl.col-lg.col-md.col-sm-10.col-xs-10.q-px-sm
             .row.justify-center.q-gutter-lg
               img(src="../statics/salaries.png" style="height: 125px")
               .text-center.text-body1 Manage your team like a real GM with player salaries, team salary caps, and more.
-          q-separator(vertical)
-          .col.q-px-sm
+          q-separator.gt-sm(vertical)
+          .col-xl.col-lg.col-md.col-sm-10.col-xs-10.q-px-sm
             .row.justify-center.q-gutter-lg
               img(src="../statics/yahoo-ff.png" style="height: 125px")
               .text-center.text-body1 Built on top of Yahoo!, we let them do what they do best and we take care of the rest.
-          q-separator(vertical)
-          .col.q-px-sm
+          q-separator.gt-sm(vertical)
+          .col-xl.col-lg.col-md.col-sm-10.col-xs-10.q-px-sm
             .row.justify-center.q-gutter-lg
               img(src="../statics/handshake.png" style="height: 125px")
               .text-center.text-body1 Let keep track of the exhausted draft pick and salary cap exemption trade details.
-          q-separator(vertical)
-          .col.q-px-sm
+          q-separator.gt-sm(vertical)
+          .col-xl.col-lg.col-md.col-sm-10.col-xs-10.q-px-sm
             .row.justify-center.q-gutter-lg
               img(src="../statics/spreadsheet.png" style="height: 125px")
               .text-center.text-body1 Designed to replace those hard to keep track of spreadsheets.
-    .row.full-width.justify-end.items-center.bgimg
+
+    .row.full-width.justify-center.lg-md
+      div.q-py-lg(v-if="!loggedIn")
+        .row.full-width.justify-center.text-body2
+          | Click here to login with your Yahoo! account
+        .row.full-width.justify-center.q-pt-sm
+          .col-3
+            q-btn-group(spread)
+              q-btn(label="Log In" color="primary" size="md" @click="loginWithYahoo")
+      div.q-py-lg(v-else)
+        .row.full-width.justify-center.text-body2
+          | Register your Yahoo! Fantasy Football League with us here!
+        .row.full-width.justify-center.q-pt-sm
+          .col-5
+            q-btn-group(spread)
+              q-btn(label="Register League" color="primary" size="md" @click="registerLeague")
+    .row.full-width.justify-end.items-center.bgimg.gt-sm
       .col-5.q-mr-lg.q-mt-lg
         q-card.q-pa-md.card-opacity.shadow-24
           .text-h6.info-title What is SCAD?

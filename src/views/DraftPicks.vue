@@ -1,21 +1,21 @@
 <template lang="pug">
   q-page
     .row.full-width.justify-center
-      .row.draft-picks-width
+      .col-xl-10.col-lg-10.col-md-10.col-sm-12.col-xs-12
         .row.full-width.q-pa-md
           div.text-h4.text-weight-bolder Draft Picks
           q-space
           div(v-if="loaded")
             q-btn.q-mt-sm(v-if="draftPicks.length === 0 && this.scadSettings.isCurrentlyLoggedInUserACommissioner" label='CLICK HERE TO CREATE DRAFT PICKS' dense color='primary' text-color='white' size='sm' @click="updateMongoWithDraftPicks")
-        .row.full-width.q-px-md
+        .row.full-width.q-px-md.gt-sm
           .text-subtitle2.text-grey  List of draft picks for drafting incoming rookies for next {{scadSettings.tradingDraftPickYears}} years.  Each rookie draft is {{scadSettings.rookieDraftRds}} rounds.  Each year, all owners are given {{scadSettings.rookieDraftRds}} picks, 1 for each round. Pick value for each draft pick is entered upon completion of fantasy season.
         .row.full-width.justify-center.q-pt-md
           .row.full-width.q-gutter-sm.q-px-sm
-            .col-2
+            .col-xl-2.col-lg-2.col-md-2.col-sm-2.col-xs-3
               q-select( filled dense label="Owner" stack-label v-model='filter.team' :options='filteredTeams')
-            .col-2
+            .col-xl-2.col-lg-2.col-md-2.col-sm-2.col-xs-3
               q-select( filled dense label="Year" stack-label v-model='filter.year' :options='referenceData.draftPickYearsFilter(this.scadSettings.seasonYear, this.scadSettings.tradingDraftPickYears)')
-            .col-2
+            .col-xl-2.col-lg-2.col-md-2.col-sm-2.col-xs-3
               q-select( filled dense label="Round" stack-label v-model='filter.rd' :options='referenceData.rounds')
             div.q-gutter-sm
               q-btn.q-pa-xs(label='Clear' dense color='primary' text-color='white' size='sm' @click="clearFilter")
@@ -106,8 +106,8 @@ export default {
         {
           name: 'rd',
           required: true,
-          label: 'Round:',
-          align: 'center',
+          label: 'Rd:',
+          align: 'left',
           sortable: false
         },
         {
