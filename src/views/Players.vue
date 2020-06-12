@@ -1,18 +1,18 @@
 <template lang="pug">
   q-page
     .row.full-width.justify-center
-      .row.players-width
+      .col-xl-10.col-lg-10.col-md-10.col-sm-12.col-xs-12
         .row.full-width.q-pa-md
           div.text-h4.text-weight-bolder Players
-        .row.full-width.q-px-md
+        .row.full-width.q-px-md.gt-sm
           .text-subtitle2.text-grey Current list of all players in SCAD database with their corresponding salaries and team.
         .row.full-width.justify-center.q-pt-md
           .row.full-width.q-gutter-sm.q-px-sm
-            .col-2
+            .col-xl-2.col-lg-2.col-md-2.col-sm-2.col-xs-3
               q-input(filled dense label="Search by Name" stack-label v-model='filter.search')
-            .col-2
+            .col-xl-2.col-lg-2.col-md-2.col-sm-2.col-xs-3
               q-select(filled dense label="Team" stack-label v-model='filter.team' :options="filteredTeams" @input="updateTeamFilter()")
-            .col-2
+            .col-xl-2.col-lg-2.col-md-2.col-sm-2.col-xs-3
               q-select(filled dense label="Position" stack-label :options="referenceData.positionFilter" v-model='filter.position')
             div.q-gutter-sm
               q-btn.q-pa-xs(label='Clear' dense color='primary' text-color='white' size='sm' @click="clearFilter")

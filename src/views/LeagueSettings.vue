@@ -14,12 +14,13 @@
       .row.full-width.justify-center
         .text-grey Fetching SCAD settings...
     .row.full-width.justify-center(v-else)
-      .row.settings-width
-        q-card.q-pa-md.q-ma-lg(style='width: 100%')
+      .col-xl-10.col-lg-10.col-md-10.col-sm-12.col-xs-12
+        q-card.q-pa-md.q-ma-lg
           q-card-section
             .row.full-width.q-gutter-between
               .col
-                .text-h4.text-weight-bolder League Settings
+                .text-h4.text-weight-bolder.gt-xs League Settings
+                .text-h6.text-weight-bolder.lt-sm League Settings
               div.q-pt-sm(v-if="commish()")
                 q-btn(v-if="!editing" label='Edit Settings' dense color='primary' text-color='white' size='sm' @click="editing = true")
                 div.q-gutter-md(v-else)
@@ -38,7 +39,7 @@
                   | Yahoo! League Id:
                 .col.text-body1.q-pl-lg.text-weight-bolder
                   | {{scadSettings.yahooLeagueId}}
-            q-item(clickable)
+            q-item.mobile-hide(clickable)
               .row.full-width.q-pl-lg
                 .col-5.text-body1.text-left
                   | Yahoo! League Homepage:
