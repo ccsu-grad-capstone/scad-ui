@@ -92,7 +92,7 @@
                 .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
                   | {{yahooTeam.number_of_moves}}
               .row
-                .col-8.text-grey-8.text-caption.text-right Draft Grade: {{windowWidth }}
+                .col-8.text-grey-8.text-caption.text-right Draft Grade:
                 .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
                   | {{yahooTeam.draft_grade}}
       .row.full-width.justify-center
