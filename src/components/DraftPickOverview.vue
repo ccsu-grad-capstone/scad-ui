@@ -1,7 +1,7 @@
 <template lang="pug">
   .q-px-md
     .text-weight-bold Draft Picks:
-    q-table.table-width(
+    q-table(
       class="my-sticky-header-table"
       v-if="loaded"
       :data='draftPicksByTeam',

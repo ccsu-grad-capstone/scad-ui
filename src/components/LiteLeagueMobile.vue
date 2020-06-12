@@ -9,9 +9,6 @@
       hide-bottom,
       dense
       )
-      template(v-slot:body-cell-rank='props' auto-width)
-        q-td(:props='props' auto-width)
-          | {{getTeamRank(props.row.team_standings.team_standings.rank)}}
       template(v-slot:body-cell-name='props' auto-width)
         q-td(:props='props')
           .row.full-width.q-py-xs
@@ -50,13 +47,6 @@ export default {
         rowsPerPage: 0 // 0 means all rows
       },
       columns: [
-        {
-          name: 'rank',
-          required: true,
-          align: 'left',
-          label: 'Rank',
-          headerClasses: 'bg-grey-3'
-        },
         {
           name: 'name',
           required: true,
