@@ -24,7 +24,7 @@
               img(src="../statics/spreadsheet.png" style="height: 100px")
               .text-center Designed to replace those hard to keep track of spreadsheets.
 
-    .row.full-width.justify-center.lg-md
+    .row.full-width.justify-center.lt-md
       div.q-py-lg(v-if="!loggedIn")
         .row.full-width.justify-center.text-body2
           | Click here to login with your Yahoo! account

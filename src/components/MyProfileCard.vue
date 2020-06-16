@@ -2,7 +2,7 @@
   q-card.q-pa-md.row
     .col-xl-3.col-lg-3.col-md-3.col-sm-5.col-xs-5
       .row.justify-center.align-center
-        img(:src="getProfilePic()" style="width: 70%")
+        img(:src="getProfilePic()")
     .column.q-px-md.justify-center
       .row.text-body1
         q-card-section
