@@ -13,13 +13,16 @@
             class="q-ma-md"
             )
       .row.register-width(v-else)
-        q-card.q-pa-md.q-ma-lg(v-if="yahooCommishLeagues.length > 0")
+        q-card.q-pa-md.q-ma-lg(v-if="!yahooCommishLeagues.length > 0")
           q-card-section.row.justify-center
-            .text-h4.text-weight-bolder Register Your Yahoo League With SCAD
-          q-card-section.row.justify-center
+            .text-h4.text-weight-bolder.gt-xs Register Your Yahoo League With SCAD
+            .text-h6.text-weight-bolder.lt-sm Register With SCAD
+          q-card-section.lt-sm.row.justify-center
+            .text-body2.text-center Rotate your phone or tablet to register your league.
+          q-card-section.gt-xs.row.justify-center
             .text-body2.text-center To register your league with SCAD you must be an eligable commissioner of your Yahoo League.  If the league you're looking to register is not listed below, please reach out to the league commissioner to register with SCAD.
             router-link.text-primary.text-weight-bold(to="my-profile") View your profile for more information.
-          q-form(@submit='onSubmit')
+          q-form.gt-xs(@submit='onSubmit')
             q-separator.q-mb-lg(color='secondary' inset)
             .row.q-pb-md
               .col-3.text-subtitle2.text-right.q-pt-sm
@@ -175,14 +178,18 @@
               .col-1.q-pl-lg
                 q-select( filled dense v-model='newLeague.defMax' :options='referenceData.rosterLimits' :error='$v.newLeague.defMax.$error' error-message='')
             q-separator.q-my-lg(color='secondary' inset)
-          .row.justify-center
+          .row.justify-center.gt-xs
             .col-3
               q-btn-group(spread)
                 q-btn(label='Submit' type='submit' dense no-caps color='primary' size='md' @click="onSubmit")
           //- q-dialog(v-model='registerLeagueInvites' persistent)
           //-   register-league-invites
         q-card.q-pa-md.q-ma-lg(v-else style='width: 100%')
-          q-card-section.row.justify-center
+          q-card-section.lt-sm.row.justify-center
+            .text-h6.text-weight-bolder Register With SCAD
+          q-card-section.lt-sm.row.justify-center
+            .text-body2.text-center Rotate your phone or tablet to register your league.
+          q-card-section.gt-xs.row.justify-center
             .row.full-width.justify-center
               .text-h4.text-weight-bolder Ught Oh..
             .row.full-width.justify-center.q-pt-lg
