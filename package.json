@@ -1,8 +1,6 @@
 {
   "name": "scad",
-  "version": "1.0.6",
-  "description": "A Salary Cap Dynasty Fantasy Football App",
-  "productName": "scad app",
+  "version": "0.0.1",
   "private": true,
   "description": "A Salary Cap Dynasty Fantasy Football App",
   "scripts": {
@@ -10,7 +8,7 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
-    "test": "jest"
+    "test": "jest"    
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
