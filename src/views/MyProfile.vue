@@ -4,7 +4,7 @@
       .text-h4.text-weight-bolder My Profile
     my-profile-card
     yahoo-leagues-card
-    my-tokens(v-if='inDevelopment()')
+    //- my-tokens(v-if='inDevelopment()')
 
 </template>
 
