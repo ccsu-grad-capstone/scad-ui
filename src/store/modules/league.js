@@ -143,7 +143,7 @@ export default {
         const dashboard = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/scad/dashboard/details`)
+          .get(`/api/scad/dashboard/details`)
         console.log('DASHBOARD: ', dashboard.data)
 
         if (dashboard.data.key === 'League') {
@@ -221,7 +221,7 @@ export default {
         const yahooLeague = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/yahoo/league/${leagueId}`)
+          .get(`/api/yahoo/league/${leagueId}`)
         console.log('YAHOO-LEAGUE-DETAILS: ', yahooLeague.data)
         commit('updateYahooLeagueDetails', yahooLeague.data)
       } catch (err) {
@@ -235,7 +235,7 @@ export default {
         const settings = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/yahoo/league/${leagueId}/settings`)
+          .get(`/api/yahoo/league/${leagueId}/settings`)
         console.log('YAHOO-SETTINGS: ', settings.data.settings)
         commit('updateYahooSettings', settings.data.settings[0])
       } catch (err) {
@@ -249,7 +249,7 @@ export default {
         const res = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/scad/league/${id}`)
+          .get(`/api/scad/league/${id}`)
           // .get(`/scadleague/default`)
         console.log('SCAD-SETTINGS: ', res)
         commit('updateScadSettings', res.data)
@@ -264,7 +264,7 @@ export default {
         const res = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/scad/league/yahoo/${yahooId}`)
+          .get(`/api/scad/league/yahoo/${yahooId}`)
           // .get(`/scadleague/default`)
         console.log('SCAD-SETTINGS-ByYAHOO: ', res.data)
         commit('updateScadSettings', res.data)
@@ -279,7 +279,7 @@ export default {
         const standings = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/yahoo/league/${leagueId}/standings`)
+          .get(`/api/yahoo/league/${leagueId}/standings`)
         console.log('YAHOO-TEAMS: ', standings.data)
         commit('updateYahooTeams', standings.data.standings)
       } catch (err) {
@@ -293,7 +293,7 @@ export default {
         const res = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/scad/league/${id}/team/all`)
+          .get(`/api/scad/league/${id}/team/all`)
         console.log('SCAD-TEAMS: ', res.data)
         commit('updateScadTeams', res.data.scadLeagueTeams)
       } catch (err) {
@@ -307,7 +307,7 @@ export default {
         const res = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/yahoo/league/all`)
+          .get(`/api/yahoo/league/all`)
         console.log('YAHOO-LEAGUES: ', res.data)
         commit('updateYahooLeagues', res.data.leagues)
       } catch (err) {
@@ -315,13 +315,13 @@ export default {
       }
     },
 
-    async getAllScadLeagues ({ rootState, commit }) {
+    async getAllScadLeagues ({ rootState, commit, dispatch }) {
       // console.log('[LEAGUE-ACTION] - getAllScadLeagues()')
       try {
         const scadleagues = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/scad/league/all`)
+          .get(`/api/scad/league/all`)
         console.log('SCAD-LEAGUES: ', scadleagues.data)
         commit('updateScadLeagues', scadleagues.data.scadLeagues)
       } catch (err) {
@@ -335,7 +335,7 @@ export default {
         const commishLeagues = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/yahoo/league/commissioner/all`)
+          .get(`/api/yahoo/league/commissioner/all`)
         console.log('YAHOO-COMMISH-LEAGUES: ', commishLeagues.data)
         commit('updateYahooCommishLeagues', commishLeagues.data.commissionerLeagues)
       } catch (err) {

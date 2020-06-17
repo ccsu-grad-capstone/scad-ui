@@ -9,9 +9,6 @@
       hide-bottom,
       dense
       )
-      template(v-slot:body-cell-rank='props' auto-width)
-        q-td(:props='props' auto-width)
-          | {{getTeamRank(props.row.team_standings.team_standings.rank)}}
       template(v-slot:body-cell-name='props' auto-width)
         q-td(:props='props')
           .row.full-width.q-py-xs
@@ -20,9 +17,6 @@
                 img(:src="props.row.team_logos[0].team_logo.url")
             .column.justify-center.text-weight-bold.q-pl-sm
               router-link(:to="{ path: `/team/${props.row.team_id}`}") {{props.row.name}}
-      template(v-slot:body-cell-manager='props')
-        q-td(:props='props' auto-width)
-          .text-grey {{props.row.managers[0].manager.nickname}}
       template(v-slot:body-cell-give='props')
         q-td(:props='props' auto-width)
           //- .text-grey-8.text-weight-bold() ${{getTeamGive(props.row.team_id)}}
@@ -38,9 +32,6 @@
           .text-positive.text-weight-bolder(v-if="checkTeamSalary(props.row.team_id) > 5") ${{getTeamSalary(props.row.team_id)}}
           .text-negative.text-weight-bolder(v-else-if="checkTeamSalary(props.row.team_id) < 0") ${{getTeamSalary(props.row.team_id)}}
           .text-warning.text-weight-bolder(v-else) ${{getTeamSalary(props.row.team_id)}}
-    .row.full-width.q-pt-xs.justify-center.mobile-hide
-      .text-caption.text-grey Salaries and cap exemptions may appear off with Yahoo! updates..
-      q-btn(size='sm' color='accent' label='Click here to update' flat dense @click='updateTeamSalaries()' icon="sync")
 
 </template>
 
@@ -48,7 +39,7 @@
 /* eslint-disable eqeqeq */
 
 export default {
-  name: 'LiteLeague',
+  name: 'LiteLeagueMobile',
   data () {
     return {
       pagination: {
@@ -57,35 +48,11 @@ export default {
       },
       columns: [
         {
-          name: 'rank',
-          required: true,
-          align: 'left',
-          label: 'Rank',
-          headerClasses: 'bg-grey-3'
-        },
-        {
           name: 'name',
           required: true,
           label: 'Team:',
           align: 'left',
           sortable: false,
-          headerClasses: 'bg-grey-3'
-        },
-        {
-          name: 'manager',
-          required: true,
-          label: 'Manager:',
-          align: 'left',
-          sortable: false,
-          headerClasses: 'bg-grey-3'
-        },
-        {
-          name: 'record',
-          required: true,
-          label: 'Record:',
-          align: 'left',
-          field: row => row.team_standings.team_standings.outcome_totals,
-          format: val => `${val.wins}-${val.losses}-${val.ties}`,
           headerClasses: 'bg-grey-3'
         },
         {

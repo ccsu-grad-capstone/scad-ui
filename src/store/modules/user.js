@@ -74,7 +74,7 @@ export default {
         const res = await scad(
           state.tokens.access_token,
           state.tokens.id_token)
-          .get('/user')
+          .get('/api/user')
         commit('updateUser', res.data)
         console.log('[USER-ACTION] - updateUser(): ', res.data)
       } catch (error) {

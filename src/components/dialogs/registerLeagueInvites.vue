@@ -45,7 +45,7 @@ export default {
         const response = await scad(
           this.tokens.access_token,
           this.tokens.id_token)
-          .post(`/scad/email/registered/${this.emailLeagueId}`)
+          .post(`/api/scad/email/registered/${this.emailLeagueId}`)
         this.$store.commit('dialog/registerLeagueInvites')
         notify.emailCommissioner(response.data.msg)
       } catch (err) {

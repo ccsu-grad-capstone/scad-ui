@@ -16,16 +16,18 @@
       .row.full-width.justify-center
         .text-primary This may take a moment
     .row.q-gutter-md.full-width.justify-center.q-pt-lg(v-if="league.isActive && !refresh")
-      .row.dashboard-width.justify-center
-        .row
-          .div
-            q-avatar(size="85px")
-              img(src="../statics/yahoo-ff.png")
-          .column.justify-center.align-center.text-center
-            .text-h4.text-weight-bolder {{league.yahooLeagueDetails.name}}
-            a(:href='league.yahooLeagueDetails.url') {{league.yahooLeagueDetails.url}}
-        .row.full-width
-          lite-league(@updateTeamSalaries="updateTeamSalaries")
+      .row
+        .div.mobile-hide
+          q-avatar(size="75px")
+            img(src="../statics/yahoo-ff.png")
+        .column.justify-center.align-center.text-center
+          .text-h4.text-weight-bolder {{league.yahooLeagueDetails.name}}
+          a(:href='league.yahooLeagueDetails.url') {{league.yahooLeagueDetails.url}}
+      .row.full-width.justify-center
+        .col-xl-6.col-lg-6.col-md-6.col-sm-10.col-xs-10
+          lite-league.gt-xs(@updateTeamSalaries="updateTeamSalaries")
+          lite-league-mobile.lt-sm(@updateTeamSalaries="updateTeamSalaries")
+        .col-xl-5.col-lg-5.col-md-5.col-sm-10.col-xs-10
           lite-my-team
 
 </template>
@@ -33,6 +35,7 @@
 <script>
 import LiteMyTeam from '../components/LiteMyTeam'
 import LiteLeague from '../components/LiteLeague'
+import LiteLeagueMobile from '../components/LiteLeagueMobile'
 import LiteDraftPicks from '../components/LiteDraftPicks'
 
 export default {
@@ -40,6 +43,7 @@ export default {
   components: {
     'lite-my-team': LiteMyTeam,
     'lite-league': LiteLeague,
+    'lite-league-mobile': LiteLeagueMobile,
     'lite-draft-picks': LiteDraftPicks
   },
   data () {
@@ -84,6 +88,4 @@ export default {
   a
     color: $info
     text-decoration: none
-  .dashboard-width
-    width: 1100px
 </style>
