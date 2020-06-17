@@ -1,5 +1,5 @@
 <template lang="pug">
-  div.q-pa-md
+  div.q-pa-md.q-gutter-md
     .row.full-width.q-gutter-md.q-pa-md
       .text-h4.text-weight-bolder My Profile
     my-profile-card

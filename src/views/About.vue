@@ -6,25 +6,25 @@
         .row.full-width.justify-center.q-gutter-sm
           .col-xl.col-lg.col-md.col-sm-10.col-xs-10.q-px-sm
             .row.justify-center.q-gutter-lg
-              img(src="../statics/salaries.png" style="height: 125px")
-              .text-center.text-body1 Manage your team like a real GM with player salaries, team salary caps, and more.
+              img(src="../statics/salaries.png" style="height: 100px")
+              .text-center Manage your team like a real GM with player salaries, team salary caps, and more.
           q-separator.gt-sm(vertical)
           .col-xl.col-lg.col-md.col-sm-10.col-xs-10.q-px-sm
             .row.justify-center.q-gutter-lg
-              img(src="../statics/yahoo-ff.png" style="height: 125px")
-              .text-center.text-body1 Built on top of Yahoo!, we let them do what they do best and we take care of the rest.
+              img(src="../statics/yahoo-ff.png" style="height: 100px")
+              .text-center Built on top of Yahoo!, we let them do what they do best and we take care of the rest.
           q-separator.gt-sm(vertical)
           .col-xl.col-lg.col-md.col-sm-10.col-xs-10.q-px-sm
             .row.justify-center.q-gutter-lg
-              img(src="../statics/handshake.png" style="height: 125px")
-              .text-center.text-body1 Let keep track of the exhausted draft pick and salary cap exemption trade details.
+              img(src="../statics/handshake.png" style="height: 100px")
+              .text-center Let keep track of the exhausted draft pick and salary cap exemption trade details.
           q-separator.gt-sm(vertical)
           .col-xl.col-lg.col-md.col-sm-10.col-xs-10.q-px-sm
             .row.justify-center.q-gutter-lg
-              img(src="../statics/spreadsheet.png" style="height: 125px")
-              .text-center.text-body1 Designed to replace those hard to keep track of spreadsheets.
+              img(src="../statics/spreadsheet.png" style="height: 100px")
+              .text-center Designed to replace those hard to keep track of spreadsheets.
 
-    .row.full-width.justify-center.lg-md
+    .row.full-width.justify-center.lt-md
       div.q-py-lg(v-if="!loggedIn")
         .row.full-width.justify-center.text-body2
           | Click here to login with your Yahoo! account
