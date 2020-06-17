@@ -4,15 +4,17 @@
       q-toolbar.GNL__toolbar
         q-btn.q-mr-sm(v-if="loggedIn" flat dense round @click="leftDrawerOpen = !leftDrawerOpen" aria-label="Menu" icon="menu")
         q-toolbar-title.row.items-center.no-wrap(v-if="$q.screen.gt.xs" shrink)
-            img(src="../statics/scad-logo_v1_100x30.png" clickable @click="iconNavigate")
+          img(src="../statics/scad-logo_v1_100x30.png" clickable @click="iconNavigate")
+        q-toolbar-title.row.items-center.no-wrap(v-else shrink)
+          .text-h5.text-primary.text-weight-bolder SCAD
         q-space
         .q-gutter-sm.row.items-center.no-wrap(v-if="tokens.access_token")
-          .text-weight-bold.text-body1 Welcome {{ user.user.givenName }}
+          .text-weight-bold.text-body1.gt-sm Welcome {{ user.user.givenName }}
           q-btn(round flat @click="navigate('my-profile')")
             q-avatar(size="40px")
               img(v-if="loaded" :src="getProfilePic()")
         q-btn(v-else label="Log In" flat color="primary" size="md" @click="loginWithYahoo")
-    q-drawer(v-if="this.loggedIn" v-model="leftDrawerOpen" show-if-above bordered content-class="bg-white" :width="245" elevated)
+    q-drawer(v-if="this.loggedIn" v-model="leftDrawerOpen" :breakpoint="1200" show-if-above bordered content-class="bg-white" :width="245" elevated)
       q-scroll-area.fit
         q-list.text-grey-8(padding)
           q-item.justify-center
@@ -51,13 +53,14 @@
       .col
         .text-grey-6.text-center
       .col
-        .text-grey-6.text-center Version 1.0.0
+        .text-grey-6.text-center Version {{ p.version }}
 
 </template>
 
 <script>
 /* eslint-disable eqeqeq */
 import { getBaseURL } from '../utilities/enviornment'
+import p from '../../package.json'
 
 export default {
   name: 'DefaultLayout',
@@ -97,6 +100,9 @@ export default {
     this.persistState()
   },
   computed: {
+    p () {
+      return p
+    },
     user () {
       return this.$store.state.user
     },

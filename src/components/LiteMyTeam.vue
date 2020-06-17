@@ -1,5 +1,5 @@
 <template lang="pug">
-  .q-pa-sm.table-width
+  .q-pa-sm
     .text-h6.text-weight-bolder My Team
     q-table(
       :data='myScadTeam.players',
@@ -117,5 +117,5 @@ export default {
     color: #000000
     text-decoration: none
   .table-width
-    width: 500px
+    width: 40%
 </style>

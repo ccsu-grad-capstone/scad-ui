@@ -1,25 +1,25 @@
 <template lang="pug">
   q-page
     .row.full-width.justify-center
-      .row.cap-exemption-width
+      .col-xl-10.col-lg-10.col-md-10.col-sm-12.col-xs-12
         .row.full-width.q-pa-md
           div.text-h4.text-weight-bolder Cap Exemptions
           q-space
           div(v-if="loaded")
             q-btn.q-mt-sm(v-if="updateCE && this.scadSettings.isCurrentlyLoggedInUserACommissioner" label='CLICK HERE TO SYNC CAP EXCEPTIONS' dense color='primary' text-color='white' size='sm' @click="updateMongoWithCE")
-        .row.full-width.q-px-md
+        .row.full-width.q-px-md.gt-sm
           .text-subtitle2.text-grey Cap Exceptions are transactions of salaries between two teams, typically as part of a larger trade.  Amount is added or deducted from participating team's salary for the given year. Each team has ${{salaryCapExemptionLimit}} to both give and recieve throughout the course of a season.
         .row.full-width.q-gutter-between.q-pt-md
           .col.q-px-md
             .row.q-gutter-sm
-              .col-3
+              .col-xl-2.col-lg-2.col-md-2.col-sm-2.col-xs-4
                 q-select( filled dense label="Owner" stack-label v-model='filter.team' :options='filteredTeams')
-              .col-3
+              .col-xl-2.col-lg-2.col-md-2.col-sm-2.col-xs-4
                 q-select( filled dense label="Year" stack-label v-model='filter.year' :options='referenceData.years')
               div.q-gutter-sm
-                q-btn.q-pa-xs(label='Clear' dense color='primary' text-color='white' size='sm' @click="clearFilter")
-          .col-2.q-pt-sm
-                q-btn.q-pa-xs(label='New Cap Exception' dense color='secondary' text-color='primary' size='sm' @click="addCE()")
+                q-btn.q-pa-xs(label='Clear' dense color='primary' text-color='white' size='xs' @click="clearFilter")
+          .col-xl-2.col-lg-2.col-md-2.col-sm-2.col-xs-4.q-pt-sm
+            q-btn.q-pa-xs(label='New Cap Exception' dense color='secondary' text-color='primary' size='sm' @click="addCE()")
         .row.full-width(v-if="!loaded")
           .row.full-width.justify-center
             q-circular-progress.q-mt-xl(
@@ -51,10 +51,10 @@
                 q-td(:props='props' auto-width)
                   div.q-pr-lg {{ props.row.year }}
               template(v-slot:body-cell-giving='props')
-                q-td(:props='props' auto-width)
+                q-td(:props='props' auto-width :class="myTeamStyle(props.row.yahooTeamGive.team_id, myYahooTeamId)")
                   div.q-pr-lg {{ props.row.yahooTeamGive.name }}
               template(v-slot:body-cell-recieving='props')
-                q-td(:props='props' auto-width)
+                q-td(:props='props' auto-width :class="myTeamStyle(props.row.yahooTeamRecieve.team_id, myYahooTeamId)")
                   div.q-pr-lg {{ props.row.yahooTeamRecieve.name }}
               template(v-slot:body-cell-amount='props')
                 q-td(:props='props' auto-width)
@@ -69,6 +69,8 @@ import addCapExemptionDialog from '../components/dialogs/addCapExemptionDialog'
 import editCapExemptionDialog from '../components/dialogs/editCapExemptionDialog'
 import { node } from '../utilities/axios-node'
 import { catchAxiosNodeError } from '../utilities/catchAxiosErrors'
+import { myTeamStyle } from '../utilities/formatters'
+
 /* eslint-disable eqeqeq */
 
 export default {
@@ -144,6 +146,9 @@ export default {
     this.checkCapExemptions()
   },
   computed: {
+    myTeamStyle () {
+      return myTeamStyle
+    },
     user () {
       return this.$store.state.user
     },
@@ -182,6 +187,9 @@ export default {
     },
     oldYahooLeagueId () {
       return this.$store.state.league.yahooLeagueDetails.renew
+    },
+    myYahooTeamId () {
+      return this.$store.state.team.myYahooTeamId
     }
   },
   methods: {
@@ -225,7 +233,7 @@ export default {
           if (key === 'team') {
             filtered = filtered.filter(ce => ce.yahooTeamGive.name === this.filter.team.name || ce.yahooTeamRecieve.name === this.filter.team.name)
           } else {
-            filtered = filtered.filter(ce => ce[key] === this.filter[key])
+            filtered = filtered.filter(ce => ce[key] == this.filter[key])
           }
         }
       })

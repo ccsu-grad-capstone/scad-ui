@@ -34,7 +34,7 @@ export default {
       // console.log('[DRAFTPICK-ACTION] - getDraftPicksByLeague()')
       try {
         const response = await node.get(`/draftPicks/${yahooLeagueId}/${year}`)
-        // console.log('DRAFTPICKS-league', response.data.data)
+        console.log('DRAFTPICKS-league', response.data)
         commit('updateDraftPicks', { dp: response.data.data })
       } catch (error) {
         catchAxiosNodeError(error)
@@ -44,7 +44,7 @@ export default {
       // console.log('[DRAFTPICK-ACTION] - getDraftPicksByTeam()')
       try {
         const response = await node.get(`/draftPicks/${rootState.league.yahooLeagueId}/${year}/${teamId}`)
-        // console.log('DRAFTPICKS-team', response.data.data)
+        console.log('DRAFTPICKS-team', response.data)
         commit('updateDraftPicksByTeam', { dp: response.data.data })
       } catch (error) {
         catchAxiosNodeError(error)
@@ -101,7 +101,8 @@ export default {
                     team: t,
                     originalTeam: t,
                     comments: '',
-                    prevLeagueIds: []
+                    prevLeagueIds: [],
+                    log: []
                   }
                   await node.post('/draftPicks/create', { data: draftPick })
                 })

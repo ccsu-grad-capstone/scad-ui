@@ -87,7 +87,6 @@
 </template>
 
 <script>
-import { mapRoster } from '../utilities/helpers/teamHelper'
 
 export default {
   name: 'LiteMyTeam',
@@ -151,9 +150,6 @@ export default {
     }
   },
   methods: {
-    getPlayers () {
-      return mapRoster(this.roster)
-    },
     getPic () {
 
     }

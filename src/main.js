@@ -3,12 +3,14 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import VueCookies from 'vue-cookies'
+import VueWindowSize from 'vue-window-size'
 
 import './quasar'
 
 Vue.config.productionTip = false
 
 Vue.use(VueCookies)
+Vue.use(VueWindowSize)
 
 Vue.$cookies.config('7d')
 Vue.$cookies.set('theme', 'default')

@@ -79,7 +79,7 @@ export default {
   },
   rosterMinError (pos, count, min) {
     Notify.create({
-      message: `Invalid ${pos.toUppercase()}`,
+      message: `Invalid Roster [${pos}]: Current Count: ${count}, League Min: ${min}`,
       position: 'top',
       icon: 'error',
       color: 'red',

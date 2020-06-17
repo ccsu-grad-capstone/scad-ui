@@ -9,7 +9,7 @@ const getBaseURL = (api) => {
     return process.env[endpoint]
   } else if (inProduction()) {
     let endpoint = `VUE_APP_${api}_PROD`
-    return `process.env.${endpoint}`
+    return process.env[endpoint]
   } else {
     console.log('ENVIORNMENT ERROR')
   }

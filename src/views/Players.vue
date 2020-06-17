@@ -1,18 +1,18 @@
 <template lang="pug">
   q-page
     .row.full-width.justify-center
-      .row.players-width
+      .col-xl-10.col-lg-10.col-md-10.col-sm-12.col-xs-12
         .row.full-width.q-pa-md
           div.text-h4.text-weight-bolder Players
-        .row.full-width.q-px-md
+        .row.full-width.q-px-md.gt-sm
           .text-subtitle2.text-grey Current list of all players in SCAD database with their corresponding salaries and team.
         .row.full-width.justify-center.q-pt-md
           .row.full-width.q-gutter-sm.q-px-sm
-            .col-2
+            .col-xl-2.col-lg-2.col-md-2.col-sm-2.col-xs-3
               q-input(filled dense label="Search by Name" stack-label v-model='filter.search')
-            .col-2
+            .col-xl-2.col-lg-2.col-md-2.col-sm-2.col-xs-3
               q-select(filled dense label="Team" stack-label v-model='filter.team' :options="filteredTeams" @input="updateTeamFilter()")
-            .col-2
+            .col-xl-2.col-lg-2.col-md-2.col-sm-2.col-xs-3
               q-select(filled dense label="Position" stack-label :options="referenceData.positionFilter" v-model='filter.position')
             div.q-gutter-sm
               q-btn.q-pa-xs(label='Clear' dense color='primary' text-color='white' size='sm' @click="clearFilter")
@@ -50,7 +50,7 @@
                         | {{getPlayerName(props.row.yahooLeaguePlayerId)}}
                   q-td(key='team' :props='props')
                     .text-grey {{getNFLTeam(props.row.yahooLeaguePlayerId)}}
-                  q-td(:class="myTeam(props.row.yahooTeamId)" key='owner' :props='props')
+                  q-td(:class="myTeamStyle(props.row.yahooTeamId, myYahooTeamId)" key='owner' :props='props')
                     | {{ getOwner(props.row.yahooTeamId) }}
                   q-td(key='salary' :props='props' auto-width)
                     .text-primary.text-weight-bolder.text-body2.q-pr-sm ${{props.row.salary}}
@@ -60,6 +60,9 @@
 <script>
 /* eslint-disable eqeqeq */
 import referenceData from '../utilities/referenceData'
+import { myTeamStyle } from '../utilities/formatters'
+import { getYahooPlayer } from '../utilities/functions'
+
 export default {
   data () {
     return {
@@ -128,6 +131,9 @@ export default {
     referenceData () {
       return referenceData
     },
+    myTeamStyle () {
+      return myTeamStyle
+    },
     scadPlayers () {
       return this.$store.state.player.scadPlayers
     },
@@ -154,26 +160,34 @@ export default {
     },
     getHeadshot (id) {
       if (this.loaded) {
-        let player = this.yahooPlayers.find(p => p.player_id == id)
-        return player.headshot.url
+        let player = getYahooPlayer(this.yahooPlayers, id)
+        if (player) {
+          return player.headshot.url
+        }
       }
     },
     getPos (id) {
       if (this.loaded) {
-        let player = this.yahooPlayers.find(p => p.player_id == id)
-        return player.display_position
+        let player = getYahooPlayer(this.yahooPlayers, id)
+        if (player) {
+          return player.display_position
+        }
       }
     },
     getPlayerName (id) {
       if (this.loaded) {
-        let player = this.yahooPlayers.find(p => p.player_id == id)
-        return `${player.name.full}`
+        let player = getYahooPlayer(this.yahooPlayers, id)
+        if (player) {
+          return `${player.name.full}`
+        }
       }
     },
     getNFLTeam (id) {
       if (this.loaded) {
-        let player = this.yahooPlayers.find(p => p.player_id == id)
-        return `${player.editorial_team_full_name}`
+        let player = getYahooPlayer(this.yahooPlayers, id)
+        if (player) {
+          return `${player.editorial_team_full_name}`
+        }
       }
     },
     getOwner (id) {
@@ -185,7 +199,9 @@ export default {
     getTeam (yahooPlayerId) {
       if (this.loaded) {
         let team = this.scadPlayers.find(p => p.yahooLeaguePlayerId == yahooPlayerId)
-        return team.salary
+        if (team) {
+          return team.salary
+        }
       }
     },
     async updateTeamFilter () {
@@ -206,29 +222,23 @@ export default {
       Object.keys(this.filter).forEach(key => {
         if (this.filter[key] !== '') {
           if (key === 'search') {
-            filtered = filtered.filter(p => this.searchFilter(p))
+            filtered = filtered.filter(p => this.searchFilter(p.yahooLeaguePlayerId))
             // filtered = filtered.filter(p => p.name.full.toLowerCase().includes(this.filter[key].toLowerCase()))
           } else if (key === 'position') {
-            filtered = filtered.filter(p => this.positionFilter(p))
+            filtered = filtered.filter(p => this.positionFilter(p.yahooLeaguePlayerId))
             // filtered = filtered.filter(p => p.display_position === this.filter[key])
           }
         }
       })
       return filtered
     },
-    searchFilter (scadPlayer) {
-      let player = this.yahooPlayers.find(p => p.player_id == scadPlayer.yahooLeaguePlayerId)
+    searchFilter (id) {
+      let player = getYahooPlayer(this.yahooPlayers, id)
       return player.name.full.toLowerCase().includes(this.filter['search'].toLowerCase())
     },
-    positionFilter (scadPlayer) {
-      let player = this.yahooPlayers.find(p => p.player_id == scadPlayer.yahooLeaguePlayerId)
+    positionFilter (id) {
+      let player = getYahooPlayer(this.yahooPlayers, id)
       return player.display_position === this.filter['position']
-    },
-    myTeam (id) {
-      return {
-        'text-accent': id == this.myYahooTeamId,
-        'text-weight-bold': id == this.myYahooTeamId
-      }
     }
   }
 }

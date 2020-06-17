@@ -60,6 +60,12 @@ export default {
       },
       columns: [
         {
+          name: 'edit',
+          label: '',
+          align: 'left',
+          style: 'background-color: #f0f0f0'
+        },
+        {
           name: 'year',
           required: true,
           label: 'Year:',
@@ -81,11 +87,6 @@ export default {
         {
           name: 'otherTeam',
           label: 'Other Team:',
-          align: 'left'
-        },
-        {
-          name: 'edit',
-          label: '',
           align: 'left'
         }
       ]

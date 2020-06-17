@@ -16,6 +16,9 @@
       template(v-slot:body-cell-edit='props')
         q-td.q-pr-md(:props='props' auto-width)
           q-btn(size='xs' color='accent' round dense @click='editPick(props.row)' icon="edit")
+      template(v-slot:body-cell-comments='props')
+        q-td.q-pr-md(:props='props')
+          | {{props.row.comments}}
     edit-draft-pick-dialog(v-if="editDraftPick" :dp="edit.dp" @saved="getPicks")
 
     .col.full-width.text-center.q-pa-xs.text-grey.text-caption {{yahooTeam.name}} draft picks
@@ -47,6 +50,12 @@ export default {
         rowsPerPage: 36 // 0 means all rows
       },
       columns: [
+        {
+          name: 'edit',
+          label: '',
+          align: 'left',
+          style: 'background-color: #f0f0f0'
+        },
         {
           name: 'year',
           required: true,
@@ -87,12 +96,7 @@ export default {
           align: 'left',
           field: row => row.comments,
           format: val => `${val}`,
-          style: 'color: grey'
-        },
-        {
-          name: 'edit',
-          label: '',
-          align: 'left'
+          style: 'color: grey;'
         }
       ]
     }
@@ -105,7 +109,11 @@ export default {
     draftPicksByTeam () {
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       return this.$store.state.draftPicks.draftPicksByTeam.sort(function (a, b) {
-        if (a.rd === b.rd) { return a.pick > b.pick ? 1 : a.pick < b.pick ? -1 : 0 }
+        if (a.rd === b.rd && a.year === b.year) {
+          return a.pick > b.pick ? 1 : a.pick < b.pick ? -1 : 0
+        } else if (a.year === b.year) {
+          return a.rd > b.rd ? 1 : a.rd < b.rd ? -1 : 0
+        }
       })
     },
     editDraftPick () {
@@ -136,5 +144,6 @@ tr
 .pos
   font-weight: bold
   background-color: #f0f0f0
-
+.table-width
+  width: 342px
 </style>

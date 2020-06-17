@@ -29,7 +29,7 @@
           td.text-weight-bold(v-bind:class="{ 'text-red': checkPos('te') }") {{getPosCount('TE')}}
           td ${{getTotal('TE')}}
           td {{getPerc('TE')}}%
-        tr
+        tr(v-if="scadSettings.kMin >0")
           td.pos K
           td.text-weight-bold(v-bind:class="{ 'text-red': checkPos('k') }") {{getPosCount('K')}}
           td ${{getTotal('K')}}
