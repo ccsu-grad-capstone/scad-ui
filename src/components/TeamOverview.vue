@@ -46,7 +46,7 @@
 <script>
 import notify from '../utilities/nofity'
 import referenceData from '../utilities/referenceData'
-import { calcPlayerSalary } from '../utilities/calculator'
+import { calcPlayerSalary, calcTeamSalary } from '../utilities/calculator'
 
 export default {
   name: 'TeamOverview',
@@ -57,6 +57,7 @@ export default {
   },
   data () {
     return {
+      salary: 0,
       loaded: false,
       scadTeamClone: {},
       detailColumns: [
@@ -87,6 +88,8 @@ export default {
     this.scadTeamClone = JSON.parse(JSON.stringify(this.scadTeam))
     this.loaded = true
     this.notifyIllegalRoster()
+    this.salary = calcTeamSalary(this.yahooTeam.players, this.scadTeam.players, [], this.scadSettings.franchiseTagDiscount, this.scadSettings.irRelieftPerc, this.yahooTeam, this.scadSettings.year)
+    console.log(this.salary)
   },
   computed: {
     scadSettings () {
@@ -139,15 +142,7 @@ export default {
       return total
     },
     getPerc (pos) {
-      let salary = this.scadTeamClone.salary
-      if (this.capExemptionsByTeam) {
-        this.capExemptionsByTeam.forEach(ce => {
-          if (ce.yahooTeamGive.team_id === this.yahooTeamId) {
-            salary += ce.amount
-          } else { salary -= ce.amount }
-        })
-      }
-      return Math.floor((this.getTotal(pos) / salary) * 100)
+      return ((this.getTotal(pos) / this.salary) * 100).toFixed(0)
     },
     checkPos (pos) {
       let count = this.getPosCount(pos.toUpperCase())

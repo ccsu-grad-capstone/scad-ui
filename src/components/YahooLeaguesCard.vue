@@ -48,7 +48,7 @@
                 .col.lt-sm {{league.name}}
                     q-badge.q-ml-sm(v-if="checkIfScadLeague(league.league_id)") SCAD
                 .col.text-left.gt-sm
-                  .text-primary.text-weight-bold(v-if="isCommish(league.league_id)") Register League with SCAD
+                  .text-primary.text-weight-bold(v-if="isCommish(league.league_id, yahooCommishLeagues, scadLeagues)") Register League with SCAD
             q-separator
         q-dialog(v-model='registerLeagueInvites' persistent)
           register-league-invites(:emailLeagueId="emailLeagueId")
@@ -58,6 +58,7 @@
 import { openURL } from 'quasar'
 import { scad } from '../utilities/axios-scad'
 import { catchAxiosScadError } from '../utilities/catchAxiosErrors'
+import { isCommish } from '../utilities/validators'
 import notify from '../utilities/nofity'
 import RegisterLeagueInvites from '../components/dialogs/registerLeagueInvites'
 
@@ -83,6 +84,9 @@ export default {
     },
     tokens () {
       return this.user.tokens
+    },
+    isCommish () {
+      return isCommish
     },
     scadLeagueId () {
       return this.$store.state.league.scadLeagueId
@@ -118,16 +122,6 @@ export default {
     },
     isActive (id) {
       if (id === this.scadLeagueId) {
-        return true
-      } else {
-        return false
-      }
-    },
-    isCommish (id) {
-      let league = this.yahooCommishLeagues.find(l => l.league_id === id)
-      // eslint-disable-next-line eqeqeq
-      let registered = this.scadLeagues.find(l => l.yahooLeagueId == id)
-      if (league && !registered) {
         return true
       } else {
         return false
