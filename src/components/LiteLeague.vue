@@ -38,9 +38,9 @@
           .text-positive.text-weight-bolder(v-if="checkTeamSalary(props.row.team_id) > 5") ${{getTeamSalary(props.row.team_id)}}
           .text-negative.text-weight-bolder(v-else-if="checkTeamSalary(props.row.team_id) < 0") ${{getTeamSalary(props.row.team_id)}}
           .text-warning.text-weight-bolder(v-else) ${{getTeamSalary(props.row.team_id)}}
-    .row.full-width.q-pt-xs.justify-center.mobile-hide
-      .text-caption.text-grey Salaries and cap exemptions may appear off with Yahoo! updates..
-      q-btn(size='sm' color='accent' label='Click here to update' flat dense @click='updateTeamSalaries()' icon="sync")
+    //- .row.full-width.q-pt-xs.justify-center.mobile-hide
+    //-   .text-caption.text-grey Salaries and cap exemptions may appear off with Yahoo! updates..
+    //-   q-btn(size='sm' color='accent' label='Click here to update' flat dense @click='updateTeamSalaries()' icon="sync")
 
 </template>
 
