@@ -124,11 +124,6 @@
                     | Limit the number of years teams can trade future draft picks.
             .row
               .col-3.text-subtitle2.text-right.q-pt-sm
-                | Roster Spot Limit:
-              .col-2.q-pl-lg
-                q-select( filled dense v-model='newLeague.rosterSpotLimit' :options='referenceData.rosterSpotLimit()' :error='$v.newLeague.rosterSpotLimit.$error' error-message='Required Field')
-            .row
-              .col-3.text-subtitle2.text-right.q-pt-sm
                 | Roster Limits:
               .col-1.text-caption.text-center.q-pt-sm.q-pl-md
                 | min
@@ -246,7 +241,7 @@ export default {
         franchiseTagDiscount: 25,
         franchiseTagSpots: '',
         tradingDraftPickYears: '',
-        rosterSpotLimit: 25,
+        rosterSpotLimit: 0,
         renewSCADLeagueId: 0,
         qbMin: '2',
         qbMax: '4',

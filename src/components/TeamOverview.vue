@@ -1,6 +1,6 @@
 <template lang="pug">
   .q-px-md
-    .text-weight-bold(:class="countStyle(getCount())") Roster Availability: {{getCount()}}/{{scadSettings.rosterSpotLimit}}
+    .text-weight-bold(:class="countStyle(getCount())") Roster Availability: {{getCount()}}/{{rosterLimit}}
     q-markup-table(v-if="loaded" dense)
       thead
         tr
@@ -47,6 +47,7 @@
 import notify from '../utilities/nofity'
 import referenceData from '../utilities/referenceData'
 import { calcPlayerSalary, calcTeamSalary } from '../utilities/calculator'
+import { getLeagueRosterLimit } from '../utilities/functions'
 
 export default {
   name: 'TeamOverview',
@@ -58,6 +59,7 @@ export default {
   data () {
     return {
       salary: 0,
+      rosterLimit: 0,
       loaded: false,
       scadTeamClone: {},
       detailColumns: [
@@ -89,11 +91,14 @@ export default {
     this.loaded = true
     this.notifyIllegalRoster()
     this.salary = calcTeamSalary(this.yahooTeam.players, this.scadTeam.players, [], this.scadSettings.franchiseTagDiscount, this.scadSettings.irRelieftPerc, this.yahooTeam, this.scadSettings.year)
-    console.log(this.salary)
+    this.rosterLimit = getLeagueRosterLimit(this.rosterPositions)
   },
   computed: {
     scadSettings () {
       return this.$store.state.league.scadSettings
+    },
+    rosterPositions () {
+      return this.$store.state.league.yahooSettings.roster_positions
     },
     irReliefPerc () {
       return this.$store.state.league.scadSettings.irReliefPerc / 100

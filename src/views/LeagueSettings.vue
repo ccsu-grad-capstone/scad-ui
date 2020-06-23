@@ -117,13 +117,6 @@
             q-item(clickable)
               .row.full-width.q-pl-lg
                 .col-5.text-body1.text-left
-                  | Team Roster Spot Limit:
-                .col-2.text-body1.q-pl-lg.text-weight-bolder
-                  q-select(v-if="editing" filled dense v-model='scadSettings.rosterSpotLimit' :options='referenceData.rosterSpotLimit()')
-                  div(v-else) {{scadSettings.rosterSpotLimit}}
-            q-item(clickable)
-              .row.full-width.q-pl-lg
-                .col-5.text-body1.text-left
                   | QB Roster Limits:
                 .col.text-body1.q-pl-lg.text-weight-bolder
                   .row.align-center
@@ -199,7 +192,7 @@
 <script>
 
 import referenceData from '../utilities/referenceData'
-import notify from '../utilities/nofity'
+// import notify from '../utilities/nofity'
 
 export default {
   name: 'RegisterLeague',
@@ -243,7 +236,6 @@ export default {
     },
     async save () {
       await this.$store.dispatch('league/saveLeagueSettings', { settings: this.scadSettings })
-      notify.saveSuccessful('SCAD settings saved successfully')
       this.init()
       this.editing = false
     },

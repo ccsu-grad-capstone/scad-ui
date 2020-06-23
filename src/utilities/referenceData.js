@@ -40,13 +40,6 @@ export default {
     }
     return list
   },
-  rosterSpotLimit () {
-    var list = []
-    for (var i = 10; i <= 40; i += 1) {
-      list.push(i)
-    }
-    return list
-  },
   draftPickYearsFilter (currentYear, tradingYears) {
     var list = []
     for (var i = currentYear; i < currentYear + tradingYears; i += 1) {

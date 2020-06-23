@@ -1,5 +1,5 @@
 /* eslint-disable eqeqeq */
-// import { notify } from '../../utilities/nofity'
+import notify from '../../utilities/nofity'
 import { scad } from '../../utilities/axios-scad'
 // import leagueSettings from '../../data/leagueSettings'
 import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
@@ -216,7 +216,7 @@ export default {
     },
 
     async getYahooLeagueDetails ({ rootState, state, commit }, leagueId) {
-      // console.log('[LEAGUE-ACTION] - getYahooSettings()')
+      // console.log('[LEAGUE-ACTION] - getYahooLeagueDetails()')
       try {
         const yahooLeague = await scad(
           rootState.user.tokens.access_token,
@@ -349,7 +349,7 @@ export default {
         const res = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .post('scad/league', league)
+          .post('/api/scad/league', league)
         console.log('POST response scadleague: ', res)
         // commit('updateLeague', { league: league })
       } catch (err) {
@@ -362,9 +362,10 @@ export default {
         const res = await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .put(`scad/league/${settings.id}`, settings)
+          .put(`/api/scad/league/${settings.id}`, settings)
         console.log('PUT RESPONSE - SAVE LEAGUE: ', res)
         commit('updateScadSettings', res.data)
+        notify.saveSuccessful('SCAD settings saved successfully')
       } catch (err) {
         catchAxiosScadError(err)
       }
