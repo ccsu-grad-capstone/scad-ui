@@ -36,7 +36,7 @@
               dense
               :data='filteredPlayers()'
               :pagination.sync="pagination",
-              :columns='columns'
+              :columns='windowWidth > 600 ? columns : columnsMobile',
               row-key='name')
               template(v-slot:body='props')
                 q-tr(:props='props')
@@ -103,6 +103,33 @@ export default {
           label: 'Team:',
           align: 'left',
           sortable: false,
+          style: 'width: 275px'
+        },
+        {
+          name: 'owner',
+          required: true,
+          label: 'Owner:',
+          align: 'left',
+          sortable: false,
+          style: 'width: 250px'
+        },
+        {
+          name: 'salary',
+          required: true,
+          label: 'Salary:',
+          align: 'center',
+          field: row => row.salary,
+          sortable: true
+        }
+      ],
+      columnsMobile: [
+        {
+          name: 'playerName',
+          required: true,
+          label: 'Player:',
+          align: 'left',
+          sortable: false,
+          field: row => row.name.full,
           style: 'width: 275px'
         },
         {

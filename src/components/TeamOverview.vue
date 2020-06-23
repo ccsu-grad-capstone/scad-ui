@@ -143,8 +143,8 @@ export default {
       if (this.capExemptionsByTeam) {
         this.capExemptionsByTeam.forEach(ce => {
           if (ce.yahooTeamGive.team_id === this.yahooTeamId) {
-            salary -= ce.amount
-          } else { salary += ce.amount }
+            salary += ce.amount
+          } else { salary -= ce.amount }
         })
       }
       return Math.floor((this.getTotal(pos) / salary) * 100)
