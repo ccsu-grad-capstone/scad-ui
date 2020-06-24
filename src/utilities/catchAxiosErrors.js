@@ -19,7 +19,11 @@ const catchAxiosScadError = (error) => {
     notify.scadServerIssueWithResponse(error.response.status, error.message)
     console.log(error.response)
   } else if (error.request) {
-    notify.scadServerIssue(error.message)
+    if (error.message.includes('timeout of')) {
+      notify.scadTimeoutIssue()
+    } else {
+      notify.scadServerIssue(error.message)
+    }
     console.log(error.request)
   } else {
     notify.scadServerIssue(error.message)

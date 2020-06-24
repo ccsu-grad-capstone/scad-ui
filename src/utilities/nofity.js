@@ -173,6 +173,17 @@ export default {
       ]
     })
   },
+  scadTimeoutIssue () {
+    Notify.create({
+      message: `Server Timeout Error.  Trying logging out and logging back in.`,
+      position: 'top',
+      timeout: 2500,
+      color: 'red',
+      actions: [
+        { label: 'Refresh', color: 'white', handler: () => { window.location.reload() } }
+      ]
+    })
+  },
   nodeServerIssueWithResponse (code, message) {
     Notify.create({
       message: `[${code}] ${message}. Unable to retrieve NODE details. Please try again soon`,
