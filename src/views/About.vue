@@ -17,7 +17,7 @@
           .col-xl.col-lg.col-md.col-sm-10.col-xs-10.q-px-sm
             .row.justify-center.q-gutter-lg
               img(src="../statics/handshake.png" style="height: 100px")
-              .text-center Let keep track of the exhausted draft pick and salary cap exemption trade details.
+              .text-center Let us keep track of the exhausted draft pick and salary cap exemption trade details.
           q-separator.gt-sm(vertical)
           .col-xl.col-lg.col-md.col-sm-10.col-xs-10.q-px-sm
             .row.justify-center.q-gutter-lg
@@ -43,7 +43,7 @@
       .col-5.q-mr-lg.q-mt-lg
         q-card.q-pa-md.card-opacity.shadow-24
           .text-h6.info-title What is SCAD?
-          .info-body SCAD is a General Manager tool designed to assist #[strong.text-primary Salary Cap and Dynasty (SCAD)] Fantasy Football leagues hosted on Yahoo!!.  SCAD gives its users a way to manage salaries and dynasty settings year to year.  SCAD understands the value Yahoo! offers its users and does nothing to take away from that experience by building its application on top of Yahoo!.
+          .info-body SCAD is a General Manager tool designed to assist #[strong.text-primary Salary Cap and Dynasty (SCAD)] Fantasy Football leagues hosted on Yahoo!.  SCAD gives its users a way to manage salaries and dynasty settings year to year.  SCAD understands the value Yahoo! offers its users and does nothing to take away from that experience by building its application on top of Yahoo!.
           .text-h6.info-title Who is SCAD for?
           .info-body SCAD is developed for the avid fantasy football leagues that struggle managing their league's salaries, consistent draft pick trading and salary cap exemptions.
           .text-h6.info-title How does SCAD work?
