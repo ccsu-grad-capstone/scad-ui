@@ -24,12 +24,12 @@
               .col
                 .row.justify-center
                   .text-h6 {{yahooTeam.name}}
-                .row.justify-center.gt-xs
+                .row.justify-center.gt-sm
                   .text-caption.text-grey-7 Manager ({{yahooTeam.managers[0].manager.nickname}})  | team_id: {{yahooTeam.team_id}}
-                .row.justify-center.gt-xs
+                .row.justify-center.gt-sm
                   .text-caption: a(:href='yahooTeam.url') Yahoo! Team Page
-        q-separator.gt-xs(vertical)
-        .row.lt-sm
+        q-separator.gt-sm(vertical)
+        .row.lt-md
           .row.full-width.justify-center
             .col-7.text-grey-8.text-caption.text-right Cap Exemption Give:
             .col.text-negative.text-weight-bold.text-body-1
@@ -47,7 +47,7 @@
             .col-7.text-grey-6.text-weight-bold.text-subtitle1.text-right Current Team Salary:
             .col.text-primary.text-weight-bold.text-subtitle1.q-pl-sm
               | ${{teamSalary}}
-        .col.q-pa-sm.q-pt-lg.gt-xs
+        .col.q-pa-sm.q-pt-lg.gt-sm
           .row.q-gutter-xs
             .col
               .text-primary.text-center.text-weight-bolder.text-subtitle1
@@ -112,7 +112,7 @@
                   class="my-sticky-header-table"
                   v-if="loaded"
                   :data='players',
-                  :columns='windowWidth > 600 ? columns : columnsMobile',
+                  :columns='windowWidth > 700 ? columns : columnsMobile',
                   row-key= 'player_key',
                   :pagination.sync="pagination",
                   hide-bottom,
@@ -136,7 +136,7 @@
                         | {{ props.row.selected_position.position }}
                       q-td(:class="fmt(props.row.selected_position.position, 'playerName')" key='playerName' :props='props')
                         .row.full-width
-                          .col-2
+                          .col-1
                             q-avatar(size="25px")
                               img(:src="props.row.headshot.url" style="width: 85%")
                           .col.q-pl-xs.text-body2.text-weight-bold
