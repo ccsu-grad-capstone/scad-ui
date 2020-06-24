@@ -1,6 +1,6 @@
 <template lang="pug">
   .q-px-md
-    .text-weight-bold(:class="countStyle(getCount())") Roster Availability: {{getCount()}}/{{rosterLimit}}
+    .text-weight-bold(:class="countStyle(getCount())") Roster Availability: {{getPlayerCount()}}/{{rosterLimit}}
     q-markup-table(v-if="loaded" dense)
       thead
         tr
@@ -123,7 +123,7 @@ export default {
       })
       return count
     },
-    getCount () {
+    getPlayerCount () {
       let count = 0
       this.yahooTeam.players.forEach(p => {
         if (p.selected_position.position !== 'IR') { count++ }
