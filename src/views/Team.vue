@@ -395,13 +395,11 @@ export default {
       return calcPlayerSalary(id, pos, this.scadTeam.players, this.franchiseTagDiscount, this.irReliefPerc, this.yahooTeam)
     },
     async saveSalaries () {
-      // console.log(`[TEAM] - saveSalaries()`)
       await this.getTeam(this.$route.params.team_id)
       this.updateTeamSalary()
       this.editSalaries = false
     },
     editingPlayer (yahooPlayer) {
-      // this.editPlayer = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == yahooPlayer.player_id)
       this.editPlayer = getScadPlayer(this.scadTeam.players, yahooPlayer.player_id)
       this.editPlayerInitSalary = this.editPlayer.salary
     },
@@ -426,7 +424,6 @@ export default {
     async saveFranchiseTag (yahooPlayer) {
       console.log(`[TEAM] - saveFranchiseTag()`)
 
-      // let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == yahooPlayer.player_id)
       let player = getScadPlayer(this.scadTeam.players, yahooPlayer.player_id)
       let initSalary = player.salary
       let salary = player.salary
@@ -452,7 +449,6 @@ export default {
     async removeFranchiseTag (yahooPlayer) {
       console.log(`[TEAM] - removeFranchiseTag()`)
 
-      // let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == yahooPlayer.player_id)
       let player = getScadPlayer(this.scadTeam.players, yahooPlayer.player_id)
       let salary = player.salary
       let adjustment = 0
@@ -513,24 +509,30 @@ export default {
       await this.$store.dispatch('team/getTeam', { yahooLeagueId: this.scadTeam.yahooLeagueId, yahooTeamId: this.scadTeam.yahooLeagueTeamId })
     },
     franchiseTagDisplay () {
+      let scadPlayer
+      let yahooPlayer
       if (this.scadTeam.isFranchiseTag && this.loaded) {
-        let scadPlayer = this.scadTeam.players.find(p => p.isFranchiseTag)
-        let yahooPlayer = this.players.find(p => p.player_id == scadPlayer.yahooLeaguePlayerId)
-        return yahooPlayer.name.full
+        scadPlayer = this.scadTeam.players.find(p => p.isFranchiseTag)
+        if (scadPlayer) {
+          yahooPlayer = this.players.find(p => p.player_id == scadPlayer.yahooLeaguePlayerId)
+          return yahooPlayer.name.full
+        } else {
+          this.scadTeam.isFranchiseTag = false
+          this.saveTeam()
+          return '-'
+        }
       } else {
         return '-'
       }
     },
     isFranchiseTagged (id) {
-      let scadPlayer = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == id)
+      let scadPlayer = getScadPlayer(this.scadTeam.players, id)
       if (scadPlayer) {
         if (scadPlayer.isFranchiseTag) { return true } else { return false }
       } else { return false }
     },
     getPlayerPrevSalary (id) {
-      // console.log('getPlayerSalary()')
       if (this.loaded) {
-        // let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == id)
         let player = getScadPlayer(this.scadTeam.players, id)
         if (player) {
           return player.previousYearSalary
@@ -539,7 +541,6 @@ export default {
     },
     getOriginalSalary (id) {
       if (this.loaded) {
-        // let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId == id)
         let player = getScadPlayer(this.scadTeam.players, id)
         return player.salary
       }

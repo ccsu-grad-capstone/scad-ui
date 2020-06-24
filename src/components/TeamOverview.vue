@@ -1,6 +1,6 @@
 <template lang="pug">
   .q-px-md
-    .text-weight-bold(:class="countStyle(getCount())") Roster Availability: {{getPlayerCount()}}/{{rosterLimit}}
+    .text-weight-bold(:class="countStyle(getPlayerCount())") Roster Availability: {{getPlayerCount()}}/{{rosterLimit}}
     q-markup-table(v-if="loaded" dense)
       thead
         tr
@@ -12,32 +12,32 @@
         tr
           td.pos QB
           td.text-weight-bold(v-bind:class="{ 'text-red': checkPos('qb') }") {{getPosCount('QB')}}
-          td ${{getTotal('QB')}}
+          td ${{getPositionSalaryTotal('QB')}}
           td {{getPerc('QB')}}%
         tr
           td.pos WR
           td.text-weight-bold(v-bind:class="{ 'text-red': checkPos('wr') }") {{getPosCount('WR')}}
-          td ${{getTotal('WR')}}
+          td ${{getPositionSalaryTotal('WR')}}
           td {{getPerc('WR')}}%
         tr
           td.pos RB
           td.text-weight-bold(v-bind:class="{ 'text-red': checkPos('rb') }") {{getPosCount('RB')}}
-          td ${{getTotal('RB')}}
+          td ${{getPositionSalaryTotal('RB')}}
           td {{getPerc('RB')}}%
         tr
           td.pos TE
           td.text-weight-bold(v-bind:class="{ 'text-red': checkPos('te') }") {{getPosCount('TE')}}
-          td ${{getTotal('TE')}}
+          td ${{getPositionSalaryTotal('TE')}}
           td {{getPerc('TE')}}%
         tr(v-if="scadSettings.kMin >0")
           td.pos K
           td.text-weight-bold(v-bind:class="{ 'text-red': checkPos('k') }") {{getPosCount('K')}}
-          td ${{getTotal('K')}}
+          td ${{getPositionSalaryTotal('K')}}
           td {{getPerc('K')}}%
         tr
           td.pos DEF
           td.text-weight-bold(v-bind:class="{ 'text-red': checkPos('def') }") {{getPosCount('DEF')}}
-          td ${{getTotal('DEF')}}
+          td ${{getPositionSalaryTotal('DEF')}}
           td {{getPerc('DEF')}}%
     .col.full-width.text-center.q-pa-xs.text-grey.text-caption Visit league settings for min / max position details
 
@@ -46,8 +46,9 @@
 <script>
 import notify from '../utilities/nofity'
 import referenceData from '../utilities/referenceData'
-import { calcPlayerSalary, calcTeamSalary } from '../utilities/calculator'
+import { calcTeamSalary, getPosCount, getPlayerCount, getPositionSalaryTotal, getPerc } from '../utilities/calculator'
 import { getLeagueRosterLimit } from '../utilities/functions'
+import { checkPos } from '../utilities/validators'
 
 export default {
   name: 'TeamOverview',
@@ -114,48 +115,19 @@ export default {
       }
     },
     getPosCount (pos) {
-      let count = 0
-      this.yahooTeam.players.forEach(p => {
-        if (p.display_position === pos) {
-          // if (p.selected_position.position !== 'IR') { count++ }
-          count++
-        }
-      })
-      return count
+      return getPosCount(pos, this.yahooTeam.players)
     },
     getPlayerCount () {
-      let count = 0
-      this.yahooTeam.players.forEach(p => {
-        if (p.selected_position.position !== 'IR') { count++ }
-      })
-      return count
+      return getPlayerCount(this.yahooTeam.players)
     },
-    getTotal (pos) {
-      let total = 0
-      this.yahooTeam.players.forEach(p => {
-        if (p.display_position === pos) {
-          let position
-          if (p.selected_position.position === 'IR') {
-            position = p.selected_position.position
-          } else {
-            position = p.display_position
-          }
-          let salary = calcPlayerSalary(p.player_id, position, this.scadTeamClone.players, this.scadSettings.franchiseTagDiscount, this.irReliefPerc)
-          total += salary
-        }
-      })
-      return total
+    getPositionSalaryTotal (pos) {
+      return getPositionSalaryTotal(pos, this.yahooTeam.players, this.scadTeamClone.players, this.scadSettings.franchiseTagDiscount, this.irReliefPerc)
     },
     getPerc (pos) {
-      return ((this.getTotal(pos) / this.salary) * 100).toFixed(0)
+      return getPerc(this.salary, pos, this.yahooTeam.players, this.scadTeamClone.players, this.scadSettings.franchiseTagDiscount, this.irReliefPerc)
     },
     checkPos (pos) {
-      let count = this.getPosCount(pos.toUpperCase())
-      if ((count <= this.scadSettings[`${pos}Max`]) && (count >= this.scadSettings[`${pos}Min`])) {
-        return false
-      } else {
-        return true
-      }
+      return checkPos(pos, this.scadSettings, this.yahooTeam.players)
     },
     notifyIllegalRoster () {
       referenceData.positionChecks.forEach(pos => {

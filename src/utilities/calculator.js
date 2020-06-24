@@ -10,7 +10,7 @@
 // yahooTeam: team's yahoo info
 // year: current year of league
 // Returns total team salary.  Adds player salaries and cap exceptions
-function calcTeamSalary (yahooPlayers, scadPlayers, capExemptions, franchiseTagDiscount, irRelieftPerc, yahooTeam, year) {
+export function calcTeamSalary (yahooPlayers, scadPlayers, capExemptions, franchiseTagDiscount, irRelieftPerc, yahooTeam, year) {
   let salary = 0
   yahooPlayers.forEach(p => {
     salary += calcPlayerSalary(p.player_id, p.selected_position.position, scadPlayers, franchiseTagDiscount, irRelieftPerc, yahooTeam)
@@ -33,7 +33,7 @@ function calcTeamSalary (yahooPlayers, scadPlayers, capExemptions, franchiseTagD
 // franchiseTagdiscount: SCAD league setting for discount on franchise tag
 // irReliefPerc: SCAD league setting for discount on irReliefPerc
 // Calculates player salary by checking if they're franchise tagged or on IR
-function calcPlayerSalary (id, pos, scadPlayers, franchiseTagDiscount, irRelieftPerc) {
+export function calcPlayerSalary (id, pos, scadPlayers, franchiseTagDiscount, irRelieftPerc) {
   let player = scadPlayers.find(p => p.yahooLeaguePlayerId == id)
   if (player) {
     let salary = player.salary
@@ -56,7 +56,7 @@ function calcPlayerSalary (id, pos, scadPlayers, franchiseTagDiscount, irRelieft
 // salary: players original salary
 // franchiseTagdiscount: SCAD league setting for discount on franchise tag
 // Returns player salary if they're on Franchise Tag.
-function calcFranchiseTagSalary (salary, franchiseTagDiscount) {
+export function calcFranchiseTagSalary (salary, franchiseTagDiscount) {
   if (salary <= franchiseTagDiscount) {
     return 0
   } else {
@@ -67,7 +67,7 @@ function calcFranchiseTagSalary (salary, franchiseTagDiscount) {
 // salary: players original salary
 // irReliefPerc: SCAD league setting for discount on irReliefPerc
 // Returns player salary if they're on the IR
-function calcIrSalary (salary, irReliefPerc) {
+export function calcIrSalary (salary, irReliefPerc) {
   salary = salary * irReliefPerc
   if (Number.isInteger(salary)) {
     return salary
@@ -76,4 +76,59 @@ function calcIrSalary (salary, irReliefPerc) {
   }
 }
 
-export { calcTeamSalary, calcPlayerSalary, calcFranchiseTagSalary, calcIrSalary }
+// pos: player's position
+// players: array of yahooPlayers
+// Returns the number of players in players array for a specific position
+export function getPosCount (pos, players) {
+  let count = 0
+  players.forEach(p => {
+    if (p.display_position === pos) {
+      count++
+    }
+  })
+  return count
+}
+
+// players: array of yahooPlayers
+// Returns total count of players in players array that are not on IR
+export function getPlayerCount (players) {
+  let count = 0
+  players.forEach(p => {
+    if (p.selected_position.position !== 'IR') { count++ }
+  })
+  return count
+}
+
+// pos: player's position
+// players: array of yahooPlayers
+// scadPlayers: array of team's scadPlayers
+// franchiseTagdiscount: SCAD league setting for discount on franchise tag
+// irReliefPerc: SCAD league setting for discount on irReliefPerc
+// Returns the total salary for players in players array for a specific position
+export function getPositionSalaryTotal (pos, players, scadPlayers, franchiseTagDiscount, irReliefPerc) {
+  let total = 0
+  players.forEach(p => {
+    if (p.display_position === pos) {
+      let position
+      if (p.selected_position.position === 'IR') {
+        position = p.selected_position.position
+      } else {
+        position = p.display_position
+      }
+      let salary = calcPlayerSalary(p.player_id, position, scadPlayers, franchiseTagDiscount, irReliefPerc)
+      total += salary
+    }
+  })
+  return total
+}
+
+// salary: teams total salary
+// pos: player's position
+// players: array of yahooPlayers
+// scadPlayers: array of team's scadPlayers
+// franchiseTagdiscount: SCAD league setting for discount on franchise tag
+// irReliefPerc: SCAD league setting for discount on irReliefPerc
+// Returns the percentage a team is spending on each position
+export function getPerc (salary, pos, players, scadPlayers, franchiseTagDiscount, irReliefPerc) {
+  return ((getPositionSalaryTotal(pos, players, scadPlayers, franchiseTagDiscount, irReliefPerc) / salary) * 100).toFixed(0)
+}
