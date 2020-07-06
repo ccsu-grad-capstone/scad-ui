@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for validators.js</title>
+    <title>Code coverage report for functions.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="prettify.css" />
     <link rel="stylesheet" href="base.css" />
@@ -18,34 +18,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="index.html">All files</a> validators.js</h1>
+        <h1><a href="index.html">All files</a> functions.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>17/17</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>18/18</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/13</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
@@ -89,39 +89,14 @@
 <a name='L31'></a><a href='#L31'>31</a>
 <a name='L32'></a><a href='#L32'>32</a>
 <a name='L33'></a><a href='#L33'>33</a>
-<a name='L34'></a><a href='#L34'>34</a>
-<a name='L35'></a><a href='#L35'>35</a>
-<a name='L36'></a><a href='#L36'>36</a>
-<a name='L37'></a><a href='#L37'>37</a>
-<a name='L38'></a><a href='#L38'>38</a>
-<a name='L39'></a><a href='#L39'>39</a>
-<a name='L40'></a><a href='#L40'>40</a>
-<a name='L41'></a><a href='#L41'>41</a>
-<a name='L42'></a><a href='#L42'>42</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">122x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -130,54 +105,55 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">97x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* eslint-disable eqeqeq */
-import { getPosCount } from './calculator'
 &nbsp;
-// pos: player's position
-// Returns boolean depending if user's position is IR
-export function isIR (pos) {
-  if (pos === 'IR') { return true } else { return false }
-}
-&nbsp;
-// id: current yahoo league id
-// yahooCommishLeagues: array of users league they're a commissioner of
-// scadLeagues: array of user's scad leagues
-// Returns true if user is a commish and league isn't registered
-export function isCommishNotRegistered (id, yahooCommishLeagues, scadLeagues) {
-  let league
-  let registered
-  if (yahooCommishLeagues &amp;&amp; scadLeagues) {
-    league = yahooCommishLeagues.find(l =&gt; l.league_id == id)
-    registered = scadLeagues.find(l =&gt; l.yahooLeagueId == id)
-  }
-  if (league &amp;&amp; !registered) {
-    return true
-  } else {
-    return false
+// players: (array) scad players
+// id: (string) yahoo player_id
+// Finding SCAD player when starting with YAHOO player
+export function getScadPlayer (players, id) {
+  if (players) {
+    return players.find(p =&gt; p.yahooLeaguePlayerId == id)
   }
 }
 &nbsp;
-// pos: position
-// scadSettings: league's scad settings
-// players: array of yahoo players
-// Returns true if position count is within scad settings for pos, false otherwise
-export function checkPos (pos, scadSettings, players) {
-  if (scadSettings &amp;&amp; players) {
-    let count = getPosCount(pos.toUpperCase(), players)
-    if ((count &lt;= scadSettings[`${pos.toLowerCase()}Max`]) &amp;&amp; (count &gt;= scadSettings[`${pos.toLowerCase()}Min`])) {
-      return true
-    } else {
-      return false
-    }
-  } else { return false }
+// players: (array) yahoo players
+// id: (int) yahoo player_id
+// Finding YAHOO player when starting with SCAD player
+export function getYahooPlayer (players, id) {
+  if (players) {
+    return players.find(p =&gt; p.player_id == id)
+  }
+}
+&nbsp;
+// rosterPositions: (array) yahoo league settings for positions
+// Returns the total number of roster spots, excluding IR
+export function getLeagueRosterLimit (rosterPositions) {
+  if (rosterPositions &amp;&amp; Array.isArray(rosterPositions)) {
+    let count = 0
+    rosterPositions.forEach(pos =&gt; {
+      if (pos.roster_position.position !== 'IR') {
+        count += pos.roster_position.count
+      }
+    })
+    return count
+  }
 }
 &nbsp;</pre></td></tr></table></pre>
 
