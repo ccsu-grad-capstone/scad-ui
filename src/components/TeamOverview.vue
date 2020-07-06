@@ -91,7 +91,7 @@ export default {
     this.scadTeamClone = JSON.parse(JSON.stringify(this.scadTeam))
     this.loaded = true
     this.notifyIllegalRoster()
-    this.salary = calcTeamSalary(this.yahooTeam.players, this.scadTeam.players, [], this.scadSettings.franchiseTagDiscount, this.scadSettings.irRelieftPerc, this.yahooTeam, this.scadSettings.year)
+    this.salary = calcTeamSalary(this.yahooTeam.players, this.scadTeam.players, [], this.scadSettings.franchiseTagDiscount, this.scadSettings.irReliefPerc, this.yahooTeam, this.scadSettings.year)
     this.rosterLimit = getLeagueRosterLimit(this.rosterPositions)
   },
   computed: {
