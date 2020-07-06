@@ -35,19 +35,19 @@ describe('validators.js Test Suite', () => {
 
   describe('checkPos tests', () => {
     it('should return true', () => {
-      expect(checkPos('QB', scadLeague, yahooPlayers)).toBeTruthy()
-      expect(checkPos('qb', scadLeague, yahooPlayers)).toBeTruthy()
+      expect(checkPos('RB', scadLeague, yahooPlayers)).toBeTruthy()
+      expect(checkPos('rb', scadLeague, yahooPlayers)).toBeTruthy()
     })
     it('should return false', () => {
       let settings = scadLeague
-      settings.qbMax = 2
-      expect(checkPos('QB', settings, yahooPlayers)).toBeFalsy()
-      settings.qbMax = 4
-      settings.qbMin = 4
-      expect(checkPos('QB', settings, yahooPlayers)).toBeFalsy()
+      settings.rbMax = 2
+      expect(checkPos('RB', settings, yahooPlayers)).toBeFalsy()
+      settings.rbMax = 10
+      settings.rbMin = 10
+      expect(checkPos('RB', settings, yahooPlayers)).toBeFalsy()
       expect(checkPos('', scadLeague, yahooPlayers)).toBeFalsy()
-      expect(checkPos('QB', undefined, yahooPlayers)).toBeFalsy()
-      expect(checkPos('qb', scadLeague, undefined)).toBeFalsy()
+      expect(checkPos('RB', undefined, yahooPlayers)).toBeFalsy()
+      expect(checkPos('rb', scadLeague, undefined)).toBeFalsy()
     })
   })
 })

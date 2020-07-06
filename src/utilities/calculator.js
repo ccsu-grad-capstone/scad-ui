@@ -34,22 +34,21 @@ export function calcTeamSalary (yahooPlayers, scadPlayers, capExemptions, franch
 // irReliefPerc: SCAD league setting for discount on irReliefPerc
 // Calculates player salary by checking if they're franchise tagged or on IR
 export function calcPlayerSalary (id, pos, scadPlayers, franchiseTagDiscount, irRelieftPerc) {
-  let player = scadPlayers.find(p => p.yahooLeaguePlayerId == id)
-  if (player) {
-    let salary = player.salary
-    if (player.isFranchiseTag) {
-      return calcFranchiseTagSalary(salary, franchiseTagDiscount)
-    } else if (pos === 'IR') {
-      return calcIrSalary(salary, irRelieftPerc)
-    } else {
-      if (salary === 0) {
-        // notify.salaryUpdateOnPlayerRequired(yahooTeam.name)
+  if (id && pos && scadPlayers && franchiseTagDiscount && irRelieftPerc >= 0) {
+    let player = scadPlayers.find(p => p.yahooLeaguePlayerId == id)
+    if (player) {
+      let salary = player.salary
+      if (player.isFranchiseTag) {
+        salary = calcFranchiseTagSalary(salary, franchiseTagDiscount)
       }
-      return player.salary
+      if (pos.toUpperCase() === 'IR') {
+        salary = calcIrSalary(salary, irRelieftPerc)
+      }
+      return salary
+    } else {
+      // notify.salaryUpdateOnPlayerRequired(yahooTeam.name)
+      return 0
     }
-  } else {
-    // notify.salaryUpdateOnPlayerRequired(yahooTeam.name)
-    return 0
   }
 }
 
@@ -57,23 +56,29 @@ export function calcPlayerSalary (id, pos, scadPlayers, franchiseTagDiscount, ir
 // franchiseTagdiscount: SCAD league setting for discount on franchise tag
 // Returns player salary if they're on Franchise Tag.
 export function calcFranchiseTagSalary (salary, franchiseTagDiscount) {
-  if (salary <= franchiseTagDiscount) {
-    return 0
-  } else {
-    return (salary -= franchiseTagDiscount)
-  }
+  if (salary && franchiseTagDiscount) {
+    if (salary <= franchiseTagDiscount) {
+      return 0
+    } else {
+      return (salary -= franchiseTagDiscount)
+    }
+  } else { return salary }
 }
 
 // salary: players original salary
 // irReliefPerc: SCAD league setting for discount on irReliefPerc
 // Returns player salary if they're on the IR
 export function calcIrSalary (salary, irReliefPerc) {
-  salary = salary * irReliefPerc
-  if (Number.isInteger(salary)) {
+  if (salary && irReliefPerc > 0) {
+    salary -= salary * irReliefPerc / 100
+    if (Number.isInteger(salary)) {
+      return salary
+    } else {
+      return Math.round(salary)
+    }
+  } else if (salary && irReliefPerc == 0) {
     return salary
-  } else {
-    return Math.round(salary)
-  }
+  } else { return salary }
 }
 
 // pos: player's position
@@ -81,11 +86,15 @@ export function calcIrSalary (salary, irReliefPerc) {
 // Returns the number of players in players array for a specific position
 export function getPosCount (pos, players) {
   let count = 0
-  players.forEach(p => {
-    if (p.display_position === pos) {
-      count++
-    }
-  })
+  if (players) {
+    players.forEach(p => {
+      if (p.display_position.toUpperCase() === pos.toUpperCase()) {
+        if (p.selected_position.position.toUpperCase() !== 'IR') {
+          count++
+        }
+      }
+    })
+  }
   return count
 }
 
@@ -93,9 +102,11 @@ export function getPosCount (pos, players) {
 // Returns total count of players in players array that are not on IR
 export function getPlayerCount (players) {
   let count = 0
-  players.forEach(p => {
-    if (p.selected_position.position !== 'IR') { count++ }
-  })
+  if (players) {
+    players.forEach(p => {
+      if (p.selected_position.position !== 'IR') { count++ }
+    })
+  }
   return count
 }
 
@@ -107,18 +118,20 @@ export function getPlayerCount (players) {
 // Returns the total salary for players in players array for a specific position
 export function getPositionSalaryTotal (pos, players, scadPlayers, franchiseTagDiscount, irReliefPerc) {
   let total = 0
-  players.forEach(p => {
-    if (p.display_position === pos) {
-      let position
-      if (p.selected_position.position === 'IR') {
-        position = p.selected_position.position
-      } else {
-        position = p.display_position
+  if (pos && players && scadPlayers && franchiseTagDiscount && irReliefPerc >= 0) {
+    players.forEach(p => {
+      if (p.display_position.toUpperCase() === pos.toUpperCase()) {
+        let position
+        if (p.selected_position.position.toUpperCase() === 'IR') {
+          position = 'IR'
+        } else {
+          position = p.display_position.toUpperCase()
+        }
+        let salary = calcPlayerSalary(p.player_id, position, scadPlayers, franchiseTagDiscount, irReliefPerc)
+        total += salary
       }
-      let salary = calcPlayerSalary(p.player_id, position, scadPlayers, franchiseTagDiscount, irReliefPerc)
-      total += salary
-    }
-  })
+    })
+  }
   return total
 }
 
