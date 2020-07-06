@@ -46,7 +46,6 @@
 
 <script>
 /* eslint-disable eqeqeq */
-import { isCommish } from '../utilities/validators'
 
 export default {
   name: 'LiteLeague',
@@ -116,9 +115,6 @@ export default {
   computed: {
     league () {
       return this.$store.state.league
-    },
-    isCommish () {
-      return isCommish
     },
     yahooTeams () {
       return this.league.yahooTeams

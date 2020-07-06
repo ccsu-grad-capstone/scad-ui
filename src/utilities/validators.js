@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import { getPosCount } from './calculator'
 
 // pos: player's position
@@ -10,10 +11,13 @@ export function isIR (pos) {
 // yahooCommishLeagues: array of users league they're a commissioner of
 // scadLeagues: array of user's scad leagues
 // Returns true if user is a commish and league isn't registered
-export function isCommish (id, yahooCommishLeagues, scadLeagues) {
-  let league = yahooCommishLeagues.find(l => l.league_id === id)
-  // eslint-disable-next-line eqeqeq
-  let registered = scadLeagues.find(l => l.yahooLeagueId == id)
+export function isCommishNotRegistered (id, yahooCommishLeagues, scadLeagues) {
+  let league
+  let registered
+  if (yahooCommishLeagues && scadLeagues) {
+    league = yahooCommishLeagues.find(l => l.league_id == id)
+    registered = scadLeagues.find(l => l.yahooLeagueId == id)
+  }
   if (league && !registered) {
     return true
   } else {
@@ -26,10 +30,12 @@ export function isCommish (id, yahooCommishLeagues, scadLeagues) {
 // players: array of yahoo players
 // Returns true if position count is within scad settings for pos, false otherwise
 export function checkPos (pos, scadSettings, players) {
-  let count = getPosCount(pos.toUpperCase(), players)
-  if ((count <= scadSettings[`${pos}Max`]) && (count >= scadSettings[`${pos}Min`])) {
-    return false
-  } else {
-    return true
-  }
+  if (scadSettings && players) {
+    let count = getPosCount(pos.toUpperCase(), players)
+    if ((count <= scadSettings[`${pos.toLowerCase()}Max`]) && (count >= scadSettings[`${pos.toLowerCase()}Min`])) {
+      return true
+    } else {
+      return false
+    }
+  } else { return false }
 }
