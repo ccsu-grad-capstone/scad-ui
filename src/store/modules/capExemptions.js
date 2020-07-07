@@ -44,7 +44,7 @@ export default {
       // console.log('[CAPEXEMPTIONS-ACTION] - getCapExemptionsByTeam()')
       try {
         const response = await node.get(`/capExemptions/${rootState.league.yahooLeagueId}/${year}/${teamId}`)
-        // console.log('CAP-EXEMPTIONS-team', response.data.data)
+        console.log('CAP-EXEMPTIONS-team', response.data.data)
         commit('updateCapExemptionsTeam', { ce: response.data.data })
       } catch (error) {
         catchAxiosNodeError(error)

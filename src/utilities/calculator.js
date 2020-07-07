@@ -11,19 +11,20 @@
 // year: current year of league
 // Returns total team salary.  Adds player salaries and cap exceptions
 export function calcTeamSalary (yahooPlayers, scadPlayers, capExemptions, franchiseTagDiscount, irRelieftPerc, yahooTeam, year) {
-  console.log(yahooPlayers, scadPlayers, capExemptions, franchiseTagDiscount, irRelieftPerc, yahooTeam, year)
   let salary = 0
-  yahooPlayers.forEach(p => {
-    salary += calcPlayerSalary(p.player_id, p.selected_position.position, scadPlayers, franchiseTagDiscount, irRelieftPerc)
-  })
-  if (capExemptions) {
-    capExemptions.forEach(ce => {
-      if (year == ce.year) {
-        if (ce.yahooTeamGive.team_id === yahooTeam.team_id) {
-          salary += ce.amount
-        } else { salary -= ce.amount }
-      }
+  if (yahooPlayers && scadPlayers && capExemptions && franchiseTagDiscount && irRelieftPerc && yahooTeam && year) {
+    yahooPlayers.forEach(p => {
+      salary += calcPlayerSalary(p.player_id, p.selected_position.position, scadPlayers, franchiseTagDiscount, irRelieftPerc)
     })
+    if (capExemptions) {
+      capExemptions.forEach(ce => {
+        if (year == ce.year) {
+          if (ce.yahooTeamGive.team_id == yahooTeam.team_id) {
+            salary += ce.amount
+          } else { salary -= ce.amount }
+        }
+      })
+    }
   }
   return salary
 }

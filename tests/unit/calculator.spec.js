@@ -1,9 +1,39 @@
 import { calcTeamSalary, calcPlayerSalary, calcFranchiseTagSalary, calcIrSalary, getPosCount, getPlayerCount, getPositionSalaryTotal, getPerc } from '../../src/utilities/calculator'
-import { scadPlayers, yahooPlayers, scadLeague, yahooSettings } from '../data/testData.json'
+import { scadPlayers, yahooPlayers, scadLeague, yahooTeam, capExceptionsByTeam } from '../data/testData.json'
 
 describe('calculator.js Test Suite', () => {
   describe('calcTeamSalary tests', () => {
     it('should properly return salary', () => {
+      expect(calcTeamSalary(yahooPlayers, scadPlayers, [], 25, 50, yahooTeam, 2020)).toBe(238)
+      expect(calcTeamSalary(yahooPlayers, scadPlayers, capExceptionsByTeam, 25, 50, yahooTeam, 2020)).toBe(248)
+      let ceTeam = capExceptionsByTeam
+      let ce = {
+        'prevLeagueIds': [],
+        '_id': '5ef24dd227478e00248c8975',
+        'yahooLeagueId': 13088,
+        'yahooLeagueYear': 2020,
+        'year': 2020,
+        'timestamp': '2020-06-23T18:45:38.863Z',
+        'addedBy': 'Ryan Lauzon',
+        'yahooTeamGive':
+        { 'team_id': 1 },
+        'yahooTeamRecieve':
+        { 'team_id': 2 },
+        'amount': 5,
+        'appliedToTeams': true,
+        'comments': '',
+        '__v': 0
+      }
+      ceTeam.push(ce)
+      expect(calcTeamSalary(yahooPlayers, scadPlayers, ceTeam, 25, 50, yahooTeam, 2020)).toBe(243)
+    })
+    it('should handle undefined cases properly', () => {
+      expect(calcTeamSalary(yahooPlayers, yahooPlayers, undefined, 25)).toBe(0)
+      expect(calcTeamSalary(yahooPlayers, yahooPlayers, [], 25, 50, yahooTeam, 2020)).toBe(0)
+      expect(calcTeamSalary(yahooPlayers, scadPlayers, [], undefined, 50, yahooTeam, 2020)).toBe(0)
+      expect(calcTeamSalary(yahooPlayers, scadPlayers, [], 25, 50, undefined, 2020)).toBe(0)
+      expect(calcTeamSalary(undefined)).toBe(0)
+      expect(calcTeamSalary()).toBe(0)
     })
   })
 

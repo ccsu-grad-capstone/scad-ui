@@ -12676,1011 +12676,2075 @@
       }
   ],
   "yahooSettings": {
-          "draft_type": "self",
-          "is_auction_draft": "0",
-          "scoring_type": "head",
-          "persistent_url": "https://football.fantasysports.yahoo.com/league/salarycapdynasty",
-          "uses_playoff": "1",
-          "has_playoff_consolation_games": true,
-          "playoff_start_week": "14",
-          "uses_playoff_reseeding": 0,
-          "uses_lock_eliminated_teams": 1,
-          "num_playoff_teams": "6",
-          "num_playoff_consolation_teams": 6,
-          "has_multiweek_championship": 0,
-          "uses_roster_import": "1",
-          "roster_import_deadline": "2020-05-08",
-          "waiver_type": "FR",
-          "waiver_rule": "gametime",
-          "uses_faab": "1",
-          "draft_time": "1588968262",
-          "draft_pick_time": "60",
-          "post_draft_players": "W",
-          "max_teams": "16",
-          "waiver_time": "2",
-          "trade_end_date": "2020-11-14",
-          "trade_ratify_type": "commish",
-          "trade_reject_time": "3",
-          "player_pool": "ALL",
-          "cant_cut_list": "yahoo",
-          "is_publicly_viewable": "1",
-          "sendbird_channel_url": "dde1bbfe5ca41cc9d9cd62f907cbd203",
-          "roster_positions": [
+      "draft_type": "self",
+      "is_auction_draft": "0",
+      "scoring_type": "head",
+      "persistent_url": "https://football.fantasysports.yahoo.com/league/salarycapdynasty",
+      "uses_playoff": "1",
+      "has_playoff_consolation_games": true,
+      "playoff_start_week": "14",
+      "uses_playoff_reseeding": 0,
+      "uses_lock_eliminated_teams": 1,
+      "num_playoff_teams": "6",
+      "num_playoff_consolation_teams": 6,
+      "has_multiweek_championship": 0,
+      "uses_roster_import": "1",
+      "roster_import_deadline": "2020-05-08",
+      "waiver_type": "FR",
+      "waiver_rule": "gametime",
+      "uses_faab": "1",
+      "draft_time": "1588968262",
+      "draft_pick_time": "60",
+      "post_draft_players": "W",
+      "max_teams": "16",
+      "waiver_time": "2",
+      "trade_end_date": "2020-11-14",
+      "trade_ratify_type": "commish",
+      "trade_reject_time": "3",
+      "player_pool": "ALL",
+      "cant_cut_list": "yahoo",
+      "is_publicly_viewable": "1",
+      "sendbird_channel_url": "dde1bbfe5ca41cc9d9cd62f907cbd203",
+      "roster_positions": [
+          {
+              "roster_position": {
+                  "position": "QB",
+                  "position_type": "O",
+                  "count": 1
+              }
+          },
+          {
+              "roster_position": {
+                  "position": "WR",
+                  "position_type": "O",
+                  "count": 3
+              }
+          },
+          {
+              "roster_position": {
+                  "position": "RB",
+                  "position_type": "O",
+                  "count": 2
+              }
+          },
+          {
+              "roster_position": {
+                  "position": "TE",
+                  "position_type": "O",
+                  "count": 1
+              }
+          },
+          {
+              "roster_position": {
+                  "position": "W/R/T",
+                  "position_type": "O",
+                  "count": 1
+              }
+          },
+          {
+              "roster_position": {
+                  "position": "DEF",
+                  "position_type": "DT",
+                  "count": 1
+              }
+          },
+          {
+              "roster_position": {
+                  "position": "BN",
+                  "count": 15
+              }
+          },
+          {
+              "roster_position": {
+                  "position": "IR",
+                  "count": "1"
+              }
+          }
+      ],
+      "stat_categories": {
+          "stats": [
               {
-                  "roster_position": {
-                      "position": "QB",
+                  "stat": {
+                      "stat_id": 4,
+                      "enabled": "1",
+                      "name": "Passing Yards",
+                      "display_name": "Pass Yds",
+                      "sort_order": "1",
                       "position_type": "O",
-                      "count": 1
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "O"
+                              }
+                          }
+                      ]
                   }
               },
               {
-                  "roster_position": {
-                      "position": "WR",
+                  "stat": {
+                      "stat_id": 5,
+                      "enabled": "1",
+                      "name": "Passing Touchdowns",
+                      "display_name": "Pass TD",
+                      "sort_order": "1",
                       "position_type": "O",
-                      "count": 3
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "O"
+                              }
+                          }
+                      ]
                   }
               },
               {
-                  "roster_position": {
-                      "position": "RB",
+                  "stat": {
+                      "stat_id": 6,
+                      "enabled": "1",
+                      "name": "Interceptions",
+                      "display_name": "Int",
+                      "sort_order": "0",
                       "position_type": "O",
-                      "count": 2
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "O"
+                              }
+                          }
+                      ]
                   }
               },
               {
-                  "roster_position": {
-                      "position": "TE",
+                  "stat": {
+                      "stat_id": 7,
+                      "enabled": "1",
+                      "name": "Sacks",
+                      "display_name": "Sack",
+                      "sort_order": "0",
                       "position_type": "O",
-                      "count": 1
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "O"
+                              }
+                          }
+                      ]
                   }
               },
               {
-                  "roster_position": {
-                      "position": "W/R/T",
+                  "stat": {
+                      "stat_id": 8,
+                      "enabled": "1",
+                      "name": "Rushing Attempts",
+                      "display_name": "Rush Att",
+                      "sort_order": "1",
                       "position_type": "O",
-                      "count": 1
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "O"
+                              }
+                          }
+                      ]
                   }
               },
               {
-                  "roster_position": {
-                      "position": "DEF",
+                  "stat": {
+                      "stat_id": 9,
+                      "enabled": "1",
+                      "name": "Rushing Yards",
+                      "display_name": "Rush Yds",
+                      "sort_order": "1",
+                      "position_type": "O",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "O"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 10,
+                      "enabled": "1",
+                      "name": "Rushing Touchdowns",
+                      "display_name": "Rush TD",
+                      "sort_order": "1",
+                      "position_type": "O",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "O"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 78,
+                      "enabled": "1",
+                      "name": "Targets",
+                      "display_name": "Targets",
+                      "sort_order": "1",
+                      "position_type": "O",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "O",
+                                  "is_only_display_stat": "1"
+                              }
+                          }
+                      ],
+                      "is_only_display_stat": "1"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 11,
+                      "enabled": "1",
+                      "name": "Receptions",
+                      "display_name": "Rec",
+                      "sort_order": "1",
+                      "position_type": "O",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "O"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 12,
+                      "enabled": "1",
+                      "name": "Receiving Yards",
+                      "display_name": "Rec Yds",
+                      "sort_order": "1",
+                      "position_type": "O",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "O"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 13,
+                      "enabled": "1",
+                      "name": "Receiving Touchdowns",
+                      "display_name": "Rec TD",
+                      "sort_order": "1",
+                      "position_type": "O",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "O"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 14,
+                      "enabled": "1",
+                      "name": "Return Yards",
+                      "display_name": "Ret Yds",
+                      "sort_order": "1",
+                      "position_type": "O",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "O"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 15,
+                      "enabled": "1",
+                      "name": "Return Touchdowns",
+                      "display_name": "Ret TD",
+                      "sort_order": "1",
+                      "position_type": "O",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "O"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 16,
+                      "enabled": "1",
+                      "name": "2-Point Conversions",
+                      "display_name": "2-PT",
+                      "sort_order": "1",
+                      "position_type": "O",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "O"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 18,
+                      "enabled": "1",
+                      "name": "Fumbles Lost",
+                      "display_name": "Fum Lost",
+                      "sort_order": "0",
+                      "position_type": "O",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "O"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 57,
+                      "enabled": "1",
+                      "name": "Offensive Fumble Return TD",
+                      "display_name": "Fum Ret TD",
+                      "sort_order": "1",
+                      "position_type": "O",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "O"
+                              }
+                          }
+                      ],
+                      "is_excluded_from_display": "1"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 31,
+                      "enabled": "1",
+                      "name": "Points Allowed",
+                      "display_name": "Pts Allow",
+                      "sort_order": "0",
                       "position_type": "DT",
-                      "count": 1
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "DT",
+                                  "is_only_display_stat": "1"
+                              }
+                          }
+                      ],
+                      "is_only_display_stat": "1"
                   }
               },
               {
-                  "roster_position": {
-                      "position": "BN",
-                      "count": 15
+                  "stat": {
+                      "stat_id": 32,
+                      "enabled": "1",
+                      "name": "Sack",
+                      "display_name": "Sack",
+                      "sort_order": "1",
+                      "position_type": "DT",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "DT"
+                              }
+                          }
+                      ]
                   }
               },
               {
-                  "roster_position": {
-                      "position": "IR",
-                      "count": "1"
+                  "stat": {
+                      "stat_id": 33,
+                      "enabled": "1",
+                      "name": "Interception",
+                      "display_name": "Int",
+                      "sort_order": "1",
+                      "position_type": "DT",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "DT"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 34,
+                      "enabled": "1",
+                      "name": "Fumble Recovery",
+                      "display_name": "Fum Rec",
+                      "sort_order": "1",
+                      "position_type": "DT",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "DT"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 35,
+                      "enabled": "1",
+                      "name": "Touchdown",
+                      "display_name": "TD",
+                      "sort_order": "1",
+                      "position_type": "DT",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "DT"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 36,
+                      "enabled": "1",
+                      "name": "Safety",
+                      "display_name": "Safe",
+                      "sort_order": "1",
+                      "position_type": "DT",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "DT"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 37,
+                      "enabled": "1",
+                      "name": "Block Kick",
+                      "display_name": "Blk Kick",
+                      "sort_order": "1",
+                      "position_type": "DT",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "DT"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 49,
+                      "enabled": "1",
+                      "name": "Kickoff and Punt Return Touchdowns",
+                      "display_name": "Ret TD",
+                      "sort_order": "1",
+                      "position_type": "DT",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "DT"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 69,
+                      "enabled": "1",
+                      "name": "Defensive Yards Allowed",
+                      "display_name": "Def Yds Allow",
+                      "sort_order": "0",
+                      "position_type": "DT",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "DT",
+                                  "is_only_display_stat": "1"
+                              }
+                          }
+                      ],
+                      "is_only_display_stat": "1"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 50,
+                      "enabled": "1",
+                      "name": "Points Allowed 0 points",
+                      "display_name": "Pts Allow 0",
+                      "sort_order": "1",
+                      "position_type": "DT",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "DT"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 51,
+                      "enabled": "1",
+                      "name": "Points Allowed 1-6 points",
+                      "display_name": "Pts Allow 1-6",
+                      "sort_order": "1",
+                      "position_type": "DT",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "DT"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 52,
+                      "enabled": "1",
+                      "name": "Points Allowed 7-13 points",
+                      "display_name": "Pts Allow 7-13",
+                      "sort_order": "1",
+                      "position_type": "DT",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "DT"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 53,
+                      "enabled": "1",
+                      "name": "Points Allowed 14-20 points",
+                      "display_name": "Pts Allow 14-20",
+                      "sort_order": "1",
+                      "position_type": "DT",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "DT"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 54,
+                      "enabled": "1",
+                      "name": "Points Allowed 21-27 points",
+                      "display_name": "Pts Allow 21-27",
+                      "sort_order": "1",
+                      "position_type": "DT",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "DT"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 55,
+                      "enabled": "1",
+                      "name": "Points Allowed 28-34 points",
+                      "display_name": "Pts Allow 28-34",
+                      "sort_order": "1",
+                      "position_type": "DT",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "DT"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 56,
+                      "enabled": "1",
+                      "name": "Points Allowed 35+ points",
+                      "display_name": "Pts Allow 35+",
+                      "sort_order": "1",
+                      "position_type": "DT",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "DT"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 70,
+                      "enabled": "1",
+                      "name": "Defensive Yards Allowed - Negative",
+                      "display_name": "Yds Allow Neg",
+                      "sort_order": "1",
+                      "position_type": "DT",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "DT"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 71,
+                      "enabled": "1",
+                      "name": "Defensive Yards Allowed 0-99",
+                      "display_name": "Yds Allow 0-99",
+                      "sort_order": "1",
+                      "position_type": "DT",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "DT"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 72,
+                      "enabled": "1",
+                      "name": "Defensive Yards Allowed 100-199",
+                      "display_name": "Yds Allow 100-199",
+                      "sort_order": "1",
+                      "position_type": "DT",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "DT"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 73,
+                      "enabled": "1",
+                      "name": "Defensive Yards Allowed 200-299",
+                      "display_name": "Yds Allow 200-299",
+                      "sort_order": "1",
+                      "position_type": "DT",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "DT"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 74,
+                      "enabled": "1",
+                      "name": "Defensive Yards Allowed 300-399",
+                      "display_name": "Yds Allow 300-399",
+                      "sort_order": "1",
+                      "position_type": "DT",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "DT"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 75,
+                      "enabled": "1",
+                      "name": "Defensive Yards Allowed 400-499",
+                      "display_name": "Yds Allow 400-499",
+                      "sort_order": "1",
+                      "position_type": "DT",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "DT"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 76,
+                      "enabled": "1",
+                      "name": "Defensive Yards Allowed 500+",
+                      "display_name": "Yds Allow 500+",
+                      "sort_order": "1",
+                      "position_type": "DT",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "DT"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 82,
+                      "enabled": "1",
+                      "name": "Extra Point Returned",
+                      "display_name": "XPR",
+                      "sort_order": "1",
+                      "position_type": "DT",
+                      "stat_position_types": [
+                          {
+                              "stat_position_type": {
+                                  "position_type": "DT"
+                              }
+                          }
+                      ],
+                      "is_excluded_from_display": "1"
                   }
               }
-          ],
-          "stat_categories": {
-              "stats": [
-                  {
-                      "stat": {
-                          "stat_id": 4,
-                          "enabled": "1",
-                          "name": "Passing Yards",
-                          "display_name": "Pass Yds",
-                          "sort_order": "1",
-                          "position_type": "O",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "O"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 5,
-                          "enabled": "1",
-                          "name": "Passing Touchdowns",
-                          "display_name": "Pass TD",
-                          "sort_order": "1",
-                          "position_type": "O",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "O"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 6,
-                          "enabled": "1",
-                          "name": "Interceptions",
-                          "display_name": "Int",
-                          "sort_order": "0",
-                          "position_type": "O",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "O"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 7,
-                          "enabled": "1",
-                          "name": "Sacks",
-                          "display_name": "Sack",
-                          "sort_order": "0",
-                          "position_type": "O",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "O"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 8,
-                          "enabled": "1",
-                          "name": "Rushing Attempts",
-                          "display_name": "Rush Att",
-                          "sort_order": "1",
-                          "position_type": "O",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "O"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 9,
-                          "enabled": "1",
-                          "name": "Rushing Yards",
-                          "display_name": "Rush Yds",
-                          "sort_order": "1",
-                          "position_type": "O",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "O"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 10,
-                          "enabled": "1",
-                          "name": "Rushing Touchdowns",
-                          "display_name": "Rush TD",
-                          "sort_order": "1",
-                          "position_type": "O",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "O"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 78,
-                          "enabled": "1",
-                          "name": "Targets",
-                          "display_name": "Targets",
-                          "sort_order": "1",
-                          "position_type": "O",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "O",
-                                      "is_only_display_stat": "1"
-                                  }
-                              }
-                          ],
-                          "is_only_display_stat": "1"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 11,
-                          "enabled": "1",
-                          "name": "Receptions",
-                          "display_name": "Rec",
-                          "sort_order": "1",
-                          "position_type": "O",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "O"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 12,
-                          "enabled": "1",
-                          "name": "Receiving Yards",
-                          "display_name": "Rec Yds",
-                          "sort_order": "1",
-                          "position_type": "O",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "O"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 13,
-                          "enabled": "1",
-                          "name": "Receiving Touchdowns",
-                          "display_name": "Rec TD",
-                          "sort_order": "1",
-                          "position_type": "O",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "O"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 14,
-                          "enabled": "1",
-                          "name": "Return Yards",
-                          "display_name": "Ret Yds",
-                          "sort_order": "1",
-                          "position_type": "O",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "O"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 15,
-                          "enabled": "1",
-                          "name": "Return Touchdowns",
-                          "display_name": "Ret TD",
-                          "sort_order": "1",
-                          "position_type": "O",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "O"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 16,
-                          "enabled": "1",
-                          "name": "2-Point Conversions",
-                          "display_name": "2-PT",
-                          "sort_order": "1",
-                          "position_type": "O",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "O"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 18,
-                          "enabled": "1",
-                          "name": "Fumbles Lost",
-                          "display_name": "Fum Lost",
-                          "sort_order": "0",
-                          "position_type": "O",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "O"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 57,
-                          "enabled": "1",
-                          "name": "Offensive Fumble Return TD",
-                          "display_name": "Fum Ret TD",
-                          "sort_order": "1",
-                          "position_type": "O",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "O"
-                                  }
-                              }
-                          ],
-                          "is_excluded_from_display": "1"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 31,
-                          "enabled": "1",
-                          "name": "Points Allowed",
-                          "display_name": "Pts Allow",
-                          "sort_order": "0",
-                          "position_type": "DT",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "DT",
-                                      "is_only_display_stat": "1"
-                                  }
-                              }
-                          ],
-                          "is_only_display_stat": "1"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 32,
-                          "enabled": "1",
-                          "name": "Sack",
-                          "display_name": "Sack",
-                          "sort_order": "1",
-                          "position_type": "DT",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "DT"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 33,
-                          "enabled": "1",
-                          "name": "Interception",
-                          "display_name": "Int",
-                          "sort_order": "1",
-                          "position_type": "DT",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "DT"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 34,
-                          "enabled": "1",
-                          "name": "Fumble Recovery",
-                          "display_name": "Fum Rec",
-                          "sort_order": "1",
-                          "position_type": "DT",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "DT"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 35,
-                          "enabled": "1",
-                          "name": "Touchdown",
-                          "display_name": "TD",
-                          "sort_order": "1",
-                          "position_type": "DT",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "DT"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 36,
-                          "enabled": "1",
-                          "name": "Safety",
-                          "display_name": "Safe",
-                          "sort_order": "1",
-                          "position_type": "DT",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "DT"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 37,
-                          "enabled": "1",
-                          "name": "Block Kick",
-                          "display_name": "Blk Kick",
-                          "sort_order": "1",
-                          "position_type": "DT",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "DT"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 49,
-                          "enabled": "1",
-                          "name": "Kickoff and Punt Return Touchdowns",
-                          "display_name": "Ret TD",
-                          "sort_order": "1",
-                          "position_type": "DT",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "DT"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 69,
-                          "enabled": "1",
-                          "name": "Defensive Yards Allowed",
-                          "display_name": "Def Yds Allow",
-                          "sort_order": "0",
-                          "position_type": "DT",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "DT",
-                                      "is_only_display_stat": "1"
-                                  }
-                              }
-                          ],
-                          "is_only_display_stat": "1"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 50,
-                          "enabled": "1",
-                          "name": "Points Allowed 0 points",
-                          "display_name": "Pts Allow 0",
-                          "sort_order": "1",
-                          "position_type": "DT",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "DT"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 51,
-                          "enabled": "1",
-                          "name": "Points Allowed 1-6 points",
-                          "display_name": "Pts Allow 1-6",
-                          "sort_order": "1",
-                          "position_type": "DT",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "DT"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 52,
-                          "enabled": "1",
-                          "name": "Points Allowed 7-13 points",
-                          "display_name": "Pts Allow 7-13",
-                          "sort_order": "1",
-                          "position_type": "DT",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "DT"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 53,
-                          "enabled": "1",
-                          "name": "Points Allowed 14-20 points",
-                          "display_name": "Pts Allow 14-20",
-                          "sort_order": "1",
-                          "position_type": "DT",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "DT"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 54,
-                          "enabled": "1",
-                          "name": "Points Allowed 21-27 points",
-                          "display_name": "Pts Allow 21-27",
-                          "sort_order": "1",
-                          "position_type": "DT",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "DT"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 55,
-                          "enabled": "1",
-                          "name": "Points Allowed 28-34 points",
-                          "display_name": "Pts Allow 28-34",
-                          "sort_order": "1",
-                          "position_type": "DT",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "DT"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 56,
-                          "enabled": "1",
-                          "name": "Points Allowed 35+ points",
-                          "display_name": "Pts Allow 35+",
-                          "sort_order": "1",
-                          "position_type": "DT",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "DT"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 70,
-                          "enabled": "1",
-                          "name": "Defensive Yards Allowed - Negative",
-                          "display_name": "Yds Allow Neg",
-                          "sort_order": "1",
-                          "position_type": "DT",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "DT"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 71,
-                          "enabled": "1",
-                          "name": "Defensive Yards Allowed 0-99",
-                          "display_name": "Yds Allow 0-99",
-                          "sort_order": "1",
-                          "position_type": "DT",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "DT"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 72,
-                          "enabled": "1",
-                          "name": "Defensive Yards Allowed 100-199",
-                          "display_name": "Yds Allow 100-199",
-                          "sort_order": "1",
-                          "position_type": "DT",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "DT"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 73,
-                          "enabled": "1",
-                          "name": "Defensive Yards Allowed 200-299",
-                          "display_name": "Yds Allow 200-299",
-                          "sort_order": "1",
-                          "position_type": "DT",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "DT"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 74,
-                          "enabled": "1",
-                          "name": "Defensive Yards Allowed 300-399",
-                          "display_name": "Yds Allow 300-399",
-                          "sort_order": "1",
-                          "position_type": "DT",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "DT"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 75,
-                          "enabled": "1",
-                          "name": "Defensive Yards Allowed 400-499",
-                          "display_name": "Yds Allow 400-499",
-                          "sort_order": "1",
-                          "position_type": "DT",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "DT"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 76,
-                          "enabled": "1",
-                          "name": "Defensive Yards Allowed 500+",
-                          "display_name": "Yds Allow 500+",
-                          "sort_order": "1",
-                          "position_type": "DT",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "DT"
-                                  }
-                              }
-                          ]
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 82,
-                          "enabled": "1",
-                          "name": "Extra Point Returned",
-                          "display_name": "XPR",
-                          "sort_order": "1",
-                          "position_type": "DT",
-                          "stat_position_types": [
-                              {
-                                  "stat_position_type": {
-                                      "position_type": "DT"
-                                  }
-                              }
-                          ],
-                          "is_excluded_from_display": "1"
-                      }
+          ]
+      },
+      "stat_modifiers": {
+          "stats": [
+              {
+                  "stat": {
+                      "stat_id": 4,
+                      "value": "0.033333333333333"
                   }
-              ]
-          },
-          "stat_modifiers": {
-              "stats": [
-                  {
-                      "stat": {
-                          "stat_id": 4,
-                          "value": "0.033333333333333"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 5,
-                          "value": "6"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 6,
-                          "value": "-2"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 7,
-                          "value": "-0.5"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 8,
-                          "value": "0.25"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 9,
-                          "value": "0.1"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 10,
-                          "value": "6"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 11,
-                          "value": "0.75"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 12,
-                          "value": "0.1"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 13,
-                          "value": "6"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 14,
-                          "value": "0.033333333333333"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 15,
-                          "value": "6"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 16,
-                          "value": "2"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 18,
-                          "value": "-2"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 57,
-                          "value": "6"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 32,
-                          "value": "1"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 33,
-                          "value": "2"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 34,
-                          "value": "2"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 35,
-                          "value": "6"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 36,
-                          "value": "2"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 37,
-                          "value": "2"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 49,
-                          "value": "6"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 50,
-                          "value": "7"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 51,
-                          "value": "5"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 52,
-                          "value": "3"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 53,
-                          "value": "1"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 54,
-                          "value": "0"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 55,
-                          "value": "-1"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 56,
-                          "value": "-3"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 70,
-                          "value": "7"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 71,
-                          "value": "5"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 72,
-                          "value": "3"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 73,
-                          "value": "1"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 74,
-                          "value": "0"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 75,
-                          "value": "-1"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 76,
-                          "value": "-3"
-                      }
-                  },
-                  {
-                      "stat": {
-                          "stat_id": 82,
-                          "value": "2"
-                      }
+              },
+              {
+                  "stat": {
+                      "stat_id": 5,
+                      "value": "6"
                   }
-              ]
-          },
-          "pickem_enabled": "1",
-          "uses_fractional_points": "0",
-          "uses_negative_points": "1"
+              },
+              {
+                  "stat": {
+                      "stat_id": 6,
+                      "value": "-2"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 7,
+                      "value": "-0.5"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 8,
+                      "value": "0.25"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 9,
+                      "value": "0.1"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 10,
+                      "value": "6"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 11,
+                      "value": "0.75"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 12,
+                      "value": "0.1"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 13,
+                      "value": "6"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 14,
+                      "value": "0.033333333333333"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 15,
+                      "value": "6"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 16,
+                      "value": "2"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 18,
+                      "value": "-2"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 57,
+                      "value": "6"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 32,
+                      "value": "1"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 33,
+                      "value": "2"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 34,
+                      "value": "2"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 35,
+                      "value": "6"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 36,
+                      "value": "2"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 37,
+                      "value": "2"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 49,
+                      "value": "6"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 50,
+                      "value": "7"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 51,
+                      "value": "5"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 52,
+                      "value": "3"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 53,
+                      "value": "1"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 54,
+                      "value": "0"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 55,
+                      "value": "-1"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 56,
+                      "value": "-3"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 70,
+                      "value": "7"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 71,
+                      "value": "5"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 72,
+                      "value": "3"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 73,
+                      "value": "1"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 74,
+                      "value": "0"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 75,
+                      "value": "-1"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 76,
+                      "value": "-3"
+                  }
+              },
+              {
+                  "stat": {
+                      "stat_id": 82,
+                      "value": "2"
+                  }
+              }
+          ]
+      },
+      "pickem_enabled": "1",
+      "uses_fractional_points": "0",
+      "uses_negative_points": "1"
+  },
+  "yahooTeam": {
+    "team_key": "399.l.13088.t.2",
+    "team_id": "2",
+    "name": "GoldDiggers",
+    "is_owned_by_current_login": 1,
+    "url": "https://football.fantasysports.yahoo.com/f1/13088/2",
+    "team_logos": [
+        {
+            "team_logo": {
+                "size": "large",
+                "url": "https://s.yimg.com/cv/apiv2/default/nfl/nfl_2_l.png"
+            }
+        }
+    ],
+    "waiver_priority": 11,
+    "faab_balance": "100",
+    "number_of_moves": "3",
+    "number_of_trades": "1",
+    "roster_adds": {
+        "coverage_type": "week",
+        "coverage_value": "1",
+        "value": "0"
+    },
+    "league_scoring_type": "head",
+    "has_draft_grade": 1,
+    "draft_grade": "C+",
+    "draft_recap_url": "https://football.fantasysports.yahoo.com/f1/13088/2/draftrecap",
+    "managers": [
+        {
+            "manager": {
+                "manager_id": "2",
+                "nickname": "Ryan",
+                "guid": "2OMLCT3C2A42Z3FCGWJZCIDYLU",
+                "is_commissioner": "1",
+                "is_current_login": "1",
+                "email": "lauzon232@gmail.com",
+                "image_url": "https://s.yimg.com/ag/images/5877/59490392552_ac9b6a_64sq.jpg"
+            }
+        }
+    ],
+    "roster": {
+        "coverage_type": "week",
+        "week": "1",
+        "is_editable": 1,
+        "players": [
+            {
+                "player_key": "399.p.30977",
+                "player_id": "30977",
+                "name": {
+                    "full": "Josh Allen",
+                    "first": "Josh",
+                    "last": "Allen",
+                    "ascii_first": "Josh",
+                    "ascii_last": "Allen"
+                },
+                "editorial_player_key": "nfl.p.30977",
+                "editorial_team_key": "nfl.t.2",
+                "editorial_team_full_name": "Buffalo Bills",
+                "editorial_team_abbr": "Buf",
+                "bye_weeks": {
+                    "week": "11"
+                },
+                "uniform_number": "17",
+                "display_position": "QB",
+                "headshot": {
+                    "url": "https://s.yimg.com/iu/api/res/1.2/B4E0GvSxnnu4h7o2b2k7QA--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08202019/30977.1.png",
+                    "size": "small"
+                },
+                "image_url": "https://s.yimg.com/iu/api/res/1.2/B4E0GvSxnnu4h7o2b2k7QA--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08202019/30977.1.png",
+                "is_undroppable": "0",
+                "position_type": "O",
+                "primary_position": "QB",
+                "eligible_positions": [
+                    {
+                        "position": "QB"
+                    }
+                ],
+                "selected_position": {
+                    "coverage_type": "week",
+                    "week": "1",
+                    "position": "QB",
+                    "is_flex": 0
+                }
+            },
+            {
+                "player_key": "399.p.27540",
+                "player_id": "27540",
+                "name": {
+                    "full": "Odell Beckham Jr.",
+                    "first": "Odell",
+                    "last": "Beckham Jr.",
+                    "ascii_first": "Odell",
+                    "ascii_last": "Beckham Jr."
+                },
+                "editorial_player_key": "nfl.p.27540",
+                "editorial_team_key": "nfl.t.5",
+                "editorial_team_full_name": "Cleveland Browns",
+                "editorial_team_abbr": "Cle",
+                "bye_weeks": {
+                    "week": "9"
+                },
+                "uniform_number": "13",
+                "display_position": "WR",
+                "headshot": {
+                    "url": "https://s.yimg.com/iu/api/res/1.2/Q_EfGc7B_qj9k6jRorRSTQ--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08092019/27540.png",
+                    "size": "small"
+                },
+                "image_url": "https://s.yimg.com/iu/api/res/1.2/Q_EfGc7B_qj9k6jRorRSTQ--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08092019/27540.png",
+                "is_undroppable": "0",
+                "position_type": "O",
+                "primary_position": "WR",
+                "eligible_positions": [
+                    {
+                        "position": "WR"
+                    },
+                    {
+                        "position": "W/R/T"
+                    }
+                ],
+                "selected_position": {
+                    "coverage_type": "week",
+                    "week": "1",
+                    "position": "WR",
+                    "is_flex": 0
+                }
+            },
+            {
+                "player_key": "399.p.31010",
+                "player_id": "31010",
+                "name": {
+                    "full": "Courtland Sutton",
+                    "first": "Courtland",
+                    "last": "Sutton",
+                    "ascii_first": "Courtland",
+                    "ascii_last": "Sutton"
+                },
+                "editorial_player_key": "nfl.p.31010",
+                "editorial_team_key": "nfl.t.7",
+                "editorial_team_full_name": "Denver Broncos",
+                "editorial_team_abbr": "Den",
+                "bye_weeks": {
+                    "week": "8"
+                },
+                "uniform_number": "14",
+                "display_position": "WR",
+                "headshot": {
+                    "url": "https://s.yimg.com/iu/api/res/1.2/rDQ0diiVcX5lTH0eyqe5qQ--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08202019/31010.1.png",
+                    "size": "small"
+                },
+                "image_url": "https://s.yimg.com/iu/api/res/1.2/rDQ0diiVcX5lTH0eyqe5qQ--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08202019/31010.1.png",
+                "is_undroppable": "0",
+                "position_type": "O",
+                "primary_position": "WR",
+                "eligible_positions": [
+                    {
+                        "position": "WR"
+                    },
+                    {
+                        "position": "W/R/T"
+                    }
+                ],
+                "selected_position": {
+                    "coverage_type": "week",
+                    "week": "1",
+                    "position": "WR",
+                    "is_flex": 0
+                }
+            },
+            {
+                "player_key": "399.p.31888",
+                "player_id": "31888",
+                "name": {
+                    "full": "Mecole Hardman",
+                    "first": "Mecole",
+                    "last": "Hardman",
+                    "ascii_first": "Mecole",
+                    "ascii_last": "Hardman"
+                },
+                "editorial_player_key": "nfl.p.31888",
+                "editorial_team_key": "nfl.t.12",
+                "editorial_team_full_name": "Kansas City Chiefs",
+                "editorial_team_abbr": "KC",
+                "bye_weeks": {
+                    "week": "10"
+                },
+                "uniform_number": "17",
+                "display_position": "WR",
+                "headshot": {
+                    "url": "https://s.yimg.com/iu/api/res/1.2/XFWc_Q8sGhV2xo7itm7zlA--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08072019/31888.png",
+                    "size": "small"
+                },
+                "image_url": "https://s.yimg.com/iu/api/res/1.2/XFWc_Q8sGhV2xo7itm7zlA--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08072019/31888.png",
+                "is_undroppable": "0",
+                "position_type": "O",
+                "primary_position": "WR",
+                "eligible_positions": [
+                    {
+                        "position": "WR"
+                    },
+                    {
+                        "position": "W/R/T"
+                    }
+                ],
+                "selected_position": {
+                    "coverage_type": "week",
+                    "week": "1",
+                    "position": "WR",
+                    "is_flex": 0
+                }
+            },
+            {
+                "player_key": "399.p.30423",
+                "player_id": "30423",
+                "name": {
+                    "full": "Austin Ekeler",
+                    "first": "Austin",
+                    "last": "Ekeler",
+                    "ascii_first": "Austin",
+                    "ascii_last": "Ekeler"
+                },
+                "editorial_player_key": "nfl.p.30423",
+                "editorial_team_key": "nfl.t.24",
+                "editorial_team_full_name": "Los Angeles Chargers",
+                "editorial_team_abbr": "LAC",
+                "bye_weeks": {
+                    "week": "10"
+                },
+                "uniform_number": "30",
+                "display_position": "RB",
+                "headshot": {
+                    "url": "https://s.yimg.com/iu/api/res/1.2/9kS2hU3YTIdrXwuN.dr1ew--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08152019/30423.png",
+                    "size": "small"
+                },
+                "image_url": "https://s.yimg.com/iu/api/res/1.2/9kS2hU3YTIdrXwuN.dr1ew--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08152019/30423.png",
+                "is_undroppable": "1",
+                "position_type": "O",
+                "primary_position": "RB",
+                "eligible_positions": [
+                    {
+                        "position": "RB"
+                    },
+                    {
+                        "position": "W/R/T"
+                    }
+                ],
+                "selected_position": {
+                    "coverage_type": "week",
+                    "week": "1",
+                    "position": "RB",
+                    "is_flex": 0
+                }
+            },
+            {
+                "player_key": "399.p.28403",
+                "player_id": "28403",
+                "name": {
+                    "full": "Melvin Gordon III",
+                    "first": "Melvin",
+                    "last": "Gordon III",
+                    "ascii_first": "Melvin",
+                    "ascii_last": "Gordon III"
+                },
+                "editorial_player_key": "nfl.p.28403",
+                "editorial_team_key": "nfl.t.7",
+                "editorial_team_full_name": "Denver Broncos",
+                "editorial_team_abbr": "Den",
+                "bye_weeks": {
+                    "week": "8"
+                },
+                "uniform_number": "25",
+                "display_position": "RB",
+                "headshot": {
+                    "url": "https://s.yimg.com/iu/api/res/1.2/nSTMDQOiYSnOjVHiaPebfw--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08152019/28403.png",
+                    "size": "small"
+                },
+                "image_url": "https://s.yimg.com/iu/api/res/1.2/nSTMDQOiYSnOjVHiaPebfw--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08152019/28403.png",
+                "is_undroppable": "0",
+                "position_type": "O",
+                "primary_position": "RB",
+                "eligible_positions": [
+                    {
+                        "position": "RB"
+                    },
+                    {
+                        "position": "W/R/T"
+                    }
+                ],
+                "selected_position": {
+                    "coverage_type": "week",
+                    "week": "1",
+                    "position": "RB",
+                    "is_flex": 0
+                }
+            },
+            {
+                "player_key": "399.p.30136",
+                "player_id": "30136",
+                "name": {
+                    "full": "Evan Engram",
+                    "first": "Evan",
+                    "last": "Engram",
+                    "ascii_first": "Evan",
+                    "ascii_last": "Engram"
+                },
+                "editorial_player_key": "nfl.p.30136",
+                "editorial_team_key": "nfl.t.19",
+                "editorial_team_full_name": "New York Giants",
+                "editorial_team_abbr": "NYG",
+                "bye_weeks": {
+                    "week": "11"
+                },
+                "uniform_number": "88",
+                "display_position": "TE",
+                "headshot": {
+                    "url": "https://s.yimg.com/iu/api/res/1.2/P6sRS0ktCBhOyQDLLuislA--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08222019/30136.png",
+                    "size": "small"
+                },
+                "image_url": "https://s.yimg.com/iu/api/res/1.2/P6sRS0ktCBhOyQDLLuislA--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08222019/30136.png",
+                "is_undroppable": "0",
+                "position_type": "O",
+                "primary_position": "TE",
+                "eligible_positions": [
+                    {
+                        "position": "TE"
+                    },
+                    {
+                        "position": "W/R/T"
+                    }
+                ],
+                "has_player_notes": 1,
+                "player_notes_last_timestamp": 1593525312,
+                "selected_position": {
+                    "coverage_type": "week",
+                    "week": "1",
+                    "position": "TE",
+                    "is_flex": 0
+                }
+            },
+            {
+                "player_key": "399.p.31001",
+                "player_id": "31001",
+                "name": {
+                    "full": "Sony Michel",
+                    "first": "Sony",
+                    "last": "Michel",
+                    "ascii_first": "Sony",
+                    "ascii_last": "Michel"
+                },
+                "status": "Q",
+                "status_full": "Questionable",
+                "editorial_player_key": "nfl.p.31001",
+                "editorial_team_key": "nfl.t.17",
+                "editorial_team_full_name": "New England Patriots",
+                "editorial_team_abbr": "NE",
+                "bye_weeks": {
+                    "week": "6"
+                },
+                "uniform_number": "26",
+                "display_position": "RB",
+                "headshot": {
+                    "url": "https://s.yimg.com/iu/api/res/1.2/j_NSRajJoZcyzs01iFl1hA--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08212019/31001.png",
+                    "size": "small"
+                },
+                "image_url": "https://s.yimg.com/iu/api/res/1.2/j_NSRajJoZcyzs01iFl1hA--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08212019/31001.png",
+                "is_undroppable": "0",
+                "position_type": "O",
+                "primary_position": "RB",
+                "eligible_positions": [
+                    {
+                        "position": "RB"
+                    },
+                    {
+                        "position": "W/R/T"
+                    }
+                ],
+                "selected_position": {
+                    "coverage_type": "week",
+                    "week": "1",
+                    "position": "W/R/T",
+                    "is_flex": 1
+                }
+            },
+            {
+                "player_key": "399.p.31864",
+                "player_id": "31864",
+                "name": {
+                    "full": "N'Keal Harry",
+                    "first": "N'Keal",
+                    "last": "Harry",
+                    "ascii_first": "N'Keal",
+                    "ascii_last": "Harry"
+                },
+                "editorial_player_key": "nfl.p.31864",
+                "editorial_team_key": "nfl.t.17",
+                "editorial_team_full_name": "New England Patriots",
+                "editorial_team_abbr": "NE",
+                "bye_weeks": {
+                    "week": "6"
+                },
+                "uniform_number": "15",
+                "display_position": "WR",
+                "headshot": {
+                    "url": "https://s.yimg.com/iu/api/res/1.2/H59I09YpGjqsubMClAoqEw--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08042019/31864.png",
+                    "size": "small"
+                },
+                "image_url": "https://s.yimg.com/iu/api/res/1.2/H59I09YpGjqsubMClAoqEw--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08042019/31864.png",
+                "is_undroppable": "0",
+                "position_type": "O",
+                "primary_position": "WR",
+                "eligible_positions": [
+                    {
+                        "position": "WR"
+                    },
+                    {
+                        "position": "W/R/T"
+                    }
+                ],
+                "selected_position": {
+                    "coverage_type": "week",
+                    "week": "1",
+                    "position": "BN",
+                    "is_flex": 0
+                }
+            },
+            {
+                "player_key": "399.p.31017",
+                "player_id": "31017",
+                "name": {
+                    "full": "Christian Kirk",
+                    "first": "Christian",
+                    "last": "Kirk",
+                    "ascii_first": "Christian",
+                    "ascii_last": "Kirk"
+                },
+                "editorial_player_key": "nfl.p.31017",
+                "editorial_team_key": "nfl.t.22",
+                "editorial_team_full_name": "Arizona Cardinals",
+                "editorial_team_abbr": "Ari",
+                "bye_weeks": {
+                    "week": "8"
+                },
+                "uniform_number": "13",
+                "display_position": "WR",
+                "headshot": {
+                    "url": "https://s.yimg.com/iu/api/res/1.2/WUYy1Hb13z5J3qflOLKG8A--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08212019/31017.png",
+                    "size": "small"
+                },
+                "image_url": "https://s.yimg.com/iu/api/res/1.2/WUYy1Hb13z5J3qflOLKG8A--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08212019/31017.png",
+                "is_undroppable": "0",
+                "position_type": "O",
+                "primary_position": "WR",
+                "eligible_positions": [
+                    {
+                        "position": "WR"
+                    },
+                    {
+                        "position": "W/R/T"
+                    }
+                ],
+                "selected_position": {
+                    "coverage_type": "week",
+                    "week": "1",
+                    "position": "BN",
+                    "is_flex": 0
+                }
+            },
+            {
+                "player_key": "399.p.31012",
+                "player_id": "31012",
+                "name": {
+                    "full": "Mike Gesicki",
+                    "first": "Mike",
+                    "last": "Gesicki",
+                    "ascii_first": "Mike",
+                    "ascii_last": "Gesicki"
+                },
+                "editorial_player_key": "nfl.p.31012",
+                "editorial_team_key": "nfl.t.15",
+                "editorial_team_full_name": "Miami Dolphins",
+                "editorial_team_abbr": "Mia",
+                "bye_weeks": {
+                    "week": "11"
+                },
+                "uniform_number": "88",
+                "display_position": "TE",
+                "headshot": {
+                    "url": "https://s.yimg.com/iu/api/res/1.2/fiU4GBxe_WY_.hMvjwfL5g--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08222019/31012.png",
+                    "size": "small"
+                },
+                "image_url": "https://s.yimg.com/iu/api/res/1.2/fiU4GBxe_WY_.hMvjwfL5g--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08222019/31012.png",
+                "is_undroppable": "0",
+                "position_type": "O",
+                "primary_position": "TE",
+                "eligible_positions": [
+                    {
+                        "position": "TE"
+                    },
+                    {
+                        "position": "W/R/T"
+                    }
+                ],
+                "selected_position": {
+                    "coverage_type": "week",
+                    "week": "1",
+                    "position": "BN",
+                    "is_flex": 0
+                }
+            },
+            {
+                "player_key": "399.p.31379",
+                "player_id": "31379",
+                "name": {
+                    "full": "Phillip Lindsay",
+                    "first": "Phillip",
+                    "last": "Lindsay",
+                    "ascii_first": "Phillip",
+                    "ascii_last": "Lindsay"
+                },
+                "editorial_player_key": "nfl.p.31379",
+                "editorial_team_key": "nfl.t.7",
+                "editorial_team_full_name": "Denver Broncos",
+                "editorial_team_abbr": "Den",
+                "bye_weeks": {
+                    "week": "8"
+                },
+                "uniform_number": "30",
+                "display_position": "RB",
+                "headshot": {
+                    "url": "https://s.yimg.com/iu/api/res/1.2/QWwSTCz4.wb497EBue5OIA--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08202019/31379.1.png",
+                    "size": "small"
+                },
+                "image_url": "https://s.yimg.com/iu/api/res/1.2/QWwSTCz4.wb497EBue5OIA--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08202019/31379.1.png",
+                "is_undroppable": "0",
+                "position_type": "O",
+                "primary_position": "RB",
+                "eligible_positions": [
+                    {
+                        "position": "RB"
+                    },
+                    {
+                        "position": "W/R/T"
+                    }
+                ],
+                "selected_position": {
+                    "coverage_type": "week",
+                    "week": "1",
+                    "position": "BN",
+                    "is_flex": 0
+                }
+            },
+            {
+                "player_key": "399.p.31029",
+                "player_id": "31029",
+                "name": {
+                    "full": "Derrius Guice",
+                    "first": "Derrius",
+                    "last": "Guice",
+                    "ascii_first": "Derrius",
+                    "ascii_last": "Guice"
+                },
+                "editorial_player_key": "nfl.p.31029",
+                "editorial_team_key": "nfl.t.28",
+                "editorial_team_full_name": "Washington Redskins",
+                "editorial_team_abbr": "Was",
+                "bye_weeks": {
+                    "week": "8"
+                },
+                "uniform_number": "29",
+                "display_position": "RB",
+                "headshot": {
+                    "url": "https://s.yimg.com/iu/api/res/1.2/L7mrH1cyPoY5O_xYeaD9ZQ--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08022019/31029.png",
+                    "size": "small"
+                },
+                "image_url": "https://s.yimg.com/iu/api/res/1.2/L7mrH1cyPoY5O_xYeaD9ZQ--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08022019/31029.png",
+                "is_undroppable": "0",
+                "position_type": "O",
+                "primary_position": "RB",
+                "eligible_positions": [
+                    {
+                        "position": "RB"
+                    },
+                    {
+                        "position": "W/R/T"
+                    }
+                ],
+                "selected_position": {
+                    "coverage_type": "week",
+                    "week": "1",
+                    "position": "BN",
+                    "is_flex": 0
+                }
+            },
+            {
+                "player_key": "399.p.31171",
+                "player_id": "31171",
+                "name": {
+                    "full": "Boston Scott",
+                    "first": "Boston",
+                    "last": "Scott",
+                    "ascii_first": "Boston",
+                    "ascii_last": "Scott"
+                },
+                "editorial_player_key": "nfl.p.31171",
+                "editorial_team_key": "nfl.t.21",
+                "editorial_team_full_name": "Philadelphia Eagles",
+                "editorial_team_abbr": "Phi",
+                "bye_weeks": {
+                    "week": "9"
+                },
+                "uniform_number": "35",
+                "display_position": "RB",
+                "headshot": {
+                    "url": "https://s.yimg.com/iu/api/res/1.2/nec05IBmRnSPFlvtnIHmPw--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08202019/31171.png",
+                    "size": "small"
+                },
+                "image_url": "https://s.yimg.com/iu/api/res/1.2/nec05IBmRnSPFlvtnIHmPw--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08202019/31171.png",
+                "is_undroppable": "0",
+                "position_type": "O",
+                "primary_position": "RB",
+                "eligible_positions": [
+                    {
+                        "position": "RB"
+                    },
+                    {
+                        "position": "W/R/T"
+                    }
+                ],
+                "selected_position": {
+                    "coverage_type": "week",
+                    "week": "1",
+                    "position": "BN",
+                    "is_flex": 0
+                }
+            },
+            {
+                "player_key": "399.p.9265",
+                "player_id": "9265",
+                "name": {
+                    "full": "Matthew Stafford",
+                    "first": "Matthew",
+                    "last": "Stafford",
+                    "ascii_first": "Matthew",
+                    "ascii_last": "Stafford"
+                },
+                "editorial_player_key": "nfl.p.9265",
+                "editorial_team_key": "nfl.t.8",
+                "editorial_team_full_name": "Detroit Lions",
+                "editorial_team_abbr": "Det",
+                "bye_weeks": {
+                    "week": "5"
+                },
+                "uniform_number": "9",
+                "display_position": "QB",
+                "headshot": {
+                    "url": "https://s.yimg.com/iu/api/res/1.2/FTkmXNqAi8WjlEzQKf_c0Q--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08202019/9265.1.png",
+                    "size": "small"
+                },
+                "image_url": "https://s.yimg.com/iu/api/res/1.2/FTkmXNqAi8WjlEzQKf_c0Q--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08202019/9265.1.png",
+                "is_undroppable": "0",
+                "position_type": "O",
+                "primary_position": "QB",
+                "eligible_positions": [
+                    {
+                        "position": "QB"
+                    }
+                ],
+                "selected_position": {
+                    "coverage_type": "week",
+                    "week": "1",
+                    "position": "BN",
+                    "is_flex": 0
+                }
+            },
+            {
+                "player_key": "399.p.30995",
+                "player_id": "30995",
+                "name": {
+                    "full": "Hayden Hurst",
+                    "first": "Hayden",
+                    "last": "Hurst",
+                    "ascii_first": "Hayden",
+                    "ascii_last": "Hurst"
+                },
+                "editorial_player_key": "nfl.p.30995",
+                "editorial_team_key": "nfl.t.1",
+                "editorial_team_full_name": "Atlanta Falcons",
+                "editorial_team_abbr": "Atl",
+                "bye_weeks": {
+                    "week": "10"
+                },
+                "uniform_number": "81",
+                "display_position": "TE",
+                "headshot": {
+                    "url": "https://s.yimg.com/iu/api/res/1.2/vjCuXcMFaGGU4kZBvfoZTg--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08152019/30995.png",
+                    "size": "small"
+                },
+                "image_url": "https://s.yimg.com/iu/api/res/1.2/vjCuXcMFaGGU4kZBvfoZTg--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08152019/30995.png",
+                "is_undroppable": "0",
+                "position_type": "O",
+                "primary_position": "TE",
+                "eligible_positions": [
+                    {
+                        "position": "TE"
+                    },
+                    {
+                        "position": "W/R/T"
+                    }
+                ],
+                "selected_position": {
+                    "coverage_type": "week",
+                    "week": "1",
+                    "position": "BN",
+                    "is_flex": 0
+                }
+            },
+            {
+                "player_key": "399.p.31928",
+                "player_id": "31928",
+                "name": {
+                    "full": "Dawson Knox",
+                    "first": "Dawson",
+                    "last": "Knox",
+                    "ascii_first": "Dawson",
+                    "ascii_last": "Knox"
+                },
+                "editorial_player_key": "nfl.p.31928",
+                "editorial_team_key": "nfl.t.2",
+                "editorial_team_full_name": "Buffalo Bills",
+                "editorial_team_abbr": "Buf",
+                "bye_weeks": {
+                    "week": "11"
+                },
+                "uniform_number": "88",
+                "display_position": "TE",
+                "headshot": {
+                    "url": "https://s.yimg.com/iu/api/res/1.2/LOgEMQ3oyoT4RjTheYGWMg--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08092019/31928.png",
+                    "size": "small"
+                },
+                "image_url": "https://s.yimg.com/iu/api/res/1.2/LOgEMQ3oyoT4RjTheYGWMg--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08092019/31928.png",
+                "is_undroppable": "0",
+                "position_type": "O",
+                "primary_position": "TE",
+                "eligible_positions": [
+                    {
+                        "position": "TE"
+                    },
+                    {
+                        "position": "W/R/T"
+                    }
+                ],
+                "selected_position": {
+                    "coverage_type": "week",
+                    "week": "1",
+                    "position": "BN",
+                    "is_flex": 0
+                }
+            },
+            {
+                "player_key": "399.p.30118",
+                "player_id": "30118",
+                "name": {
+                    "full": "Corey Davis",
+                    "first": "Corey",
+                    "last": "Davis",
+                    "ascii_first": "Corey",
+                    "ascii_last": "Davis"
+                },
+                "editorial_player_key": "nfl.p.30118",
+                "editorial_team_key": "nfl.t.10",
+                "editorial_team_full_name": "Tennessee Titans",
+                "editorial_team_abbr": "Ten",
+                "bye_weeks": {
+                    "week": "7"
+                },
+                "uniform_number": "84",
+                "display_position": "WR",
+                "headshot": {
+                    "url": "https://s.yimg.com/iu/api/res/1.2/KqDc19KstZMxAXbvFY6WvA--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08232019/30118.png",
+                    "size": "small"
+                },
+                "image_url": "https://s.yimg.com/iu/api/res/1.2/KqDc19KstZMxAXbvFY6WvA--~C/YXBwaWQ9eXNwb3J0cztjaD0yMzM2O2NyPTE7Y3c9MTc5MDtkeD04NTc7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/xe/i/us/sp/v/nfl_cutout/players_l/08232019/30118.png",
+                "is_undroppable": "0",
+                "position_type": "O",
+                "primary_position": "WR",
+                "eligible_positions": [
+                    {
+                        "position": "WR"
+                    },
+                    {
+                        "position": "W/R/T"
+                    }
+                ],
+                "selected_position": {
+                    "coverage_type": "week",
+                    "week": "1",
+                    "position": "BN",
+                    "is_flex": 0
+                }
+            },
+            {
+                "player_key": "399.p.32756",
+                "player_id": "32756",
+                "name": {
+                    "full": "Zack Moss",
+                    "first": "Zack",
+                    "last": "Moss",
+                    "ascii_first": "Zack",
+                    "ascii_last": "Moss"
+                },
+                "editorial_player_key": "nfl.p.32756",
+                "editorial_team_key": "nfl.t.2",
+                "editorial_team_full_name": "Buffalo Bills",
+                "editorial_team_abbr": "Buf",
+                "bye_weeks": {
+                    "week": "11"
+                },
+                "uniform_number": "20",
+                "display_position": "RB",
+                "headshot": {
+                    "url": "https://s.yimg.com/iu/api/res/1.2/TcM85WhJ.fAOHWf2QKLjIw--~C/YXBwaWQ9eXNwb3J0cztjaD0yMDA7Y3I9MTtjdz0xNTM7ZHg9NzQ7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/dh/ap/default/140828/silhouette@2x.png",
+                    "size": "small"
+                },
+                "image_url": "https://s.yimg.com/iu/api/res/1.2/TcM85WhJ.fAOHWf2QKLjIw--~C/YXBwaWQ9eXNwb3J0cztjaD0yMDA7Y3I9MTtjdz0xNTM7ZHg9NzQ7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/dh/ap/default/140828/silhouette@2x.png",
+                "is_undroppable": "0",
+                "position_type": "O",
+                "primary_position": "RB",
+                "eligible_positions": [
+                    {
+                        "position": "RB"
+                    },
+                    {
+                        "position": "W/R/T"
+                    }
+                ],
+                "has_player_notes": 1,
+                "player_notes_last_timestamp": 1593875227,
+                "selected_position": {
+                    "coverage_type": "week",
+                    "week": "1",
+                    "position": "BN",
+                    "is_flex": 0
+                }
+            },
+            {
+                "player_key": "399.p.32676",
+                "player_id": "32676",
+                "name": {
+                    "full": "Justin Herbert",
+                    "first": "Justin",
+                    "last": "Herbert",
+                    "ascii_first": "Justin",
+                    "ascii_last": "Herbert"
+                },
+                "editorial_player_key": "nfl.p.32676",
+                "editorial_team_key": "nfl.t.24",
+                "editorial_team_full_name": "Los Angeles Chargers",
+                "editorial_team_abbr": "LAC",
+                "bye_weeks": {
+                    "week": "10"
+                },
+                "uniform_number": "10",
+                "display_position": "QB",
+                "headshot": {
+                    "url": "https://s.yimg.com/iu/api/res/1.2/TcM85WhJ.fAOHWf2QKLjIw--~C/YXBwaWQ9eXNwb3J0cztjaD0yMDA7Y3I9MTtjdz0xNTM7ZHg9NzQ7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/dh/ap/default/140828/silhouette@2x.png",
+                    "size": "small"
+                },
+                "image_url": "https://s.yimg.com/iu/api/res/1.2/TcM85WhJ.fAOHWf2QKLjIw--~C/YXBwaWQ9eXNwb3J0cztjaD0yMDA7Y3I9MTtjdz0xNTM7ZHg9NzQ7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/dh/ap/default/140828/silhouette@2x.png",
+                "is_undroppable": "0",
+                "position_type": "O",
+                "primary_position": "QB",
+                "eligible_positions": [
+                    {
+                        "position": "QB"
+                    }
+                ],
+                "selected_position": {
+                    "coverage_type": "week",
+                    "week": "1",
+                    "position": "BN",
+                    "is_flex": 0
+                }
+            },
+            {
+                "player_key": "399.p.32703",
+                "player_id": "32703",
+                "name": {
+                    "full": "Tee Higgins",
+                    "first": "Tee",
+                    "last": "Higgins",
+                    "ascii_first": "Tee",
+                    "ascii_last": "Higgins"
+                },
+                "editorial_player_key": "nfl.p.32703",
+                "editorial_team_key": "nfl.t.4",
+                "editorial_team_full_name": "Cincinnati Bengals",
+                "editorial_team_abbr": "Cin",
+                "bye_weeks": {
+                    "week": "9"
+                },
+                "uniform_number": "85",
+                "display_position": "WR",
+                "headshot": {
+                    "url": "https://s.yimg.com/iu/api/res/1.2/TcM85WhJ.fAOHWf2QKLjIw--~C/YXBwaWQ9eXNwb3J0cztjaD0yMDA7Y3I9MTtjdz0xNTM7ZHg9NzQ7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/dh/ap/default/140828/silhouette@2x.png",
+                    "size": "small"
+                },
+                "image_url": "https://s.yimg.com/iu/api/res/1.2/TcM85WhJ.fAOHWf2QKLjIw--~C/YXBwaWQ9eXNwb3J0cztjaD0yMDA7Y3I9MTtjdz0xNTM7ZHg9NzQ7ZHk9MDtmaT11bGNyb3A7aD02MDtxPTEwMDt3PTQ2/https://s.yimg.com/dh/ap/default/140828/silhouette@2x.png",
+                "is_undroppable": "0",
+                "position_type": "O",
+                "primary_position": "WR",
+                "eligible_positions": [
+                    {
+                        "position": "WR"
+                    },
+                    {
+                        "position": "W/R/T"
+                    }
+                ],
+                "selected_position": {
+                    "coverage_type": "week",
+                    "week": "1",
+                    "position": "BN",
+                    "is_flex": 0
+                }
+            },
+            {
+                "player_key": "399.p.100029",
+                "player_id": "100029",
+                "name": {
+                    "full": "Carolina",
+                    "first": "Carolina",
+                    "last": "",
+                    "ascii_first": "Carolina",
+                    "ascii_last": ""
+                },
+                "editorial_player_key": "nfl.p.100029",
+                "editorial_team_key": "nfl.t.29",
+                "editorial_team_full_name": "Carolina Panthers",
+                "editorial_team_abbr": "Car",
+                "bye_weeks": {
+                    "week": "13"
+                },
+                "uniform_number": false,
+                "display_position": "DEF",
+                "headshot": {
+                    "url": "https://s.yimg.com/cv/ip/ap/default/120210/50x50w_car_1.gif",
+                    "size": "small"
+                },
+                "image_url": "https://s.yimg.com/cv/ip/ap/default/120210/50x50w_car_1.gif",
+                "is_undroppable": "0",
+                "position_type": "DT",
+                "primary_position": "DEF",
+                "eligible_positions": [
+                    {
+                        "position": "DEF"
+                    }
+                ],
+                "selected_position": {
+                    "coverage_type": "week",
+                    "week": "1",
+                    "position": "DEF",
+                    "is_flex": 0
+                }
+            },
+            {
+                "player_key": "399.p.100030",
+                "player_id": "100030",
+                "name": {
+                    "full": "Jacksonville",
+                    "first": "Jacksonville",
+                    "last": "",
+                    "ascii_first": "Jacksonville",
+                    "ascii_last": ""
+                },
+                "editorial_player_key": "nfl.p.100030",
+                "editorial_team_key": "nfl.t.30",
+                "editorial_team_full_name": "Jacksonville Jaguars",
+                "editorial_team_abbr": "Jax",
+                "bye_weeks": {
+                    "week": "7"
+                },
+                "uniform_number": false,
+                "display_position": "DEF",
+                "headshot": {
+                    "url": "https://s.yimg.com/xe/ipt/50x50w.3.gif",
+                    "size": "small"
+                },
+                "image_url": "https://s.yimg.com/xe/ipt/50x50w.3.gif",
+                "is_undroppable": "0",
+                "position_type": "DT",
+                "primary_position": "DEF",
+                "eligible_positions": [
+                    {
+                        "position": "DEF"
+                    }
+                ],
+                "selected_position": {
+                    "coverage_type": "week",
+                    "week": "1",
+                    "position": "BN",
+                    "is_flex": 0
+                }
+            },
+            {
+                "player_key": "399.p.100005",
+                "player_id": "100005",
+                "name": {
+                    "full": "Cleveland",
+                    "first": "Cleveland",
+                    "last": "",
+                    "ascii_first": "Cleveland",
+                    "ascii_last": ""
+                },
+                "editorial_player_key": "nfl.p.100005",
+                "editorial_team_key": "nfl.t.5",
+                "editorial_team_full_name": "Cleveland Browns",
+                "editorial_team_abbr": "Cle",
+                "bye_weeks": {
+                    "week": "9"
+                },
+                "uniform_number": false,
+                "display_position": "DEF",
+                "headshot": {
+                    "url": "https://s.yimg.com/lq/i/us/sp/v/nfl/teams/1/50x50w/cle.gif",
+                    "size": "small"
+                },
+                "image_url": "https://s.yimg.com/lq/i/us/sp/v/nfl/teams/1/50x50w/cle.gif",
+                "is_undroppable": "0",
+                "position_type": "DT",
+                "primary_position": "DEF",
+                "eligible_positions": [
+                    {
+                        "position": "DEF"
+                    }
+                ],
+                "selected_position": {
+                    "coverage_type": "week",
+                    "week": "1",
+                    "position": "BN",
+                    "is_flex": 0
+                }
+            }
+        ]
+    }
+  },
+  "capExceptionsByTeam": 
+    [ 
+      {
+        "prevLeagueIds": [],
+        "_id": "5ef24dd227478e00248c8975",
+        "yahooLeagueId": 13088,
+        "yahooLeagueYear": 2020,
+        "year": 2020,
+        "timestamp": "2020-06-23T18:45:38.863Z",
+        "addedBy": "Ryan Lauzon",
+        "yahooTeamGive":
+        { "team_id": 2},
+        "yahooTeamRecieve":
+        { "team_id": 9},
+        "amount": 10,
+        "appliedToTeams": true,
+        "comments": "",
+        "__v": 0 
       }
+    ]
 }
