@@ -6,13 +6,13 @@
       q-card-section.row.items-center
         .row.full-width
           .col-3.text-body.text-right.text-weight-bold.q-ma-sm Year:
-          .col-3.q-pl-sm: q-select(dense disable v-model='capExemption.year' :options='getYears()')
+          .col-3.q-pl-sm: q-select(dense disable v-model='capExemption.year' :options='getYears(seasonYear)')
         .row.full-width
           .col-3.text-body.text-right.text-weight-bold.q-ma-sm Giving Team:
-          .col.q-pl-sm: q-select(dense disable v-model='capExemption.yahooTeamGive' :options='filteredTeams' :display-value='displayTeam(capExemption.yahooTeamGive.name)')
+          .col.q-pl-sm: q-select(dense disable v-model='capExemption.yahooTeamGive' :options='filteredTeams' :display-value='displayTeamName(capExemption.yahooTeamGive.name)')
         .row.full-width
           .col-3.text-body.text-right.text-weight-bold.q-ma-sm Recieving Team:
-          .col.q-pl-sm: q-select(dense disable v-model='capExemption.yahooTeamRecieve' :options='filteredTeams' :display-value='displayTeam(capExemption.yahooTeamRecieve)')
+          .col.q-pl-sm: q-select(dense disable v-model='capExemption.yahooTeamRecieve' :options='filteredTeams' :display-value='displayTeamName(capExemption.yahooTeamRecieve)')
         .row.full-width
           .col-3.text-body.text-right.text-weight-bold.q-ma-sm Amount:
           .col-2.q-pl-sm: q-select(dense disable v-model='capExemption.amount' :options='referenceData.capExemptionAmount(salaryCapExemptionLimit)')
@@ -21,7 +21,7 @@
           .col-3.text-body.text-right.text-weight-bold.q-ma-sm Comments:
           .col.q-ma-sm.text-grey: q-input(v-model='capExemption.comments' filled type='textarea')
         .row.full-width.q-mt-sm
-          .q-pr-lg.col.text-grey-5.text-right Added: {{fmtDate(capExemption.timestamp)}} ({{capExemption.addedBy}})
+          .q-pr-lg.col.text-grey-5.text-right Added: {{fmtCeDate(capExemption.timestamp)}} ({{capExemption.addedBy}})
       q-card-actions.row.justify-around
         q-btn(flat label='Cancel' color='primary' @click="close()")
         q-btn(flat label='Delete' color='primary' @click="remove()")
@@ -31,7 +31,8 @@
 <script>
 /* eslint-disable eqeqeq */
 import referenceData from '../../utilities/referenceData'
-import moment from 'moment'
+import { displayTeamName, fmtCeDate } from '../../utilities/formatters'
+import { getYears } from '../../utilities/functions'
 
 export default {
   name: 'EditCapExemptionDialog',
@@ -49,6 +50,15 @@ export default {
   computed: {
     referenceData () {
       return referenceData
+    },
+    fmtCeDate () {
+      return fmtCeDate
+    },
+    displayTeamName () {
+      return displayTeamName
+    },
+    getYears () {
+      return getYears
     },
     team () {
       return this.$store.state.team
@@ -103,21 +113,6 @@ export default {
     close () {
       this.$store.commit('dialog/editCapExemption')
       this.visable = false
-    },
-    displayTeam (team) {
-      if (team) {
-        return team.name
-      } else { return '' }
-    },
-    getYears () {
-      let years = []
-      for (let i = 0; i < 5; i++) {
-        years.push(this.seasonYear + i)
-      }
-      return years
-    },
-    fmtDate (date) {
-      return moment(date).format('LLL')
     }
   }
 }

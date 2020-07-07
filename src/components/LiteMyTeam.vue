@@ -19,6 +19,8 @@
 
 <script>
 
+import { getYahooPlayer } from '../utilities/functions'
+
 export default {
   name: 'LiteMyTeam',
   data () {
@@ -93,19 +95,13 @@ export default {
   },
   methods: {
     getPos (id) {
-      // eslint-disable-next-line eqeqeq
-      let player = this.myYahooTeam.players.find(p => p.player_id == id)
-      return player.display_position
+      return getYahooPlayer(this.myYahooTeam.players, id).display_position
     },
     getPlayerName (id) {
-      // eslint-disable-next-line eqeqeq
-      let player = this.myYahooTeam.players.find(p => p.player_id == id)
-      return `${player.name.full}`
+      return `${getYahooPlayer(this.myYahooTeam.players, id).name.full}`
     },
     getNFLTeam (id) {
-      // eslint-disable-next-line eqeqeq
-      let player = this.myYahooTeam.players.find(p => p.player_id == id)
-      return `${player.editorial_team_full_name}`
+      return `${getYahooPlayer(this.myYahooTeam.players, id).editorial_team_full_name}`
     }
   }
 

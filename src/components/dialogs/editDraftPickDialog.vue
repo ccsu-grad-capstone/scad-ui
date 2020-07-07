@@ -9,7 +9,7 @@
           .col-3.q-pl-sm: q-select(dense v-model='dp.pick' :options='referenceData.twelveTeams')
         .row.full-width
           .col-3.text-body.text-right.text-weight-bold.q-ma-sm Owner:
-          .col-6.q-pl-sm: q-select(dense v-model='dp.team' :options='filteredTeams' :display-value='displayTeam()')
+          .col-6.q-pl-sm: q-select(dense v-model='dp.team' :options='filteredTeams' :display-value='dp.team.name')
         .row.full-width.q-mt-sm
           .col-3.text-body.text-right.text-weight-bold.q-ma-sm Original Owner:
           .col.q-ma-sm.text-grey {{dp.originalTeam.name}}
@@ -29,6 +29,7 @@
 
 <script>
 import referenceData from '../../utilities/referenceData'
+import { outputRound } from '../../utilities/formatters'
 import moment from 'moment'
 
 export default {
@@ -49,6 +50,9 @@ export default {
   computed: {
     referenceData () {
       return referenceData
+    },
+    outputRound () {
+      return outputRound
     },
     leagueId () {
       return this.$store.state.league.yahooLeagueId
@@ -83,27 +87,6 @@ export default {
       this.$store.commit('dialog/editDraftPick')
       this.$emit('saved')
       this.visable = false
-    },
-    displayPick () {
-      if (this.dp.pick) {
-        return this.dp.pick
-      } else {
-        return '-'
-      }
-    },
-    displayTeam () {
-      return this.dp.team.name
-    },
-    outputRound (rd) {
-      if (rd === 1) {
-        return '1st'
-      } else if (rd === 2) {
-        return '2nd'
-      } else if (rd === 3) {
-        return '3rd'
-      } else if (rd === 4) {
-        return '4th'
-      }
     }
 
   }

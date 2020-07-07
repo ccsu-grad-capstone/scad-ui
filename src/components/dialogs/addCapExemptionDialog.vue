@@ -6,13 +6,13 @@
       q-card-section.row.items-center
         .row.full-width
           .col-3.text-body.text-right.text-weight-bold.q-ma-sm Year:
-          .col-3.q-pl-sm: q-select(dense v-model='$v.capExemption.year.$model' :options='getYears()' :error='$v.capExemption.year.$error' error-message='Required Field')
+          .col-3.q-pl-sm: q-select(dense v-model='$v.capExemption.year.$model' :options='getYears(seasonYear)' :error='$v.capExemption.year.$error' error-message='Required Field')
         .row.full-width
           .col-3.text-body.text-right.text-weight-bold.q-ma-sm Giving Team:
-          .col.q-pl-sm: q-select(dense v-model='$v.capExemption.yahooTeamGive.$model' :options='filteredTeams' :display-value='displayTeam(capExemption.yahooTeamGive.name)' :error='$v.capExemption.yahooTeamGive.$error' error-message='Required Field')
+          .col.q-pl-sm: q-select(dense v-model='$v.capExemption.yahooTeamGive.$model' :options='filteredTeams' :display-value='displayTeamName(capExemption.yahooTeamGive.name)' :error='$v.capExemption.yahooTeamGive.$error' error-message='Required Field')
         .row.full-width
           .col-3.text-body.text-right.text-weight-bold.q-ma-sm Recieving Team:
-          .col.q-pl-sm: q-select(dense v-model='$v.capExemption.yahooTeamRecieve.$model' :options='filteredTeams' :display-value='displayTeam(capExemption.yahooTeamRecieve)' :error='$v.capExemption.yahooTeamRecieve.$error' error-message='Required Field')
+          .col.q-pl-sm: q-select(dense v-model='$v.capExemption.yahooTeamRecieve.$model' :options='filteredTeams' :display-value='displayTeamName(capExemption.yahooTeamRecieve)' :error='$v.capExemption.yahooTeamRecieve.$error' error-message='Required Field')
         .row.full-width
           .col-3.text-body.text-right.text-weight-bold.q-ma-sm Amount:
           .col-2.q-pl-sm: q-select(dense v-model='$v.capExemption.amount.$model' :options='referenceData.capExemptionAmount(this.salaryCapExemptionLimit)' :error='$v.capExemption.amount.$error' error-message='Required Field')
@@ -30,6 +30,8 @@
 import referenceData from '../../utilities/referenceData'
 import notify from '../../utilities/nofity'
 import { required } from 'vuelidate/lib/validators'
+import { getYears } from '../../utilities/functions'
+import { displayTeamName } from '../../utilities/formatters'
 
 export default {
   name: 'AddCapExemptionDialog',
@@ -69,6 +71,12 @@ export default {
   computed: {
     referenceData () {
       return referenceData
+    },
+    getYears () {
+      return getYears
+    },
+    displayTeamName () {
+      return displayTeamName
     },
     leagueId () {
       return this.$store.state.league.yahooLeagueId
@@ -159,18 +167,6 @@ export default {
     close () {
       this.$store.commit('dialog/addCapExemption')
       this.visable = false
-    },
-    displayTeam (team) {
-      if (team) {
-        return team.name
-      } else { return '' }
-    },
-    getYears () {
-      let years = []
-      for (let i = 0; i < 5; i++) {
-        years.push(this.seasonYear + i)
-      }
-      return years
     }
   }
 }

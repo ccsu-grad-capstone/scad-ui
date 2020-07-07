@@ -18,6 +18,24 @@ export function getYahooPlayer (players, id) {
   }
 }
 
+// leagues: (array) scad leagues
+// id: (string) yahoo league_id
+// Finding SCAD league when starting with YAHOO league id
+export function getScadLeague (leagues, id) {
+  if (leagues) {
+    return leagues.find(l => l.yahooLeagueId == id)
+  }
+}
+
+// leagues: (array) yahoo leagues
+// id: (string) yahoo league_id
+// Finding SCAD league when starting with SCAD league id
+export function getYahooLeague (leagues, id) {
+  if (leagues) {
+    return leagues.find(l => l.league_id == id)
+  }
+}
+
 // rosterPositions: (array) yahoo league settings for positions
 // Returns the total number of roster spots, excluding IR
 export function getLeagueRosterLimit (rosterPositions) {
@@ -30,4 +48,14 @@ export function getLeagueRosterLimit (rosterPositions) {
     })
     return count
   }
+}
+
+export function getYears (year) {
+  let years = []
+  if (year) {
+    for (let i = 0; i < 5; i++) {
+      years.push(year + i)
+    }
+  }
+  return years
 }

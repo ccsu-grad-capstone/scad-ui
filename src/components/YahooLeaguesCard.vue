@@ -28,7 +28,7 @@
                 .col.lt-md {{getLeagueName(league.yahooLeagueId)}}
                 .col.text-left.gt-sm
                   .row.full-width.q-gutter-md
-                    .text-primary.text-weight-bold(v-if="isActive(league.id)") Active League
+                    .text-primary.text-weight-bold(v-if="(league.id == scadLeagueId)") Active League
                     .text-primary.text-weight-bold(v-else) Switch to League
                     .text-accent.text-weight-bold(v-if="league.isDefault") Default League
                     q-btn.q-px-xs(v-else label='Set as Default League' flat dense color='white' text-color='accent' size='sm' @click="setAsDefault(league.id)")
@@ -41,7 +41,7 @@
         q-separator(vertical)
         .col
           q-separator
-          q-list( v-for="(league, index) in filterYahooLeagues()" :key="index")
+          q-list( v-for="(league, index) in yahooLeagues" :key="index")
             q-item(clickable  @click.native="yahooHome(league.league_id, league.url)")
               .row.full-width.q-pt-sm
                 .col.text-body1.text-weight-bolder.gt-sm {{league.name}}
@@ -59,6 +59,7 @@ import { openURL } from 'quasar'
 import { scad } from '../utilities/axios-scad'
 import { catchAxiosScadError } from '../utilities/catchAxiosErrors'
 import { isCommishNotRegistered } from '../utilities/validators'
+import { getScadLeague, getYahooLeague } from '../utilities/functions'
 import notify from '../utilities/nofity'
 import RegisterLeagueInvites from '../components/dialogs/registerLeagueInvites'
 
@@ -106,39 +107,16 @@ export default {
   },
   methods: {
     getLeagueName (id) {
-      // eslint-disable-next-line eqeqeq
-      let league = this.yahooLeagues.find(l => l.league_id == id)
-      return league.name
-    },
-    scadOnClick (scadLeagueId, yahooLeaguedId) {
-
+      return getYahooLeague(this.yahooLeagues, id).name
     },
     checkIfScadLeague (id) {
-      // eslint-disable-next-line eqeqeq
-      let league = this.scadLeagues.find(l => l.yahooLeagueId == id)
-      if (league) {
-        return true
-      }
-    },
-    isActive (id) {
-      if (id === this.scadLeagueId) {
-        return true
-      } else {
-        return false
-      }
+      if (getScadLeague(this.scadLeagues, id)) { return true } else { return false }
     },
     async switchLeague (scadLeagueId, yahooLeagueId) {
-      if (!this.isActive(scadLeagueId)) {
+      if (scadLeagueId === this.scadLeagueId) {
         await this.$store.dispatch('league/switchLeagues', yahooLeagueId)
         this.$router.push('dashboard')
       }
-    },
-    filterYahooLeagues () {
-      let leagues = []
-      this.yahooLeagues.forEach(l => {
-        leagues.push(l)
-      })
-      return leagues
     },
     yahooHome (id, url) {
       if (this.isCommishNotRegistered(id, this.yahooCommishLeagues, this.scadLeagues)) {
