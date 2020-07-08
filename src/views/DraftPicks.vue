@@ -66,7 +66,7 @@
 <script>
 import referenceData from '../utilities/referenceData'
 import editDraftPickDialog from '../components/dialogs/editDraftPickDialog'
-import { myTeamStyle } from '../utilities/formatters'
+import { myTeamStyle, displayPick } from '../utilities/formatters'
 /* eslint-disable eqeqeq */
 
 export default {
@@ -148,6 +148,9 @@ export default {
     myTeamStyle () {
       return myTeamStyle
     },
+    displayPick () {
+      return displayPick
+    },
     user () {
       return this.$store.state.user
     },
@@ -204,28 +207,6 @@ export default {
       this.edit.dp = dp
       this.$store.commit('dialog/editDraftPick')
     },
-    displayPick (pick) {
-      if (pick) {
-        return pick
-      } else {
-        return '-'
-      }
-    },
-    displayTeam () {
-      return this.edit.dp.team.name
-    },
-    outputRound (rd) {
-      if (rd === 1) {
-        return '1st'
-      } else if (rd === 2) {
-        return '2nd'
-      } else if (rd === 3) {
-        return '3rd'
-      } else if (rd === 4) {
-        return '4th'
-      }
-    },
-
     async updateMongoWithDraftPicks () {
       this.loaded = false
       await this.$store.dispatch('draftPicks/updateMongoWithDraftPicks')

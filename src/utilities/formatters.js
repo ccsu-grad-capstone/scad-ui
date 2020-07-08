@@ -23,6 +23,10 @@ export function displayTeamName (team) {
   return team ? team.name : ''
 }
 
+export function displayPick (pick) {
+  return pick || '-'
+}
+
 export function outputRound (rd) {
   if (rd === 1) {
     return '1st'

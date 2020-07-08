@@ -61,7 +61,7 @@
 /* eslint-disable eqeqeq */
 import referenceData from '../utilities/referenceData'
 import { myTeamStyle } from '../utilities/formatters'
-import { getYahooPlayer } from '../utilities/functions'
+import { getHeadshot, getPos, getPlayerName, getNFLTeam, getOwner, searchFilter, positionFilter } from '../utilities/functions'
 
 export default {
   data () {
@@ -161,6 +161,12 @@ export default {
     myTeamStyle () {
       return myTeamStyle
     },
+    searchFilter () {
+      return searchFilter
+    },
+    positionFilter () {
+      return positionFilter
+    },
     scadPlayers () {
       return this.$store.state.player.scadPlayers
     },
@@ -187,48 +193,27 @@ export default {
     },
     getHeadshot (id) {
       if (this.loaded) {
-        let player = getYahooPlayer(this.yahooPlayers, id)
-        if (player) {
-          return player.headshot.url
-        }
+        return getHeadshot(id, this.yahooPlayers)
       }
     },
     getPos (id) {
       if (this.loaded) {
-        let player = getYahooPlayer(this.yahooPlayers, id)
-        if (player) {
-          return player.display_position
-        }
+        return getPos(id, this.yahooPlayers)
       }
     },
     getPlayerName (id) {
       if (this.loaded) {
-        let player = getYahooPlayer(this.yahooPlayers, id)
-        if (player) {
-          return `${player.name.full}`
-        }
+        return getPlayerName(id, this.yahooPlayers)
       }
     },
     getNFLTeam (id) {
       if (this.loaded) {
-        let player = getYahooPlayer(this.yahooPlayers, id)
-        if (player) {
-          return `${player.editorial_team_full_name}`
-        }
+        return getNFLTeam(id, this.yahooPlayers)
       }
     },
     getOwner (id) {
       if (this.loaded) {
-        let yahooTeam = this.yahooTeams.find(t => t.team_id == id)
-        return yahooTeam.name
-      }
-    },
-    getTeam (yahooPlayerId) {
-      if (this.loaded) {
-        let team = this.scadPlayers.find(p => p.yahooLeaguePlayerId == yahooPlayerId)
-        if (team) {
-          return team.salary
-        }
+        return getOwner(id, this.yahooTeams)
       }
     },
     async updateTeamFilter () {
@@ -249,23 +234,15 @@ export default {
       Object.keys(this.filter).forEach(key => {
         if (this.filter[key] !== '') {
           if (key === 'search') {
-            filtered = filtered.filter(p => this.searchFilter(p.yahooLeaguePlayerId))
+            filtered = filtered.filter(p => searchFilter(p.yahooLeaguePlayerId, this.yahooPlayers, this.filter))
             // filtered = filtered.filter(p => p.name.full.toLowerCase().includes(this.filter[key].toLowerCase()))
           } else if (key === 'position') {
-            filtered = filtered.filter(p => this.positionFilter(p.yahooLeaguePlayerId))
+            filtered = filtered.filter(p => positionFilter(p.yahooLeaguePlayerId, this.yahooPlayers, this.filter))
             // filtered = filtered.filter(p => p.display_position === this.filter[key])
           }
         }
       })
       return filtered
-    },
-    searchFilter (id) {
-      let player = getYahooPlayer(this.yahooPlayers, id)
-      return player.name.full.toLowerCase().includes(this.filter['search'].toLowerCase())
-    },
-    positionFilter (id) {
-      let player = getYahooPlayer(this.yahooPlayers, id)
-      return player.display_position === this.filter['position']
     }
   }
 }

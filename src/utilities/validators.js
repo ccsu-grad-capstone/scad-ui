@@ -1,10 +1,11 @@
 /* eslint-disable eqeqeq */
 import { getPosCount } from './calculator'
+import { getScadPlayer } from './functions'
 
 // pos: player's position
 // Returns boolean depending if user's position is IR
 export function isIR (pos) {
-  if (pos === 'IR') { return true } else { return false }
+  return (pos === 'IR')
 }
 
 // id: current yahoo league id
@@ -18,11 +19,7 @@ export function isCommishNotRegistered (id, yahooCommishLeagues, scadLeagues) {
     league = yahooCommishLeagues.find(l => l.league_id == id)
     registered = scadLeagues.find(l => l.yahooLeagueId == id)
   }
-  if (league && !registered) {
-    return true
-  } else {
-    return false
-  }
+  return !!((league && !registered))
 }
 
 // pos: position
@@ -34,8 +31,11 @@ export function checkPos (pos, scadSettings, players) {
     let count = getPosCount(pos.toUpperCase(), players)
     if ((count <= scadSettings[`${pos.toLowerCase()}Max`]) && (count >= scadSettings[`${pos.toLowerCase()}Min`])) {
       return true
-    } else {
-      return false
-    }
+    } else { return false }
   } else { return false }
+}
+
+export function isScadPlayer (id, scadTeam) {
+  let scadPlayer = getScadPlayer(scadTeam.players, id)
+  return !!scadPlayer
 }

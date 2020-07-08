@@ -152,7 +152,7 @@
                         .row(v-if="isFranchiseTagged(props.row.player_id) || isIR(props.row.selected_position.position)")
                           .col.text-grey.q-pr-sm Original: ${{getOriginalSalary(props.row.player_id)}}
                       q-td(:class="fmt(props.row.selected_position.position, 'salary')" key='salary' :props='props' auto-width)
-                        .col(v-if="(isScadPlayer(props.row.player_id))" :style=" (editSalaries && !isFranchiseTagged(props.row.player_id)) ? 'border: 1px solid #26A69A;' : 'border: none;' ")
+                        .col(v-if="(isScadPlayer(props.row.player_id, scadTeam))" :style=" (editSalaries && !isFranchiseTagged(props.row.player_id)) ? 'border: 1px solid #26A69A;' : 'border: none;' ")
                           .text-weight-bolder.text-body2.q-pr-sm ${{ getPlayerSalary(props.row.player_id, props.row.selected_position.position) }}
                         .col(v-else)
                           q-btn(size='xs' color='positive' round dense @click='addScadPlayer(props.row.player_id)' icon="fas fa-plus")
@@ -190,9 +190,9 @@ import notify from '../utilities/nofity'
 import DraftPickOverview from '../components/DraftPickOverview.vue'
 import CapExemptionOverview from '../components/CapExemptionOverview.vue'
 import { calcTeamSalary, calcPlayerSalary } from '../utilities/calculator'
-import { isIR } from '../utilities/validators'
+import { isIR, isScadPlayer } from '../utilities/validators'
 import { fmt } from '../utilities/formatters'
-import { getScadPlayer } from '../utilities/functions'
+import { getScadPlayer, isFranchiseTagged, getPlayerPrevSalary, getOriginalSalary } from '../utilities/functions'
 /* eslint-disable eqeqeq */
 
 export default {
@@ -306,6 +306,9 @@ export default {
     },
     fmt () {
       return fmt
+    },
+    isScadPlayer () {
+      return isScadPlayer
     },
     user () {
       return this.$store.state.user
@@ -472,21 +475,7 @@ export default {
       this.franchiseTag = false
     },
     async savePlayer () {
-      // let initTeamSalary = this.scadTeam.salary
       this.scadTeam.salary += (this.editPlayer.salary - this.editPlayerInitSalary)
-
-      // if (this.scadTeam.salary <= this.teamSalaryCap) {
-      //   this.saveTeam()
-      //   this.$store.dispatch('team/savePlayer', { player: this.editPlayer, yahooTeamId: this.scadTeam.yahooLeagueTeamId })
-      //   this.editPlayer = {}
-      //   this.editPlayerInitSalary = 0
-      // } else {
-      //   this.scadTeam.salary = initTeamSalary
-      //   notify.salaryLimit()
-      //   this.cancelEdit()
-      // }
-
-      // Above code would restrict an edit exceeding salary cap
       this.saveTeam()
       this.$store.dispatch('team/savePlayer', { player: this.editPlayer, yahooTeamId: this.scadTeam.yahooLeagueTeamId })
       this.editPlayer = {}
@@ -526,28 +515,17 @@ export default {
       }
     },
     isFranchiseTagged (id) {
-      let scadPlayer = getScadPlayer(this.scadTeam.players, id)
-      if (scadPlayer) {
-        if (scadPlayer.isFranchiseTag) { return true } else { return false }
-      } else { return false }
+      isFranchiseTagged(id, this.scadTeam)
     },
     getPlayerPrevSalary (id) {
       if (this.loaded) {
-        let player = getScadPlayer(this.scadTeam.players, id)
-        if (player) {
-          return player.previousYearSalary
-        }
+        getPlayerPrevSalary(id, this.scadTeam)
       }
     },
     getOriginalSalary (id) {
       if (this.loaded) {
-        let player = getScadPlayer(this.scadTeam.players, id)
-        return player.salary
+        getOriginalSalary(id, this.scadTeam)
       }
-    },
-    isScadPlayer (id) {
-      let scadPlayer = getScadPlayer(this.scadTeam.players, id)
-      if (scadPlayer) { return true } else { return false }
     },
     async addScadPlayer (id) {
       let player = {

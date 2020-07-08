@@ -205,27 +205,6 @@ export default {
       this.edit.ce = ce
       this.$store.commit('dialog/editCapExemption')
     },
-    displayPick (pick) {
-      if (pick) {
-        return pick
-      } else {
-        return '-'
-      }
-    },
-    displayTeam () {
-      return this.edit.dp.team.name
-    },
-    outputRound (rd) {
-      if (rd === 1) {
-        return '1st'
-      } else if (rd === 2) {
-        return '2nd'
-      } else if (rd === 3) {
-        return '3rd'
-      } else if (rd === 4) {
-        return '4th'
-      }
-    },
     filteredCapExemptions () {
       var filtered = this.capExemptions
       Object.keys(this.filter).forEach(key => {
@@ -242,35 +221,6 @@ export default {
     clearFilter () {
       this.filter.team = ''
       this.filter.year = ''
-    },
-    checkYear (ce) {
-      if (this.seasonYear == ce.year && !ce.appliedToTeams) {
-        console.log(ce.appliedToTeams)
-        return true
-      } else {
-        return false
-      }
-    },
-    async addCeToTeam (ce) {
-      ce = await this.saveTeams(ce)
-      console.log(ce)
-      await this.$store.dispatch('capExemptions/addCapExemption', ce)
-      this.getCapExemptions()
-    },
-    async saveTeams (ce) {
-      if (ce.year == this.seasonYear) {
-        let giver = this.scadTeams.find(t => t.yahooLeagueTeamId == ce.yahooTeamGive.team_id)
-        giver.exceptionOut += ce.amount
-        giver.salary += ce.amount
-        await this.$store.dispatch('team/saveTeam', giver)
-
-        let reciever = this.scadTeams.find(t => t.yahooLeagueTeamId == ce.yahooTeamRecieve.team_id)
-        reciever.exceptionIn += ce.amount
-        reciever.salary -= ce.amount
-        await this.$store.dispatch('team/saveTeam', reciever)
-        ce.appliedToTeams = true
-      }
-      return ce
     },
     async updateMongoWithCE () {
       this.loaded = false
