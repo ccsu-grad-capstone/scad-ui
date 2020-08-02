@@ -100,6 +100,7 @@
           .col-xl-8.col-lg-8.col-md-8.col-sm-11.col-xs-11
             .row.justify-between
               q-select(square dense v-model='selectedTeam' :options="filteredTeams" style="width: 250px" @input="updateTeamPage")
+              q-toggle.q-pt-sm(v-model="viewByTeam", label="View By Position")
               div.q-gutter-sm.q-pt-sm
                 div
                 q-btn(v-if="!franchiseTag && !editSalaries && scadSettings.franchiseTagSpots > 0" label='Franchise Tag' dense color='secondary' text-color='primary' size='sm' @click="franchiseTag = !franchiseTag")
@@ -111,7 +112,7 @@
                 q-table(
                   class="my-sticky-header-table"
                   v-if="loaded"
-                  :data='players',
+                  :data='viewByTeam ? playersByPos : players',
                   :columns='windowWidth > 700 ? columns : columnsMobile',
                   row-key= 'player_key',
                   :pagination.sync="pagination",
@@ -126,15 +127,16 @@
                       | {{ scadSettings.seasonYear - 1 }}
                   template(v-slot:body='props')
                     q-tr(:props='props')
-                      q-td(:class="fmt(props.row.selected_position.position, 'edit')" auto-width)
+                      q-td(:class="fmt(props.row, 'edit', viewByTeam)" auto-width)
                         div(v-if="franchiseTag")
                           div(v-if="scadTeam.isFranchiseTag")
                             q-btn(v-if="isFranchiseTagged(props.row.player_id)" size='xs' color='negative' round dense @click='removeFranchiseTag(props.row)' icon="fas fa-minus")
                           div(v-else)
                             q-btn( size='xs' color='info' round dense @click='saveFranchiseTag(props.row)' icon="fas fa-tag")
-                      q-td(:class="fmt(props.row.selected_position.position, 'pos')" key='pos' :props='props' auto-width)
-                        | {{ props.row.selected_position.position }}
-                      q-td(:class="fmt(props.row.selected_position.position, 'playerName')" key='playerName' :props='props')
+                      q-td(:class="fmt(props.row, 'pos', viewByTeam)" key='pos' :props='props' auto-width)
+                        .text-body(v-if="viewByTeam") {{ props.row.display_position }}
+                        .text-body(v-else) {{ props.row.selected_position.position }}
+                      q-td(:class="fmt(props.row, 'playerName', viewByTeam)" key='playerName' :props='props')
                         .row.full-width
                           .col-1
                             q-avatar(size="25px")
@@ -144,14 +146,14 @@
                               | {{props.row.name.full}}
                               .text-grey.text-caption.q-pl-sm ({{props.row.display_position}})
                               q-badge(v-if="isFranchiseTagged(props.row.player_id)" color='white'): q-icon( name='fas fa-tag' color='info')
-                      q-td(:class="fmt(props.row.selected_position.position, 'team')" key='team' :props='props')
+                      q-td(:class="fmt(props.row, 'team', viewByTeam)" key='team' :props='props')
                         | {{ props.row.editorial_team_full_name }}
-                      q-td(:class="fmt(props.row.selected_position.position, 'previousSalary')" key='previousSalary' :props='props' auto-width)
+                      q-td(:class="fmt(props.row, 'previousSalary', viewByTeam)" key='previousSalary' :props='props' auto-width)
                         .text-body2.q-pr-sm ${{ getPlayerPrevSalary(props.row.player_id) }}
-                      q-td(:class="fmt(props.row.selected_position.position, 'originalSalary')" key='originalSalary' :props='props' auto-width)
+                      q-td(:class="fmt(props.row, 'originalSalary', viewByTeam)" key='originalSalary' :props='props' auto-width)
                         .row(v-if="isFranchiseTagged(props.row.player_id) || isIR(props.row.selected_position.position)")
                           .col.text-grey.q-pr-sm Original: ${{getOriginalSalary(props.row.player_id)}}
-                      q-td(:class="fmt(props.row.selected_position.position, 'salary')" key='salary' :props='props' auto-width)
+                      q-td(:class="fmt(props.row, 'salary', viewByTeam)" key='salary' :props='props' auto-width)
                         .col(v-if="(isScadPlayer(props.row.player_id, scadTeam))" :style=" (editSalaries && !isFranchiseTagged(props.row.player_id)) ? 'border: 1px solid #26A69A;' : 'border: none;' ")
                           .text-weight-bolder.text-body2.q-pr-sm ${{ getPlayerSalary(props.row.player_id, props.row.selected_position.position) }}
                         .col(v-else)
@@ -192,7 +194,12 @@ import CapExemptionOverview from '../components/CapExemptionOverview.vue'
 import { calcTeamSalary, calcPlayerSalary } from '../utilities/calculator'
 import { isIR, isScadPlayer } from '../utilities/validators'
 import { fmt } from '../utilities/formatters'
-import { getScadPlayer, isFranchiseTagged, getPlayerPrevSalary, getOriginalSalary } from '../utilities/functions'
+import {
+  getScadPlayer,
+  isFranchiseTagged,
+  getPlayerPrevSalary,
+  getOriginalSalary
+} from '../utilities/functions'
 /* eslint-disable eqeqeq */
 
 export default {
@@ -204,6 +211,7 @@ export default {
   },
   data () {
     return {
+      viewByTeam: false,
       teamSalary: 0,
       loaded: false,
       error: false,
@@ -335,20 +343,35 @@ export default {
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       return this.yahooTeam.players.sort(function (a, b) {
         if (b.selected_position.position === 'BN') {
-          if (a.selected_position.position === 'DEF' ||
-              a.selected_position.position === 'K') {
-            return -1
-          }
+          if (a.selected_position.position !== 'BN') return -1
         } else {
           return 1
         }
+      })
+    },
+    playersByPos () {
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      return this.yahooTeam.players.sort(function (a, b) {
+        if (b.display_position === 'QB') return 1
+        else if (b.display_position === 'WR') {
+          if (a.display_position === 'QB') return -1
+        } else if (b.display_position === 'RB') {
+          if (a.display_position === 'QB') return -1
+          if (a.display_position === 'WR') return -1
+        } else if (b.display_position === 'TE') {
+          if (a.display_position === 'QB') return -1
+          if (a.display_position === 'WR') return -1
+          if (a.display_position === 'RB') return -1
+        } else return -1
       })
     },
     scadSettings () {
       return this.league.scadSettings
     },
     filteredTeams () {
-      return this.yahooTeams.map(t => Object.assign({}, t, { value: t.name, label: t.name }))
+      return this.yahooTeams.map(t =>
+        Object.assign({}, t, { value: t.name, label: t.name })
+      )
     },
     teamSalaryCap () {
       return this.$store.state.league.scadSettings.teamSalaryCap
@@ -381,9 +404,17 @@ export default {
       // console.log(`[TEAM] - getTeam(${yahooTeamId})`)
       // Update team based on url param
       this.loaded = false
-      await this.$store.dispatch('team/getTeam', { yahooLeagueId: this.yahooLeagueId, yahooTeamId: yahooTeamId })
-      await this.$store.dispatch('capExemptions/getCapExemptionsByTeam', { teamId: this.$route.params.team_id, year: this.scadSettings.seasonYear })
-      this.scadTeam = JSON.parse(JSON.stringify(this.$store.state.team.scadTeam))
+      await this.$store.dispatch('team/getTeam', {
+        yahooLeagueId: this.yahooLeagueId,
+        yahooTeamId: yahooTeamId
+      })
+      await this.$store.dispatch('capExemptions/getCapExemptionsByTeam', {
+        teamId: this.$route.params.team_id,
+        year: this.scadSettings.seasonYear
+      })
+      this.scadTeam = JSON.parse(
+        JSON.stringify(this.$store.state.team.scadTeam)
+      )
       await this.updateTeamSalary()
       this.loaded = true
     },
@@ -392,10 +423,25 @@ export default {
       this.$router.push({ path: `/team/${this.selectedTeam.team_id}` })
     },
     updateTeamSalary () {
-      this.teamSalary = calcTeamSalary(this.players, this.scadTeam.players, this.capExemptionsByTeam, this.franchiseTagDiscount, this.irReliefPerc, this.yahooTeam, this.scadSettings.seasonYear)
+      this.teamSalary = calcTeamSalary(
+        this.yahooTeam.players,
+        this.scadTeam.players,
+        this.capExemptionsByTeam,
+        this.franchiseTagDiscount,
+        this.irReliefPerc,
+        this.yahooTeam,
+        this.scadSettings.seasonYear
+      )
     },
     getPlayerSalary (id, pos) {
-      return calcPlayerSalary(id, pos, this.scadTeam.players, this.franchiseTagDiscount, this.irReliefPerc, this.yahooTeam)
+      return calcPlayerSalary(
+        id,
+        pos,
+        this.scadTeam.players,
+        this.franchiseTagDiscount,
+        this.irReliefPerc,
+        this.yahooTeam
+      )
     },
     async saveSalaries () {
       await this.getTeam(this.$route.params.team_id)
@@ -403,7 +449,10 @@ export default {
       this.editSalaries = false
     },
     editingPlayer (yahooPlayer) {
-      this.editPlayer = getScadPlayer(this.scadTeam.players, yahooPlayer.player_id)
+      this.editPlayer = getScadPlayer(
+        this.scadTeam.players,
+        yahooPlayer.player_id
+      )
       this.editPlayerInitSalary = this.editPlayer.salary
     },
     editPlayerValidation (val) {
@@ -417,7 +466,9 @@ export default {
       return true
     },
     cancelEdit () {
-      let player = this.scadTeam.players.find(p => p.yahooLeaguePlayerId === this.editPlayer.yahooLeaguePlayerId)
+      let player = this.scadTeam.players.find(
+        p => p.yahooLeaguePlayerId === this.editPlayer.yahooLeaguePlayerId
+      )
       player.salary = this.editPlayerInitSalary
       this.editPlayer = {}
       this.editPlayerInitSalary = 0
@@ -432,18 +483,21 @@ export default {
       let salary = player.salary
 
       player.isFranchiseTag = true
-      await this.$store.dispatch('team/savePlayer', { player: player, yahooTeamId: this.scadTeam.yahooLeagueTeamId })
+      await this.$store.dispatch('team/savePlayer', {
+        player: player,
+        yahooTeamId: this.scadTeam.yahooLeagueTeamId
+      })
 
       let franchiseTagDiscount = this.league.scadSettings.franchiseTagDiscount
       if (salary <= franchiseTagDiscount) {
         salary = 0
       } else {
-        salary = (salary -= franchiseTagDiscount)
+        salary = salary -= franchiseTagDiscount
       }
 
       // Update SCAD-TEAM
       this.scadTeam.isFranchiseTag = true
-      this.scadTeam.salary += (salary - initSalary)
+      this.scadTeam.salary += salary - initSalary
       this.saveTeam()
       this.updateTeamSalary()
 
@@ -464,7 +518,10 @@ export default {
       }
 
       player.isFranchiseTag = false
-      this.$store.dispatch('team/savePlayer', { player: player, yahooTeamId: this.scadTeam.yahooLeagueTeamId })
+      this.$store.dispatch('team/savePlayer', {
+        player: player,
+        yahooTeamId: this.scadTeam.yahooLeagueTeamId
+      })
 
       // Update SCAD-TEAM
       this.scadTeam.isFranchiseTag = false
@@ -475,9 +532,13 @@ export default {
       this.franchiseTag = false
     },
     async savePlayer () {
-      this.scadTeam.salary += (this.editPlayer.salary - this.editPlayerInitSalary)
+      this.scadTeam.salary +=
+        this.editPlayer.salary - this.editPlayerInitSalary
       this.saveTeam()
-      this.$store.dispatch('team/savePlayer', { player: this.editPlayer, yahooTeamId: this.scadTeam.yahooLeagueTeamId })
+      this.$store.dispatch('team/savePlayer', {
+        player: this.editPlayer,
+        yahooTeamId: this.scadTeam.yahooLeagueTeamId
+      })
       this.editPlayer = {}
       this.editPlayerInitSalary = 0
       if (this.scadTeam.salary > this.teamSalaryCap) {
@@ -494,8 +555,14 @@ export default {
         exceptionOut: this.scadTeam.exceptionOut
       }
       await this.$store.dispatch('team/saveTeam', team)
-      await this.$store.dispatch('league/getScadTeams', this.league.scadLeagueId)
-      await this.$store.dispatch('team/getTeam', { yahooLeagueId: this.scadTeam.yahooLeagueId, yahooTeamId: this.scadTeam.yahooLeagueTeamId })
+      await this.$store.dispatch(
+        'league/getScadTeams',
+        this.league.scadLeagueId
+      )
+      await this.$store.dispatch('team/getTeam', {
+        yahooLeagueId: this.scadTeam.yahooLeagueId,
+        yahooTeamId: this.scadTeam.yahooLeagueTeamId
+      })
     },
     franchiseTagDisplay () {
       let scadPlayer
@@ -503,7 +570,9 @@ export default {
       if (this.scadTeam.isFranchiseTag && this.loaded) {
         scadPlayer = this.scadTeam.players.find(p => p.isFranchiseTag)
         if (scadPlayer) {
-          yahooPlayer = this.players.find(p => p.player_id == scadPlayer.yahooLeaguePlayerId)
+          yahooPlayer = this.yahooTeam.players.find(
+            p => p.player_id == scadPlayer.yahooLeaguePlayerId
+          )
           return yahooPlayer.name.full
         } else {
           this.scadTeam.isFranchiseTag = false
@@ -543,7 +612,6 @@ export default {
       await this.getTeam(this.scadTeam.yahooLeagueTeamId)
     }
   }
-
 }
 </script>
 
@@ -560,5 +628,4 @@ a
 .my-sticky-header-table
   thead
     background-color: #e1e2e3
-
 </style>

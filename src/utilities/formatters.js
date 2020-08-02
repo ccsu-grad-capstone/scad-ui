@@ -8,14 +8,14 @@ export function myTeamStyle (id, myYahooTeamId) {
     'text-weight-bold': id == myYahooTeamId
   }
 }
-export function fmt (pos, col, ft) {
+export function fmt (row, col, viewByPos) {
   return {
     'text-primary': col === 'salary',
     'text-grey': col === 'previousSalary' || col === 'team',
     'text-weight-bold': col === 'pos' || col === 'playerName',
-    'text-red': pos === 'IR',
-    'bg-grey-3': pos === 'BN',
-    'bg-red-1': pos === 'IR'
+    'text-red': row.selected_position.position === 'IR',
+    'bg-grey-3': (row.selected_position.position === 'BN' && !viewByPos) || (row.display_position === 'WR' && viewByPos) || (row.display_position === 'TE' && viewByPos),
+    'bg-red-1': row.selected_position.position === 'IR'
   }
 }
 
