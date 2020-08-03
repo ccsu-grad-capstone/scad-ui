@@ -145,7 +145,7 @@
                             .row.full-width
                               | {{props.row.name.full}}
                               .text-grey.text-caption.q-pl-sm ({{props.row.display_position}})
-                              q-badge(v-if="isFranchiseTagged(props.row.player_id)" color='white'): q-icon( name='fas fa-tag' color='info')
+                              q-icon.q-pa-xs(v-if="isFranchiseTagged(props.row.player_id)" name='fas fa-tag' color='info')
                       q-td(:class="fmt(props.row, 'team', viewByTeam)" key='team' :props='props')
                         | {{ props.row.editorial_team_full_name }}
                       q-td(:class="fmt(props.row, 'previousSalary', viewByTeam)" key='previousSalary' :props='props' auto-width)
