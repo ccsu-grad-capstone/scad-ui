@@ -130,7 +130,7 @@
                       q-td(:class="fmt(props.row, 'edit', viewByTeam)" auto-width)
                         div(v-if="franchiseTag")
                           div(v-if="scadTeam.isFranchiseTag")
-                            q-btn(v-if="isFranchiseTagged(props.row.player_id)" size='xs' color='negative' round dense @click='removeFranchiseTag(props.row)' icon="fas fa-minus")
+                            q-btn( v-if="isFranchiseTagged(props.row.player_id)" size='xs' color='negative' round dense @click='removeFranchiseTag(props.row)' icon="fas fa-minus")
                           div(v-else)
                             q-btn( size='xs' color='info' round dense @click='saveFranchiseTag(props.row)' icon="fas fa-tag")
                       q-td(:class="fmt(props.row, 'pos', viewByTeam)" key='pos' :props='props' auto-width)
@@ -584,16 +584,16 @@ export default {
       }
     },
     isFranchiseTagged (id) {
-      isFranchiseTagged(id, this.scadTeam)
+      return isFranchiseTagged(id, this.scadTeam)
     },
     getPlayerPrevSalary (id) {
       if (this.loaded) {
-        getPlayerPrevSalary(id, this.scadTeam)
+        return getPlayerPrevSalary(id, this.scadTeam)
       }
     },
     getOriginalSalary (id) {
       if (this.loaded) {
-        getOriginalSalary(id, this.scadTeam)
+        return getOriginalSalary(id, this.scadTeam)
       }
     },
     async addScadPlayer (id) {

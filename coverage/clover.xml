@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1594174626300" clover="3.2.0">
-  <project timestamp="1594174626300" name="All files">
-    <metrics statements="105" coveredstatements="76" conditionals="111" coveredconditionals="87" methods="42" coveredmethods="25" elements="258" coveredelements="188" complexity="0" loc="105" ncloc="105" packages="1" files="3" classes="3"/>
+<coverage generated="1596476992664" clover="3.2.0">
+  <project timestamp="1596476992664" name="All files">
+    <metrics statements="107" coveredstatements="80" conditionals="111" coveredconditionals="89" methods="42" coveredmethods="26" elements="260" coveredelements="195" complexity="0" loc="107" ncloc="107" packages="1" files="3" classes="3"/>
     <file name="calculator.js" path="/Users/ryanlauzon/workdiv/SCAD/scad-ui/src/utilities/calculator.js">
       <metrics statements="57" coveredstatements="57" conditionals="65" coveredconditionals="63" methods="14" coveredmethods="14"/>
       <line num="14" count="9" type="stmt"/>
@@ -63,8 +63,8 @@
       <line num="148" count="3" type="stmt"/>
     </file>
     <file name="functions.js" path="/Users/ryanlauzon/workdiv/SCAD/scad-ui/src/utilities/functions.js">
-      <metrics statements="35" coveredstatements="8" conditionals="32" coveredconditionals="10" methods="22" coveredmethods="6"/>
-      <line num="7" count="122" type="cond" truecount="2" falsecount="0"/>
+      <metrics statements="37" coveredstatements="12" conditionals="32" coveredconditionals="12" methods="22" coveredmethods="7"/>
+      <line num="7" count="149" type="cond" truecount="2" falsecount="0"/>
       <line num="14" count="110" type="cond" truecount="2" falsecount="0"/>
       <line num="21" count="0" type="cond" truecount="0" falsecount="2"/>
       <line num="28" count="0" type="cond" truecount="0" falsecount="2"/>
@@ -93,12 +93,14 @@
       <line num="82" count="0" type="stmt"/>
       <line num="86" count="0" type="stmt"/>
       <line num="87" count="0" type="stmt"/>
-      <line num="91" count="0" type="stmt"/>
-      <line num="92" count="0" type="cond" truecount="0" falsecount="2"/>
-      <line num="96" count="0" type="stmt"/>
-      <line num="97" count="0" type="cond" truecount="0" falsecount="2"/>
-      <line num="101" count="0" type="stmt"/>
-      <line num="102" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="91" count="3" type="stmt"/>
+      <line num="92" count="3" type="cond" truecount="2" falsecount="0"/>
+      <line num="93" count="2" type="stmt"/>
+      <line num="94" count="1" type="stmt"/>
+      <line num="98" count="0" type="stmt"/>
+      <line num="99" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="103" count="0" type="stmt"/>
+      <line num="104" count="0" type="cond" truecount="0" falsecount="2"/>
     </file>
     <file name="validators.js" path="/Users/ryanlauzon/workdiv/SCAD/scad-ui/src/utilities/validators.js">
       <metrics statements="13" coveredstatements="11" conditionals="14" coveredconditionals="14" methods="6" coveredmethods="5"/>

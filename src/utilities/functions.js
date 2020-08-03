@@ -89,7 +89,9 @@ export function positionFilter (id, yahooPlayers, filter) {
 
 export function isFranchiseTagged (id, scadTeam) {
   let scadPlayer = getScadPlayer(scadTeam.players, id)
-  return scadPlayer ? scadPlayer.isFranchiseTag : false
+  if (scadPlayer) {
+    return scadPlayer.isFranchiseTag
+  } else return false
 }
 
 export function getPlayerPrevSalary (id, scadTeam) {

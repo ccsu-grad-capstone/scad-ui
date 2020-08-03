@@ -1,4 +1,4 @@
-import { getScadPlayer, getYahooPlayer, getLeagueRosterLimit } from '../../src/utilities/functions'
+import { getScadPlayer, getYahooPlayer, getLeagueRosterLimit, isFranchiseTagged } from '../../src/utilities/functions'
 import { scadPlayers, yahooPlayers, yahooSettings } from '../data/testData.json'
 
 describe('functions.js Test Suite', () => {
@@ -45,6 +45,21 @@ describe('functions.js Test Suite', () => {
     it('should properly return undefined', () => {
       expect(getLeagueRosterLimit()).toBeUndefined()
       expect(getLeagueRosterLimit(yahooSettings)).toBeUndefined()
+    })
+  })
+
+  describe('isFranchiseTagged tests', () => {
+    let scadTeam = {
+      players: scadPlayers
+    }
+    it('should return true', () => {
+      expect(isFranchiseTagged('27540', scadTeam)).toBeTruthy()
+    })
+    it('should return true', () => {
+      expect(isFranchiseTagged('9265', scadTeam)).toBeFalsy()
+    })
+    it('should return true', () => {
+      expect(isFranchiseTagged('65', scadTeam)).toBeFalsy()
     })
   })
 })
