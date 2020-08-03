@@ -235,10 +235,8 @@ export default {
         if (this.filter[key] !== '') {
           if (key === 'search') {
             filtered = filtered.filter(p => searchFilter(p.yahooLeaguePlayerId, this.yahooPlayers, this.filter))
-            // filtered = filtered.filter(p => p.name.full.toLowerCase().includes(this.filter[key].toLowerCase()))
           } else if (key === 'position') {
             filtered = filtered.filter(p => positionFilter(p.yahooLeaguePlayerId, this.yahooPlayers, this.filter))
-            // filtered = filtered.filter(p => p.display_position === this.filter[key])
           }
         }
       })

@@ -47,6 +47,7 @@ export default {
           rootState.user.tokens.id_token)
           .get(`/api/yahoo/league/${leagueId}/players`)
         commit('updateYahooPlayers', res.data.players)
+        // console.log('ALL-YAHOO-PLAYERS: ', res.data.players)
       } catch (err) {
         catchAxiosScadError(err)
       }
@@ -59,6 +60,7 @@ export default {
           rootState.user.tokens.id_token)
           .get(`/api/scad/league/yahoo/${leagueId}/player/all`)
         commit('updateScadPlayers', res.data.scadLeaguePlayers)
+        // console.log('ALL-SCAD-PLAYERS: ', res.data.scadLeaguePlayers)
       } catch (err) {
         catchAxiosScadError(err)
       }

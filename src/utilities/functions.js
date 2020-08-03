@@ -79,19 +79,17 @@ export function getOwner (id, yahooTeams) {
 
 export function searchFilter (id, yahooPlayers, filter) {
   let player = getYahooPlayer(yahooPlayers, id)
-  return player.name.full.toLowerCase().includes(filter['search'].toLowerCase())
+  if (player) return player.name.full.toLowerCase().includes(filter['search'].toLowerCase())
 }
 
 export function positionFilter (id, yahooPlayers, filter) {
   let player = getYahooPlayer(yahooPlayers, id)
-  return player.display_position === filter['position']
+  if (player) return player.display_position === filter['position']
 }
 
 export function isFranchiseTagged (id, scadTeam) {
   let scadPlayer = getScadPlayer(scadTeam.players, id)
-  if (scadPlayer) {
-    return scadPlayer.isFranchiseTag
-  } else return false
+  return scadPlayer ? scadPlayer.isFranchiseTag : false
 }
 
 export function getPlayerPrevSalary (id, scadTeam) {
