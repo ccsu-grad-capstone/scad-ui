@@ -129,18 +129,6 @@
             q-item(clickable)
               .row.full-width.q-pl-lg
                 .col-5.text-body1.text-left
-                  | RB Roster Limits:
-                .col.text-body1.q-pl-lg.text-weight-bolder
-                  .row.align-center
-                    q-select(v-if="editing" filled dense v-model='scadSettings.rbMin' :options='referenceData.rosterLimits')
-                    div(v-else) {{ scadSettings.rbMin }}
-                    .text-caption (min),
-                    q-select(v-if="editing" filled dense v-model='scadSettings.rbMax' :options='referenceData.rosterLimits')
-                    div(v-else) {{ scadSettings.rbMax }}
-                    .text-caption (max)
-            q-item(clickable)
-              .row.full-width.q-pl-lg
-                .col-5.text-body1.text-left
                   | WR Roster Limits:
                 .col.text-body1.q-pl-lg.text-weight-bolder
                   .row.align-center
@@ -149,6 +137,18 @@
                     .text-caption (min),
                     q-select(v-if="editing" filled dense v-model='scadSettings.wrMax' :options='referenceData.rosterLimits')
                     div(v-else) {{ scadSettings.wrMax }}
+                    .text-caption (max)
+            q-item(clickable)
+              .row.full-width.q-pl-lg
+                .col-5.text-body1.text-left
+                  | RB Roster Limits:
+                .col.text-body1.q-pl-lg.text-weight-bolder
+                  .row.align-center
+                    q-select(v-if="editing" filled dense v-model='scadSettings.rbMin' :options='referenceData.rosterLimits')
+                    div(v-else) {{ scadSettings.rbMin }}
+                    .text-caption (min),
+                    q-select(v-if="editing" filled dense v-model='scadSettings.rbMax' :options='referenceData.rosterLimits')
+                    div(v-else) {{ scadSettings.rbMax }}
                     .text-caption (max)
             q-item(clickable)
               .row.full-width.q-pl-lg

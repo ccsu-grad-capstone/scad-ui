@@ -11,35 +11,35 @@
       tbody
         tr
           td.pos QB
-          td.text-weight-bold(v-bind:class="{ 'text-red': !checkPos('qb') }") {{getPosCount('QB')}}
+          td.text-body.text-grey-5 {{ scadSettings.qbMin }} | #[span.qty(v-bind:class="{ 'text-red': !checkPos('qb') }") {{getPosCount('QB')}}] | {{ scadSettings.qbMax }}
           td ${{getPositionSalaryTotal('QB')}}
           td {{getPerc('QB')}}%
         tr
           td.pos WR
-          td.text-weight-bold(v-bind:class="{ 'text-red': !checkPos('wr') }") {{getPosCount('WR')}}
+          td.text-body.text-grey-5 {{ scadSettings.wrMin }} | #[span.qty(v-bind:class="{ 'text-red': !checkPos('wr') }") {{getPosCount('WR')}}] | {{ scadSettings.wrMax }}
           td ${{getPositionSalaryTotal('WR')}}
           td {{getPerc('WR')}}%
         tr
           td.pos RB
-          td.text-weight-bold(v-bind:class="{ 'text-red': !checkPos('rb') }") {{getPosCount('RB')}}
+          td.text-body.text-grey-5 {{ scadSettings.rbMin }} | #[span.qty(v-bind:class="{ 'text-red': !checkPos('rb') }") {{getPosCount('RB')}}] | {{ scadSettings.rbMax }}
           td ${{getPositionSalaryTotal('RB')}}
           td {{getPerc('RB')}}%
         tr
           td.pos TE
-          td.text-weight-bold(v-bind:class="{ 'text-red': !checkPos('te') }") {{getPosCount('TE')}}
+          td.text-body.text-grey-5 {{ scadSettings.teMin }} | #[span.qty(v-bind:class="{ 'text-red': !checkPos('te') }") {{getPosCount('TE')}}] | {{ scadSettings.teMax }}
           td ${{getPositionSalaryTotal('TE')}}
           td {{getPerc('TE')}}%
         tr(v-if="scadSettings.kMin >0")
           td.pos K
-          td.text-weight-bold(v-bind:class="{ 'text-red': !checkPos('k') }") {{getPosCount('K')}}
+          td.text-body.text-grey-5 {{ scadSettings.kMin }} | #[span.qty(v-bind:class="{ 'text-red': !checkPos('k') }") {{getPosCount('K')}}] | {{ scadSettings.kMax }}
           td ${{getPositionSalaryTotal('K')}}
           td {{getPerc('K')}}%
         tr
           td.pos DEF
-          td.text-weight-bold(v-bind:class="{ 'text-red': !checkPos('def') }") {{getPosCount('DEF')}}
+          td.text-body.text-grey-5 {{ scadSettings.defMin }} | #[span.qty(v-bind:class="{ 'text-red': !checkPos('def') }") {{getPosCount('DEF')}}] | {{ scadSettings.defMax }}
           td ${{getPositionSalaryTotal('DEF')}}
           td {{getPerc('DEF')}}%
-    .col.full-width.text-center.q-pa-xs.text-grey.text-caption Visit league settings for min / max position details
+    .col.full-width.text-center.q-pa-xs.text-grey.text-caption {{yahooTeam.name}} roster overview
 
 </template>
 
@@ -152,5 +152,8 @@ tr
 .pos
   font-weight: bold
   background-color: #f0f0f0
+.qty
+  font-weight: bold
+  color: #000000
 
 </style>
