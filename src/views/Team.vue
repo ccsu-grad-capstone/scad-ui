@@ -141,7 +141,7 @@
                           .col-1
                             q-avatar(size="25px")
                               img(:src="props.row.headshot.url" style="width: 85%")
-                          .col.q-pl-xs.text-body2.text-weight-bold
+                          .col.q-pl-sm.text-body2.text-weight-bold
                             .row.full-width
                               | {{props.row.name.full}}
                               .text-grey.text-caption.q-pl-sm ({{props.row.display_position}})
