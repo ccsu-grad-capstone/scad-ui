@@ -102,7 +102,7 @@ export default {
       return this.$store.state.league.yahooSettings.roster_positions
     },
     irReliefPerc () {
-      return this.$store.state.league.scadSettings.irReliefPerc / 100
+      return this.$store.state.league.scadSettings.irReliefPerc
     },
     capExemptionsByTeam () {
       return this.$store.state.capExemptions.capExemptionsByTeam

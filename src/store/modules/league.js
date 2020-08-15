@@ -205,7 +205,7 @@ export default {
           rootState.team.scadTeam.players,
           rootState.capExemptions.capExemptionsByTeam,
           state.scadSettings.franchiseTagDiscount,
-          state.scadSettings.irReliefPerc / 100,
+          state.scadSettings.irReliefPerc,
           rootState.team.yahooTeam,
           state.scadSettings.seasonYear
         )

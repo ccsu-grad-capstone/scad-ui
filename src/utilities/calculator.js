@@ -71,13 +71,9 @@ export function calcFranchiseTagSalary (salary, franchiseTagDiscount) {
 // irReliefPerc: SCAD league setting for discount on irReliefPerc
 // Returns player salary if they're on the IR
 export function calcIrSalary (salary, irReliefPerc) {
-  console.log('salary', salary)
-  console.log('irReliefPerc', irReliefPerc)
   if (salary && irReliefPerc > 0) {
-    salary -= salary * irReliefPerc
-    console.log('salary after adjustment', salary)
+    salary -= salary * irReliefPerc / 100
     if (Number.isInteger(salary)) {
-      console.log('*******')
       return salary
     } else {
       return Math.round(salary)

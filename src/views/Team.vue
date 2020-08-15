@@ -386,7 +386,7 @@ export default {
       return this.league.scadSettings.franchiseTagDiscount
     },
     irReliefPerc () {
-      return this.league.scadSettings.irReliefPerc / 100
+      return this.league.scadSettings.irReliefPerc
     }
   },
   async created () {
