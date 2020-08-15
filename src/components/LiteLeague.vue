@@ -15,7 +15,7 @@
       template(v-slot:body-cell-name='props' auto-width)
         q-td(:props='props')
           .row.full-width.q-py-xs
-            .col-2
+            .column
               q-avatar(size="27px")
                 img(:src="props.row.team_logos[0].team_logo.url")
             .column.justify-center.text-weight-bold.q-pl-sm

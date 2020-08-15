@@ -8,6 +8,7 @@ import team from './modules/team'
 import player from './modules/player'
 import draftPicks from './modules/draftPicks'
 import capExemptions from './modules/capExemptions'
+import diagnostics from './modules/diagnostics'
 
 Vue.use(Vuex)
 
@@ -19,7 +20,8 @@ const store = new Vuex.Store({
     team,
     draftPicks,
     capExemptions,
-    player
+    player,
+    diagnostics
   }
 })
 

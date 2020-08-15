@@ -29,12 +29,16 @@
           lite-league-mobile.lt-sm(@updateTeamSalaries="updateTeamSalaries")
         .col-xl-5.col-lg-5.col-md-5.col-sm-10.col-xs-10
           lite-my-team
+      .row.full-width.justify-center
+        .col-10
+          league-diagnostics
 
 </template>
 
 <script>
 import LiteMyTeam from '../components/LiteMyTeam'
 import LiteLeague from '../components/LiteLeague'
+import LeagueDiagnostics from '../components/LeagueDiagnostics'
 import LiteLeagueMobile from '../components/LiteLeagueMobile'
 import LiteDraftPicks from '../components/LiteDraftPicks'
 
@@ -43,6 +47,7 @@ export default {
   components: {
     'lite-my-team': LiteMyTeam,
     'lite-league': LiteLeague,
+    'league-diagnostics': LeagueDiagnostics,
     'lite-league-mobile': LiteLeagueMobile,
     'lite-draft-picks': LiteDraftPicks
   },

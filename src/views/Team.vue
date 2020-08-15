@@ -446,6 +446,7 @@ export default {
     async saveSalaries () {
       await this.getTeam(this.$route.params.team_id)
       this.updateTeamSalary()
+      this.saveTeam()
       this.editSalaries = false
     },
     editingPlayer (yahooPlayer) {
@@ -532,9 +533,6 @@ export default {
       this.franchiseTag = false
     },
     async savePlayer () {
-      this.scadTeam.salary +=
-        this.editPlayer.salary - this.editPlayerInitSalary
-      this.saveTeam()
       this.$store.dispatch('team/savePlayer', {
         player: this.editPlayer,
         yahooTeamId: this.scadTeam.yahooLeagueTeamId
@@ -549,7 +547,7 @@ export default {
       var team = {
         id: this.scadTeam.id,
         yahooLeagueId: this.scadTeam.yahooLeagueId,
-        salary: this.scadTeam.salary,
+        salary: this.teamSalary,
         isFranchiseTag: this.scadTeam.isFranchiseTag,
         exceptionIn: this.scadTeam.exceptionIn,
         exceptionOut: this.scadTeam.exceptionOut
