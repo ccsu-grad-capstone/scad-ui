@@ -12,8 +12,8 @@
           track-color="transparent"
           class="q-ma-md"
           )
-      .row.full-width.justify-center
-        .text-grey Fetching SCAD team...
+      .row.full-width.justify-center.q-pb-md
+        .text-grey Running Diagnostics, this may take a moment..
     q-table(
       v-else
       :data='teams',
@@ -38,25 +38,28 @@
         q-td(:props='props' auto-width)
           .text-grey {{props.row.yahooTeam.managers[0].manager.nickname}}
       template(v-slot:body-cell-qb='props')
-        q-td(:props='props' auto-width)
+        q-td.bg-grey-1(:props='props' auto-width)
           .text-body.text-grey-5 {{ scadSettings.qbMin }} | #[span.qty(v-bind:class="{ 'text-red': !checkPos('qb', scadSettings, props.row.yahooTeam.players) }") {{props.row.qb}}] | {{ scadSettings.qbMax }}
       template(v-slot:body-cell-wr='props')
-        q-td(:props='props' auto-width)
+        q-td.bg-grey-1(:props='props' auto-width)
           .text-body.text-grey-5 {{ scadSettings.wrMin }} | #[span.qty(v-bind:class="{ 'text-red': !checkPos('wr', scadSettings, props.row.yahooTeam.players) }") {{props.row.wr}}] | {{ scadSettings.wrMax }}
       template(v-slot:body-cell-rb='props')
-        q-td(:props='props' auto-width)
+        q-td.bg-grey-1(:props='props' auto-width)
           .text-body.text-grey-5 {{ scadSettings.rbMin }} | #[span.qty(v-bind:class="{ 'text-red': !checkPos('rb', scadSettings, props.row.yahooTeam.players) }") {{props.row.rb}}] | {{ scadSettings.rbMax }}
       template(v-slot:body-cell-te='props')
-        q-td(:props='props' auto-width)
+        q-td.bg-grey-1(:props='props' auto-width)
           .text-body.text-grey-5 {{ scadSettings.teMin }} | #[span.qty(v-bind:class="{ 'text-red': !checkPos('te', scadSettings, props.row.yahooTeam.players) }") {{props.row.te}}] | {{ scadSettings.teMax }}
       template(v-slot:body-cell-def='props')
-        q-td(:props='props' auto-width)
+        q-td.bg-grey-1(:props='props' auto-width)
           .text-body.text-grey-5 {{ scadSettings.defMin }} | #[span.qty(v-bind:class="{ 'text-red': !checkPos('def', scadSettings, props.row.yahooTeam.players) }") {{props.row.def}}] | {{ scadSettings.defMax }}
       template(v-slot:body-cell-salary='props')
-        q-td(:props='props' auto-width)
-          .text-positive.text-weight-bolder(v-if="checkTeamSalary(props.row.yahooTeam.team_id) > 5") ${{getTeamSalary(props.row.yahooTeam.team_id)}}
+        q-td.bg-grey-1(:props='props' auto-width)
+          .text-primary.text-weight-bolder(v-if="checkTeamSalary(props.row.yahooTeam.team_id) > 5") ${{getTeamSalary(props.row.yahooTeam.team_id)}}
           .text-negative.text-weight-bolder(v-else-if="checkTeamSalary(props.row.yahooTeam.team_id) < 0") ${{getTeamSalary(props.row.yahooTeam.team_id)}}
           .text-warning.text-weight-bolder(v-else) ${{getTeamSalary(props.row.yahooTeam.team_id)}}
+      template(v-slot:body-cell-status='props')
+        q-td.bg-grey-1(:props='props' auto-width)
+          .text-weight-bolder.text-positive(v-bind:class="{ 'text-negative': !runStatusCheck(props.row) }") {{displayStatus(props.row)}}
 </template>
 
 <script>
@@ -207,8 +210,26 @@ export default {
         return '-'
       }
     },
-    async updateTeamSalaries () {
-      this.$emit('updateTeamSalaries')
+    runStatusCheck (team) {
+      if (team) {
+        if (
+          this.isBetween(this.scadSettings.qbMin, this.scadSettings.qbMax, team.qb) &&
+          this.isBetween(this.scadSettings.wrMin, this.scadSettings.wrMax, team.wr) &&
+          this.isBetween(this.scadSettings.rbMin, this.scadSettings.rbMax, team.rb) &&
+          this.isBetween(this.scadSettings.teMin, this.scadSettings.teMax, team.te) &&
+          this.isBetween(this.scadSettings.defMin, this.scadSettings.defMax, team.def) &&
+          team.salary <= this.scadSettings.teamSalaryCap
+        ) { return true } else { return false }
+      } else return false
+    },
+    displayStatus (team) {
+      if (team) {
+        if (this.runStatusCheck(team)) return 'PASSED'
+        else return 'FAILED'
+      } else return false
+    },
+    isBetween (min, max, num) {
+      if (min <= num && max >= num) { return true } else { return false }
     }
   }
 
@@ -224,4 +245,6 @@ export default {
   .qty
     font-weight: bold
     color: #000000
+  .status
+    font-weight: bold
 </style>

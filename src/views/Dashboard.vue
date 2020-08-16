@@ -29,7 +29,7 @@
           lite-league-mobile.lt-sm(@updateTeamSalaries="updateTeamSalaries")
         .col-xl-5.col-lg-5.col-md-5.col-sm-10.col-xs-10
           lite-my-team
-      .row.full-width.justify-center
+      .row.full-width.justify-center(v-if="commish()")
         .col-10
           league-diagnostics
 
@@ -77,6 +77,12 @@ export default {
     },
     league () {
       return this.$store.state.league
+    },
+    scadLeagues () {
+      return this.league.scadLeagues
+    },
+    scadLeagueId () {
+      return this.league.scadLeagueId
     }
   },
   methods: {
@@ -84,6 +90,11 @@ export default {
       this.refresh = true
       await this.$store.dispatch('league/updateTeamSalaries')
       this.refresh = false
+    },
+    commish () {
+      // eslint-disable-next-line eqeqeq
+      let league = this.scadLeagues.find(l => l.id == this.scadLeagueId)
+      return league.isCurrentlyLoggedInUserACommissioner
     }
   }
 }
