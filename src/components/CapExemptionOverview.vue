@@ -11,7 +11,8 @@
       :pagination.sync="pagination",
       :hide-bottom="capExemptionsByTeam.length > 0",
       no-data-label='No cap exemptions available'
-
+      flat,
+      square
       )
       template(v-slot:body-cell-year='props')
         q-td(:props='props' auto-width)
@@ -68,25 +69,25 @@ export default {
         {
           name: 'year',
           required: true,
-          label: 'Year:',
+          label: 'Year',
           align: 'left',
           style: 'background-color: #f0f0f0'
         },
         {
           name: 'type',
           required: true,
-          label: 'Type:',
+          label: 'Type',
           align: 'left'
         },
         {
           name: 'amount',
           required: true,
-          label: 'Amt:',
+          label: 'Amt',
           align: 'left'
         },
         {
           name: 'otherTeam',
-          label: 'Other Team:',
+          label: 'Other Team',
           align: 'left'
         }
       ]

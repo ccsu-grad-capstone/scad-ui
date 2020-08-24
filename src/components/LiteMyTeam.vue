@@ -7,14 +7,23 @@
       row-key='playerName',
       :pagination.sync="pagination",
       hide-bottom,
+      flat
       dense
+      square
       )
+
       template(v-slot:body='props')
         q-tr(:props='props')
           q-td {{getPos(props.row.yahooLeaguePlayerId)}}
-          q-td.text-weight-bold {{getPlayerName(props.row.yahooLeaguePlayerId)}}
-          q-td.text-grey {{getNFLTeam(props.row.yahooLeaguePlayerId)}}
-          q-td.text-primary.text-weight-bolder ${{props.row.salary}}
+          q-td(key='playerName' :props='props')
+            .row.full-width
+              .col-2
+                q-avatar(size="30px")
+                  img(:src="getPlayerPic(props.row.yahooLeaguePlayerId)" style="width: 85%")
+              .column.justify-center.q-pl-sm.text-body2.text-weight-bold
+                .row.full-width
+                  | {{getPlayerName(props.row.yahooLeaguePlayerId)}}
+          q-td.text-primary.text-weight-bolder.text-center ${{props.row.salary}}
 </template>
 
 <script>
@@ -35,49 +44,34 @@ export default {
         {
           name: 'pos',
           required: true,
-          label: 'Pos:',
-          align: 'left',
+          label: 'Pos',
+          align: 'center',
           field: row => row.yahooLeaguePlayerId,
           format: val => `${this.getPos(val)}`,
           sortable: false,
           // classes: 'bg-secondary ellipsis',
-          style: 'width: 10px',
-          headerClasses: 'bg-grey-3'
+          headerClasses: 'bg-grey-4'
         },
         {
           name: 'playerName',
           required: true,
-          label: 'Player:',
+          label: 'Player',
           align: 'left',
           field: row => row.yahooLeaguePlayerId,
           format: val => `${this.getPlayerName(val)}`,
           sortable: false,
           // classes: 'bg-grey-2 ellipsis',
-          style: 'max-width: 250px',
-          headerClasses: 'bg-grey-3'
-        },
-        {
-          name: 'nflTeam',
-          required: true,
-          label: 'Team:',
-          align: 'left',
-          field: row => row.yahooLeaguePlayerId,
-          format: val => `${this.getNFLTeam(val)}`,
-          sortable: false,
-          // classes: 'bg-grey-2 ellipsis',
-          style: 'max-width: 250px',
-          headerClasses: 'bg-grey-3'
+          headerClasses: 'bg-grey-4'
         },
         {
           name: 'salary',
           required: true,
-          label: 'Salary:',
-          align: 'left',
+          label: 'Salary',
+          align: 'center',
           field: row => row.salary,
           format: val => `$${val}`,
           sortable: true,
-          headerClasses: 'bg-grey-3',
-          style: 'width: 50px'
+          headerClasses: 'bg-grey-4'
         }
       ]
     }
@@ -100,6 +94,9 @@ export default {
     getPlayerName (id) {
       return `${getYahooPlayer(this.myYahooTeam.players, id).name.full}`
     },
+    getPlayerPic (id) {
+      return `${getYahooPlayer(this.myYahooTeam.players, id).headshot.url}`
+    },
     getNFLTeam (id) {
       return `${getYahooPlayer(this.myYahooTeam.players, id).editorial_team_full_name}`
     }
@@ -112,6 +109,4 @@ export default {
   a
     color: #000000
     text-decoration: none
-  .table-width
-    width: 40%
 </style>

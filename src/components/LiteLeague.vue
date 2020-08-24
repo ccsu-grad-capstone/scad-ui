@@ -8,9 +8,11 @@
       :pagination.sync="pagination",
       hide-bottom,
       dense
+      flat
+      square
       )
       template(v-slot:body-cell-rank='props' auto-width)
-        q-td(:props='props' auto-width)
+        q-td.justify-center(:props='props' auto-width)
           | {{getTeamRank(props.row.team_standings.team_standings.rank)}}
       template(v-slot:body-cell-name='props' auto-width)
         q-td(:props='props')
@@ -59,55 +61,55 @@ export default {
         {
           name: 'rank',
           required: true,
-          align: 'left',
+          align: 'center',
           label: 'Rank',
-          headerClasses: 'bg-grey-3'
+          headerClasses: 'bg-grey-4'
         },
         {
           name: 'name',
           required: true,
-          label: 'Team:',
+          label: 'Team',
           align: 'left',
           sortable: false,
-          headerClasses: 'bg-grey-3'
+          headerClasses: 'bg-grey-4'
         },
         {
           name: 'manager',
           required: true,
-          label: 'Manager:',
+          label: 'Manager',
           align: 'left',
           sortable: false,
-          headerClasses: 'bg-grey-3'
+          headerClasses: 'bg-grey-4'
         },
         {
           name: 'record',
           required: true,
-          label: 'Record:',
-          align: 'left',
+          label: 'W-L-T',
+          align: 'center',
           field: row => row.team_standings.team_standings.outcome_totals,
           format: val => `${val.wins}-${val.losses}-${val.ties}`,
-          headerClasses: 'bg-grey-3'
+          headerClasses: 'bg-grey-4'
         },
         {
           name: 'give',
           required: true,
-          label: 'Give:',
-          align: 'left',
-          headerClasses: 'bg-grey-3'
+          label: 'Give',
+          align: 'center',
+          headerClasses: 'bg-grey-4'
         },
         {
           name: 'recieve',
           required: true,
-          label: 'Rec:',
-          align: 'left',
-          headerClasses: 'bg-grey-3'
+          label: 'Rec',
+          align: 'center',
+          headerClasses: 'bg-grey-4'
         },
         {
           name: 'salary',
           required: true,
-          label: 'Salary:',
-          align: 'left',
-          headerClasses: 'bg-grey-3'
+          label: 'Salary',
+          align: 'center',
+          headerClasses: 'bg-grey-4'
         }
       ]
     }

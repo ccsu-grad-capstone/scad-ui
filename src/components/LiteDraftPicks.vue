@@ -7,7 +7,9 @@
       row-key='key',
       :pagination.sync="pagination",
       hide-bottom,
-      dense
+      dense,
+      flat,
+      square
       )
       template(v-slot:body-cell-year='props')
         q-td(:props='props')
@@ -54,7 +56,7 @@ export default {
           sortable: false,
           // classes: 'bg-secondary ellipsis',
           // style: 'max-width: 10px',
-          headerClasses: 'bg-grey-3'
+          headerClasses: 'bg-grey-4'
         },
         {
           name: 'year',
@@ -66,7 +68,7 @@ export default {
           sortable: false,
           // classes: 'bg-grey-2 ellipsis',
           // style: 'max-width: 200px',
-          headerClasses: 'bg-grey-3'
+          headerClasses: 'bg-grey-4'
         },
         {
           name: 'round',
@@ -78,7 +80,7 @@ export default {
           sortable: false,
           // classes: 'bg-grey-2 ellipsis',
           // style: 'max-width: 200px',
-          headerClasses: 'bg-grey-3'
+          headerClasses: 'bg-grey-4'
         },
         {
           name: 'original_owner',
@@ -90,7 +92,7 @@ export default {
           sortable: false,
           // classes: 'bg-grey-2 ellipsis',
           // style: 'max-width: 200px',
-          headerClasses: 'bg-grey-3'
+          headerClasses: 'bg-grey-4'
         }
       ]
     }

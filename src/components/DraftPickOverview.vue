@@ -9,7 +9,9 @@
       row-key= '_id',
       :pagination.sync="pagination",
       hide-bottom,
-      dense
+      dense,
+      flat,
+      square
       :hide-bottom="draftPicksByTeam.length > 0",
       no-data-label='No draft picks available'
       )
@@ -59,8 +61,8 @@ export default {
         {
           name: 'year',
           required: true,
-          label: 'Year:',
-          align: 'left',
+          label: 'Year',
+          align: 'center',
           sortable: false,
           field: row => row.year,
           format: val => `${val}`,
@@ -69,7 +71,7 @@ export default {
         {
           name: 'rd',
           required: true,
-          label: 'Round:',
+          label: 'Round',
           align: 'center',
           sortable: false,
           field: row => row.rd,
@@ -78,7 +80,7 @@ export default {
         {
           name: 'pick',
           required: true,
-          label: 'Pick:',
+          label: 'Pick',
           align: 'center',
           field: row => row.pick,
           format: val => {

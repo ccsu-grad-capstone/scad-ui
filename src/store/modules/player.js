@@ -47,7 +47,7 @@ export default {
           rootState.user.tokens.id_token)
           .get(`/api/yahoo/league/${leagueId}/players`)
         commit('updateYahooPlayers', res.data.players)
-        // console.log('ALL-YAHOO-PLAYERS: ', res.data.players)
+        console.log('ALL-YAHOO-PLAYERS: ', res.data.players)
       } catch (err) {
         catchAxiosScadError(err)
       }

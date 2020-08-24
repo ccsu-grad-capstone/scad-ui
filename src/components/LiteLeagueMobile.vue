@@ -53,28 +53,28 @@ export default {
           label: 'Team:',
           align: 'left',
           sortable: false,
-          headerClasses: 'bg-grey-3'
+          headerClasses: 'bg-grey-4'
         },
         {
           name: 'give',
           required: true,
           label: 'Give:',
           align: 'left',
-          headerClasses: 'bg-grey-3'
+          headerClasses: 'bg-grey-4'
         },
         {
           name: 'recieve',
           required: true,
           label: 'Rec:',
           align: 'left',
-          headerClasses: 'bg-grey-3'
+          headerClasses: 'bg-grey-4'
         },
         {
           name: 'salary',
           required: true,
           label: 'Salary:',
           align: 'left',
-          headerClasses: 'bg-grey-3'
+          headerClasses: 'bg-grey-4'
         }
       ]
     }

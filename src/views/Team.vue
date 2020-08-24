@@ -117,7 +117,9 @@
                   row-key= 'player_key',
                   :pagination.sync="pagination",
                   hide-bottom,
-                  dense
+                  dense,
+                  flat,
+                  square
                   )
                   template(v-slot:header-cell-salary="props")
                     q-th(:props='props')

@@ -1,5 +1,5 @@
 <template lang="pug">
-  q-layout.bg-grey-1(view="hHh LpR fFf")
+  q-layout.bg-grey-2(view="hHh LpR fFf")
     q-header.bg-white.text-grey-8(elevated height-hint="64")
       q-toolbar.GNL__toolbar
         q-btn.q-mr-sm(v-if="loggedIn" flat dense round @click="leftDrawerOpen = !leftDrawerOpen" aria-label="Menu" icon="menu")

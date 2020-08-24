@@ -49,7 +49,7 @@ export default {
           sortable: false,
           // classes: 'bg-secondary ellipsis',
           style: 'max-width: 10px',
-          headerClasses: 'bg-grey-3'
+          headerClasses: 'bg-grey-4'
         },
         {
           name: 'name',
@@ -59,7 +59,7 @@ export default {
           sortable: false,
           // classes: 'bg-grey-2 ellipsis',
           style: 'max-width: 200px',
-          headerClasses: 'bg-grey-3'
+          headerClasses: 'bg-grey-4'
         },
         {
           name: 'record',
@@ -69,7 +69,7 @@ export default {
           field: row => row.team_standings.outcome_totals,
           format: val => `${val.wins}-${val.losses}-${val.ties}`,
           sortable: false,
-          headerClasses: 'bg-grey-3',
+          headerClasses: 'bg-grey-4',
           style: 'max-width: 100px'
         },
         {
@@ -80,7 +80,7 @@ export default {
           // field: row => row.team_standings.outcome_totals,
           format: val => `${val}`,
           sortable: false,
-          headerClasses: 'bg-grey-3',
+          headerClasses: 'bg-grey-4',
           style: 'max-width: 100px'
         }
       ]

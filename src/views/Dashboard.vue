@@ -24,10 +24,11 @@
           .text-h4.text-weight-bolder {{league.yahooLeagueDetails.name}}
           a(:href='league.yahooLeagueDetails.url') {{league.yahooLeagueDetails.url}}
       .row.full-width.justify-center
-        .col-xl-6.col-lg-6.col-md-6.col-sm-10.col-xs-10
+        .col-xl-7.col-lg-7.col-md-7.col-sm-10.col-xs-10
           lite-league.gt-xs(@updateTeamSalaries="updateTeamSalaries")
           lite-league-mobile.lt-sm(@updateTeamSalaries="updateTeamSalaries")
-        .col-xl-5.col-lg-5.col-md-5.col-sm-10.col-xs-10
+          transactions
+        .col-xl-4.col-lg-4.col-md-4.col-sm-10.col-xs-10
           lite-my-team
       .row.full-width.justify-center(v-if="commish()")
         .col-10
@@ -39,6 +40,7 @@
 import LiteMyTeam from '../components/LiteMyTeam'
 import LiteLeague from '../components/LiteLeague'
 import LeagueDiagnostics from '../components/LeagueDiagnostics'
+import Transactions from '../components/Transactions'
 import LiteLeagueMobile from '../components/LiteLeagueMobile'
 import LiteDraftPicks from '../components/LiteDraftPicks'
 
@@ -48,6 +50,7 @@ export default {
     'lite-my-team': LiteMyTeam,
     'lite-league': LiteLeague,
     'league-diagnostics': LeagueDiagnostics,
+    'transactions': Transactions,
     'lite-league-mobile': LiteLeagueMobile,
     'lite-draft-picks': LiteDraftPicks
   },

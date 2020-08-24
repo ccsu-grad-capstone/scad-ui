@@ -37,7 +37,10 @@
               :data='filteredPlayers()'
               :pagination.sync="pagination",
               :columns='windowWidth > 600 ? columns : columnsMobile',
-              row-key='name')
+              row-key='name'
+              flat
+              square
+              )
               template(v-slot:body='props')
                 q-tr(:props='props')
                   q-td(key='pos' :props='props' auto-width) {{ getPos(props.row.yahooLeaguePlayerId) }}

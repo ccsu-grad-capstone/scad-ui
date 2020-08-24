@@ -87,7 +87,7 @@ export default {
           required: true,
           align: 'left',
           label: 'Rank',
-          headerClasses: 'bg-grey-3'
+          headerClasses: 'bg-grey-4'
         },
         {
           name: 'name',
@@ -95,7 +95,7 @@ export default {
           label: 'Team:',
           align: 'left',
           sortable: false,
-          headerClasses: 'bg-grey-3'
+          headerClasses: 'bg-grey-4'
         },
         {
           name: 'manager',
@@ -103,7 +103,7 @@ export default {
           label: 'Manager:',
           align: 'left',
           sortable: false,
-          headerClasses: 'bg-grey-3'
+          headerClasses: 'bg-grey-4'
         },
         {
           name: 'qb',
@@ -111,7 +111,7 @@ export default {
           label: 'QB:',
           align: 'left',
           sortable: false,
-          headerClasses: 'bg-grey-3'
+          headerClasses: 'bg-grey-4'
         },
         {
           name: 'wr',
@@ -119,7 +119,7 @@ export default {
           label: 'WR:',
           align: 'left',
           sortable: false,
-          headerClasses: 'bg-grey-3'
+          headerClasses: 'bg-grey-4'
         },
         {
           name: 'rb',
@@ -127,7 +127,7 @@ export default {
           label: 'RB:',
           align: 'left',
           sortable: false,
-          headerClasses: 'bg-grey-3'
+          headerClasses: 'bg-grey-4'
         },
         {
           name: 'te',
@@ -135,7 +135,7 @@ export default {
           label: 'TE:',
           align: 'left',
           sortable: false,
-          headerClasses: 'bg-grey-3'
+          headerClasses: 'bg-grey-4'
         },
         {
           name: 'def',
@@ -143,21 +143,21 @@ export default {
           label: 'DEF:',
           align: 'left',
           sortable: false,
-          headerClasses: 'bg-grey-3'
+          headerClasses: 'bg-grey-4'
         },
         {
           name: 'salary',
           required: true,
           label: 'Salary:',
           align: 'left',
-          headerClasses: 'bg-grey-3'
+          headerClasses: 'bg-grey-4'
         },
         {
           name: 'status',
           required: true,
           label: 'Status:',
           align: 'left',
-          headerClasses: 'bg-grey-3'
+          headerClasses: 'bg-grey-4'
         }
       ]
     }

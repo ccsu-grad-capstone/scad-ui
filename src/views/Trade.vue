@@ -110,7 +110,7 @@ export default {
           sortable: false
           // classes: 'bg-secondary ellipsis',
           // style: 'max-width: 10px',
-          // headerClasses: 'bg-grey-3'
+          // headerClasses: 'bg-grey-4'
         },
         {
           name: 'playerName',
@@ -122,7 +122,7 @@ export default {
           sortable: false,
           // classes: 'bg-grey-2 ellipsis',
           style: 'max-width: 200px'
-          // headerClasses: 'bg-grey-3'
+          // headerClasses: 'bg-grey-4'
         },
         {
           name: 'salary',
@@ -132,7 +132,7 @@ export default {
           // field: row => row.editorial_team_abbr,
           format: val => `${val}`,
           sortable: false,
-          // headerClasses: 'bg-grey-3'
+          // headerClasses: 'bg-grey-4'
           style: 'max-width: 100px'
         }
       ]
