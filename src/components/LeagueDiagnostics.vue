@@ -1,19 +1,23 @@
 <template lang="pug">
   .q-pa-sm.col-xs-4
     .text-h6.text-weight-bolder League Diagnostics
-    q-card.full-width(v-if="!loaded")
-      .row.full-width.justify-center
-        q-circular-progress.q-mt-xl(
-          indeterminate
-          size="90px"
-          :thickness="0.2"
-          color="primary"
-          center-color="grey-5"
-          track-color="transparent"
-          class="q-ma-md"
-          )
-      .row.full-width.justify-center.q-pb-md
-        .text-grey Running Diagnostics, this may take a moment..
+    q-card.full-width(v-if="teams.length <= 0")
+      .row.full-width.justify-center.q-py-xl(v-if="!running")
+        .column
+          q-btn( size='md' color='info' label='Run Diagnostics' dense @click='runDiagnostics()')
+      div(v-if="!loaded && running")
+        .row.full-width.justify-center
+          q-circular-progress.q-mt-xl(
+            indeterminate
+            size="90px"
+            :thickness="0.2"
+            color="primary"
+            center-color="grey-5"
+            track-color="transparent"
+            class="q-ma-md"
+            )
+        .row.full-width.justify-center.q-pb-md
+          .text-grey Running Diagnostics, this may take a moment..
     q-table(
       v-else
       :data='teams',
@@ -72,6 +76,7 @@ export default {
   data () {
     return {
       loaded: false,
+      running: false,
       pagination: {
         page: 1,
         rowsPerPage: 0 // 0 means all rows
@@ -182,9 +187,7 @@ export default {
   },
 
   async created () {
-    // console.log('[LEAGUEDIAGNOSTICE] - mounted()')
-    await this.$store.dispatch('diagnostics/runDiagnostics')
-    this.loaded = true
+
   },
   methods: {
     getTeamSalary (id) {
@@ -230,6 +233,11 @@ export default {
     },
     isBetween (min, max, num) {
       if (min <= num && max >= num) { return true } else { return false }
+    },
+    async runDiagnostics () {
+      this.running = true
+      await this.$store.dispatch('diagnostics/runDiagnostics')
+      this.loaded = true
     }
   }
 
