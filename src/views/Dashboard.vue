@@ -27,7 +27,7 @@
         .col-xl-7.col-lg-7.col-md-7.col-sm-10.col-xs-10
           lite-league.gt-xs(@updateTeamSalaries="updateTeamSalaries")
           lite-league-mobile.lt-sm(@updateTeamSalaries="updateTeamSalaries")
-          transactions
+          transactions(v-if="!inDevelopment")
         .col-xl-4.col-lg-4.col-md-4.col-sm-10.col-xs-10
           lite-my-team
       .row.full-width.justify-center(v-if="commish()")
@@ -43,6 +43,7 @@ import LeagueDiagnostics from '../components/LeagueDiagnostics'
 import Transactions from '../components/Transactions'
 import LiteLeagueMobile from '../components/LiteLeagueMobile'
 import LiteDraftPicks from '../components/LiteDraftPicks'
+import { inDevelopment } from '../utilities/enviornment'
 
 export default {
   name: 'Dashboard',
@@ -69,6 +70,7 @@ export default {
     }
   },
   computed: {
+    inDevelopment () { return inDevelopment },
     user () {
       return this.$store.state.user
     },

@@ -34,7 +34,7 @@ const catchAxiosScadError = (error) => {
 
 const catchAxiosNodeError = (error) => {
   if (error.response) {
-    notify.nnodeServerIssueWithResponse(error.response.status, error.message)
+    notify.nodeServerIssueWithResponse(error.response.status, error.message)
     console.log(error.response)
   } else if (error.request) {
     notify.nodeServerIssue(error.message)

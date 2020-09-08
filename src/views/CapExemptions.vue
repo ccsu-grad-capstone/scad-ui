@@ -74,7 +74,7 @@ import { myTeamStyle } from '../utilities/formatters'
 /* eslint-disable eqeqeq */
 
 export default {
-  name: 'DraftPicks',
+  name: 'CapExemptions',
   components: {
     'add-cap-exemption-dialog': addCapExemptionDialog,
     'edit-cap-exemption-dialog': editCapExemptionDialog
