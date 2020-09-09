@@ -143,9 +143,10 @@
                           .col-1
                             q-avatar(size="25px")
                               img(:src="props.row.headshot.url" style="width: 85%")
-                          .col.q-pl-sm.text-body2.text-weight-bold
+                          .col.q-pl-sm.text-body2
                             .row.full-width
-                              | {{props.row.name.full}}
+                              .text-weight-bold {{props.row.name.full}}
+                              .text-caption.q-pl-sm(v-if="checkPlayerStatus(props.row.selected_position.position)") {{ props.row.status }}
                               .text-grey.text-caption.q-pl-sm ({{props.row.display_position}})
                               q-icon.q-pa-xs(v-if="isFranchiseTagged(props.row.player_id)" name='fas fa-tag' color='info')
                       q-td(:class="fmt(props.row, 'team', viewByTeam)" key='team' :props='props')
@@ -469,6 +470,11 @@ export default {
         this.yahooTeam
       )
     },
+    checkPlayerStatus (position) {
+      if (position === 'IR') {
+        return true
+      }
+    },
     async saveSalaries () {
       await this.getTeam(this.$route.params.team_id)
       this.updateTeamSalary()
@@ -649,6 +655,8 @@ a
   width: 90%
 .team-table
   width: 90%
+.name
+  font-weight: bold
 .my-sticky-header-table
   thead
     background-color: #e1e2e3
