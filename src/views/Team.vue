@@ -344,11 +344,35 @@ export default {
     players () {
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       return this.yahooTeam.players.sort(function (a, b) {
-        if (b.selected_position.position === 'BN') {
-          if (a.selected_position.position !== 'BN') return -1
-        } else {
-          return 1
-        }
+        if (b.selected_position.position === 'QB') return 1
+        else if (b.selected_position.position === 'WR') {
+          if (a.selected_position.position === 'QB') return -1
+        } else if (b.selected_position.position === 'RB') {
+          if (a.selected_position.position === 'QB') return -1
+          if (a.selected_position.position === 'WR') return -1
+        } else if (b.selected_position.position === 'TE') {
+          if (a.selected_position.position === 'QB') return -1
+          if (a.selected_position.position === 'WR') return -1
+          if (a.selected_position.position === 'RB') return -1
+        } else if (b.selected_position.position === 'W/R/T') {
+          if (a.selected_position.position === 'QB') return -1
+          if (a.selected_position.position === 'WR') return -1
+          if (a.selected_position.position === 'RB') return -1
+          if (a.selected_position.position === 'TE') return -1
+        } else if (b.selected_position.position === 'DEF') {
+          if (a.selected_position.position === 'QB') return -1
+          if (a.selected_position.position === 'WR') return -1
+          if (a.selected_position.position === 'RB') return -1
+          if (a.selected_position.position === 'TE') return -1
+          if (a.selected_position.position === 'W/R/T') return -1
+        } else if (b.selected_position.position === 'BN') {
+          if (a.selected_position.position === 'QB') return -1
+          if (a.selected_position.position === 'WR') return -1
+          if (a.selected_position.position === 'RB') return -1
+          if (a.selected_position.position === 'TE') return -1
+          if (a.selected_position.position === 'W/R/T') return -1
+          if (a.selected_position.position === 'DEF') return -1
+        } else return -1
       })
     },
     playersByPos () {
