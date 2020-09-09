@@ -1,6 +1,6 @@
 <template lang="pug">
   .q-pa-sm.col-xs-4
-    .text-h6.text-weight-bolder League Diagnostics
+    .text-h6.text-weight-bolder League Diagnostics #[span.text-caption.text-grey-5 (Last Run: {{ lastChecked }})]
     q-card.full-width(v-if="teams.length <= 0")
       .row.full-width.justify-center.q-py-xl(v-if="!running")
         .column
@@ -184,11 +184,14 @@ export default {
     },
     teams () {
       return this.$store.state.diagnostics.teams
+    },
+    lastChecked () {
+      return this.$store.state.diagnostics.lastChecked
     }
   },
 
-  async created () {
-
+  async mounted () {
+    this.$store.dispatch('diagnostics/getDiagnostic')
   },
   methods: {
     getTeamSalary (id) {

@@ -1,12 +1,15 @@
 /* eslint-disable eqeqeq */
 // import notify from '../../utilities/nofity'
-// import { scad } from '../../utilities/axios-scad'
+import { node } from '../../utilities/axios-node'
 // import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
+import moment from 'moment'
 import { calcTeamSalary, getPosCount } from '../../utilities/calculator'
 
 export default {
   namespaced: true,
   state: {
+    id: '',
+    lastChecked: '',
     teams: []
   },
   getters: {
@@ -17,9 +20,42 @@ export default {
     updateTeams (state, teams) {
       // console.log('[LEAGUE-MUTATION] - key()')
       state.teams = teams
+    },
+    updateDiagnostic (state, d) {
+      console.log(d)
+      state.id = d._id
+      state.lastChecked = moment(d.lastChecked).format('LLL')
+      console.log(state)
+    },
+    updateLastChecked (state, d) {
+      state.lastChecked = moment(d).format('LLL')
     }
   },
   actions: {
+
+    async getDiagnostic ({ rootState, commit }) {
+      try {
+        const res = await node.get(`/diagnostic/${rootState.league.yahooLeagueId}`)
+        console.log(res)
+        commit('updateDiagnostic', res.data.data[0])
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+    async updateDiagnostic ({ state, commit }) {
+      try {
+        let update = {
+          lastChecked: moment()
+        }
+        commit('updateLastChecked', update.lastChecked)
+
+        const res = await node.put(`/diagnostic/update/${state.id}`, { data: update })
+        console.log(res)
+      } catch (error) {
+        console.log(error)
+      }
+    },
     async runDiagnostics ({ rootState, state, commit, dispatch }) {
       let teams = []
       for (var yt of rootState.league.yahooTeams) {
@@ -52,6 +88,7 @@ export default {
       commit('updateTeams', teams)
       await dispatch('league/getYahooTeams', rootState.league.yahooLeagueId, { root: true })
       await dispatch('league/getScadTeams', rootState.league.scadLeagueId, { root: true })
+      await dispatch('updateDiagnostic')
     }
   }
 }
