@@ -25,7 +25,9 @@
       row-key='name',
       :pagination.sync="pagination",
       hide-bottom,
-      dense
+      dense,
+      flat,
+      square
       )
       template(v-slot:body-cell-rank='props' auto-width)
         q-td(:props='props' auto-width)
@@ -58,9 +60,8 @@
           .text-body.text-grey-5 {{ scadSettings.defMin }} | #[span.qty(v-bind:class="{ 'text-red': !checkPos('def', scadSettings, props.row.yahooTeam.players) }") {{props.row.def}}] | {{ scadSettings.defMax }}
       template(v-slot:body-cell-salary='props')
         q-td.bg-grey-1(:props='props' auto-width)
-          .text-primary.text-weight-bolder(v-if="checkTeamSalary(props.row.yahooTeam.team_id) > 5") ${{getTeamSalary(props.row.yahooTeam.team_id)}}
-          .text-negative.text-weight-bolder(v-else-if="checkTeamSalary(props.row.yahooTeam.team_id) < 0") ${{getTeamSalary(props.row.yahooTeam.team_id)}}
-          .text-warning.text-weight-bolder(v-else) ${{getTeamSalary(props.row.yahooTeam.team_id)}}
+          .text-primary.text-weight-bolder(v-if="checkTeamSalary(props.row.yahooTeam.team_id) > 0") ${{getTeamSalary(props.row.yahooTeam.team_id)}}
+          .text-negative.text-weight-bolder(v-else) ${{getTeamSalary(props.row.yahooTeam.team_id)}}
       template(v-slot:body-cell-status='props')
         q-td.bg-grey-1(:props='props' auto-width)
           .text-weight-bolder.text-positive(v-bind:class="{ 'text-negative': !runStatusCheck(props.row) }") {{displayStatus(props.row)}}
