@@ -1,6 +1,6 @@
 {
   "name": "scad",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "private": true,
   "description": "A Salary Cap Dynasty Fantasy Football App",
   "scripts": {
