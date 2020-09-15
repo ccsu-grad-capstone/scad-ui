@@ -16,7 +16,7 @@
         .text-grey Retrieving Transactions
     q-table(
       v-else
-      :data='transactions',
+      :data='filterTransactions',
       :columns='columns',
       row-key='transaction_key',
       :pagination.sync="pagination",
@@ -26,30 +26,32 @@
       square
       )
       template(v-slot:body-cell-transaction='props')
-        q-td(:props='props' v-if="addDrop(props.row)")
+        q-td(:props='props' v-if="props.row.type.indexOf('add') > -1 && props.row.status === 'successful'")
           .row.full-width
             .col
-              .row.full-width
+              .row.full-width.items-center
                 .row
                   q-icon.q-pa-xs(name='fas fa-plus' color='positive' size='xs')
                 .row.justify-center
                   .text-weight-bold.text-body2.text-grey-9 {{props.row.players[0].name.full}}
                   .text-caption.text-grey-6.text-weight-bold.q-pl-sm {{props.row.players[0].display_position}} - {{props.row.players[0].editorial_team_abbr}}
-                  .text-caption.text-grey-6.q-pl-sm (${{props.row.faab_bid ? props.row.faab_bid : '1'}} {{props.row.players[0].transaction.source_type}})
-              .row.full-width
+                  .text-caption.text-info.text-weight-bold.q-pl-sm (${{props.row.faab_bid ? props.row.faab_bid : '1'}} {{props.row.players[0].transaction.source_type === 'freeagents' ? 'Free Agent' : 'Waiver'}})
+              .row.full-width(v-if="props.row.players[1]")
                 .row
                   q-icon.q-pa-xs(name='fas fa-minus' color='negative' size='xs')
                 .row.justify-center
                   .text-weight-bold.text-body2.text-grey-9 {{props.row.players[1].name.full}}
                   .text-caption.text-grey-6.text-weight-bold.q-pl-sm {{props.row.players[1].display_position}} - {{props.row.players[1].editorial_team_abbr}}
                   .text-caption.text-grey-6.q-pl-sm (to {{props.row.players[1].transaction.destination_type}})
+        div(v-else)
       template(v-slot:body-cell-team='props')
-        q-td(:props='props' v-if="addDrop(props.row)")
+        q-td(:props='props' v-if="props.row.type.indexOf('add') > -1 && props.row.status === 'successful'")
           .column
-            .row.justify-center.items-center.q-gutter-sm
+            .row.items-center.q-gutter-sm
               q-avatar(size="35px")
                 img( :src="getTeamPic(props.row.players[0].transaction.destination_team_key)")
               .text-weight-bold {{ props.row.players[0].transaction.destination_team_name }}
+        div(v-else)
 
 </template>
 
@@ -102,6 +104,9 @@ export default {
     },
     lastChecked () {
       return this.$store.state.transactions.lastChecked
+    },
+    filterTransactions () {
+      return this.transactions.filter(t => t.type.indexOf('add') > -1 && t.status === 'successful')
     }
   },
 

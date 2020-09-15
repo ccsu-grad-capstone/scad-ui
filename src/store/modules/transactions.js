@@ -177,6 +177,7 @@ export default {
           console.log('No new Transactions')
         }
         dispatch('updateLastTimestamp')
+        dispatch('updateLastChecked')
         state.loaded = true
       } catch (error) {
         console.log(error)
