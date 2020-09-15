@@ -74,7 +74,6 @@ export default {
           def: getPosCount('DEF', rootState.team.yahooTeam.players),
           salary: st.salary
         }
-        console.log(yt.team_standings)
         team.yahooTeam.team_standings = yt.team_standings.team_standings.rank
         teams.push(team)
         await dispatch('team/saveTeam', st, { root: true })

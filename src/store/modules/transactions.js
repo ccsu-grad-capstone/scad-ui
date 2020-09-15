@@ -93,7 +93,9 @@ export default {
                       let player = res.data
                       player.salary = p.transaction.source_type === 'freeagents' ? 1 : t.faab_bid
                       await dispatch('team/savePlayer', { player: player, yahooTeamId: rootState.league.yahooLeagueId }, { root: true })
-                      if (!updatedTeams.includes(player.scadTeamId)) { updatedTeams.push(player.scadTeamId) }
+                      if (!updatedTeams.includes(p.transaction.destination_team_key.split('.')[4])) {
+                        updatedTeams.push(p.transaction.destination_team_key.split('.')[4])
+                      }
                     } catch (err) {
                       if (err.response && err.response.status === 404) {
                         let player = {
@@ -107,7 +109,9 @@ export default {
                           renewSCADLeaguePlayerId: 0,
                           previousYearSalary: 0
                         }
-                        if (!updatedTeams.includes(player.scadTeamId)) { updatedTeams.push(player.scadTeamId) }
+                        if (!updatedTeams.includes(p.transaction.destination_team_key.split('.')[4])) {
+                          updatedTeams.push(p.transaction.destination_team_key.split('.')[4])
+                        }
                         console.log('ADDING PLAYER', player)
                         await dispatch('team/addPlayer', { player: player }, { root: true })
                       } else {
@@ -134,9 +138,11 @@ export default {
               //
             } else { break }
           }
+          console.log('UPDATED TEAMS: ', updatedTeams)
+
           // UPDATE TEAM SALARIES
           for (var id of updatedTeams) {
-            let st = rootState.league.scadTeams.find(st => st.id == id)
+            let st = rootState.league.scadTeams.find(st => st.yahooLeagueTeamId == id)
 
             // Get SCAD Players
             const scadPlayers = await scad(

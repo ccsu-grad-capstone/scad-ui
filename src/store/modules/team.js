@@ -174,11 +174,11 @@ export default {
     async savePlayer ({ rootState, dispatch, state }, { player, yahooTeamId }) {
       console.log(`[TEAM-ACTION] - savePlayer()`, player)
       try {
-        const res = await scad(
+        await scad(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .put(`/api/scad/player/${player.id}`, player)
-        console.log('SAVE-PLAYER: ', res)
+        // console.log('SAVE-PLAYER: ', res)
         notify.salarySaveSuccessful()
         if (yahooTeamId == state.myYahooTeamId) {
           dispatch('getMyScadTeam', { yahooLeagueId: rootState.league.yahooLeagueId, yahooTeamId: yahooTeamId })
