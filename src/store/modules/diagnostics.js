@@ -1,8 +1,8 @@
 /* eslint-disable eqeqeq */
 // import notify from '../../utilities/nofity'
 import { node } from '../../utilities/axios-node'
-// import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
 import moment from 'moment'
+// import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
 import { calcTeamSalary, getPosCount } from '../../utilities/calculator'
 
 export default {
@@ -22,27 +22,22 @@ export default {
       state.teams = teams
     },
     updateDiagnostic (state, d) {
-      console.log(d)
       state.id = d._id
       state.lastChecked = moment(d.lastChecked).format('LLL')
-      console.log(state)
     },
     updateLastChecked (state, d) {
       state.lastChecked = moment(d).format('LLL')
     }
   },
   actions: {
-
     async getDiagnostic ({ rootState, commit }) {
       try {
         const res = await node.get(`/diagnostic/${rootState.league.yahooLeagueId}`)
-        console.log(res)
         commit('updateDiagnostic', res.data.data[0])
       } catch (error) {
         console.log(error)
       }
     },
-
     async updateDiagnostic ({ state, commit }) {
       try {
         let update = {
@@ -50,8 +45,7 @@ export default {
         }
         commit('updateLastChecked', update.lastChecked)
 
-        const res = await node.put(`/diagnostic/update/${state.id}`, { data: update })
-        console.log(res)
+        await node.put(`/diagnostic/update/${state.id}`, { data: update })
       } catch (error) {
         console.log(error)
       }

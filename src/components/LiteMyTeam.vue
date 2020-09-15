@@ -19,7 +19,7 @@
             .row.full-width
               .col-2
                 q-avatar(size="30px")
-                  img(:src="getPlayerPic(props.row.yahooLeaguePlayerId)" style="width: 85%")
+                  img(:src="getPlayerPic(props.row.yahooLeaguePlayerId)" style="width: 80%")
               .column.justify-center.q-pl-sm.text-body2.text-weight-bold
                 .row.full-width
                   | {{getPlayerName(props.row.yahooLeaguePlayerId)}}

@@ -1,10 +1,11 @@
 <template lang="pug">
   .q-pa-sm.col-xs-4
-    .text-h6.text-weight-bolder League Diagnostics #[span.text-caption.text-grey-5 (Last Run: {{ lastChecked }})]
-    q-card.full-width(v-if="teams.length <= 0")
+    .row
+      .text-h6.text-weight-bolder League Diagnostics #[span.text-caption.text-grey-5 (Last Run: {{ lastChecked }})]
+      .column.justify-center.q-pl-md
+        q-btn( size='xs' color='info' label='Run Diagnostics' dense @click='runDiagnostics()')
+    q-card.full-width(v-if="teams.length <= 0" flat)
       .row.full-width.justify-center.q-py-xl(v-if="!running")
-        .column
-          q-btn( size='md' color='info' label='Run Diagnostics' dense @click='runDiagnostics()')
       div(v-if="!loaded && running")
         .row.full-width.justify-center
           q-circular-progress.q-mt-xl(

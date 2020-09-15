@@ -162,6 +162,7 @@ export default {
           await dispatch('getScadTeams', state.scadLeagueId)
           await dispatch('getAllScadLeagues')
           await dispatch('getAllYahooLeagues')
+          await dispatch('transactions/getTransactions', null, { root: true })
 
           let id = {
             myYahooTeamId: dashboard.data.yahooMyTeam.team_id,

@@ -23,9 +23,16 @@ export function getScadLeague (leagues, id) {
 
 // leagues: (array) yahoo leagues
 // id: (string) yahoo league_id
-// Finding SCAD league when starting with SCAD league id
+// Finding YAHOO league when starting with SCAD league id
 export function getYahooLeague (leagues, id) {
   return leagues ? leagues.find(l => l.league_id == id) : undefined
+}
+
+// teams: (array) scad teams
+// id: (string) yahoo team_id
+// Finding SCAD team when starting with YAHOO team id
+export function getScadTeam (teams, id) {
+  return teams ? teams.find(t => t.yahooLeagueTeamId == id) : undefined
 }
 
 // rosterPositions: (array) yahoo league settings for positions

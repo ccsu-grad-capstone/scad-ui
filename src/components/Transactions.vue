@@ -1,6 +1,6 @@
 <template lang="pug">
   .q-pa-sm.col-xs-4
-    .text-h6.text-weight-bolder Recent Transactions
+    .text-h6.text-weight-bolder Recent Transactions #[span.text-caption.text-grey-5 (Last Run: {{ lastChecked }})]
     q-card.full-width(v-if="!loaded")
       .row.full-width.justify-center
         q-circular-progress.q-mt-xl(
@@ -18,7 +18,7 @@
       v-else
       :data='transactions',
       :columns='columns',
-      row-key='name',
+      row-key='transaction_key',
       :pagination.sync="pagination",
       hide-bottom,
       dense
@@ -26,26 +26,30 @@
       square
       )
       template(v-slot:body-cell-transaction='props')
-        q-td(:props='props')
+        q-td(:props='props' v-if="addDrop(props.row)")
           .row.full-width
             .col
               .row.full-width
-                .column
+                .row
                   q-icon.q-pa-xs(name='fas fa-plus' color='positive' size='xs')
-                .column.justify-center
-                  .text-caption.text-grey-6 #[span.text-weight-bold.text-body2.text-grey-9 Dereck Carr] #[span.text-weight-bold QB - LV] #[span ($1 Free Agent)]
+                .row.justify-center
+                  .text-weight-bold.text-body2.text-grey-9 {{props.row.players[0].name.full}}
+                  .text-caption.text-grey-6.text-weight-bold.q-pl-sm {{props.row.players[0].display_position}} - {{props.row.players[0].editorial_team_abbr}}
+                  .text-caption.text-grey-6.q-pl-sm (${{props.row.faab_bid ? props.row.faab_bid : '1'}} {{props.row.players[0].transaction.source_type}})
               .row.full-width
-                .column
+                .row
                   q-icon.q-pa-xs(name='fas fa-minus' color='negative' size='xs')
-                .column.justify-center
-                  .text-caption.text-grey-6 #[span.text-weight-bold.text-body2.text-grey-9 Dereck Carr] #[span.text-weight-bold QB - LV] #[span (To Waivers)]
+                .row.justify-center
+                  .text-weight-bold.text-body2.text-grey-9 {{props.row.players[1].name.full}}
+                  .text-caption.text-grey-6.text-weight-bold.q-pl-sm {{props.row.players[1].display_position}} - {{props.row.players[1].editorial_team_abbr}}
+                  .text-caption.text-grey-6.q-pl-sm (to {{props.row.players[1].transaction.destination_type}})
       template(v-slot:body-cell-team='props')
-        q-td(:props='props')
+        q-td(:props='props' v-if="addDrop(props.row)")
           .column
             .row.justify-center.items-center.q-gutter-sm
               q-avatar(size="35px")
-                img( :src="getTeamPic(props.row.transaction_data.destination_team_key)")
-              .text-weight-bold {{ props.row.transaction_data.destination_team_name}}
+                img( :src="getTeamPic(props.row.players[0].transaction.destination_team_key)")
+              .text-weight-bold {{ props.row.players[0].transaction.destination_team_name }}
 
 </template>
 
@@ -56,7 +60,7 @@ export default {
   name: 'LeagueDiagnostics',
   data () {
     return {
-      loaded: true,
+      loaded: false,
       pagination: {
         page: 1,
         rowsPerPage: 10 // 0 means all rows
@@ -95,16 +99,26 @@ export default {
     },
     transactions () {
       return this.$store.state.transactions.transactions
+    },
+    lastChecked () {
+      return this.$store.state.transactions.lastChecked
     }
   },
 
-  async created () {
-
+  async mounted () {
+    // await this.$store.dispatch('transactions/getTransactionTimestamp')
+    // await this.$store.dispatch('transactions/getTransactions')
+    this.loaded = true
   },
   methods: {
     getTeamPic (key) {
-      let team = this.yahooTeams.find(t => t.team_key === key)
-      return team.team_logos[0].team_logo.url
+      if (key) {
+        let team = this.yahooTeams.find(t => t.team_key === key)
+        return team.team_logos[0].team_logo.url
+      }
+    },
+    addDrop (row) {
+      return row.type === 'add/drop'
     }
   }
 
