@@ -3,7 +3,7 @@
     .text-h6.text-weight-bolder Standings
     q-table(
       :data='yahooTeams',
-      :columns='columns',
+      :columns='windowWidth > 700 ? columns : columnsMobile',
       row-key='name',
       :pagination.sync="pagination",
       hide-bottom,
@@ -40,9 +40,6 @@
           .text-positive.text-weight-bolder(v-if="checkTeamSalary(props.row.team_id) > 5") ${{getTeamSalary(props.row.team_id)}}
           .text-negative.text-weight-bolder(v-else-if="checkTeamSalary(props.row.team_id) < 0") ${{getTeamSalary(props.row.team_id)}}
           .text-warning.text-weight-bolder(v-else) ${{getTeamSalary(props.row.team_id)}}
-    .row.full-width.q-pt-xs.justify-center.gt-xs
-      .text-caption.text-grey Salaries and cap exemptions may appear off with Yahoo! updates..
-      q-btn(size='sm' color='accent' label='Click here to update' flat dense @click='updateTeamSalaries()' icon="sync")
 
 </template>
 
@@ -63,7 +60,7 @@ export default {
           required: true,
           align: 'center',
           label: 'Rank',
-          headerClasses: 'bg-grey-4'
+          headerClasses: 'bg-grey-4 text-grey-8'
         },
         {
           name: 'name',
@@ -71,7 +68,7 @@ export default {
           label: 'Team',
           align: 'left',
           sortable: false,
-          headerClasses: 'bg-grey-4'
+          headerClasses: 'bg-grey-4 text-grey-8'
         },
         {
           name: 'manager',
@@ -79,7 +76,7 @@ export default {
           label: 'Manager',
           align: 'left',
           sortable: false,
-          headerClasses: 'bg-grey-4'
+          headerClasses: 'bg-grey-4 text-grey-8'
         },
         {
           name: 'record',
@@ -88,28 +85,99 @@ export default {
           align: 'center',
           field: row => row.team_standings.team_standings.outcome_totals,
           format: val => `${val.wins}-${val.losses}-${val.ties}`,
-          headerClasses: 'bg-grey-4'
+          headerClasses: 'bg-grey-4 text-grey-8'
+        },
+        {
+          name: 'pointsFor',
+          required: true,
+          label: 'Pts For',
+          align: 'center',
+          field: row => row.team_standings.team_standings.points_for,
+          headerClasses: 'bg-grey-4 text-grey-8'
+        },
+        {
+          name: 'pointsAgainst',
+          required: true,
+          label: 'Pts Agnst',
+          align: 'center',
+          field: row => row.team_standings.team_standings.points_against,
+          headerClasses: 'bg-grey-4 text-grey-8'
         },
         {
           name: 'give',
           required: true,
           label: 'Give',
           align: 'center',
-          headerClasses: 'bg-grey-4'
+          headerClasses: 'bg-grey-4 text-grey-8'
         },
         {
           name: 'recieve',
           required: true,
           label: 'Rec',
           align: 'center',
-          headerClasses: 'bg-grey-4'
+          headerClasses: 'bg-grey-4 text-grey-8'
         },
         {
           name: 'salary',
           required: true,
           label: 'Salary',
           align: 'center',
-          headerClasses: 'bg-grey-4'
+          headerClasses: 'bg-grey-4 text-grey-8'
+        }
+      ],
+      columnsMobile: [
+        {
+          name: 'rank',
+          required: true,
+          align: 'center',
+          label: 'Rank',
+          headerClasses: 'bg-grey-4 text-grey-8'
+        },
+        {
+          name: 'name',
+          required: true,
+          label: 'Team',
+          align: 'left',
+          sortable: false,
+          headerClasses: 'bg-grey-4 text-grey-8'
+        },
+        {
+          name: 'manager',
+          required: true,
+          label: 'Manager',
+          align: 'left',
+          sortable: false,
+          headerClasses: 'bg-grey-4 text-grey-8'
+        },
+        {
+          name: 'record',
+          required: true,
+          label: 'W-L-T',
+          align: 'center',
+          field: row => row.team_standings.team_standings.outcome_totals,
+          format: val => `${val.wins}-${val.losses}-${val.ties}`,
+          headerClasses: 'bg-grey-4 text-grey-8'
+        },
+        {
+          name: 'give',
+          required: true,
+          label: 'Give',
+          align: 'center',
+          headerClasses: 'bg-grey-4 text-grey-8'
+        },
+        {
+          name: 'recieve',
+          required: true,
+          label: 'Rec',
+          align: 'center',
+          headerClasses: 'bg-grey-4 text-grey-8'
+        },
+        {
+          name: 'salary',
+          required: true,
+          label: 'Salary',
+          align: 'center',
+          headerClasses: 'bg-grey-4 text-grey-8'
         }
       ]
     }

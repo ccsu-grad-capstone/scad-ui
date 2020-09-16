@@ -50,7 +50,7 @@ export default {
           format: val => `${this.getPos(val)}`,
           sortable: false,
           // classes: 'bg-secondary ellipsis',
-          headerClasses: 'bg-grey-4'
+          headerClasses: 'bg-grey-4 text-grey-8'
         },
         {
           name: 'playerName',
@@ -61,7 +61,7 @@ export default {
           format: val => `${this.getPlayerName(val)}`,
           sortable: false,
           // classes: 'bg-grey-2 ellipsis',
-          headerClasses: 'bg-grey-4'
+          headerClasses: 'bg-grey-4 text-grey-8'
         },
         {
           name: 'salary',
@@ -71,7 +71,7 @@ export default {
           field: row => row.salary,
           format: val => `$${val}`,
           sortable: true,
-          headerClasses: 'bg-grey-4'
+          headerClasses: 'bg-grey-4 text-grey-8'
         }
       ]
     }
