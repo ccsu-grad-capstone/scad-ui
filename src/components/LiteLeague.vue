@@ -20,11 +20,8 @@
             .column
               q-avatar(size="27px")
                 img(:src="props.row.team_logos[0].team_logo.url")
-            .column.justify-center.text-weight-bold.q-pl-sm
+            .column.justify-center.q-pl-sm.text-weight-bold
               router-link(:to="{ path: `/team/${props.row.team_id}`}") {{props.row.name}}
-      template(v-slot:body-cell-manager='props')
-        q-td(:props='props' auto-width)
-          .text-grey {{props.row.managers[0].manager.nickname}}
       template(v-slot:body-cell-give='props')
         q-td(:props='props' auto-width)
           //- .text-grey-8.text-weight-bold() ${{getTeamGive(props.row.team_id)}}
@@ -66,14 +63,6 @@ export default {
           name: 'name',
           required: true,
           label: 'Team',
-          align: 'left',
-          sortable: false,
-          headerClasses: 'bg-grey-4 text-grey-8'
-        },
-        {
-          name: 'manager',
-          required: true,
-          label: 'Manager',
           align: 'left',
           sortable: false,
           headerClasses: 'bg-grey-4 text-grey-8'
@@ -137,14 +126,6 @@ export default {
           name: 'name',
           required: true,
           label: 'Team',
-          align: 'left',
-          sortable: false,
-          headerClasses: 'bg-grey-4 text-grey-8'
-        },
-        {
-          name: 'manager',
-          required: true,
-          label: 'Manager',
           align: 'left',
           sortable: false,
           headerClasses: 'bg-grey-4 text-grey-8'
