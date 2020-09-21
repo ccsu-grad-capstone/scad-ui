@@ -48,7 +48,7 @@
         q-td(:props='props' v-if="props.row.type.indexOf('add') > -1 && props.row.status === 'successful'")
           .column
             .row.items-center.q-gutter-sm
-              q-avatar(size="30px")
+              q-avatar.gt-xs(size="30px")
                 img( :src="getTeamPic(props.row.players[0].transaction.destination_team_key)")
               .text-weight-bold {{ props.row.players[0].transaction.destination_team_name }}
         div(v-else)
