@@ -36,7 +36,6 @@ export default {
         commit('updateDiagnostic', res.data.data[0])
       } catch (error) {
         catchAxiosNodeError(error)
-        console.log(error)
       }
     },
     async updateDiagnostic ({ state, commit }) {
@@ -49,7 +48,6 @@ export default {
         await node.put(`/diagnostic/update/${state.id}`, { data: update })
       } catch (error) {
         catchAxiosNodeError(error)
-        console.log(error)
       }
     },
     async runDiagnostics ({ rootState, state, commit, dispatch }) {

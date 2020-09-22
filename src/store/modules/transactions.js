@@ -45,7 +45,6 @@ export default {
         commit('updateTransaction', res.data.data[0])
       } catch (error) {
         catchAxiosNodeError(error)
-        console.log(error)
       }
     },
     async updateLastChecked ({ state, commit }) {
@@ -57,7 +56,6 @@ export default {
         commit('updateLastChecked', update)
       } catch (error) {
         catchAxiosNodeError(error)
-        console.log(error)
       }
     },
     async updateLastTimestamp ({ state, commit }) {
@@ -69,7 +67,6 @@ export default {
         commit('updateLastTimestamp', update)
       } catch (error) {
         catchAxiosNodeError(error)
-        console.log(error)
       }
     },
     async getTransactions ({ rootState, state, commit, dispatch }) {
@@ -185,7 +182,6 @@ export default {
         state.loaded = true
       } catch (error) {
         catchAxiosNodeError(error)
-        console.log(error)
       }
     }
   }
