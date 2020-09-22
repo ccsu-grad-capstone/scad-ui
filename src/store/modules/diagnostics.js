@@ -2,7 +2,7 @@
 // import notify from '../../utilities/nofity'
 import { node } from '../../utilities/axios-node'
 import moment from 'moment'
-// import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
+import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
 import { calcTeamSalary, getPosCount } from '../../utilities/calculator'
 
 export default {
@@ -35,6 +35,7 @@ export default {
         const res = await node.get(`/diagnostic/${rootState.league.yahooLeagueId}`)
         commit('updateDiagnostic', res.data.data[0])
       } catch (error) {
+        catchAxiosNodeError(error)
         console.log(error)
       }
     },
@@ -47,41 +48,46 @@ export default {
 
         await node.put(`/diagnostic/update/${state.id}`, { data: update })
       } catch (error) {
+        catchAxiosNodeError(error)
         console.log(error)
       }
     },
     async runDiagnostics ({ rootState, state, commit, dispatch }) {
-      let teams = []
-      for (var yt of rootState.league.yahooTeams) {
-        let st = rootState.league.scadTeams.find(st => st.yahooLeagueTeamId == yt.team_id)
-        await dispatch('team/getTeam', { yahooLeagueId: rootState.league.yahooLeagueId, yahooTeamId: yt.team_id }, { root: true })
-        await dispatch('capExemptions/getCapExemptionsByTeam', { teamId: yt.team_id, year: rootState.league.scadSettings.seasonYear }, { root: true })
-        st.salary = calcTeamSalary(
-          rootState.team.yahooTeam.players,
-          rootState.team.scadTeam.players,
-          rootState.capExemptions.capExemptionsByTeam,
-          rootState.league.scadSettings.franchiseTagDiscount,
-          rootState.league.scadSettings.irReliefPerc,
-          rootState.team.yahooTeam,
-          rootState.league.scadSettings.seasonYear
-        )
-        let team = {
-          yahooTeam: rootState.team.yahooTeam,
-          qb: getPosCount('QB', rootState.team.yahooTeam.players),
-          wr: getPosCount('WR', rootState.team.yahooTeam.players),
-          rb: getPosCount('RB', rootState.team.yahooTeam.players),
-          te: getPosCount('TE', rootState.team.yahooTeam.players),
-          def: getPosCount('DEF', rootState.team.yahooTeam.players),
-          salary: st.salary
+      try {
+        let teams = []
+        for (var yt of rootState.league.yahooTeams) {
+          let st = rootState.league.scadTeams.find(st => st.yahooLeagueTeamId == yt.team_id)
+          await dispatch('team/getTeam', { yahooLeagueId: rootState.league.yahooLeagueId, yahooTeamId: yt.team_id }, { root: true })
+          await dispatch('capExemptions/getCapExemptionsByTeam', { teamId: yt.team_id, year: rootState.league.scadSettings.seasonYear }, { root: true })
+          st.salary = calcTeamSalary(
+            rootState.team.yahooTeam.players,
+            rootState.team.scadTeam.players,
+            rootState.capExemptions.capExemptionsByTeam,
+            rootState.league.scadSettings.franchiseTagDiscount,
+            rootState.league.scadSettings.irReliefPerc,
+            rootState.team.yahooTeam,
+            rootState.league.scadSettings.seasonYear
+          )
+          let team = {
+            yahooTeam: rootState.team.yahooTeam,
+            qb: getPosCount('QB', rootState.team.yahooTeam.players),
+            wr: getPosCount('WR', rootState.team.yahooTeam.players),
+            rb: getPosCount('RB', rootState.team.yahooTeam.players),
+            te: getPosCount('TE', rootState.team.yahooTeam.players),
+            def: getPosCount('DEF', rootState.team.yahooTeam.players),
+            salary: st.salary
+          }
+          team.yahooTeam.team_standings = yt.team_standings.team_standings.rank
+          teams.push(team)
+          await dispatch('team/saveTeam', st, { root: true })
         }
-        team.yahooTeam.team_standings = yt.team_standings.team_standings.rank
-        teams.push(team)
-        await dispatch('team/saveTeam', st, { root: true })
+        commit('updateTeams', teams)
+        await dispatch('league/getYahooTeams', rootState.league.yahooLeagueId, { root: true })
+        await dispatch('league/getScadTeams', rootState.league.scadLeagueId, { root: true })
+        await dispatch('updateDiagnostic')
+      } catch (error) {
+        catchAxiosNodeError(error)
       }
-      commit('updateTeams', teams)
-      await dispatch('league/getYahooTeams', rootState.league.yahooLeagueId, { root: true })
-      await dispatch('league/getScadTeams', rootState.league.scadLeagueId, { root: true })
-      await dispatch('updateDiagnostic')
     }
   }
 }

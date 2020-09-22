@@ -5,6 +5,7 @@ import { scad } from '../../utilities/axios-scad'
 import { node } from '../../utilities/axios-node'
 import { getScadTeam } from '../../utilities/functions'
 import { calcTeamSalary } from '../../utilities/calculator'
+import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
 
 import moment from 'moment'
 
@@ -43,6 +44,7 @@ export default {
         const res = await node.get(`/transaction/${rootState.league.yahooLeagueId}`)
         commit('updateTransaction', res.data.data[0])
       } catch (error) {
+        catchAxiosNodeError(error)
         console.log(error)
       }
     },
@@ -54,6 +56,7 @@ export default {
         await node.put(`/transaction/update/${state.id}`, { data: update })
         commit('updateLastChecked', update)
       } catch (error) {
+        catchAxiosNodeError(error)
         console.log(error)
       }
     },
@@ -65,6 +68,7 @@ export default {
         await node.put(`/transaction/update/${state.id}`, { data: update })
         commit('updateLastTimestamp', update)
       } catch (error) {
+        catchAxiosNodeError(error)
         console.log(error)
       }
     },
@@ -180,6 +184,7 @@ export default {
         dispatch('updateLastChecked')
         state.loaded = true
       } catch (error) {
+        catchAxiosNodeError(error)
         console.log(error)
       }
     }
