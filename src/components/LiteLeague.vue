@@ -81,7 +81,7 @@ export default {
           required: true,
           label: 'Pts For',
           align: 'center',
-          field: row => row.team_standings.team_standings.points_for,
+          field: row => this.formatPoints(row.team_standings.team_standings.points_for),
           headerClasses: 'bg-grey-4 text-grey-8'
         },
         {
@@ -89,7 +89,7 @@ export default {
           required: true,
           label: 'Pts Agnst',
           align: 'center',
-          field: row => row.team_standings.team_standings.points_against,
+          field: row => this.formatPoints(row.team_standings.team_standings.points_against),
           headerClasses: 'bg-grey-4 text-grey-8'
         },
         {
@@ -217,6 +217,13 @@ export default {
     },
     async updateTeamSalaries () {
       this.$emit('updateTeamSalaries')
+    },
+    formatPoints (p) {
+      if (typeof p === 'string') {
+        return p
+      } else if (typeof p === 'number') {
+        return p.toFixed(2)
+      } else return p
     }
   }
 
