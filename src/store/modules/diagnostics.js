@@ -4,6 +4,7 @@ import { node } from '../../utilities/axios-node'
 import moment from 'moment'
 import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
 import { calcTeamSalary, getPosCount } from '../../utilities/calculator'
+import { checkIRCount, checkCovidCount } from '../../utilities/validators'
 
 export default {
   namespaced: true,
@@ -74,6 +75,12 @@ export default {
             te: getPosCount('TE', rootState.team.yahooTeam.players),
             def: getPosCount('DEF', rootState.team.yahooTeam.players),
             salary: st.salary
+          }
+          if (!checkIRCount(rootState.team.yahooTeam.players)) {
+            team.ir = 'IR'
+          }
+          if (!checkCovidCount(rootState.team.yahooTeam.players)) {
+            team.ir = 'COVID'
           }
           team.yahooTeam.team_standings = yt.team_standings.team_standings.rank
           teams.push(team)

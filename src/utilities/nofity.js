@@ -9,6 +9,14 @@ export default {
       icon: 'check'
     })
   },
+  success (message) {
+    Notify.create({
+      message: `${message}`,
+      position: 'top',
+      color: 'green',
+      icon: 'check'
+    })
+  },
   salarySaveSuccessful () {
     Notify.create({
       message: ` Salary Saved`,
@@ -59,6 +67,18 @@ export default {
       position: 'top',
       icon: 'error',
       color: 'red',
+      actions: [
+        { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+      ]
+    })
+  },
+  error (message) {
+    Notify.create({
+      message: `${message}`,
+      position: 'top',
+      icon: 'error',
+      color: 'red',
+      timeout: 10000,
       actions: [
         { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
       ]

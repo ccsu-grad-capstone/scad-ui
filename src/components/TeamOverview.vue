@@ -48,7 +48,7 @@ import notify from '../utilities/nofity'
 import referenceData from '../utilities/referenceData'
 import { calcTeamSalary, getPosCount, getPlayerCount, getPositionSalaryTotal, getPerc } from '../utilities/calculator'
 import { getLeagueRosterLimit } from '../utilities/functions'
-import { checkPos } from '../utilities/validators'
+import { checkPos, checkIRCount, checkCovidCount } from '../utilities/validators'
 
 export default {
   name: 'TeamOverview',
@@ -138,6 +138,12 @@ export default {
           notify.rosterMinError(pos.toUpperCase(), count, this.scadSettings[`${pos}Min`])
         }
       })
+      if (!checkIRCount(this.yahooTeam.players)) {
+        notify.error('Invalid Roster [IR]: League Limit for injured players: 3')
+      }
+      if (!checkCovidCount(this.yahooTeam.players)) {
+        notify.error('Invalid Roster [COVID]: League Limit for COVID players: 7')
+      }
     }
   }
 }

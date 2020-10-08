@@ -46,19 +46,22 @@
           .text-grey {{props.row.yahooTeam.managers[0].manager.nickname}}
       template(v-slot:body-cell-qb='props')
         q-td.bg-grey-1(:props='props' auto-width)
-          .text-body.text-grey-5 {{ scadSettings.qbMin }} | #[span.qty(v-bind:class="{ 'text-red': !checkPos('qb', scadSettings, props.row.yahooTeam.players) }") {{props.row.qb}}] | {{ scadSettings.qbMax }}
+          .text-body.text-grey-5 {{ scadSettings.qbMin }} | #[span.qty(v-bind:class="{ 'text-negative': !checkPos('qb', scadSettings, props.row.yahooTeam.players) }") {{props.row.qb}}] | {{ scadSettings.qbMax }}
       template(v-slot:body-cell-wr='props')
         q-td.bg-grey-1(:props='props' auto-width)
-          .text-body.text-grey-5 {{ scadSettings.wrMin }} | #[span.qty(v-bind:class="{ 'text-red': !checkPos('wr', scadSettings, props.row.yahooTeam.players) }") {{props.row.wr}}] | {{ scadSettings.wrMax }}
+          .text-body.text-grey-5 {{ scadSettings.wrMin }} | #[span.qty(v-bind:class="{ 'text-negative': !checkPos('wr', scadSettings, props.row.yahooTeam.players) }") {{props.row.wr}}] | {{ scadSettings.wrMax }}
       template(v-slot:body-cell-rb='props')
         q-td.bg-grey-1(:props='props' auto-width)
-          .text-body.text-grey-5 {{ scadSettings.rbMin }} | #[span.qty(v-bind:class="{ 'text-red': !checkPos('rb', scadSettings, props.row.yahooTeam.players) }") {{props.row.rb}}] | {{ scadSettings.rbMax }}
+          .text-body.text-grey-5 {{ scadSettings.rbMin }} | #[span.qty(v-bind:class="{ 'text-negative': !checkPos('rb', scadSettings, props.row.yahooTeam.players) }") {{props.row.rb}}] | {{ scadSettings.rbMax }}
       template(v-slot:body-cell-te='props')
         q-td.bg-grey-1(:props='props' auto-width)
-          .text-body.text-grey-5 {{ scadSettings.teMin }} | #[span.qty(v-bind:class="{ 'text-red': !checkPos('te', scadSettings, props.row.yahooTeam.players) }") {{props.row.te}}] | {{ scadSettings.teMax }}
+          .text-body.text-grey-5 {{ scadSettings.teMin }} | #[span.qty(v-bind:class="{ 'text-negative': !checkPos('te', scadSettings, props.row.yahooTeam.players) }") {{props.row.te}}] | {{ scadSettings.teMax }}
       template(v-slot:body-cell-def='props')
         q-td.bg-grey-1(:props='props' auto-width)
-          .text-body.text-grey-5 {{ scadSettings.defMin }} | #[span.qty(v-bind:class="{ 'text-red': !checkPos('def', scadSettings, props.row.yahooTeam.players) }") {{props.row.def}}] | {{ scadSettings.defMax }}
+          .text-body.text-grey-5 {{ scadSettings.defMin }} | #[span.qty(v-bind:class="{ 'text-negative': !checkPos('def', scadSettings, props.row.yahooTeam.players) }") {{props.row.def}}] | {{ scadSettings.defMax }}
+      template(v-slot:body-cell-ir='props')
+        q-td.bg-grey-1(:props='props' auto-width)
+          .text-body.text-negative.text-weight-bold {{ props.row.ir}}
       template(v-slot:body-cell-salary='props')
         q-td.bg-grey-1(:props='props' auto-width)
           .text-primary.text-weight-bolder(v-if="checkTeamSalary(props.row.yahooTeam.team_id) >= 0") ${{getTeamSalary(props.row.yahooTeam.team_id)}}
@@ -148,6 +151,14 @@ export default {
           headerClasses: 'bg-grey-4'
         },
         {
+          name: 'ir',
+          required: true,
+          label: 'IR:',
+          align: 'left',
+          sortable: false,
+          headerClasses: 'bg-grey-4'
+        },
+        {
           name: 'salary',
           required: true,
           label: 'Salary:',
@@ -226,6 +237,7 @@ export default {
           this.isBetween(this.scadSettings.rbMin, this.scadSettings.rbMax, team.rb) &&
           this.isBetween(this.scadSettings.teMin, this.scadSettings.teMax, team.te) &&
           this.isBetween(this.scadSettings.defMin, this.scadSettings.defMax, team.def) &&
+          !team.ir &&
           team.salary <= this.scadSettings.teamSalaryCap
         ) { return true } else { return false }
       } else return false
