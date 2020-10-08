@@ -61,7 +61,8 @@
           .text-body.text-grey-5 {{ scadSettings.defMin }} | #[span.qty(v-bind:class="{ 'text-negative': !checkPos('def', scadSettings, props.row.yahooTeam.players) }") {{props.row.def}}] | {{ scadSettings.defMax }}
       template(v-slot:body-cell-ir='props')
         q-td.bg-grey-1(:props='props' auto-width)
-          .text-body.text-negative.text-weight-bold {{ props.row.ir}}
+          .text-body.text-negative.text-weight-bold(v-if="props.row.ir") {{ props.row.ir}}
+          q-icon.q-pa-xs(v-else name='fas fa-check' color='primary' size='xs')
       template(v-slot:body-cell-salary='props')
         q-td.bg-grey-1(:props='props' auto-width)
           .text-primary.text-weight-bolder(v-if="checkTeamSalary(props.row.yahooTeam.team_id) >= 0") ${{getTeamSalary(props.row.yahooTeam.team_id)}}
@@ -114,7 +115,7 @@ export default {
           name: 'qb',
           required: true,
           label: 'QB:',
-          align: 'left',
+          align: 'center',
           sortable: false,
           headerClasses: 'bg-grey-4'
         },
@@ -122,7 +123,7 @@ export default {
           name: 'wr',
           required: true,
           label: 'WR:',
-          align: 'left',
+          align: 'center',
           sortable: false,
           headerClasses: 'bg-grey-4'
         },
@@ -130,7 +131,7 @@ export default {
           name: 'rb',
           required: true,
           label: 'RB:',
-          align: 'left',
+          align: 'center',
           sortable: false,
           headerClasses: 'bg-grey-4'
         },
@@ -138,7 +139,7 @@ export default {
           name: 'te',
           required: true,
           label: 'TE:',
-          align: 'left',
+          align: 'center',
           sortable: false,
           headerClasses: 'bg-grey-4'
         },
@@ -146,7 +147,7 @@ export default {
           name: 'def',
           required: true,
           label: 'DEF:',
-          align: 'left',
+          align: 'center',
           sortable: false,
           headerClasses: 'bg-grey-4'
         },
@@ -154,7 +155,7 @@ export default {
           name: 'ir',
           required: true,
           label: 'IR:',
-          align: 'left',
+          align: 'center',
           sortable: false,
           headerClasses: 'bg-grey-4'
         },
