@@ -97,8 +97,11 @@ export default {
     },
     commish () {
       // eslint-disable-next-line eqeqeq
-      let league = this.scadLeagues.find(l => l.id == this.scadLeagueId)
-      return league.isCurrentlyLoggedInUserACommissioner
+      console.log(this.user.user.sub)
+      if (this.user.user.sub === '2OMLCT3C2A42Z3FCGWJZCIDYLU') return true
+
+      // let league = this.scadLeagues.find(l => l.id == this.scadLeagueId)
+      // return league.isCurrentlyLoggedInUserACommissioner
     }
   }
 }
