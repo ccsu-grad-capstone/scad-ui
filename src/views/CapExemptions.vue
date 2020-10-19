@@ -210,7 +210,7 @@ export default {
       Object.keys(this.filter).forEach(key => {
         if (this.filter[key] !== '') {
           if (key === 'team') {
-            filtered = filtered.filter(ce => ce.yahooTeamGive.name === this.filter.team.name || ce.yahooTeamRecieve.name === this.filter.team.name)
+            filtered = filtered.filter(ce => ce.yahooTeamGive.team_id === this.filter.team.team_id || ce.yahooTeamRecieve.team_id === this.filter.team.team_id)
           } else {
             filtered = filtered.filter(ce => ce[key] == this.filter[key])
           }

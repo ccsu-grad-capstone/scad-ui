@@ -183,7 +183,7 @@ export default {
       Object.keys(this.filter).forEach(key => {
         if (this.filter[key] !== '') {
           if (key === 'team') {
-            filtered = filtered.filter(dp => dp.team.name === this.filter.team.name)
+            filtered = filtered.filter(dp => dp.team.team_id === this.filter.team.team_id)
           } else {
             filtered = filtered.filter(dp => dp[key] === this.filter[key])
           }
