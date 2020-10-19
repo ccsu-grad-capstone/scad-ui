@@ -96,12 +96,10 @@ export default {
       this.refresh = false
     },
     commish () {
-      // eslint-disable-next-line eqeqeq
-      console.log(this.user.user.sub)
-      if (this.user.user.sub === '2OMLCT3C2A42Z3FCGWJZCIDYLU') return true
+      // if (this.user.user.sub === '2OMLCT3C2A42Z3FCGWJZCIDYLU') return true
 
-      // let league = this.scadLeagues.find(l => l.id == this.scadLeagueId)
-      // return league.isCurrentlyLoggedInUserACommissioner
+      // eslint-disable-next-line eqeqeq
+      return this.league.scadSettings.isCurrentlyLoggedInUserACommissioner
     }
   }
 }
