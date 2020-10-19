@@ -126,8 +126,8 @@ export default {
     }
   },
   methods: {
-    getPicks () {
-      this.$store.dispatch('draftPicks/getDraftPicksByTeam', { teamId: this.yahooTeamId, year: this.scadSettings.seasonYear })
+    async getPicks () {
+      await this.$store.dispatch('draftPicks/getDraftPicksByTeam', { teamId: this.yahooTeamId, year: this.scadSettings.seasonYear })
     },
     editPick (dp) {
       this.$store.commit('dialog/editDraftPick')

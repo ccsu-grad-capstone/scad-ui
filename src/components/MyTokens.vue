@@ -36,9 +36,9 @@ export default {
     }
   },
   methods: {
-    refreshToken () {
+    async refreshToken () {
       console.log('[DASHBOARD] - refreshToken()')
-      this.$store.dispatch('user/refreshToken')
+      await this.$store.dispatch('user/refreshToken')
     }
   }
 }

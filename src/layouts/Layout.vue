@@ -182,7 +182,7 @@ export default {
         await this.$store.commit('user/updateTokens', tokens)
         await this.$store.dispatch('user/refreshToken')
         await this.$store.dispatch('user/updateUser')
-        await this.$store.dispatch('league/getScadInfo')
+        await this.$store.dispatch('league/dashboard')
         // this.$store.dispatch('team/getMyYahooTeam', '22351')
       }
       if (this.$route.query) {
