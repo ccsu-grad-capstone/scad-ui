@@ -152,6 +152,17 @@ export default {
 
   // ERROR RESPONSES
 
+  dashboardRegister () {
+    Notify.create({
+      message: `Try refreshing, or logging in again.`,
+      position: 'top',
+      timeout: 2500,
+      color: 'red',
+      actions: [
+        { label: 'Refresh', color: 'white', handler: () => { window.location.reload() } }
+      ]
+    })
+  },
   genericServerIssueWithResponse (code, message) {
     Notify.create({
       message: `[${code}] ${message}, please try again soon`,
