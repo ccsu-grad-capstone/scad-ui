@@ -44,7 +44,9 @@ export function checkIRCount (players) {
   let count = 0
   players.forEach(p => {
     if (p.selected_position.position === 'IR') {
-      if (p.status && p.status.includes('IR')) { count++ } else count++
+      if (p.status) {
+        if (p.status.includes('IR') || p.status.includes('PUP-R')) count++
+      } else count++
     }
   })
   if (count <= 3) return true
