@@ -84,6 +84,7 @@ export default {
   methods: {
     loginWithYahoo () {
       console.log('[ABOUT] - loginWithYahoo()')
+      this.$cookies.keys().forEach(cookie => this.$cookies.remove(cookie))
       window.location = `${getBaseURL('NODE')}/auth/yahoo`
     },
     registerLeague () {

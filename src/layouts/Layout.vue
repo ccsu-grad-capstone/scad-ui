@@ -179,11 +179,15 @@ export default {
           refresh_token: this.$cookies.get('refresh_token'),
           id_token: this.$cookies.get('id_token')
         }
-        await this.$store.commit('user/updateTokens', tokens)
-        await this.$store.dispatch('user/refreshToken')
-        await this.$store.dispatch('user/updateUser')
-        await this.$store.dispatch('league/getAllScadLeagues')
-        await this.$store.dispatch('league/dashboard')
+        try {
+          await this.$store.commit('user/updateTokens', tokens)
+          await this.$store.dispatch('user/refreshToken')
+          await this.$store.dispatch('user/updateUser')
+          await this.$store.dispatch('league/getAllScadLeagues')
+          await this.$store.dispatch('league/dashboard')
+        } catch (error) {
+          console.log('SERVER ISSUE, please try again shortly.')
+        }
         // this.$store.dispatch('team/getMyYahooTeam', '22351')
       }
       if (this.$route.query) {
@@ -234,6 +238,7 @@ export default {
     },
     loginWithYahoo () {
       console.log('[LAYOUT] - loginWithYahoo()')
+      this.$cookies.keys().forEach(cookie => this.$cookies.remove(cookie))
       window.location = `${getBaseURL('NODE')}/auth/yahoo`
     },
     getLeagueName (id) {
