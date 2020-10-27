@@ -43,8 +43,8 @@ export function isScadPlayer (id, scadTeam) {
 export function checkIRCount (players) {
   let count = 0
   players.forEach(p => {
-    if (p.selected_position.position === 'IR' && p.status.includes('IR')) {
-      count++
+    if (p.selected_position.position === 'IR') {
+      if (p.status && p.status.includes('IR')) { count++ } else count++
     }
   })
   if (count <= 3) return true
@@ -54,7 +54,7 @@ export function checkIRCount (players) {
 export function checkCovidCount (players) {
   let count = 0
   players.forEach(p => {
-    if (p.selected_position.position === 'IR' && p.status.includes('COVID')) {
+    if (p.selected_position.position === 'IR' && p.status && p.status.includes('COVID')) {
       count++
     }
   })
