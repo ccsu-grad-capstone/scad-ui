@@ -73,6 +73,10 @@ export default {
       console.log('[TRANSACTIONS-ACTION] - getTransactions()')
       try {
         dispatch('getTransactionTimestamp')
+
+        // const players = await node.get(`/player/yahoo/${rootState.league.yahooLeagueId}/${rootState.user.tokens.access_token}`)
+        // console.log(players)
+
         const transactions = await node.get(`/transaction/yahoo/${rootState.league.yahooLeagueId}/${rootState.user.tokens.access_token}`)
         console.log('TRANSACTIONS: ', transactions.data.transactions.transactions)
         commit('updateTransactions', transactions.data.transactions.transactions)
