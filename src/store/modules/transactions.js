@@ -77,7 +77,13 @@ export default {
         // const players = await node.get(`/player/yahoo/${rootState.league.yahooLeagueId}/${rootState.user.tokens.access_token}`)
         // console.log(players)
 
-        const transactions = await node.get(`/transaction/yahoo/${rootState.league.yahooLeagueId}/${rootState.user.tokens.access_token}`)
+        // TESTING API..
+        const test = await node.get(`/yahoo/league/${rootState.league.yahooLeagueId}/teams/${rootState.user.tokens.access_token}`)
+        console.log('')
+        console.log('***API TEST***: ', test.data)
+        console.log('')
+
+        const transactions = await node.get(`/yahoo/league/${rootState.league.yahooLeagueId}/transactions/${rootState.user.tokens.access_token}`)
         console.log('TRANSACTIONS: ', transactions.data.transactions.transactions)
         commit('updateTransactions', transactions.data.transactions.transactions)
 
