@@ -14,21 +14,21 @@
       template(v-slot:body-cell-year='props')
         q-td(:props='props')
           q-list(separator dense)
-            q-item(v-for="(pick, i) in props.row.draftPicks")
+            q-item(v-for="(pick, i) in props.row.draftPicks" :key="i")
               q-item-section
                 q-item-label
                   | {{pick.year}}
       template(v-slot:body-cell-round='props')
         q-td(:props='props')
           q-list(separator dense)
-            q-item(v-for="(pick, i) in props.row.draftPicks")
+            q-item(v-for="(pick, i) in props.row.draftPicks" :key="i")
               q-item-section
                 q-item-label
                   | {{pick.round}}
       template(v-slot:body-cell-original_owner='props')
         q-td(:props='props')
           q-list(separator dense)
-            q-item(v-for="(pick, i) in props.row.draftPicks")
+            q-item(v-for="(pick, i) in props.row.draftPicks" :key="i")
               q-item-section
                 q-item-label
                   | {{pick.original_owner}}

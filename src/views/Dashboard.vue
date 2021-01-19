@@ -16,13 +16,15 @@
       .row.full-width.justify-center
         .text-primary This may take a moment
     .row.q-gutter-md.full-width.justify-center.q-pt-lg(v-if="league.isActive && !refresh")
-      .row
+      .row.full-width-justify-center
         .div.mobile-hide
           q-avatar(size="75px")
             img(src="../statics/yahoo-ff.png")
         .column.justify-center.align-center.text-center
           .text-h4.text-weight-bolder {{league.yahooLeagueDetails.name}}
           a(:href='league.yahooLeagueDetails.url') {{league.yahooLeagueDetails.url}}
+      .row
+        export-league
       .row.full-width.justify-center
         .col-xl-7.col-lg-7.col-md-7.col-sm-10.col-xs-10
           lite-league.gt-xs(@updateTeamSalaries="updateTeamSalaries")
@@ -43,6 +45,7 @@ import LeagueDiagnostics from '../components/LeagueDiagnostics'
 import Transactions from '../components/Transactions'
 import LiteLeagueMobile from '../components/LiteLeagueMobile'
 import LiteDraftPicks from '../components/LiteDraftPicks'
+import ExportLeague from '../components/ExportLeague'
 
 export default {
   name: 'Dashboard',
@@ -52,7 +55,8 @@ export default {
     'league-diagnostics': LeagueDiagnostics,
     'transactions': Transactions,
     'lite-league-mobile': LiteLeagueMobile,
-    'lite-draft-picks': LiteDraftPicks
+    'lite-draft-picks': LiteDraftPicks,
+    'export-league': ExportLeague
   },
   data () {
     return {
