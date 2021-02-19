@@ -83,7 +83,7 @@ export default {
       },
       filter: {
         team: '',
-        year: '',
+        year: 2021,
         rd: ''
       },
       pagination: {
