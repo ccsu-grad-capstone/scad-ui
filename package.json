@@ -21,6 +21,7 @@
     "quasar": "^1.13.1",
     "vue": "^2.6.12",
     "vue-cookies": "^1.7.3",
+    "vue-json-excel": "^0.3.0",
     "vue-router": "^3.4.3",
     "vue-window-size": "^0.2.5",
     "vuelidate": "^0.7.5",

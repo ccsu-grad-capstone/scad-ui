@@ -60,6 +60,7 @@ export default {
     // refresh tokens with OAuth
     async refreshToken ({ commit, state }) {
       console.log('[USER-ACTION] - refreshToken()')
+
       await node.get(`auth/yahoo/refresh?refresh_token=${state.tokens.refresh_token}`)
         .then((response) => {
           Vue.$cookies.set('access_token', response.data.access_token)

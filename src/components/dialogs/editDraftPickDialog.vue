@@ -19,7 +19,7 @@
         .row.full-width.q-mt-sm
           .col-3.text-body.text-right.text-weight-bold.q-mx-sm History:
           .col
-            q-list(v-for="(log, i) in dp.log" dense)
+            q-list(v-for="(log, i) in dp.log" :key="i" dense)
               q-item.text-grey {{log}}
 
       q-card-actions.row.justify-around

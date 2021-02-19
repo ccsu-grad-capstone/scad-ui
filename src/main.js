@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import VueCookies from 'vue-cookies'
 import VueWindowSize from 'vue-window-size'
+import JsonExcel from 'vue-json-excel'
 
 import './quasar'
 
@@ -11,6 +12,8 @@ Vue.config.productionTip = false
 
 Vue.use(VueCookies)
 Vue.use(VueWindowSize)
+
+Vue.component('downloadExcel', JsonExcel)
 
 Vue.$cookies.config('7d')
 Vue.$cookies.set('theme', 'default')
