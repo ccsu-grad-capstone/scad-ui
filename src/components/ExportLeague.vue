@@ -96,13 +96,13 @@ export default {
       return this.league.scadSettings.isCurrentlyLoggedInUserACommissioner
     },
     getLineupExportName (name) {
-      return `Lineups_${name}_${moment().format('lll')}.xls`
+      return `${name}_Lineups_${moment().format('lll')}.xls`
     },
     getDpExportName (name) {
-      return `DraftPicks_${name}_${moment().format('lll')}.xls`
+      return `${name}_DraftPicks_${moment().format('lll')}.xls`
     },
     getCeExportName (name) {
-      return `CapExemptions_${name}_${moment().format('lll')}.xls`
+      return `${name}_CapExemptions_${moment().format('lll')}.xls`
     },
 
     async getLineupData () {
