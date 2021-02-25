@@ -243,7 +243,7 @@ export default {
     },
     getLeagueName (id) {
       let league = this.yahooLeagues.find(l => l.league_id == id)
-      return league.name
+      if (league) return league.name
     }
   }
 }

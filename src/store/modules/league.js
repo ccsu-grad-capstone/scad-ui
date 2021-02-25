@@ -137,7 +137,7 @@ export default {
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .get(`/scad/dashboard/details`)
-        console.log('DASHBOARD: ', dashboard.data)
+        console.log('DASHBOARD: ', dashboard.data.result)
 
         if (dashboard.data.result.key === 'League') {
           let scadTeam = dashboard.data.result.scadMyTeam
@@ -150,8 +150,7 @@ export default {
 
           await dispatch('getYahooTeams', state.yahooLeagueId)
           await dispatch('getScadTeams', state.scadLeagueId)
-          // await dispatch('getAllScadLeagues')
-          // await dispatch('getAllYahooLeagues')
+          await dispatch('getAllYahooCommishLeagues')
           await dispatch('transactions/getTransactions', null, { root: true })
 
           let id = {
@@ -329,7 +328,7 @@ export default {
           rootState.user.tokens.id_token)
           .get(`/yahoo/league/commissioner/all`)
         console.log('YAHOO-COMMISH-LEAGUES: ', commishLeagues.data)
-        commit('updateYahooCommishLeagues', commishLeagues.data.commissionerLeagues)
+        commit('updateYahooCommishLeagues', commishLeagues.data.commishLeagues)
       } catch (err) {
         catchAxiosScadError(err)
       }

@@ -32,7 +32,7 @@
           transactions
         .col-xl-4.col-lg-4.col-md-4.col-sm-10.col-xs-10
           lite-my-team
-      .row.full-width.justify-center(v-if="commish()")
+      .row.full-width.justify-center(v-if="checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)")
         .col-10
           league-diagnostics
 
@@ -46,6 +46,7 @@ import Transactions from '../components/Transactions'
 import LiteLeagueMobile from '../components/LiteLeagueMobile'
 import LiteDraftPicks from '../components/LiteDraftPicks'
 import ExportLeague from '../components/ExportLeague'
+import { checkIfCommish } from '../utilities/validators'
 
 export default {
   name: 'Dashboard',
@@ -53,7 +54,7 @@ export default {
     'lite-my-team': LiteMyTeam,
     'lite-league': LiteLeague,
     'league-diagnostics': LeagueDiagnostics,
-    'transactions': Transactions,
+    transactions: Transactions,
     'lite-league-mobile': LiteLeagueMobile,
     'lite-draft-picks': LiteDraftPicks,
     'export-league': ExportLeague
@@ -91,27 +92,23 @@ export default {
     scadLeagueId () {
       return this.league.scadLeagueId
     },
-    transactionsLoaded () { return this.$store.state.transactions.loaded }
+    transactionsLoaded () {
+      return this.$store.state.transactions.loaded
+    },
+    checkIfCommish () { return checkIfCommish }
   },
   methods: {
     async updateTeamSalaries () {
       this.refresh = true
       await this.$store.dispatch('league/updateTeamSalaries')
       this.refresh = false
-    },
-    commish () {
-      return true
-      // if (this.user.user.sub === '2OMLCT3C2A42Z3FCGWJZCIDYLU') return true
-
-      // eslint-disable-next-line eqeqeq
-      // return this.league.scadSettings.isCurrentlyLoggedInUserACommissioner
     }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-  a
-    color: $info
-    text-decoration: none
+a
+  color: $info
+  text-decoration: none
 </style>
