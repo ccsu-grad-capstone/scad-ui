@@ -21,7 +21,7 @@
               .col
                 .text-h4.text-weight-bolder.gt-xs League Settings
                 .text-h6.text-weight-bolder.lt-sm League Settings
-              div.q-pt-sm(v-if="commish()")
+              div.q-pt-sm(v-if="checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)")
                 q-btn(v-if="!editing" label='Edit Settings' dense color='primary' text-color='white' size='sm' @click="editing = true")
                 div.q-gutter-md(v-else)
                   q-btn( label='Cancel' dense color='secondary' text-color='primary' size='sm' @click="cancel()")
@@ -192,6 +192,7 @@
 <script>
 
 import referenceData from '../utilities/referenceData'
+import { checkIfCommish } from '../utilities/validators'
 // import notify from '../utilities/nofity'
 
 export default {
@@ -226,11 +227,12 @@ export default {
     },
     scadLeagueId () {
       return this.league.scadLeagueId
-    }
+    },
+    checkIfCommish () { return checkIfCommish }
   },
   methods: {
     async init () {
-      await this.$store.dispatch('league/getAllScadLeagues')
+      // await this.$store.dispatch('league/getAllScadLeagues')
       this.scadSettings = JSON.parse(JSON.stringify(this.settings))
       this.loaded = true
     },
@@ -243,13 +245,6 @@ export default {
       console.log('CANCEL')
       this.init()
       this.editing = false
-    },
-    commish () {
-      if (this.loaded) {
-        // eslint-disable-next-line eqeqeq
-        let league = this.scadLeagues.find(l => l._id == this.scadLeagueId)
-        return league.isCurrentlyLoggedInUserACommissioner
-      }
     },
     leagueSalaryCap () {
       if (this.scadSettings.teamSalaryCap === this.settings.teamSalaryCap) {

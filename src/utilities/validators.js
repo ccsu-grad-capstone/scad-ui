@@ -65,9 +65,7 @@ export function checkCovidCount (players) {
 }
 
 export function checkIfCommish (yahooLeagueId, yahooCommishLeagues) {
-  console.log(yahooLeagueId)
-  console.log(yahooCommishLeagues)
-  console.log('checkIfCommish')
+  // console.log('checkIfCommish')
   if (yahooLeagueId && yahooCommishLeagues) {
     for (const yl of yahooCommishLeagues) {
       if (yl.league_id === yahooLeagueId) return true

@@ -68,15 +68,17 @@ export default {
         catchAxiosNodeError(error)
       }
     },
+
     async getTransactions ({ rootState, state, commit, dispatch }) {
       // console.log('[TRANSACTIONS-ACTION] - getTransactions()')
+
       try {
         dispatch('getTransactionTimestamp')
 
         // const players = await node.get(`/player/yahoo/${rootState.league.yahooLeagueId}/${rootState.user.tokens.access_token}`)
         // console.log(players)
 
-        const transactions = await nodeHeader(rootState.user.tokens.access_token).get(`/yahoo/league/13088/transactions`)
+        const transactions = await nodeHeader(rootState.user.tokens.access_token).get(`/yahoo/league/${rootState.league.yahooLeagueId}/transactions`)
         console.log('TRANSACTIONS: ', transactions.data.transactions.transactions)
         commit('updateTransactions', transactions.data.transactions.transactions)
 
@@ -93,8 +95,8 @@ export default {
                       const res = await nodeHeader(
                         rootState.user.tokens.access_token,
                         rootState.user.tokens.id_token)
-                        .get(`/scad/league/yahoo/${rootState.league.yahooLeagueId}/player/${p.player_id}`)
-                      let player = res.data
+                        .get(`/scad/player/yahoo/${rootState.league.gameKey}/${rootState.league.yahooLeagueId}/player/${p.player_id}`)
+                      let player = res.data.scadPlayer
                       player.salary = p.transaction.source_type === 'freeagents' ? 1 : t.faab_bid
                       await dispatch('team/savePlayer', { player: player, yahooTeamId: rootState.league.yahooLeagueId }, { root: true })
                       if (!updatedTeams.includes(p.transaction.destination_team_key.split('.')[4])) {
@@ -108,11 +110,14 @@ export default {
                           scadLeagueId: rootState.league.scadLeagueId,
                           yahooTeamId: p.transaction.destination_team_key.split('.')[4],
                           scadTeamId: getScadTeam(rootState.league.scadTeams, p.transaction.destination_team_key.split('.')[4])._id,
-                          salary: p.transaction.source_type === 'freeagents' ? 1 : t.faab_bid,
+                          salary: t.faab_bid ? t.faab_bid : 1,
                           isFranchiseTag: false,
                           renewSCADLeaguePlayerId: 0,
                           previousYearSalary: 0
                         }
+                        console.log('*****', t)
+                        console.log('*****', p)
+                        console.log('*****', player)
                         if (!updatedTeams.includes(p.transaction.destination_team_key.split('.')[4])) {
                           updatedTeams.push(p.transaction.destination_team_key.split('.')[4])
                         }
@@ -151,21 +156,25 @@ export default {
             // Get SCAD Players
             const scadPlayers = await nodeHeader(
               rootState.user.tokens.access_token,
+
               rootState.user.tokens.id_token)
-              .get(`/scad/league/${rootState.league.scadLeagueId}/team/${id}/players`)
+              .get(`/scad/league/yahoo/${rootState.league.gameKey}/${rootState.league.yahooLeagueId}/team/${id}/players`)
+            console.log(scadPlayers.data)
 
             // Get YAHOO Team
             const yahooTeam = await nodeHeader(
               rootState.user.tokens.access_token,
               rootState.user.tokens.id_token)
               .get(`/yahoo/league/${rootState.league.yahooLeagueId}/team/${st.yahooTeamId}/roster`)
+            console.log(yahooTeam.data)
+
             // Get Cap Exemptions for Team
             const ce = await node.get(`/capExemptions/${rootState.league.yahooLeagueId}/${rootState.league.scadSettings.seasonYear}/${st.yahooTeamId}`)
 
             // CALC new Team salary
             st.salary = calcTeamSalary(
-              yahooTeam.data.team.roster.players,
-              scadPlayers.data.scadLeaguePlayers,
+              yahooTeam.data.team.roster,
+              scadPlayers.data.scadPlayers,
               ce.data.data,
               rootState.league.scadSettings.franchiseTagDiscount,
               rootState.league.scadSettings.irReliefPerc,

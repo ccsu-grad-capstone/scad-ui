@@ -36,7 +36,7 @@ export default {
 
     async getAllPlayers ({ dispatch, rootState }) {
       await dispatch('getAllYahooPlayers', rootState.league.yahooLeagueId)
-      await dispatch('getAllScadPlayers', rootState.league.yahooLeagueId)
+      await dispatch('getAllScadPlayers', rootState.league.scadLeagueId)
     },
 
     async getAllYahooPlayers ({ commit, rootState }, leagueId) {
@@ -52,15 +52,15 @@ export default {
         catchAxiosScadError(err)
       }
     },
-    async getAllScadPlayers ({ commit, rootState }, leagueId) {
+    async getAllScadPlayers ({ commit, rootState }, scadLeagueId) {
       // console.log(`[PLAYER-ACTION] - getAllScadPlayers()`)
       try {
         const res = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/scad/league/yahoo/${leagueId}/player/all`)
-        commit('updateScadPlayers', res.data.scadLeaguePlayers)
-        // console.log('ALL-SCAD-PLAYERS: ', res.data.scadLeaguePlayers)
+          .get(`/scad/league/${scadLeagueId}/player/all`)
+        commit('updateScadPlayers', res.data.scadPlayers)
+        console.log('ALL-SCAD-PLAYERS: ', res.data.scadPlayers)
       } catch (err) {
         catchAxiosScadError(err)
       }

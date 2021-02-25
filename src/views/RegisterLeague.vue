@@ -242,7 +242,8 @@ export default {
         franchiseTagSpots: '',
         tradingDraftPickYears: '',
         rosterSpotLimit: 0,
-        renewSCADLeagueId: 0,
+        renewSCADLeagueId: '',
+        seasonYear: 0,
         qbMin: '2',
         qbMax: '4',
         rbMin: '4',
@@ -290,7 +291,7 @@ export default {
     }
   },
   async mounted () {
-    await this.$store.dispatch('league/getAllYahooCommishLeagues')
+    // await this.$store.dispatch('league/getAllYahooCommishLeagues')
     this.loaded = true
   },
   computed: {
@@ -380,6 +381,7 @@ export default {
           this.newLeague.yahooLeagueId = this.selectedLeague.league_id
           this.newLeague.yahooLeagueName = this.selectedLeague.name
           this.newLeague.leagueManagers = this.selectedLeague.num_teams
+          this.newLeague.seasonYear = parseInt(this.selectedLeague.season)
           this.newLeague.yahooGameId = this.selectedLeague.league_key.split('.')[0]
         } else {
           catchAxiosScadError(err)

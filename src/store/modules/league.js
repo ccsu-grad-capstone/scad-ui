@@ -36,7 +36,7 @@ export default {
       // console.log('[LEAGUE-MUTATION] - dashboardRegister()')
       // state.isActive = false
       state.key = dashboard.key
-      state.yahooCommishLeagues = dashboard.YahooLeagues
+      state.yahooCommishLeagues = dashboard.yahooCommishLeagues
     },
     updateYahooLeagueDetails (state, league) {
       // console.log('[LEAGUE-MUTATION] - updateYahooLeagueDetails()')
@@ -160,7 +160,7 @@ export default {
           commit('team/updateMyTeamIds', id, { root: true })
         } else {
           notify.dashboardRegister()
-          commit('dashboardRegister', dashboard.data)
+          commit('dashboardRegister', dashboard.data.result)
         }
       } catch (err) {
         catchAxiosScadError(err)
@@ -340,7 +340,7 @@ export default {
         const res = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .post('/scad/league', league)
+          .post('/scad/league', { data: league })
         console.log('POST response scadleague: ', res)
         // commit('updateLeague', { league: league })
       } catch (err) {
@@ -353,9 +353,9 @@ export default {
         const res = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .put(`/scad/league/${settings._id}`, settings)
-        console.log('PUT RESPONSE - SAVE LEAGUE: ', res)
-        commit('updateScadSettings', res.data)
+          .put(`/scad/league/${settings._id}`, { data: settings })
+        console.log('PUT RESPONSE - SAVE LEAGUE: ', res.data.message)
+        commit('updateScadSettings', res.data.league)
         notify.saveSuccessful('SCAD settings saved successfully')
       } catch (err) {
         catchAxiosScadError(err)

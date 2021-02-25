@@ -161,7 +161,7 @@ export default {
         const res = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .post(`/scad/player`, player)
+          .post(`/scad/player`, { data: player })
         console.log('ADD-PLAYER: ', res)
         // notify.salarySaveSuccessful()
       } catch (err) {
@@ -192,7 +192,7 @@ export default {
         const res = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .put(`/scad/team/${t._id}`, t)
+          .put(`/scad/team/${t._id}`, { data: t })
         console.log('SAVE-TEAM: ', res)
         // notify.teamSaveSuccessful()
       } catch (err) {
