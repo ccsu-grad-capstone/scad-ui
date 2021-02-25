@@ -4,7 +4,7 @@
 // id: (string) yahoo player_id
 // Finding SCAD player when starting with YAHOO player
 export function getScadPlayer (players, id) {
-  return players ? players.find(p => p.yahooLeaguePlayerId == id) : undefined
+  return players ? players.find(p => p.yahooPlayerId == id) : undefined
 }
 
 // players: (array) yahoo players
@@ -32,7 +32,7 @@ export function getYahooLeague (leagues, id) {
 // id: (string) yahoo team_id
 // Finding SCAD team when starting with YAHOO team id
 export function getScadTeam (teams, id) {
-  return teams ? teams.find(t => t.yahooLeagueTeamId == id) : undefined
+  return teams ? teams.find(t => t.yahooTeamId == id) : undefined
 }
 
 // rosterPositions: (array) yahoo league settings for positions
@@ -41,8 +41,8 @@ export function getLeagueRosterLimit (rosterPositions) {
   if (rosterPositions && Array.isArray(rosterPositions)) {
     let count = 0
     rosterPositions.forEach(pos => {
-      if (pos.roster_position.position !== 'IR') {
-        count += pos.roster_position.count
+      if (pos.position !== 'IR') {
+        count += pos.count
       }
     })
     return count
@@ -95,16 +95,27 @@ export function positionFilter (id, yahooPlayers, filter) {
 }
 
 export function isFranchiseTagged (id, scadTeam) {
-  let scadPlayer = getScadPlayer(scadTeam.players, id)
+  let scadPlayer = getScadPlayer(scadTeam.roster, id)
   return scadPlayer ? scadPlayer.isFranchiseTag : false
 }
 
 export function getPlayerPrevSalary (id, scadTeam) {
-  let player = getScadPlayer(scadTeam.players, id)
+  let player = getScadPlayer(scadTeam.roster, id)
   return player ? player.previousYearSalary : undefined
 }
 
 export function getOriginalSalary (id, scadTeam) {
-  let player = getScadPlayer(scadTeam.players, id)
+  let player = getScadPlayer(scadTeam.roster, id)
   return player ? player.salary : undefined
+}
+
+export function getGameKey (leagueKey) {
+  if (leagueKey && leagueKey.includes('.')) {
+    let split = leagueKey.split('.')
+    return split[0]
+  } else if (leagueKey && leagueKey.length === 3) {
+    return leagueKey
+  } else {
+    return ''
+  }
 }

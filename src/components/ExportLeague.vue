@@ -110,11 +110,11 @@ export default {
       try {
         // LINEUP
         for (var yt of this.league.yahooTeams) {
-          let st = this.league.scadTeams.find(st => st.yahooLeagueTeamId == yt.team_id)
+          let st = this.league.scadTeams.find(st => st.yahooTeamId == yt.team_id)
           await this.$store.dispatch('team/getTeam', { yahooLeagueId: this.league.yahooLeagueId, yahooTeamId: yt.team_id })
           await this.$store.dispatch('capExemptions/getCapExemptionsByTeam', { teamId: yt.team_id, year: this.league.scadSettings.seasonYear })
 
-          let yahooPlayers = this.team.yahooTeam.players
+          let yahooPlayers = this.team.yahooTeam.roster
 
           let playersNames = {}
           let salaries = {}
@@ -123,7 +123,7 @@ export default {
           for (let i = 0; i < positions.length; i++) {
             let players = yahooPlayers.filter(p => p.display_position === positions[i])
             for (let j = 0; j < players.length; j++) {
-              let sp = this.team.scadTeam.players.find(player => player.yahooLeaguePlayerId == players[j].player_id)
+              let sp = this.team.scadTeam.roster.find(player => player.yahooPlayerId == players[j].player_id)
               playersNames[`${positions[i]}${j + 1}`] = players[j].name.full
               salaries[`${positions[i]}${j + 1}`] = sp.salary
             }

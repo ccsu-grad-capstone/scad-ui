@@ -18,7 +18,7 @@
       .col.q-pa-md.q-gutter-lg
             q-btn(label='Refresh Token' dense no-caps color='secondary' text-color='primary' size='md' @click="refreshToken")
             q-btn(label='Test Lambda' dense no-caps color='orange' text-color='white' size='md' @click="testLambdas")
-            q-btn(label='Test API' dense no-caps color='orange' text-color='white' size='md' @click="testAPIwithYahooEndpoints")
+            q-btn(label='Test Yahoo API' dense no-caps color='orange' text-color='white' size='md' @click="testAPIwithYahooEndpoints")
 </template>
 
 <script>
@@ -53,6 +53,9 @@ export default {
     async testAPIwithYahooEndpoints () {
       try {
       // TESTING API..
+        const getDashboard = await nodeHeader(this.user.tokens.access_token).get(`/scad/dashboard/details`)
+        console.log('API YAHOO TEST getDashboard: ', getDashboard.data)
+
         const getMyTeams = await nodeHeader(this.user.tokens.access_token).get(`/yahoo/myTeams`)
         console.log('API YAHOO TEST getMyTeams: ', getMyTeams.data)
 
@@ -71,7 +74,7 @@ export default {
         const getLeagueTeams = await nodeHeader(this.user.tokens.access_token).get(`/yahoo/league/13088/teams`)
         console.log('API YAHOO TEST getLeagueTeams: ', getLeagueTeams.data)
 
-        const getAllUsersLeagues = await nodeHeader(this.user.tokens.access_token).get(`/yahoo/league/team/all`)
+        const getAllUsersLeagues = await nodeHeader(this.user.tokens.access_token).get(`/yahoo/league/get/all`)
         console.log('API YAHOO TEST getAllUsersLeagues: ', getAllUsersLeagues.data)
 
         const getLeagueTransactions = await nodeHeader(this.user.tokens.access_token).get(`/yahoo/league/13088/transactions`)

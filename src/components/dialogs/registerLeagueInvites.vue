@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { scad } from '../../utilities/axios-scad'
+import { nodeHeader } from '../../utilities/axios-node'
 import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
 import notify from '../../utilities/nofity'
 
@@ -42,10 +42,10 @@ export default {
     async sendEmail () {
       console.log('[REGISTERLEAGUE - Methods] - sendInviteEmail()')
       try {
-        const response = await scad(
+        const response = await nodeHeader(
           this.tokens.access_token,
           this.tokens.id_token)
-          .post(`/api/scad/email/registered/${this.emailLeagueId}`)
+          .post(`/scad/email/registered/${this.emailLeagueId}`)
         this.$store.commit('dialog/registerLeagueInvites')
         notify.emailCommissioner(response.data.msg)
       } catch (err) {

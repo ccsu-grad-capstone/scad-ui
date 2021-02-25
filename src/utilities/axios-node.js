@@ -11,13 +11,17 @@ const node = axios.create({
   }
 })
 
-const nodeHeader = (access_token) => {
+const nodeHeader = (access_token, id_token) => {
+  // let tokens = store.state.user.tokens
+  // console.log(tokens)
+
   return axios.create({
     baseURL: getBaseURL('NODE'),
     timeout: 20000,
     headers: {
       'Authorization': 'Basic dXNlcjpub2RlLWFwaS1yZWFkd3JpdGU=',
-      'access_token': access_token
+      'access_token': access_token,
+      'id_token': id_token
     }
   })
 }

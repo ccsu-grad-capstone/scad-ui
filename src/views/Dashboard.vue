@@ -100,10 +100,11 @@ export default {
       this.refresh = false
     },
     commish () {
+      return true
       // if (this.user.user.sub === '2OMLCT3C2A42Z3FCGWJZCIDYLU') return true
 
       // eslint-disable-next-line eqeqeq
-      return this.league.scadSettings.isCurrentlyLoggedInUserACommissioner
+      // return this.league.scadSettings.isCurrentlyLoggedInUserACommissioner
     }
   }
 }

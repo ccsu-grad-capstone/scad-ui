@@ -9,7 +9,7 @@
           .text-h5.text-primary.text-weight-bolder SCAD
         q-space
         .q-gutter-sm.row.items-center.no-wrap(v-if="tokens.access_token")
-          .text-weight-bold.text-body1.gt-sm Welcome {{ user.user.givenName }}
+          .text-weight-bold.text-body1.gt-sm Welcome {{ user.user.given_name }}
           q-btn(round flat @click="navigate('my-profile')")
             q-avatar(size="40px")
               img(v-if="loaded" :src="getProfilePic()")
@@ -183,7 +183,7 @@ export default {
           await this.$store.commit('user/updateTokens', tokens)
           await this.$store.dispatch('user/refreshToken')
           await this.$store.dispatch('user/updateUser')
-          await this.$store.dispatch('league/getAllScadLeagues')
+          // await this.$store.dispatch('league/getAllScadLeagues')
           await this.$store.dispatch('league/dashboard')
         } catch (error) {
           console.log('SERVER ISSUE, please try again shortly.')
@@ -231,7 +231,7 @@ export default {
       }
     },
     getProfilePic () {
-      return this.user.user.profileImages.image64
+      return this.user.user.profile_images.image64
     },
     leagueIsActiveToggle () {
       this.$store.commit('league/leagueIsActiveToggle')

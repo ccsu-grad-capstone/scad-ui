@@ -22,16 +22,16 @@
           .text-grey.q-pl-md Select row to change leagues
           q-separator
           q-list( v-for="(league, index) in scadLeagues" :key="index")
-            q-item(clickable  @click.native="switchLeague(league.id, league.yahooLeagueId)")
+            q-item(clickable  @click.native="switchLeague(league._id, league.yahooLeagueId)")
               .row.full-width.q-pt-sm
                 .col.text-body1.text-weight-bolder.gt-sm {{getLeagueName(league.yahooLeagueId)}}
                 .col.lt-md {{getLeagueName(league.yahooLeagueId)}}
                 .col.text-left.gt-sm
                   .row.full-width.q-gutter-md
-                    .text-primary.text-weight-bold(v-if="(league.id == scadLeagueId)") Active League
+                    .text-primary.text-weight-bold(v-if="(league._id == scadLeagueId)") Active League
                     .text-primary.text-weight-bold(v-else) Switch to League
                     .text-accent.text-weight-bold(v-if="league.isDefault") Default League
-                    q-btn.q-px-xs(v-else label='Set as Default League' flat dense color='white' text-color='accent' size='sm' @click="setAsDefault(league.id)")
+                    q-btn.q-px-xs(v-else label='Set as Default League' flat dense color='white' text-color='accent' size='sm' @click="setAsDefault(league._id)")
                 .col-1.text-right.gt-sm
                     q-btn.q-px-xs(icon='email' flat dense color='white' text-color='accent' size='sm' @click="triggerDialog(league.yahooLeagueId)")
             q-separator
@@ -56,7 +56,7 @@
 </template>
 <script>
 import { openURL } from 'quasar'
-import { scad } from '../utilities/axios-scad'
+import { nodeHeader } from '../utilities/axios-node'
 import { catchAxiosScadError } from '../utilities/catchAxiosErrors'
 import { isCommishNotRegistered } from '../utilities/validators'
 import { getScadLeague, getYahooLeague } from '../utilities/functions'
@@ -127,10 +127,10 @@ export default {
     },
     async setAsDefault (id) {
       try {
-        const response = await scad(
+        const response = await nodeHeader(
           this.tokens.access_token,
           this.tokens.id_token)
-          .put(`/api/scad/league/default/update/${id}`)
+          .put(`/scad/league/default/update/${id}`)
         console.log('Update Default League Response: ', response)
         notify.updateDefaultLeague()
         await this.$store.dispatch('league/getAllScadLeagues')

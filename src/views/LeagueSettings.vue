@@ -247,7 +247,7 @@ export default {
     commish () {
       if (this.loaded) {
         // eslint-disable-next-line eqeqeq
-        let league = this.scadLeagues.find(l => l.id == this.scadLeagueId)
+        let league = this.scadLeagues.find(l => l._id == this.scadLeagueId)
         return league.isCurrentlyLoggedInUserACommissioner
       }
     },

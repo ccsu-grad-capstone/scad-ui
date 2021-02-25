@@ -119,7 +119,7 @@ export default {
     getTeamPic (key) {
       if (key) {
         let team = this.yahooTeams.find(t => t.team_key === key)
-        return team.team_logos[0].team_logo.url
+        return team.team_logos[0].url
       }
     },
     addDrop (row) {

@@ -13,13 +13,13 @@
       )
       template(v-slot:body-cell-rank='props' auto-width)
         q-td.justify-center(:props='props' auto-width)
-          | {{getTeamRank(props.row.team_standings.team_standings.rank)}}
+          | {{getTeamRank(props.row.standings.rank)}}
       template(v-slot:body-cell-name='props' auto-width)
         q-td(:props='props')
           .row.full-width.q-py-xs
             .column
               q-avatar(size="27px")
-                img(:src="props.row.team_logos[0].team_logo.url")
+                img(:src="props.row.team_logos[0].url")
             .column.justify-center.q-pl-sm.text-weight-bold
               router-link(:to="{ path: `/team/${props.row.team_id}`}") {{props.row.name}}
       template(v-slot:body-cell-give='props')
@@ -72,7 +72,7 @@ export default {
           required: true,
           label: 'W-L-T',
           align: 'center',
-          field: row => row.team_standings.team_standings.outcome_totals,
+          field: row => row.standings.outcome_totals,
           format: val => `${val.wins}-${val.losses}-${val.ties}`,
           headerClasses: 'bg-grey-4 text-grey-8'
         },
@@ -81,7 +81,7 @@ export default {
           required: true,
           label: 'Pts For',
           align: 'center',
-          field: row => this.formatPoints(row.team_standings.team_standings.points_for),
+          field: row => this.formatPoints(row.standings.points_for),
           headerClasses: 'bg-grey-4 text-grey-8'
         },
         {
@@ -89,7 +89,7 @@ export default {
           required: true,
           label: 'Pts Agnst',
           align: 'center',
-          field: row => this.formatPoints(row.team_standings.team_standings.points_against),
+          field: row => this.formatPoints(row.standings.points_against),
           headerClasses: 'bg-grey-4 text-grey-8'
         },
         {
@@ -135,7 +135,7 @@ export default {
           required: true,
           label: 'W-L-T',
           align: 'center',
-          field: row => row.team_standings.team_standings.outcome_totals,
+          field: row => row.standings.outcome_totals,
           format: val => `${val.wins}-${val.losses}-${val.ties}`,
           headerClasses: 'bg-grey-4 text-grey-8'
         },
@@ -185,7 +185,7 @@ export default {
   },
   methods: {
     getTeamSalary (id) {
-      let team = this.scadTeams.find(t => t.yahooLeagueTeamId == id)
+      let team = this.scadTeams.find(t => t.yahooTeamId == id)
       return team.salary
     },
     checkTeamSalary (id) {
@@ -201,11 +201,11 @@ export default {
       return this.scadSettings.salaryCapExemptionLimit - ce
     },
     getTeamGive (id) {
-      let team = this.scadTeams.find(t => t.yahooLeagueTeamId == id)
+      let team = this.scadTeams.find(t => t.yahooTeamId == id)
       return team.exceptionOut
     },
     getTeamRecieve (id) {
-      let team = this.scadTeams.find(t => t.yahooLeagueTeamId == id)
+      let team = this.scadTeams.find(t => t.yahooTeamId == id)
       return team.exceptionIn
     },
     getTeamRank (rank) {

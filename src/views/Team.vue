@@ -19,13 +19,13 @@
           .col-4
             .row.justify-center
               q-avatar(size="100px")
-                img( :src="yahooTeam.team_logos[0].team_logo.url")
+                img( :src="yahooTeam.team_logos[0].url")
             .row.justify-center
               .col
                 .row.justify-center
                   .text-h6 {{yahooTeam.name}}
                 .row.justify-center.gt-sm
-                  .text-caption.text-grey-7 Manager ({{yahooTeam.managers[0].manager.nickname}})  | team_id: {{yahooTeam.team_id}}
+                  .text-caption.text-grey-7 Manager ({{yahooTeam.managers[0].nickname}})  | team_id: {{yahooTeam.team_id}}
                 .row.justify-center.gt-sm
                   .text-caption: a(:href='yahooTeam.url') Yahoo! Team Page
         q-separator.gt-sm(vertical)
@@ -137,7 +137,7 @@
                             q-btn( size='xs' color='info' round dense @click='saveFranchiseTag(props.row)' icon="fas fa-tag")
                       q-td(:class="fmt(props.row, 'pos', viewByTeam)" key='pos' :props='props' auto-width)
                         .text-body(v-if="viewByTeam") {{ props.row.display_position }}
-                        .text-body(v-else) {{ props.row.selected_position.position }}
+                        .text-body(v-else) {{ props.row.selected_position }}
                       q-td(:class="fmt(props.row, 'playerName', viewByTeam)" key='playerName' :props='props')
                         .row.full-width
                           .col-1
@@ -146,7 +146,7 @@
                           .col.q-pl-sm.text-body2
                             .row.full-width
                               .text-weight-bold {{props.row.name.full}}
-                              .text-caption.q-pl-sm(v-if="checkPlayerStatus(props.row.selected_position.position)") {{ props.row.status }}
+                              .text-caption.q-pl-sm(v-if="checkPlayerStatus(props.row.selected_position)") {{ props.row.status }}
                               .text-grey.text-caption.q-pl-sm ({{props.row.display_position}})
                               q-icon.q-pa-xs(v-if="isFranchiseTagged(props.row.player_id)" name='fas fa-tag' color='info')
                       q-td(:class="fmt(props.row, 'team', viewByTeam)" key='team' :props='props')
@@ -154,11 +154,11 @@
                       q-td(:class="fmt(props.row, 'previousSalary', viewByTeam)" key='previousSalary' :props='props' auto-width)
                         .text-body2.q-pr-sm ${{ getPlayerPrevSalary(props.row.player_id) }}
                       q-td(:class="fmt(props.row, 'originalSalary', viewByTeam)" key='originalSalary' :props='props' auto-width)
-                        .row(v-if="isFranchiseTagged(props.row.player_id) || isIR(props.row.selected_position.position)")
+                        .row(v-if="isFranchiseTagged(props.row.player_id) || isIR(props.row.selected_position)")
                           .col.text-grey.q-pr-sm Original: ${{getOriginalSalary(props.row.player_id)}}
                       q-td(:class="fmt(props.row, 'salary', viewByTeam)" key='salary' :props='props' auto-width)
                         .col(v-if="(isScadPlayer(props.row.player_id, scadTeam))" :style=" (editSalaries && !isFranchiseTagged(props.row.player_id)) ? 'border: 1px solid #26A69A;' : 'border: none;' ")
-                          .text-weight-bolder.text-body2.q-pr-sm ${{ getPlayerSalary(props.row.player_id, props.row.selected_position.position) }}
+                          .text-weight-bolder.text-body2.q-pr-sm ${{ getPlayerSalary(props.row.player_id, props.row.selected_position) }}
                         .col(v-else)
                           q-btn(size='xs' color='positive' round dense @click='addScadPlayer(props.row.player_id)' icon="fas fa-plus")
                         q-popup-edit(
@@ -236,7 +236,7 @@ export default {
           required: true,
           label: '',
           align: 'center',
-          field: row => row.selected_position.position
+          field: row => row.selected_position
         },
         {
           name: 'pos',
@@ -286,7 +286,7 @@ export default {
           required: true,
           label: '',
           align: 'center',
-          field: row => row.selected_position.position
+          field: row => row.selected_position
         },
         {
           name: 'pos',
@@ -344,41 +344,41 @@ export default {
     },
     players () {
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      return this.yahooTeam.players.sort(function (a, b) {
-        if (b.selected_position.position === 'QB') return 1
-        else if (b.selected_position.position === 'WR') {
-          if (a.selected_position.position === 'QB') return -1
-        } else if (b.selected_position.position === 'RB') {
-          if (a.selected_position.position === 'QB') return -1
-          if (a.selected_position.position === 'WR') return -1
-        } else if (b.selected_position.position === 'TE') {
-          if (a.selected_position.position === 'QB') return -1
-          if (a.selected_position.position === 'WR') return -1
-          if (a.selected_position.position === 'RB') return -1
-        } else if (b.selected_position.position === 'W/R/T') {
-          if (a.selected_position.position === 'QB') return -1
-          if (a.selected_position.position === 'WR') return -1
-          if (a.selected_position.position === 'RB') return -1
-          if (a.selected_position.position === 'TE') return -1
-        } else if (b.selected_position.position === 'DEF') {
-          if (a.selected_position.position === 'QB') return -1
-          if (a.selected_position.position === 'WR') return -1
-          if (a.selected_position.position === 'RB') return -1
-          if (a.selected_position.position === 'TE') return -1
-          if (a.selected_position.position === 'W/R/T') return -1
-        } else if (b.selected_position.position === 'BN') {
-          if (a.selected_position.position === 'QB') return -1
-          if (a.selected_position.position === 'WR') return -1
-          if (a.selected_position.position === 'RB') return -1
-          if (a.selected_position.position === 'TE') return -1
-          if (a.selected_position.position === 'W/R/T') return -1
-          if (a.selected_position.position === 'DEF') return -1
+      return this.yahooTeam.roster.sort(function (a, b) {
+        if (b.selected_position === 'QB') return 1
+        else if (b.selected_position === 'WR') {
+          if (a.selected_position === 'QB') return -1
+        } else if (b.selected_position === 'RB') {
+          if (a.selected_position === 'QB') return -1
+          if (a.selected_position === 'WR') return -1
+        } else if (b.selected_position === 'TE') {
+          if (a.selected_position === 'QB') return -1
+          if (a.selected_position === 'WR') return -1
+          if (a.selected_position === 'RB') return -1
+        } else if (b.selected_position === 'W/R/T') {
+          if (a.selected_position === 'QB') return -1
+          if (a.selected_position === 'WR') return -1
+          if (a.selected_position === 'RB') return -1
+          if (a.selected_position === 'TE') return -1
+        } else if (b.selected_position === 'DEF') {
+          if (a.selected_position === 'QB') return -1
+          if (a.selected_position === 'WR') return -1
+          if (a.selected_position === 'RB') return -1
+          if (a.selected_position === 'TE') return -1
+          if (a.selected_position === 'W/R/T') return -1
+        } else if (b.selected_position === 'BN') {
+          if (a.selected_position === 'QB') return -1
+          if (a.selected_position === 'WR') return -1
+          if (a.selected_position === 'RB') return -1
+          if (a.selected_position === 'TE') return -1
+          if (a.selected_position === 'W/R/T') return -1
+          if (a.selected_position === 'DEF') return -1
         } else return -1
       })
     },
     playersByPos () {
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      return this.yahooTeam.players.sort(function (a, b) {
+      return this.yahooTeam.roster.sort(function (a, b) {
         if (b.display_position === 'QB') return 1
         else if (b.display_position === 'WR') {
           if (a.display_position === 'QB') return -1
@@ -442,7 +442,7 @@ export default {
       this.scadTeam = JSON.parse(
         JSON.stringify(this.$store.state.team.scadTeam)
       )
-      await this.updateTeamSalary()
+      this.updateTeamSalary()
       this.loaded = true
     },
     updateTeamPage (teamName) {
@@ -451,8 +451,8 @@ export default {
     },
     updateTeamSalary () {
       this.teamSalary = calcTeamSalary(
-        this.yahooTeam.players,
-        this.scadTeam.players,
+        this.yahooTeam.roster,
+        this.scadTeam.roster,
         this.capExemptionsByTeam,
         this.franchiseTagDiscount,
         this.irReliefPerc,
@@ -464,7 +464,7 @@ export default {
       return calcPlayerSalary(
         id,
         pos,
-        this.scadTeam.players,
+        this.scadTeam.roster,
         this.franchiseTagDiscount,
         this.irReliefPerc,
         this.yahooTeam
@@ -476,14 +476,15 @@ export default {
       }
     },
     async saveSalaries () {
+      console.log('saveSalaries')
       await this.getTeam(this.$route.params.team_id)
       this.updateTeamSalary()
-      this.saveTeam()
+      await this.saveTeam()
       this.editSalaries = false
     },
     editingPlayer (yahooPlayer) {
       this.editPlayer = getScadPlayer(
-        this.scadTeam.players,
+        this.scadTeam.roster,
         yahooPlayer.player_id
       )
       this.editPlayerInitSalary = this.editPlayer.salary
@@ -499,8 +500,8 @@ export default {
       return true
     },
     cancelEdit () {
-      let player = this.scadTeam.players.find(
-        p => p.yahooLeaguePlayerId === this.editPlayer.yahooLeaguePlayerId
+      let player = this.scadTeam.roster.find(
+        p => p.yahooPlayerId === this.editPlayer.yahooPlayerId
       )
       player.salary = this.editPlayerInitSalary
       this.editPlayer = {}
@@ -511,14 +512,14 @@ export default {
     async saveFranchiseTag (yahooPlayer) {
       console.log(`[TEAM] - saveFranchiseTag()`)
 
-      let player = getScadPlayer(this.scadTeam.players, yahooPlayer.player_id)
+      let player = getScadPlayer(this.scadTeam.roster, yahooPlayer.player_id)
       let initSalary = player.salary
       let salary = player.salary
 
       player.isFranchiseTag = true
       await this.$store.dispatch('team/savePlayer', {
         player: player,
-        yahooTeamId: this.scadTeam.yahooLeagueTeamId
+        yahooTeamId: this.scadTeam.yahooTeamId
       })
 
       let franchiseTagDiscount = this.league.scadSettings.franchiseTagDiscount
@@ -531,7 +532,7 @@ export default {
       // Update SCAD-TEAM
       this.scadTeam.isFranchiseTag = true
       this.scadTeam.salary += salary - initSalary
-      this.saveTeam()
+      await this.saveTeam()
       this.updateTeamSalary()
 
       this.franchiseTag = false
@@ -539,7 +540,7 @@ export default {
     async removeFranchiseTag (yahooPlayer) {
       console.log(`[TEAM] - removeFranchiseTag()`)
 
-      let player = getScadPlayer(this.scadTeam.players, yahooPlayer.player_id)
+      let player = getScadPlayer(this.scadTeam.roster, yahooPlayer.player_id)
       let salary = player.salary
       let adjustment = 0
 
@@ -553,13 +554,13 @@ export default {
       player.isFranchiseTag = false
       this.$store.dispatch('team/savePlayer', {
         player: player,
-        yahooTeamId: this.scadTeam.yahooLeagueTeamId
+        yahooTeamId: this.scadTeam.yahooTeamId
       })
 
       // Update SCAD-TEAM
       this.scadTeam.isFranchiseTag = false
       this.scadTeam.salary += adjustment
-      this.saveTeam()
+      await this.saveTeam()
       this.updateTeamSalary()
 
       this.franchiseTag = false
@@ -567,7 +568,7 @@ export default {
     async savePlayer () {
       this.$store.dispatch('team/savePlayer', {
         player: this.editPlayer,
-        yahooTeamId: this.scadTeam.yahooLeagueTeamId
+        yahooTeamId: this.scadTeam.yahooTeamId
       })
       this.editPlayer = {}
       this.editPlayerInitSalary = 0
@@ -577,7 +578,7 @@ export default {
     },
     async saveTeam () {
       var team = {
-        id: this.scadTeam.id,
+        _id: this.scadTeam._id,
         yahooLeagueId: this.scadTeam.yahooLeagueId,
         salary: this.teamSalary,
         isFranchiseTag: this.scadTeam.isFranchiseTag,
@@ -591,17 +592,17 @@ export default {
       )
       await this.$store.dispatch('team/getTeam', {
         yahooLeagueId: this.scadTeam.yahooLeagueId,
-        yahooTeamId: this.scadTeam.yahooLeagueTeamId
+        yahooTeamId: this.scadTeam.yahooTeamId
       })
     },
     franchiseTagDisplay () {
       let scadPlayer
       let yahooPlayer
       if (this.scadTeam.isFranchiseTag && this.loaded) {
-        scadPlayer = this.scadTeam.players.find(p => p.isFranchiseTag)
+        scadPlayer = this.scadTeam.roster.find(p => p.isFranchiseTag)
         if (scadPlayer) {
-          yahooPlayer = this.yahooTeam.players.find(
-            p => p.player_id == scadPlayer.yahooLeaguePlayerId
+          yahooPlayer = this.yahooTeam.roster.find(
+            p => p.player_id == scadPlayer.yahooPlayerId
           )
           return yahooPlayer.name.full
         } else {
@@ -628,18 +629,18 @@ export default {
     },
     async addScadPlayer (id) {
       let player = {
-        yahooLeaguePlayerId: id,
+        yahooPlayerId: id,
         yahooLeagueId: this.scadTeam.yahooLeagueId,
         scadLeagueId: this.scadTeam.scadLeagueId,
-        yahooTeamId: this.scadTeam.yahooLeagueTeamId,
-        scadTeamId: this.scadTeam.id,
+        yahooTeamId: this.scadTeam.yahooTeamId,
+        scadTeamId: this.scadTeam._id,
         salary: 0,
         isFranchiseTag: false,
         renewSCADLeaguePlayerId: 0,
         previousYearSalary: 0
       }
       await this.$store.dispatch('team/addPlayer', { player: player })
-      await this.getTeam(this.scadTeam.yahooLeagueTeamId)
+      await this.getTeam(this.scadTeam.yahooTeamId)
     }
   }
 }

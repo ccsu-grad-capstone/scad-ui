@@ -243,12 +243,12 @@ export default {
     },
     async applyToTeams (ce) {
       if (ce.year == this.seasonYear) {
-        let giver = this.scadTeams.find(t => t.yahooLeagueTeamId == ce.yahooTeamGive.team_id)
+        let giver = this.scadTeams.find(t => t.yahooTeamId == ce.yahooTeamGive.team_id)
         giver.exceptionOut += ce.amount
         giver.salary += ce.amount
         await this.$store.dispatch('team/saveTeam', giver)
 
-        let reciever = this.scadTeams.find(t => t.yahooLeagueTeamId == ce.yahooTeamRecieve.team_id)
+        let reciever = this.scadTeams.find(t => t.yahooTeamId == ce.yahooTeamRecieve.team_id)
         reciever.exceptionIn += ce.amount
         reciever.salary -= ce.amount
         await this.$store.dispatch('team/saveTeam', reciever)

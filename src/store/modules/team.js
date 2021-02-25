@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 import notify from '../../utilities/nofity'
-import { scad } from '../../utilities/axios-scad'
+import { nodeHeader } from '../../utilities/axios-node'
 import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
 
 export default {
@@ -69,12 +69,10 @@ export default {
     async getYahooTeam ({ commit, rootState }, { yahooLeagueId, yahooTeamId }) {
       // console.log(`[TEAM-ACTION] - getYahooTeam(${yahooTeamId})`)
       try {
-        const res = await scad(
+        const res = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/api/yahoo/league/${yahooLeagueId}/team/${yahooTeamId}/roster`)
-        res.data.team.players = res.data.team.roster.players
-        res.data.team.roster.players = {}
+          .get(`/yahoo/league/${yahooLeagueId}/team/${yahooTeamId}/roster`)
         console.log('YAHOO-TEAM: ', res.data)
         commit('updateYahooTeam', res.data.team)
       } catch (err) {
@@ -85,20 +83,20 @@ export default {
     async getScadTeam ({ commit, rootState }, { yahooLeagueId, yahooTeamId }) {
       // console.log(`[TEAM-ACTION] - getScadTeam(${yahooTeamId})`)
       try {
-        const team = await scad(
+        const team = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/api/scad/league/yahoo/${yahooLeagueId}/team/${yahooTeamId}`)
+          .get(`/scad/league/${rootState.league.scadLeagueId}/yahooTeam/${yahooTeamId}`)
         // console.log('SCAD-TEAM: ', team.data)
 
-        const players = await scad(
+        const players = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/api/scad/league/yahoo/${yahooLeagueId}/team/${yahooTeamId}/players`)
+          .get(`/scad/league/yahoo/${rootState.league.gameKey}/${yahooLeagueId}/team/${yahooTeamId}/players`)
         // console.log('SCAD-TEAM - PLAYERS: ', players.data)
 
-        let scadTeam = team.data
-        scadTeam.players = players.data.scadLeaguePlayers
+        let scadTeam = team.data.team
+        scadTeam.roster = players.data.scadPlayers
 
         console.log('SCAD-TEAM: ', scadTeam)
         commit('updateScadTeam', scadTeam)
@@ -110,20 +108,20 @@ export default {
     async getMyYahooTeam ({ commit, rootState, state }) {
       // console.log(`[TEAM-ACTION] - getMyYahooTeam())`)
       try {
-        const team = await scad(
+        const team = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/api/yahoo/league/${rootState.league.yahooLeagueId}/myTeam`)
+          .get(`/yahoo/league/${rootState.league.yahooLeagueId}/myTeam`)
         // console.log('MY-YAHOO-TEAM - TEAM INFO: ', team.data)
 
-        const players = await scad(
+        const players = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/api/yahoo/league/${rootState.league.yahooLeagueId}/myPlayers`)
+          .get(`/yahoo/league/${rootState.league.yahooLeagueId}/myPlayers`)
         // console.log('MY-YAHOO-TEAM - PLAYERS: ', players.data)
 
         let yahooTeam = team.data
-        yahooTeam.players = players.data
+        yahooTeam.roster = players.data
 
         console.log('MY-YAHOO-TEAM: ', yahooTeam)
         commit('updateMyYahooTeam', yahooTeam)
@@ -135,20 +133,20 @@ export default {
     async getMyScadTeam ({ commit, rootState, state }) {
       // console.log(`[TEAM-ACTION] - getMyScadTeam())`)
       try {
-        const team = await scad(
+        const team = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/api/scad/league/${rootState.league.scadLeagueId}/team/myTeam`)
+          .get(`/scad/league/${rootState.league.scadLeagueId}/team/myTeam`)
         // console.log('MY-SCAD-TEAM - TEAM INFO: ', team.data)
 
-        const players = await scad(
+        const players = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/api/scad/league/${rootState.league.scadLeagueId}/player/myPlayers`)
+          .get(`/scad/league/${rootState.league.scadLeagueId}/player/myPlayers`)
         // console.log('MY-SCAD-TEAM - PLAYERS: ', players.data)
 
-        let scadTeam = team.data
-        scadTeam.players = players.data.scadLeaguePlayers
+        let scadTeam = team.data.myTeam
+        scadTeam.roster = players.data.scadLeaguePlayers
 
         console.log('MY-SCAD-TEAM: ', scadTeam)
         commit('updateMyScadTeam', scadTeam)
@@ -160,10 +158,10 @@ export default {
     async addPlayer ({ rootState, dispatch, state }, { player }) {
       console.log(`[TEAM-ACTION] - addPlayer()`, player)
       try {
-        const res = await scad(
+        const res = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .post(`/api/scad/player`, player)
+          .post(`/scad/player`, player)
         console.log('ADD-PLAYER: ', res)
         // notify.salarySaveSuccessful()
       } catch (err) {
@@ -174,10 +172,10 @@ export default {
     async savePlayer ({ rootState, dispatch, state }, { player, yahooTeamId }) {
       console.log(`[TEAM-ACTION] - savePlayer()`, player)
       try {
-        await scad(
+        await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .put(`/api/scad/player/${player.id}`, player)
+          .put(`/scad/player/${player._id}`, { data: player })
         // console.log('SAVE-PLAYER: ', res)
         notify.salarySaveSuccessful()
         if (yahooTeamId == state.myYahooTeamId) {
@@ -191,10 +189,10 @@ export default {
     async saveTeam ({ rootState, dispatch, state }, t) {
       console.log(`[TEAM-ACTION] - saveTeam()`, t)
       try {
-        const res = await scad(
+        const res = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .put(`/api/scad/team/${t.id}`, t)
+          .put(`/scad/team/${t._id}`, t)
         console.log('SAVE-TEAM: ', res)
         // notify.teamSaveSuccessful()
       } catch (err) {

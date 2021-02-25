@@ -43,16 +43,16 @@
               )
               template(v-slot:body='props')
                 q-tr(:props='props')
-                  q-td(key='pos' :props='props' auto-width) {{ getPos(props.row.yahooLeaguePlayerId) }}
+                  q-td(key='pos' :props='props' auto-width) {{ getPos(props.row.yahooPlayerId) }}
                   q-td(key='playerName' :props='props')
                     .row.full-width
                       .q-pr-sm
                         q-avatar(size="25px")
-                          img(:src="getHeadshot(props.row.yahooLeaguePlayerId)" style="width: 85%")
+                          img(:src="getHeadshot(props.row.yahooPlayerId)" style="width: 85%")
                       .col.text-weight-bold.text-body2
-                        | {{getPlayerName(props.row.yahooLeaguePlayerId)}}
+                        | {{getPlayerName(props.row.yahooPlayerId)}}
                   q-td(key='team' :props='props')
-                    .text-grey {{getNFLTeam(props.row.yahooLeaguePlayerId)}}
+                    .text-grey {{getNFLTeam(props.row.yahooPlayerId)}}
                   q-td(:class="myTeamStyle(props.row.yahooTeamId, myYahooTeamId)" key='owner' :props='props')
                     | {{ getOwner(props.row.yahooTeamId) }}
                   q-td(key='salary' :props='props' auto-width)
@@ -237,9 +237,9 @@ export default {
       Object.keys(this.filter).forEach(key => {
         if (this.filter[key] !== '') {
           if (key === 'search') {
-            filtered = filtered.filter(p => searchFilter(p.yahooLeaguePlayerId, this.yahooPlayers, this.filter))
+            filtered = filtered.filter(p => searchFilter(p.yahooPlayerId, this.yahooPlayers, this.filter))
           } else if (key === 'position') {
-            filtered = filtered.filter(p => positionFilter(p.yahooLeaguePlayerId, this.yahooPlayers, this.filter))
+            filtered = filtered.filter(p => positionFilter(p.yahooPlayerId, this.yahooPlayers, this.filter))
           }
         }
       })

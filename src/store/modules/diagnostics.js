@@ -23,7 +23,7 @@ export default {
       state.teams = teams
     },
     updateDiagnostic (state, d) {
-      state.id = d._id
+      state._id = d._id
       state.lastChecked = moment(d.lastChecked).format('LLL')
     },
     updateLastChecked (state, d) {
@@ -46,7 +46,7 @@ export default {
         }
         commit('updateLastChecked', update.lastChecked)
 
-        await node.put(`/diagnostic/update/${state.id}`, { data: update })
+        await node.put(`/diagnostic/update/${state._id}`, { data: update })
       } catch (error) {
         catchAxiosNodeError(error)
       }
@@ -55,12 +55,12 @@ export default {
       try {
         let teams = []
         for (var yt of rootState.league.yahooTeams) {
-          let st = rootState.league.scadTeams.find(st => st.yahooLeagueTeamId == yt.team_id)
+          let st = rootState.league.scadTeams.find(st => st.yahooTeamId == yt.team_id)
           await dispatch('team/getTeam', { yahooLeagueId: rootState.league.yahooLeagueId, yahooTeamId: yt.team_id }, { root: true })
           await dispatch('capExemptions/getCapExemptionsByTeam', { teamId: yt.team_id, year: rootState.league.scadSettings.seasonYear }, { root: true })
           st.salary = calcTeamSalary(
-            rootState.team.yahooTeam.players,
-            rootState.team.scadTeam.players,
+            rootState.team.yahooTeam.roster,
+            rootState.team.scadTeam.roster,
             rootState.capExemptions.capExemptionsByTeam,
             rootState.league.scadSettings.franchiseTagDiscount,
             rootState.league.scadSettings.irReliefPerc,
@@ -69,20 +69,20 @@ export default {
           )
           let team = {
             yahooTeam: rootState.team.yahooTeam,
-            qb: getPosCount('QB', rootState.team.yahooTeam.players),
-            wr: getPosCount('WR', rootState.team.yahooTeam.players),
-            rb: getPosCount('RB', rootState.team.yahooTeam.players),
-            te: getPosCount('TE', rootState.team.yahooTeam.players),
-            def: getPosCount('DEF', rootState.team.yahooTeam.players),
+            qb: getPosCount('QB', rootState.team.yahooTeam.roster),
+            wr: getPosCount('WR', rootState.team.yahooTeam.roster),
+            rb: getPosCount('RB', rootState.team.yahooTeam.roster),
+            te: getPosCount('TE', rootState.team.yahooTeam.roster),
+            def: getPosCount('DEF', rootState.team.yahooTeam.roster),
             salary: st.salary
           }
-          if (!checkIRCount(rootState.team.yahooTeam.players)) {
+          if (!checkIRCount(rootState.team.yahooTeam.roster)) {
             team.ir = 'IR'
           }
-          if (!checkCovidCount(rootState.team.yahooTeam.players)) {
+          if (!checkCovidCount(rootState.team.yahooTeam.roster)) {
             team.ir = 'COVID'
           }
-          team.yahooTeam.team_standings = yt.team_standings.team_standings.rank
+          team.yahooTeam.team_standings = yt.standings.rank
           teams.push(team)
           await dispatch('team/saveTeam', st, { root: true })
         }

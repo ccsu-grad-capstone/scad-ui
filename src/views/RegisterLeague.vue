@@ -214,7 +214,7 @@ import { required } from 'vuelidate/lib/validators'
 import referenceData from '../utilities/referenceData'
 import RegisterLeagueInvites from '../components/dialogs/registerLeagueInvites'
 import notify from '../utilities/nofity'
-import { scad } from '../utilities/axios-scad'
+import { nodeHeader } from '../utilities/axios-node'
 import { catchAxiosScadError } from '../utilities/catchAxiosErrors'
 
 export default {
@@ -363,10 +363,10 @@ export default {
 
       // check if league already exists
       try {
-        const response = await scad(
+        const response = await nodeHeader(
           this.tokens.access_token,
           this.tokens.id_token)
-          .get(`/api/scad/league/yahoo/${this.selectedLeague.league_id}`)
+          .get(`/scad/league/yahoo/${this.selectedLeague.league_id}`)
         console.log('LEAGUE ALREADY EXISTS: ', response)
         notify.leagueAlreadyRegistered()
         this.selectedLeague = ''
@@ -389,10 +389,10 @@ export default {
     async sendEmail () {
       console.log('[REGISTERLEAGUE - Methods] - sendRequestEmail()')
       try {
-        const response = await scad(
+        const response = await nodeHeader(
           this.tokens.access_token,
           this.tokens.id_token)
-          .post(`/api/scad/email/request/${this.selectedLeague.league_id}`)
+          .post(`/scad/email/request/${this.selectedLeague.league_id}`)
         notify.emailCommissioner(response.data.msg)
         this.$router.push('/about')
       } catch (err) {

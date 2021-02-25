@@ -91,7 +91,7 @@ export default {
     this.scadTeamClone = JSON.parse(JSON.stringify(this.scadTeam))
     this.loaded = true
     this.notifyIllegalRoster()
-    this.salary = calcTeamSalary(this.yahooTeam.players, this.scadTeam.players, [], this.scadSettings.franchiseTagDiscount, this.scadSettings.irReliefPerc, this.yahooTeam, this.scadSettings.seasonYear)
+    this.salary = calcTeamSalary(this.yahooTeam.roster, this.scadTeam.roster, [], this.scadSettings.franchiseTagDiscount, this.scadSettings.irReliefPerc, this.yahooTeam, this.scadSettings.seasonYear)
     this.rosterLimit = getLeagueRosterLimit(this.rosterPositions)
   },
   computed: {
@@ -115,19 +115,19 @@ export default {
       }
     },
     getPosCount (pos) {
-      return getPosCount(pos, this.yahooTeam.players)
+      return getPosCount(pos, this.yahooTeam.roster)
     },
     getPlayerCount () {
-      return getPlayerCount(this.yahooTeam.players)
+      return getPlayerCount(this.yahooTeam.roster)
     },
     getPositionSalaryTotal (pos) {
-      return getPositionSalaryTotal(pos, this.yahooTeam.players, this.scadTeamClone.players, this.scadSettings.franchiseTagDiscount, this.irReliefPerc)
+      return getPositionSalaryTotal(pos, this.yahooTeam.roster, this.scadTeamClone.roster, this.scadSettings.franchiseTagDiscount, this.irReliefPerc)
     },
     getPerc (pos) {
-      return getPerc(this.salary, pos, this.yahooTeam.players, this.scadTeamClone.players, this.scadSettings.franchiseTagDiscount, this.irReliefPerc)
+      return getPerc(this.salary, pos, this.yahooTeam.roster, this.scadTeamClone.roster, this.scadSettings.franchiseTagDiscount, this.irReliefPerc)
     },
     checkPos (pos) {
-      return checkPos(pos, this.scadSettings, this.yahooTeam.players)
+      return checkPos(pos, this.scadSettings, this.yahooTeam.roster)
     },
     notifyIllegalRoster () {
       referenceData.positionChecks.forEach(pos => {
@@ -138,11 +138,11 @@ export default {
           notify.rosterMinError(pos.toUpperCase(), count, this.scadSettings[`${pos}Min`])
         }
       })
-      if (!checkIRCount(this.yahooTeam.players)) {
-        notify.error('Invalid Roster [IR]: League Limit for injured players: 3')
+      if (!checkIRCount(this.yahooTeam.roster)) {
+        notify.error('Invalid Roster [IR]: League Limit for injured roster: 3')
       }
-      if (!checkCovidCount(this.yahooTeam.players)) {
-        notify.error('Invalid Roster [COVID]: League Limit for COVID players: 7')
+      if (!checkCovidCount(this.yahooTeam.roster)) {
+        notify.error('Invalid Roster [COVID]: League Limit for COVID roster: 7')
       }
     }
   }

@@ -13,9 +13,9 @@ export function fmt (row, col, viewByPos) {
     'text-primary': col === 'salary',
     'text-grey': col === 'previousSalary' || col === 'team',
     'text-weight-bold': col === 'pos' || col === 'playerName',
-    'text-red': row.selected_position.position === 'IR',
-    'bg-grey-3': (row.selected_position.position === 'BN' && !viewByPos) || (row.display_position === 'WR' && viewByPos) || (row.display_position === 'TE' && viewByPos),
-    'bg-red-1': row.selected_position.position === 'IR'
+    'text-red': row.selected_position === 'IR',
+    'bg-grey-3': (row.selected_position === 'BN' && !viewByPos) || (row.display_position === 'WR' && viewByPos) || (row.display_position === 'TE' && viewByPos),
+    'bg-red-1': row.selected_position === 'IR'
   }
 }
 

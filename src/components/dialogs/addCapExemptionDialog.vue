@@ -114,8 +114,8 @@ export default {
     },
     // updates the teams salary and cap exemptions total only if the current year matches this year.
     async save () {
-      let giver = this.scadTeams.find(t => t.yahooLeagueTeamId == this.capExemption.yahooTeamGive.team_id)
-      let reciever = this.scadTeams.find(t => t.yahooLeagueTeamId == this.capExemption.yahooTeamRecieve.team_id)
+      let giver = this.scadTeams.find(t => t.yahooTeamId == this.capExemption.yahooTeamGive.team_id)
+      let reciever = this.scadTeams.find(t => t.yahooTeamId == this.capExemption.yahooTeamRecieve.team_id)
 
       if (this.capExemption.year == this.seasonYear) {
         if (this.checkTeams(giver, reciever)) {

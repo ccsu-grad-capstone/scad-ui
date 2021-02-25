@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 import notify from '../../utilities/nofity'
-// import { scad } from '../../utilities/axios-scad'
+// import { nodeHeader } from '../../utilities/axios-node'
 // import leagueStandings from '../../data/leagueStandings'
 import { node } from '../../utilities/axios-node'
 import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
@@ -53,7 +53,7 @@ export default {
     async addCapExemption ({ dispatch, rootState }, ce) {
       // console.log('[CAPEXEMPTIONS-ACTION] - addCapExemption()')
       try {
-        ce.addedBy = `${rootState.user.user.givenName} ${rootState.user.user.familyName}`
+        ce.addedBy = `${rootState.user.user.given_name} ${rootState.user.user.familyName}`
         const response = await node.post(`/capExemptions/create`, { data: ce })
         notify.saveSuccessful(response.data)
       } catch (error) {

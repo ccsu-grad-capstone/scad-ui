@@ -2,7 +2,7 @@
   .q-pa-sm
     .text-h6.text-weight-bolder My Team
     q-table(
-      :data='myScadTeam.players',
+      :data='myScadTeam.roster',
       :columns='columns',
       row-key='playerName',
       :pagination.sync="pagination",
@@ -14,15 +14,15 @@
 
       template(v-slot:body='props')
         q-tr(:props='props')
-          q-td {{getPos(props.row.yahooLeaguePlayerId)}}
+          q-td {{getPos(props.row.yahooPlayerId)}}
           q-td(key='playerName' :props='props')
             .row.full-width
               .col-2
                 q-avatar(size="30px")
-                  img(:src="getPlayerPic(props.row.yahooLeaguePlayerId)" style="width: 80%")
+                  img(:src="getPlayerPic(props.row.yahooPlayerId)" style="width: 80%")
               .column.justify-center.q-pl-sm.text-body2.text-weight-bold
                 .row.full-width
-                  | {{getPlayerName(props.row.yahooLeaguePlayerId)}}
+                  | {{getPlayerName(props.row.yahooPlayerId)}}
           q-td.text-primary.text-weight-bolder.text-center ${{props.row.salary}}
 </template>
 
@@ -46,7 +46,7 @@ export default {
           required: true,
           label: 'Pos',
           align: 'center',
-          field: row => row.yahooLeaguePlayerId,
+          field: row => row.yahooPlayerId,
           format: val => `${this.getPos(val)}`,
           sortable: false,
           // classes: 'bg-secondary ellipsis',
@@ -57,7 +57,7 @@ export default {
           required: true,
           label: 'Player',
           align: 'left',
-          field: row => row.yahooLeaguePlayerId,
+          field: row => row.yahooPlayerId,
           format: val => `${this.getPlayerName(val)}`,
           sortable: false,
           // classes: 'bg-grey-2 ellipsis',
@@ -89,16 +89,16 @@ export default {
   },
   methods: {
     getPos (id) {
-      return getYahooPlayer(this.myYahooTeam.players, id).display_position
+      return getYahooPlayer(this.myYahooTeam.roster, id).display_position
     },
     getPlayerName (id) {
-      return `${getYahooPlayer(this.myYahooTeam.players, id).name.full}`
+      return `${getYahooPlayer(this.myYahooTeam.roster, id).name.full}`
     },
     getPlayerPic (id) {
-      return `${getYahooPlayer(this.myYahooTeam.players, id).headshot.url}`
+      return `${getYahooPlayer(this.myYahooTeam.roster, id).headshot.url}`
     },
     getNFLTeam (id) {
-      return `${getYahooPlayer(this.myYahooTeam.players, id).editorial_team_full_name}`
+      return `${getYahooPlayer(this.myYahooTeam.roster, id).editorial_team_full_name}`
     }
   }
 

@@ -6,10 +6,10 @@ describe('functions.js Test Suite', () => {
     it('should properly return', () => {
       let scadP = getScadPlayer(scadPlayers, 9265)
       expect(getScadPlayer(scadPlayers, 9265)).toBeDefined()
-      expect(scadP.id).toBe(342)
+      expect(scadP._id).toBe(342)
       scadP = getScadPlayer(scadPlayers, 100030)
       expect(getScadPlayer(scadPlayers, 100030)).toBeDefined()
-      expect(scadP.id).toBe(348)
+      expect(scadP._id).toBe(348)
     })
     it('should properly return undefined', () => {
       expect(getScadPlayer(scadPlayers, 232)).toBeUndefined()
