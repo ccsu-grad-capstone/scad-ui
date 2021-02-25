@@ -27,8 +27,6 @@ export default {
     return {}
   },
   mounted () {
-    this.$store.dispatch('league/getAllYahooLeagues')
-    this.$store.dispatch('league/getAllScadLeagues')
   },
   computed: {
     inDevelopment () {

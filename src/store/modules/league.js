@@ -40,10 +40,10 @@ export default {
     },
     updateYahooLeagueDetails (state, league) {
       // console.log('[LEAGUE-MUTATION] - updateYahooLeagueDetails()')
-
       state.gameKey = getGameKey(league.league_key)
       state.yahooLeagueDetails = league
       state.yahooLeagueId = league.league_id
+      console.log(state.gameKey)
     },
     updateYahooSettings (state, settings) {
       // console.log('[LEAGUE-MUTATION] - updateYahooSettings()')
@@ -176,6 +176,7 @@ export default {
         await dispatch('team/getMyYahooTeam', null, { root: true })
         await dispatch('getYahooTeams', yahooLeagueId)
         await dispatch('getScadTeams', state.scadLeagueId)
+        await dispatch('transactions/getTransactions', null, { root: true })
         let id = {
           myYahooTeamId: rootState.team.myYahooTeam.team_id,
           myScadTeamId: rootState.team.myScadTeam._id
@@ -214,7 +215,7 @@ export default {
           rootState.user.tokens.id_token)
           .get(`/yahoo/league/${leagueId}`)
         console.log('YAHOO-LEAGUE-DETAILS: ', yahooLeague.data)
-        commit('updateYahooLeagueDetails', yahooLeague.data)
+        commit('updateYahooLeagueDetails', yahooLeague.data.league)
       } catch (err) {
         catchAxiosScadError(err)
       }
@@ -243,7 +244,7 @@ export default {
           .get(`/scad/league/${id}`)
           // .get(`/scadleague/default`)
         console.log('SCAD-SETTINGS: ', res)
-        commit('updateScadSettings', res.data)
+        commit('updateScadSettings', res.data.settings)
       } catch (err) {
         catchAxiosScadError(err)
       }
@@ -255,10 +256,10 @@ export default {
         const res = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/scad/league/yahoo/${yahooId}`)
+          .get(`/scad/league/yahoo/${state.gameKey}/${yahooId}`)
           // .get(`/scadleague/default`)
         console.log('SCAD-SETTINGS-ByYAHOO: ', res.data)
-        commit('updateScadSettings', res.data)
+        commit('updateScadSettings', res.data.scadLeague)
       } catch (err) {
         catchAxiosScadError(err)
       }

@@ -97,7 +97,7 @@ export default {
                         rootState.user.tokens.id_token)
                         .get(`/scad/player/yahoo/${rootState.league.gameKey}/${rootState.league.yahooLeagueId}/player/${p.player_id}`)
                       let player = res.data.scadPlayer
-                      player.salary = p.transaction.source_type === 'freeagents' ? 1 : t.faab_bid
+                      player.salary = t.faab_bid ? t.faab_bid : 1
                       await dispatch('team/savePlayer', { player: player, yahooTeamId: rootState.league.yahooLeagueId }, { root: true })
                       if (!updatedTeams.includes(p.transaction.destination_team_key.split('.')[4])) {
                         updatedTeams.push(p.transaction.destination_team_key.split('.')[4])

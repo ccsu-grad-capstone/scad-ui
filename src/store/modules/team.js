@@ -81,7 +81,7 @@ export default {
     },
 
     async getScadTeam ({ commit, rootState }, { yahooLeagueId, yahooTeamId }) {
-      // console.log(`[TEAM-ACTION] - getScadTeam(${yahooTeamId})`)
+      console.log(`[TEAM-ACTION] - getScadTeam(${yahooTeamId})`, rootState.league.gameKey)
       try {
         const team = await nodeHeader(
           rootState.user.tokens.access_token,
@@ -112,19 +112,9 @@ export default {
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .get(`/yahoo/league/${rootState.league.yahooLeagueId}/myTeam`)
-        // console.log('MY-YAHOO-TEAM - TEAM INFO: ', team.data)
 
-        const players = await nodeHeader(
-          rootState.user.tokens.access_token,
-          rootState.user.tokens.id_token)
-          .get(`/yahoo/league/${rootState.league.yahooLeagueId}/myPlayers`)
-        // console.log('MY-YAHOO-TEAM - PLAYERS: ', players.data)
-
-        let yahooTeam = team.data
-        yahooTeam.roster = players.data
-
-        console.log('MY-YAHOO-TEAM: ', yahooTeam)
-        commit('updateMyYahooTeam', yahooTeam)
+        console.log('MY-YAHOO-TEAM: ', team.data)
+        commit('updateMyYahooTeam', team.data.myTeam)
       } catch (err) {
         catchAxiosScadError(err)
       }
@@ -142,11 +132,11 @@ export default {
         const players = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/scad/league/${rootState.league.scadLeagueId}/player/myPlayers`)
+          .get(`/scad/league/${rootState.league.scadLeagueId}/players/myPlayers`)
         // console.log('MY-SCAD-TEAM - PLAYERS: ', players.data)
 
         let scadTeam = team.data.myTeam
-        scadTeam.roster = players.data.scadLeaguePlayers
+        scadTeam.roster = players.data.scadPlayers
 
         console.log('MY-SCAD-TEAM: ', scadTeam)
         commit('updateMyScadTeam', scadTeam)
@@ -187,7 +177,7 @@ export default {
     },
 
     async saveTeam ({ rootState, dispatch, state }, t) {
-      console.log(`[TEAM-ACTION] - saveTeam()`, t)
+      console.log(`[TEAM-ACTION] - saveTeam()`)
       try {
         const res = await nodeHeader(
           rootState.user.tokens.access_token,

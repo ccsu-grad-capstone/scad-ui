@@ -364,10 +364,11 @@ export default {
 
       // check if league already exists
       try {
+        let gameKey = this.selectedLeague.league_key.split('.')[0]
         const response = await nodeHeader(
           this.tokens.access_token,
           this.tokens.id_token)
-          .get(`/scad/league/yahoo/${this.selectedLeague.league_id}`)
+          .get(`/scad/league/yahoo/${gameKey}/${this.selectedLeague.league_id}`)
         console.log('LEAGUE ALREADY EXISTS: ', response)
         notify.leagueAlreadyRegistered()
         this.selectedLeague = ''
