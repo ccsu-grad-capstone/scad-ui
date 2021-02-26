@@ -76,8 +76,8 @@ export default {
     }
   },
   async mounted () {
-    await this.$store.dispatch('league/getAllYahooLeagues')
-    await this.$store.dispatch('league/getAllScadLeagues')
+    // await this.$store.dispatch('league/getAllYahooLeagues')
+    // await this.$store.dispatch('league/getAllScadLeagues')
     this.loaded = true
   },
   computed: {

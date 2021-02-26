@@ -431,10 +431,15 @@ export default {
       // console.log(`[TEAM] - getTeam(${yahooTeamId})`)
       // Update team based on url param
       this.loaded = false
-      await this.$store.dispatch('team/getTeam', {
-        yahooLeagueId: this.yahooLeagueId,
-        yahooTeamId: yahooTeamId
-      })
+      if (yahooTeamId === this.team.myYahooTeamId) {
+        this.$store.commit('team/updateYahooTeam', this.team.myYahooTeam)
+        this.$store.commit('team/updateScadTeam', this.team.myScadTeam)
+      } else {
+        await this.$store.dispatch('team/getTeam', {
+          yahooLeagueId: this.yahooLeagueId,
+          yahooTeamId: yahooTeamId
+        })
+      }
       await this.$store.dispatch('capExemptions/getCapExemptionsByTeam', {
         teamId: this.$route.params.team_id,
         year: this.scadSettings.seasonYear
