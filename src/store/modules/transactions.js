@@ -2,7 +2,7 @@
 // import notify from '../../utilities/nofity'
 // import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
 import { node, nodeHeader } from '../../utilities/axios-node'
-import { getScadTeam } from '../../utilities/functions'
+import { getScadTeam, getPlayerHistoryLog, getYahooTeamFromYahooTeamId } from '../../utilities/functions'
 import { calcTeamSalary } from '../../utilities/calculator'
 import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
 
@@ -90,6 +90,7 @@ export default {
               if (t.type.indexOf('add') > -1 && t.status === 'successful') { // only execute if it's an add transaction
                 for (let p of t.players) { // loop through players
                   if (p.transaction.type === 'add') {
+                    const yahooTeamId = p.transaction.destination_team_key.split('.')[4]
                     console.log('PLAYER NAME:', p.name.full)
                     try {
                       const res = await nodeHeader(
@@ -98,9 +99,10 @@ export default {
                         .get(`/scad/player/yahoo/${rootState.league.gameKey}/${rootState.league.yahooLeagueId}/player/${p.player_id}`)
                       let player = res.data.scadPlayer
                       player.salary = t.faab_bid ? t.faab_bid : 1
-                      await dispatch('team/savePlayer', { player: player, yahooTeamId: rootState.league.yahooLeagueId }, { root: true })
-                      if (!updatedTeams.includes(p.transaction.destination_team_key.split('.')[4])) {
-                        updatedTeams.push(p.transaction.destination_team_key.split('.')[4])
+                      let log = getPlayerHistoryLog(player.salary, t.faab_bid ? 'Waivers' : 'FA', getYahooTeamFromYahooTeamId(rootState.league.yahooTeams, yahooTeamId))
+                      await dispatch('team/savePlayer', { player: player, log: log }, { root: true })
+                      if (!updatedTeams.includes(yahooTeamId)) {
+                        updatedTeams.push(yahooTeamId)
                       }
                     } catch (err) {
                       if (err.response && err.response.status === 404) {
@@ -108,18 +110,15 @@ export default {
                           yahooPlayerId: p.player_id,
                           yahooLeagueId: rootState.league.yahooLeagueId,
                           scadLeagueId: rootState.league.scadLeagueId,
-                          yahooTeamId: p.transaction.destination_team_key.split('.')[4],
-                          scadTeamId: getScadTeam(rootState.league.scadTeams, p.transaction.destination_team_key.split('.')[4])._id,
+                          yahooTeamId: yahooTeamId,
+                          scadTeamId: getScadTeam(rootState.league.scadTeams, yahooTeamId)._id,
                           salary: t.faab_bid ? t.faab_bid : 1,
                           isFranchiseTag: false,
                           renewSCADLeaguePlayerId: 0,
                           previousYearSalary: 0
                         }
-                        console.log('*****', t)
-                        console.log('*****', p)
-                        console.log('*****', player)
-                        if (!updatedTeams.includes(p.transaction.destination_team_key.split('.')[4])) {
-                          updatedTeams.push(p.transaction.destination_team_key.split('.')[4])
+                        if (!updatedTeams.includes(yahooTeamId)) {
+                          updatedTeams.push(yahooTeamId)
                         }
                         console.log('ADDING PLAYER', player)
                         await dispatch('team/addPlayer', { player: player }, { root: true })

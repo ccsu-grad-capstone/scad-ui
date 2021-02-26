@@ -43,7 +43,6 @@ export default {
       state.gameKey = getGameKey(league.league_key)
       state.yahooLeagueDetails = league
       state.yahooLeagueId = league.league_id
-      console.log(state.gameKey)
     },
     updateYahooSettings (state, settings) {
       // console.log('[LEAGUE-MUTATION] - updateYahooSettings()')

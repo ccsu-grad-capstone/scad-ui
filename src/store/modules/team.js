@@ -159,8 +159,12 @@ export default {
       }
     },
 
-    async savePlayer ({ rootState, dispatch, state }, { player, yahooTeamId }) {
+    async savePlayer ({ rootState, dispatch, state }, { player, log, yahooTeamId }) {
       console.log(`[TEAM-ACTION] - savePlayer()`, player)
+      if (!player.history) {
+        player.history = []
+      }
+      player.history.push(log)
       try {
         await nodeHeader(
           rootState.user.tokens.access_token,
@@ -169,7 +173,7 @@ export default {
         // console.log('SAVE-PLAYER: ', res)
         notify.salarySaveSuccessful()
         if (yahooTeamId == state.myYahooTeamId) {
-          dispatch('getMyScadTeam', { yahooLeagueId: rootState.league.yahooLeagueId, yahooTeamId: yahooTeamId })
+          await dispatch('getMyScadTeam', { yahooLeagueId: rootState.league.yahooLeagueId, yahooTeamId: yahooTeamId })
         }
       } catch (err) {
         catchAxiosScadError(err)

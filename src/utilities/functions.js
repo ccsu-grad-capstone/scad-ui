@@ -119,3 +119,26 @@ export function getGameKey (leagueKey) {
     return ''
   }
 }
+
+export function getPlayerHistoryLog (salary, type, team, userName, franchiseTag) {
+  // console.log('getPlayerHistoryLog')
+  let log
+  if (type === 'Waivers' || type === 'FA') {
+    log = `Added to ${team.name} (${team.managers[0].nickname}) for $${salary} from ${type}`
+  } else if (type === 'Manual') {
+    if (franchiseTag) {
+      log = `Franchise tagged to discounted salary of ${salary} by ${userName}`
+    } else {
+      log = `Manual salary adjustment to $${salary} by ${userName}`
+    }
+  }
+  console.log(log)
+  return log
+}
+
+// teams: (array) yahoo teams
+// id: (string) yahoo team_id
+// Finding SCAD team when starting with YAHOO team id
+export function getYahooTeamFromYahooTeamId (teams, id) {
+  return teams ? teams.find(t => t.team_id == id) : undefined
+}

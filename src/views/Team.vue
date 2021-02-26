@@ -91,7 +91,7 @@
               q-toggle.q-pt-sm(v-model="viewByTeam", label="View By Position")
               div.q-gutter-sm.q-pt-sm
                 div
-                //- q-btn(v-if="!franchiseTag && !editSalaries && scadSettings.franchiseTagSpots > 0" label='Franchise Tag' dense color='secondary' text-color='primary' size='sm' @click="franchiseTag = !franchiseTag")
+                q-btn(v-if="!franchiseTag && !editSalaries && scadSettings.franchiseTagSpots > 0" label='Franchise Tag' dense color='secondary' text-color='primary' size='sm' @click="franchiseTag = !franchiseTag")
                 q-btn(v-if="franchiseTag && !editSalaries && scadSettings.franchiseTagSpots > 0" label='Cancel' dense color='primary' text-color='white' size='sm' @click="franchiseTag = false")
                 q-btn(v-if="!editSalaries && !franchiseTag" label='Edit Salaries' dense color='secondary' text-color='primary' size='sm' @click="editSalaries = !editSalaries")
                 q-btn(v-if="editSalaries && !franchiseTag" label='Done' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
@@ -183,14 +183,15 @@ import notify from '../utilities/nofity'
 import DraftPickOverview from '../components/DraftPickOverview.vue'
 import CapExemptionOverview from '../components/CapExemptionOverview.vue'
 import { calcTeamSalary, calcPlayerSalary } from '../utilities/calculator'
-import { isIR, isScadPlayer } from '../utilities/validators'
-import { fmt } from '../utilities/formatters'
-import {
+import { getPlayerHistoryLog,
   getScadPlayer,
   isFranchiseTagged,
   getPlayerPrevSalary,
   getOriginalSalary
 } from '../utilities/functions'
+import { isIR, isScadPlayer } from '../utilities/validators'
+import { fmt } from '../utilities/formatters'
+
 import Loading from '../components/Loading'
 
 /* eslint-disable eqeqeq */
@@ -514,10 +515,6 @@ export default {
       let salary = player.salary
 
       player.isFranchiseTag = true
-      await this.$store.dispatch('team/savePlayer', {
-        player: player,
-        yahooTeamId: this.scadTeam.yahooTeamId
-      })
 
       let franchiseTagDiscount = this.league.scadSettings.franchiseTagDiscount
       if (salary <= franchiseTagDiscount) {
@@ -525,6 +522,13 @@ export default {
       } else {
         salary = salary -= franchiseTagDiscount
       }
+
+      let log = getPlayerHistoryLog(salary, 'Manual', this.team.yahooTeam, this.user.user.name, true)
+      await this.$store.dispatch('team/savePlayer', {
+        player: player,
+        log: log,
+        yahooTeamId: this.scadTeam.yahooTeamId
+      })
 
       // Update SCAD-TEAM
       this.scadTeam.isFranchiseTag = true
@@ -549,8 +553,10 @@ export default {
       }
 
       player.isFranchiseTag = false
-      this.$store.dispatch('team/savePlayer', {
+      let log = getPlayerHistoryLog(player.salary, 'Manual', this.team.yahooTeam, this.user.user.name, false)
+      await this.$store.dispatch('team/savePlayer', {
         player: player,
+        log: log,
         yahooTeamId: this.scadTeam.yahooTeamId
       })
 
@@ -563,10 +569,13 @@ export default {
       this.franchiseTag = false
     },
     async savePlayer () {
-      this.$store.dispatch('team/savePlayer', {
+      let log = getPlayerHistoryLog(this.editPlayer.salary, 'Manual', this.team.yahooTeam, this.user.user.name)
+      await this.$store.dispatch('team/savePlayer', {
         player: this.editPlayer,
+        log: log,
         yahooTeamId: this.scadTeam.yahooTeamId
       })
+      // console.log('**DONE SAVING PLAYER**')
       this.editPlayer = {}
       this.editPlayerInitSalary = 0
       if (this.scadTeam.salary > this.teamSalaryCap) {

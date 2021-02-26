@@ -75,8 +75,6 @@ export default {
         if (!this.dp.log) {
           this.dp.log = []
         }
-        console.log('log: ', log)
-        console.log('dp.log: ', this.dp.log)
         this.dp.log.push(log)
       }
       await this.$store.dispatch('draftPicks/saveDraftPick', this.dp)
