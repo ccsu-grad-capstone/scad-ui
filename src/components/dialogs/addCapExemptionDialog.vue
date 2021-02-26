@@ -42,7 +42,8 @@ export default {
       visable: false,
       capExemption: {
         yahooLeagueId: '',
-        yahooLeagueYear: '',
+        yahooGameKey: '',
+        scadLeagueId: '',
         year: '',
         timestamp: '',
         addedBy: '',
@@ -51,7 +52,7 @@ export default {
         amount: '',
         appliedToTeams: false,
         comments: '',
-        prevLeagueIds: []
+        prevScadLeagueIds: []
       }
     }
   },
@@ -65,8 +66,9 @@ export default {
   },
   mounted () {
     this.visable = true
-    this.capExemption.yahooLeagueId = this.leagueId
-    this.capExemption.yahooLeagueYear = this.seasonYear
+    this.capExemption.yahooLeagueId = this.yahooLeagueId
+    this.capExemption.yahooGameKey = this.yahooGameKey
+    this.capExemption.scadLeagueId = this.scadLeagueId
   },
   computed: {
     referenceData () {
@@ -78,8 +80,14 @@ export default {
     displayTeamName () {
       return displayTeamName
     },
-    leagueId () {
+    yahooLeagueId () {
       return this.$store.state.league.yahooLeagueId
+    },
+    scadLeagueId () {
+      return this.$store.state.league.scadLeagueId
+    },
+    yahooGameKey () {
+      return this.$store.state.league.gameKey
     },
     yahooTeams () {
       return this.$store.state.league.yahooTeams

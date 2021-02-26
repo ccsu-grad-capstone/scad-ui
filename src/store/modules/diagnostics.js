@@ -57,7 +57,7 @@ export default {
         for (var yt of rootState.league.yahooTeams) {
           let st = rootState.league.scadTeams.find(st => st.yahooTeamId == yt.team_id)
           await dispatch('team/getTeam', { yahooLeagueId: rootState.league.yahooLeagueId, yahooTeamId: yt.team_id }, { root: true })
-          await dispatch('capExemptions/getCapExemptionsByTeam', { teamId: yt.team_id, year: rootState.league.scadSettings.seasonYear }, { root: true })
+          await dispatch('capExemptions/getCapExemptionsByTeam', { teamId: yt.team_id }, { root: true })
           st.salary = calcTeamSalary(
             rootState.team.yahooTeam.roster,
             rootState.team.scadTeam.roster,

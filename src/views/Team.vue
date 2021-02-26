@@ -434,8 +434,7 @@ export default {
         })
       }
       await this.$store.dispatch('capExemptions/getCapExemptionsByTeam', {
-        teamId: this.$route.params.team_id,
-        year: this.scadSettings.seasonYear
+        teamId: this.$route.params.team_id
       })
       this.scadTeam = JSON.parse(
         JSON.stringify(this.$store.state.team.scadTeam)

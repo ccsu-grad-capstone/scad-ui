@@ -6,7 +6,7 @@
           div.text-h4.text-weight-bolder Cap Exemptions
           q-space
           div(v-if="loaded")
-            q-btn.q-mt-sm(v-if="updateCE && this.scadSettings.isCurrentlyLoggedInUserACommissioner" label='CLICK HERE TO SYNC CAP EXCEPTIONS' dense color='primary' text-color='white' size='sm' @click="updateMongoWithCE")
+            //- q-btn.q-mt-sm(v-if="updateCE && this.scadSettings.isCurrentlyLoggedInUserACommissioner" label='CLICK HERE TO SYNC CAP EXCEPTIONS' dense color='primary' text-color='white' size='sm' @click="updateMongoWithCE")
         .row.full-width.q-px-md.gt-sm
           .text-subtitle2.text-grey Cap Exceptions are transactions of salaries between two teams, typically as part of a larger trade.  Amount is added or deducted from participating team's salary for the given year. Each team has ${{salaryCapExemptionLimit}} to both give and recieve throughout the course of a season.
         .row.full-width.q-gutter-between.q-pt-md
@@ -186,7 +186,7 @@ export default {
   methods: {
     async getCapExemptions () {
       // console.log('getCapExemptions()')
-      await this.$store.dispatch('capExemptions/getCapExemptionsByLeague', { leagueId: this.leagueId, year: this.scadSettings.seasonYear })
+      await this.$store.dispatch('capExemptions/getCapExemptionsByLeague')
       this.loaded = true
     },
     addCE () {
@@ -213,12 +213,12 @@ export default {
       this.filter.team = ''
       this.filter.year = ''
     },
-    async updateMongoWithCE () {
-      this.loaded = false
-      this.updateCE = false
-      await this.$store.dispatch('capExemptions/updateMongoWithCE')
-      this.loaded = true
-    },
+    // async updateMongoWithCE () {
+    //   this.loaded = false
+    //   this.updateCE = false
+    //   await this.$store.dispatch('capExemptions/updateMongoWithCE')
+    //   this.loaded = true
+    // },
     async checkCapExemptions () {
       if (this.capExemptions.length === 0) {
         try {

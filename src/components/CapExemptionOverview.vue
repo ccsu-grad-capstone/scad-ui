@@ -109,7 +109,7 @@ export default {
   },
   methods: {
     async getExemptions () {
-      await this.$store.dispatch('capExemptions/getCapExemptionsByTeam', { teamId: this.yahooTeamId, year: this.scadSettings.seasonYear })
+      await this.$store.dispatch('capExemptions/getCapExemptionsByTeam', { teamId: this.yahooTeamId })
     },
     editCE (ce) {
       this.$store.commit('dialog/editCapExemption')

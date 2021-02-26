@@ -130,7 +130,7 @@ export default {
   },
   methods: {
     async getPicks () {
-      await this.$store.dispatch('draftPicks/getDraftPicksByTeam', { teamId: this.yahooTeamId, year: this.scadSettings.seasonYear })
+      await this.$store.dispatch('draftPicks/getDraftPicksByTeam', { teamId: this.yahooTeamId })
       this.loaded = true
     },
     editPick (dp) {

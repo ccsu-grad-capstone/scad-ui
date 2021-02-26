@@ -5,7 +5,7 @@
         .row.full-width.q-pa-md
           div.text-h4.text-weight-bolder Draft Picks
           q-space
-          div(v-if="loaded")
+          //- div(v-if="loaded")
             q-btn.q-mt-sm(v-if="draftPicks.length === 0 && this.scadSettings.isCurrentlyLoggedInUserACommissioner" label='CLICK HERE TO CREATE DRAFT PICKS' dense color='primary' text-color='white' size='sm' @click="updateMongoWithDraftPicks")
         .row.full-width.q-px-md.gt-sm
           .text-subtitle2.text-grey  List of draft picks for drafting incoming rookies for next {{scadSettings.tradingDraftPickYears}} years.  Each rookie draft is {{scadSettings.rookieDraftRds}} rounds.  Each year, all owners are given {{scadSettings.rookieDraftRds}} picks, 1 for each round. Pick value for each draft pick is entered upon completion of fantasy season.
@@ -193,18 +193,18 @@ export default {
   },
   methods: {
     async getDraftPicks () {
-      await this.$store.dispatch('draftPicks/getDraftPicksByLeague', { yahooLeagueId: this.leagueId, year: this.scadSettings.seasonYear })
+      await this.$store.dispatch('draftPicks/getDraftPicksByLeague')
       this.loaded = true
     },
     editPick (dp) {
       this.edit.dp = dp
       this.$store.commit('dialog/editDraftPick')
     },
-    async updateMongoWithDraftPicks () {
-      this.loaded = false
-      await this.$store.dispatch('draftPicks/updateMongoWithDraftPicks')
-      this.getDraftPicks()
-    },
+    // async updateMongoWithDraftPicks () {
+    //   this.loaded = false
+    //   await this.$store.dispatch('draftPicks/updateMongoWithDraftPicks')
+    //   this.getDraftPicks()
+    // },
     clearFilter () {
       this.filter.team = ''
       this.filter.year = ''

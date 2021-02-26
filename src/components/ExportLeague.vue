@@ -112,7 +112,7 @@ export default {
         for (var yt of this.league.yahooTeams) {
           let st = this.league.scadTeams.find(st => st.yahooTeamId == yt.team_id)
           await this.$store.dispatch('team/getTeam', { yahooLeagueId: this.league.yahooLeagueId, yahooTeamId: yt.team_id })
-          await this.$store.dispatch('capExemptions/getCapExemptionsByTeam', { teamId: yt.team_id, year: this.league.scadSettings.seasonYear })
+          await this.$store.dispatch('capExemptions/getCapExemptionsByTeam', { teamId: yt.team_id })
 
           let yahooPlayers = this.team.yahooTeam.roster
 
@@ -138,8 +138,8 @@ export default {
           this.lineupData.push([])
         }
 
-        await this.$store.dispatch('draftPicks/getDraftPicksByLeague', { yahooLeagueId: this.league.yahooLeagueId, year: this.league.scadSettings.seasonYear })
-        await this.$store.dispatch('capExemptions/getCapExemptionsByLeague', { leagueId: this.league.yahooLeagueId, year: this.league.scadSettings.seasonYear })
+        await this.$store.dispatch('draftPicks/getDraftPicksByLeague')
+        await this.$store.dispatch('capExemptions/getCapExemptionsByLeague')
 
         this.processing = false
       } catch (error) {
