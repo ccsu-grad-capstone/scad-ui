@@ -1,18 +1,6 @@
 <template lang="pug">
   q-card.q-pa-md
-    .row.full-width(v-if="!loaded")
-      .row.full-width.justify-center
-        q-circular-progress.q-mt-xl(
-          indeterminate
-          size="90px"
-          :thickness="0.2"
-          color="primary"
-          center-color="grey-5"
-          track-color="transparent"
-          class="q-ma-md"
-          )
-      .row.full-width.justify-center
-        .text-grey Fetching SCAD team...
+    loading(v-if="!loaded")
     q-item-section(v-else)
       q-card-section(horizontal)
         .col-3.text-h5.text-weight-bolder.q-pt-lg.gt-sm SCAD Leagues
@@ -62,11 +50,14 @@ import { isCommishNotRegistered } from '../utilities/validators'
 import { getScadLeague, getYahooLeague } from '../utilities/functions'
 import notify from '../utilities/nofity'
 import RegisterLeagueInvites from '../components/dialogs/registerLeagueInvites'
+import Loading from '../components/Loading'
 
 export default {
   name: 'YahooLeaguesCard',
   components: {
-    'register-league-invites': RegisterLeagueInvites
+    'register-league-invites': RegisterLeagueInvites,
+    'loading': Loading
+
   },
 
   data () {

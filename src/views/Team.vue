@@ -1,18 +1,6 @@
 <template lang="pug">
   body
-    .row.full-width(v-if="!loaded")
-      .row.full-width.justify-center
-        q-circular-progress.q-mt-xl(
-          indeterminate
-          size="90px"
-          :thickness="0.2"
-          color="primary"
-          center-color="grey-5"
-          track-color="transparent"
-          class="q-ma-md"
-          )
-      .row.full-width.justify-center
-        .text-grey Fetching SCAD team...
+    loading(v-if="!loaded" :message="'Fetching SCAD team...'")
     .row.full-width.justify-center(v-else)
       .row.team-area.q-gutter-md.q-pa-md.justify-center
         .col-3
@@ -203,6 +191,8 @@ import {
   getPlayerPrevSalary,
   getOriginalSalary
 } from '../utilities/functions'
+import Loading from '../components/Loading'
+
 /* eslint-disable eqeqeq */
 
 export default {
@@ -210,7 +200,9 @@ export default {
   components: {
     'team-overview': TeamOverview,
     'draft-pick-overview': DraftPickOverview,
-    'cap-exemption-overview': CapExemptionOverview
+    'cap-exemption-overview': CapExemptionOverview,
+    'loading': Loading
+
   },
   data () {
     return {

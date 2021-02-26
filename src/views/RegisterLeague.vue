@@ -1,17 +1,7 @@
 <template lang="pug">
   q-page.flex
     .row.full-width.justify-center
-      .row.full-width(v-if="!loaded")
-        .row.full-width.justify-center
-          q-circular-progress.q-mt-xl(
-            indeterminate
-            size="90px"
-            :thickness="0.2"
-            color="primary"
-            center-color="grey-5"
-            track-color="transparent"
-            class="q-ma-md"
-            )
+      loading(v-if="!loaded")
       .row.register-width(v-else)
         q-card.q-pa-md.q-ma-lg(v-if="yahooCommishLeagues.length > 0")
           q-card-section.row.justify-center
@@ -216,11 +206,14 @@ import RegisterLeagueInvites from '../components/dialogs/registerLeagueInvites'
 import notify from '../utilities/nofity'
 import { nodeHeader } from '../utilities/axios-node'
 import { catchAxiosScadError } from '../utilities/catchAxiosErrors'
+import Loading from '../components/Loading'
 
 export default {
   name: 'RegisterLeague',
   components: {
-    'register-league-invites': RegisterLeagueInvites
+    'register-league-invites': RegisterLeagueInvites,
+    'loading': Loading
+
   },
   data () {
     return {

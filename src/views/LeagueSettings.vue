@@ -1,18 +1,6 @@
 <template lang="pug">
   q-page
-    .row.full-width(v-if="!loaded")
-      .row.full-width.justify-center
-        q-circular-progress.q-mt-xl(
-          indeterminate
-          size="90px"
-          :thickness="0.2"
-          color="primary"
-          center-color="grey-5"
-          track-color="transparent"
-          class="q-ma-md"
-          )
-      .row.full-width.justify-center
-        .text-grey Fetching SCAD settings...
+    loading(v-if="!loaded" :message="'Getting League Details'")
     .row.full-width.justify-center(v-else)
       .col-xl-10.col-lg-10.col-md-10.col-sm-12.col-xs-12
         q-card.q-pa-md.q-ma-lg
@@ -194,10 +182,13 @@
 import referenceData from '../utilities/referenceData'
 import { checkIfCommish } from '../utilities/validators'
 // import notify from '../utilities/nofity'
+import Loading from '../components/Loading'
 
 export default {
   name: 'RegisterLeague',
   components: {
+    'loading': Loading
+
   },
   data () {
     return {

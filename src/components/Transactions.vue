@@ -2,18 +2,7 @@
   .q-pa-sm.col-xs-4
     .text-h6.text-weight-bolder Recent Transactions #[span.text-caption.text-grey-5 (Last Run: {{ lastChecked }})]
     q-card.full-width(v-if="!loaded")
-      .row.full-width.justify-center
-        q-circular-progress.q-mt-xl(
-          indeterminate
-          size="90px"
-          :thickness="0.2"
-          color="primary"
-          center-color="grey-5"
-          track-color="transparent"
-          class="q-ma-md",
-          )
-      .row.full-width.justify-center.q-pb-md
-        .text-grey Retrieving Transactions
+      loading(v-if="!loaded" :message="'Fetching Transactions'")
     q-table(
       v-else
       :data='filterTransactions',
@@ -57,9 +46,13 @@
 
 <script>
 /* eslint-disable eqeqeq */
+import Loading from '../components/Loading'
 
 export default {
   name: 'LeagueDiagnostics',
+  components: {
+    'loading': Loading
+  },
   data () {
     return {
       loaded: false,

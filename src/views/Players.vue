@@ -16,19 +16,7 @@
               q-select(filled dense label="Position" stack-label :options="referenceData.positionFilter" v-model='filter.position')
             div.q-gutter-sm
               q-btn.q-pa-xs(label='Clear' dense color='primary' text-color='white' size='sm' @click="clearFilter")
-        .row.full-width(v-if="!loaded")
-          .row.full-width.justify-center
-            q-circular-progress.q-mt-xl(
-              indeterminate
-              size="90px"
-              :thickness="0.2"
-              color="primary"
-              center-color="grey-5"
-              track-color="transparent"
-              class="q-mt-xl"
-              )
-          .row.full-width.justify-center.q-mt-lg
-            .text-grey Fetching SCAD players...
+        loading(v-if="!loaded" :message="'Fetching SCAD players...'")
         .row.full-width.q-pa-md(v-else)
           div(style="width:100%")
             q-table(
@@ -65,8 +53,12 @@
 import referenceData from '../utilities/referenceData'
 import { myTeamStyle } from '../utilities/formatters'
 import { getHeadshot, getPos, getPlayerName, getNFLTeam, getOwner, searchFilter, positionFilter } from '../utilities/functions'
+import Loading from '../components/Loading'
 
 export default {
+  components: {
+    'loading': Loading
+  },
   data () {
     return {
       loaded: false,

@@ -1,9 +1,10 @@
 <template lang="pug">
   .q-px-md
     .text-weight-bold Draft Picks:
+    loading(v-if="!loaded" :message="'Fetching Draft Picks...'")
     q-table(
       class="my-sticky-header-table"
-      v-if="loaded"
+      v-else
       :data='draftPicksByTeam',
       :columns='columns',
       row-key= '_id',
@@ -28,11 +29,14 @@
 
 <script>
 import editDraftPickDialog from '../components/dialogs/editDraftPickDialog'
+import Loading from '../components/Loading'
 
 export default {
   name: 'DraftPickOverview',
   components: {
-    'edit-draft-pick-dialog': editDraftPickDialog
+    'edit-draft-pick-dialog': editDraftPickDialog,
+    'loading': Loading
+
   },
   props: {
     yahooTeamId: String,
@@ -105,7 +109,6 @@ export default {
   },
   async mounted () {
     await this.getPicks()
-    this.loaded = true
   },
   computed: {
     draftPicksByTeam () {
@@ -128,6 +131,7 @@ export default {
   methods: {
     async getPicks () {
       await this.$store.dispatch('draftPicks/getDraftPicksByTeam', { teamId: this.yahooTeamId, year: this.scadSettings.seasonYear })
+      this.loaded = true
     },
     editPick (dp) {
       this.$store.commit('dialog/editDraftPick')

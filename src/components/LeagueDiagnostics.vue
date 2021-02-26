@@ -6,19 +6,7 @@
         q-btn( size='xs' color='info' label='Run Diagnostics' dense @click='runDiagnostics()')
     q-card.full-width(v-if="teams.length <= 0" flat)
       .row.full-width.justify-center.q-py-xl(v-if="!running")
-      div(v-if="!loaded && running")
-        .row.full-width.justify-center
-          q-circular-progress.q-mt-xl(
-            indeterminate
-            size="90px"
-            :thickness="0.2"
-            color="primary"
-            center-color="grey-5"
-            track-color="transparent"
-            class="q-ma-md"
-            )
-        .row.full-width.justify-center.q-pb-md
-          .text-grey Running Diagnostics, this may take a moment..
+      loading(v-if="!loaded && running" :message="'Running Diagnostics, this may take a moment..'")
     q-table(
       v-else
       :data='teams',
@@ -76,9 +64,13 @@
 /* eslint-disable eqeqeq */
 import { checkPos } from '../utilities/validators'
 import { getPosCount } from '../utilities/calculator'
+import Loading from '../components/Loading'
 
 export default {
   name: 'LeagueDiagnostics',
+  components: {
+    'loading': Loading
+  },
   data () {
     return {
       loaded: false,

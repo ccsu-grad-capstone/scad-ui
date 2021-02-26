@@ -1,20 +1,6 @@
 <template lang="pug">
   q-page(v-if="loaded")
-    .row.full-width(v-if="refresh")
-      .row.full-width.justify-center
-        q-circular-progress.q-mt-xl(
-          indeterminate
-          size="90px"
-          :thickness="0.2"
-          color="primary"
-          center-color="grey-5"
-          track-color="transparent"
-          class="q-ma-md"
-          )
-      .row.full-width.justify-center
-        .text-grey Updating SCAD with lastest Yahoo! updates
-      .row.full-width.justify-center
-        .text-primary This may take a moment
+    loading(v-if="!loaded" :message="'Updating SCAD with lastest Yahoo! updates'")
     .row.q-gutter-md.full-width.justify-center.q-pt-lg(v-if="league.isActive && !refresh")
       .row.full-width-justify-center
         .div.mobile-hide
@@ -47,6 +33,7 @@ import LiteLeagueMobile from '../components/LiteLeagueMobile'
 import LiteDraftPicks from '../components/LiteDraftPicks'
 import ExportLeague from '../components/ExportLeague'
 import { checkIfCommish } from '../utilities/validators'
+import Loading from '../components/Loading'
 
 export default {
   name: 'Dashboard',
@@ -57,7 +44,9 @@ export default {
     transactions: Transactions,
     'lite-league-mobile': LiteLeagueMobile,
     'lite-draft-picks': LiteDraftPicks,
-    'export-league': ExportLeague
+    'export-league': ExportLeague,
+    'loading': Loading
+
   },
   data () {
     return {

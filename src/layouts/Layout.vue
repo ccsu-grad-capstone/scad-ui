@@ -32,19 +32,7 @@
                 | {{ link.text }}
                 q-icon(v-if="link.icon" :name="link.icon")
     q-page-container
-      .row.full-width(v-if="!loaded")
-        .row.full-width.justify-center
-          q-circular-progress.q-mt-xl(
-            indeterminate
-            size="90px"
-            :thickness="0.2"
-            color="primary"
-            center-color="grey-5"
-            track-color="transparent"
-            class="q-ma-md"
-            )
-        .row.full-width.justify-center
-          .text-grey Updating SCAD with latest Yahoo info...
+      loading(v-if="!loaded" :message="'Updating SCAD with lastest Yahoo! updates'")
       div(v-else)
         router-view
     q-footer.row.q-pa-sm.bg-grey-2.footer
@@ -61,10 +49,14 @@
 /* eslint-disable eqeqeq */
 import { getBaseURL } from '../utilities/enviornment'
 import p from '../../package.json'
+import Loading from '../components/Loading'
 
 export default {
   name: 'DefaultLayout',
 
+  components: {
+    'loading': Loading
+  },
   data () {
     return {
       loaded: false,

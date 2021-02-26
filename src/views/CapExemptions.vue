@@ -20,19 +20,7 @@
                 q-btn.q-pa-xs(label='Clear' dense color='primary' text-color='white' size='xs' @click="clearFilter")
           .col-xl-2.col-lg-2.col-md-2.col-sm-2.col-xs-4.q-pt-sm
             q-btn.q-pa-xs(label='New Cap Exception' dense color='secondary' text-color='primary' size='sm' @click="addCE()")
-        .row.full-width(v-if="!loaded")
-          .row.full-width.justify-center
-            q-circular-progress.q-mt-xl(
-              indeterminate
-              size="90px"
-              :thickness="0.2"
-              color="primary"
-              center-color="grey-5"
-              track-color="transparent"
-              class="q-mt-xl"
-              )
-          .row.full-width.justify-center.q-mt-lg
-            .text-grey Fetching SCAD cap exemptions...
+        loading(v-if="!loaded" :message="'Fetching SCAD cap exemptions...'")
         .row.full-width.q-pa-md(v-else)
           div(style="width:100%")
             q-table(
@@ -70,6 +58,7 @@ import editCapExemptionDialog from '../components/dialogs/editCapExemptionDialog
 import { node } from '../utilities/axios-node'
 import { catchAxiosNodeError } from '../utilities/catchAxiosErrors'
 import { myTeamStyle } from '../utilities/formatters'
+import Loading from '../components/Loading'
 
 /* eslint-disable eqeqeq */
 
@@ -77,7 +66,9 @@ export default {
   name: 'CapExemptions',
   components: {
     'add-cap-exemption-dialog': addCapExemptionDialog,
-    'edit-cap-exemption-dialog': editCapExemptionDialog
+    'edit-cap-exemption-dialog': editCapExemptionDialog,
+    'loading': Loading
+
   },
   data () {
     return {

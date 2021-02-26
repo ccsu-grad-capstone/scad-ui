@@ -19,19 +19,7 @@
               q-select( filled dense label="Round" stack-label v-model='filter.rd' :options='referenceData.rounds')
             div.q-gutter-sm
               q-btn.q-pa-xs(label='Clear' dense color='primary' text-color='white' size='sm' @click="clearFilter")
-        .row.full-width(v-if="!loaded")
-          .row.full-width.justify-center
-            q-circular-progress.q-mt-xl(
-              indeterminate
-              size="90px"
-              :thickness="0.2"
-              color="primary"
-              center-color="grey-5"
-              track-color="transparent"
-              class="q-mt-xl"
-              )
-          .row.full-width.justify-center.q-mt-lg
-            .text-grey Fetching SCAD draft picks...
+        loading(v-if="!loaded" :message="'Fetching SCAD draft picks...'")
         .row.full-width.q-pa-md(v-else)
           div(style="width:100%")
             q-table(
@@ -67,13 +55,18 @@
 import referenceData from '../utilities/referenceData'
 import editDraftPickDialog from '../components/dialogs/editDraftPickDialog'
 import { myTeamStyle, displayPick } from '../utilities/formatters'
+import Loading from '../components/Loading'
+
 /* eslint-disable eqeqeq */
 
 export default {
   name: 'DraftPicks',
   components: {
-    'edit-draft-pick-dialog': editDraftPickDialog
+    'edit-draft-pick-dialog': editDraftPickDialog,
+    'loading': Loading
+
   },
+
   data () {
     return {
       loaded: false,
