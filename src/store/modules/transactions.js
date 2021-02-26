@@ -40,7 +40,7 @@ export default {
   actions: {
     async getTransactionTimestamp ({ rootState, commit }) {
       try {
-        const res = await node.get(`/transaction/${rootState.league.yahooLeagueId}`)
+        const res = await node.get(`/transaction/${rootState.league.gameKey}/${rootState.league.yahooLeagueId}`)
         commit('updateTransaction', res.data.data[0])
       } catch (error) {
         catchAxiosNodeError(error)

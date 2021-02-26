@@ -33,7 +33,7 @@ export default {
   actions: {
     async getDiagnostic ({ rootState, commit }) {
       try {
-        const res = await node.get(`/diagnostic/${rootState.league.yahooLeagueId}`)
+        const res = await node.get(`/diagnostic/${rootState.league.gameKey}/${rootState.league.yahooLeagueId}`)
         commit('updateDiagnostic', res.data.data[0])
       } catch (error) {
         catchAxiosNodeError(error)
