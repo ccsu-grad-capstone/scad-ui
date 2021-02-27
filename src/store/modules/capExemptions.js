@@ -4,7 +4,6 @@ import notify from '../../utilities/nofity'
 // import leagueStandings from '../../data/leagueStandings'
 import { node } from '../../utilities/axios-node'
 import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
-import referenceData from '../../utilities/referenceData'
 
 export default {
   namespaced: true,
@@ -30,10 +29,10 @@ export default {
   },
 
   actions: {
-    async getCapExemptionsByLeague ({ commit, state, rootState }, { leagueId, year }) {
+    async getCapExemptionsByLeague ({ commit, state, rootState }) {
       // console.log('[CAPEXEMPTIONS-ACTION] - getCapExemptionsByLeague()')
       try {
-        const response = await node.get(`/capExemptions/${rootState.league.scadLeagueID}`)
+        const response = await node.get(`/capExemptions/${rootState.league.scadLeagueId}`)
         console.log('CAP-EXEMPTIONS-league', response.data.data)
         commit('updateCapExemptions', { ce: response.data.data })
       } catch (error) {
@@ -43,7 +42,7 @@ export default {
     async getCapExemptionsByTeam ({ commit, state, rootState }, { teamId }) {
       // console.log('[CAPEXEMPTIONS-ACTION] - getCapExemptionsByTeam()')
       try {
-        const response = await node.get(`/capExemptions/${rootState.league.scadLeagueID}/${teamId}`)
+        const response = await node.get(`/capExemptions/${rootState.league.scadLeagueId}/${teamId}`)
         console.log('CAP-EXEMPTIONS-team', response.data.data)
         commit('updateCapExemptionsTeam', { ce: response.data.data })
       } catch (error) {
@@ -77,7 +76,7 @@ export default {
       } catch (error) {
         catchAxiosNodeError(error)
       }
-    },
+    }
     // async updateMongoWithCE ({ rootState, state, dispatch }) {
     //   console.log('updateMongoWithCE', referenceData.draftPickYears(rootState.league.scadSettings.seasonYear))
     //   let yahooLeagueId = rootState.league.yahooLeagueId

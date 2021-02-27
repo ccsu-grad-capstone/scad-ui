@@ -4,7 +4,6 @@ import notify from '../../utilities/nofity'
 // import leagueStandings from '../../data/leagueStandings'
 import { node } from '../../utilities/axios-node'
 import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
-import referenceData from '../../utilities/referenceData'
 
 export default {
   namespaced: true,
@@ -58,58 +57,58 @@ export default {
       } catch (error) {
         catchAxiosNodeError(error)
       }
-    },
-  //   async updateMongoWithDraftPicks ({ rootState, dispatch }) {
-  //     console.log('updateMongoWithDraftPicks', referenceData.draftPickYears(rootState.league.scadSettings.seasonYear))
-  //     let yahooLeagueId = rootState.league.yahooLeagueId
-  //     let year = rootState.league.scadSettings.seasonYear
-  //     try {
-  //       // Check to confirm no draft picks exists for this league already
-  //       let response = await node.get(`/draftpicks/check/${rootState.league.yahooLeagueId}`)
-  //       if (response.status === 200) {
-  //         console.log('Draft Picks Exists, dont add')
-  //       } else {
-  //         console.log('Draft Picks Dont Exist, lets add / update')
+    }
+    //   async updateMongoWithDraftPicks ({ rootState, dispatch }) {
+    //     console.log('updateMongoWithDraftPicks', referenceData.draftPickYears(rootState.league.scadSettings.seasonYear))
+    //     let yahooLeagueId = rootState.league.yahooLeagueId
+    //     let year = rootState.league.scadSettings.seasonYear
+    //     try {
+    //       // Check to confirm no draft picks exists for this league already
+    //       let response = await node.get(`/draftpicks/check/${rootState.league.yahooLeagueId}`)
+    //       if (response.status === 200) {
+    //         console.log('Draft Picks Exists, dont add')
+    //       } else {
+    //         console.log('Draft Picks Dont Exist, lets add / update')
 
-  //         let renewId = rootState.league.yahooLeagueDetails.renew.split('_')
-  //         let renewResponse = await node.get(`/draftpicks/check/${renewId[1]}/${year - 1}`)
-  //         console.log('renewResponse: ', renewResponse)
+    //         let renewId = rootState.league.yahooLeagueDetails.renew.split('_')
+    //         let renewResponse = await node.get(`/draftpicks/check/${renewId[1]}/${year - 1}`)
+    //         console.log('renewResponse: ', renewResponse)
 
-  //         // Check renew league ID to see if SCAD has previous leagues draft picks, if so, update draft picks.
-  //         if (renewResponse.status === 200) {
-  //           console.log('******************')
-  //           let update = {
-  //             oldId: renewId[1],
-  //             newId: yahooLeagueId,
-  //             year: year
-  //           }
-  //           let updateResponse = await node.put(`/draftPicks/updateLeague`, { data: update })
-  //           console.log(updateResponse)
-  //         } else {
-  //           // renew league ID wasn't previous in system, create new set of draftpicks
-  //           referenceData.draftPickYears(year).forEach(y => {
-  //             referenceData.draftPickRounds(rootState.league.scadSettings.rookieDraftRds).forEach(r => {
-  //               rootState.league.yahooTeams.forEach(async t => {
-  //                 let draftPick = {
-  //                   yahooLeagueId: yahooLeagueId,
-  //                   yahooGameKey: rootState.league.gameKey,
-  //                   scadLeagueId: rootState.league.scadLeagueId,
-  //                   year: y,
-  //                   rd: r,
-  //                   pick: undefined,
-  //                   salary: undefined,
-  //                   playerId: undefined,
-  //                   team: t,
-  //                   originalTeam: t,
-  //                   comments: '',
-  //                   prevScadLeagueIds: [],
-  //                   log: []
-  //                 }
-  //                 await node.post('/draftPicks/create', { data: draftPick })
-  //               })
-  //             })
-  //           })
-  //         }
+    //         // Check renew league ID to see if SCAD has previous leagues draft picks, if so, update draft picks.
+    //         if (renewResponse.status === 200) {
+    //           console.log('******************')
+    //           let update = {
+    //             oldId: renewId[1],
+    //             newId: yahooLeagueId,
+    //             year: year
+    //           }
+    //           let updateResponse = await node.put(`/draftPicks/updateLeague`, { data: update })
+    //           console.log(updateResponse)
+    //         } else {
+    //           // renew league ID wasn't previous in system, create new set of draftpicks
+    //           referenceData.draftPickYears(year).forEach(y => {
+    //             referenceData.draftPickRounds(rootState.league.scadSettings.rookieDraftRds).forEach(r => {
+    //               rootState.league.yahooTeams.forEach(async t => {
+    //                 let draftPick = {
+    //                   yahooLeagueId: yahooLeagueId,
+    //                   yahooGameKey: rootState.league.gameKey,
+    //                   scadLeagueId: rootState.league.scadLeagueId,
+    //                   year: y,
+    //                   rd: r,
+    //                   pick: undefined,
+    //                   salary: undefined,
+    //                   playerId: undefined,
+    //                   team: t,
+    //                   originalTeam: t,
+    //                   comments: '',
+    //                   prevScadLeagueIds: [],
+    //                   log: []
+    //                 }
+    //                 await node.post('/draftPicks/create', { data: draftPick })
+    //               })
+    //             })
+    //           })
+    //         }
 
   //         await dispatch('getDraftPicksByLeague', { yahooLeagueId: rootState.league.yahooLeagueId, year: rootState.league.scadSettings.seasonYear })
   //         console.log('COMPLETE')
@@ -118,5 +117,5 @@ export default {
   //       catchAxiosNodeError(error)
   //     }
   //   }
-  // }
+  }
 }

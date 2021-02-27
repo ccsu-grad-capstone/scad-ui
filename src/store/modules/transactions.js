@@ -168,7 +168,7 @@ export default {
             console.log(yahooTeam.data)
 
             // Get Cap Exemptions for Team
-            const ce = await node.get(`/capExemptions/${rootState.league.yahooLeagueId}/${rootState.league.scadSettings.seasonYear}/${st.yahooTeamId}`)
+            const ce = await node.get(`/capExemptions/${rootState.league.scadLeagueId}/${st.yahooTeamId}`)
 
             // CALC new Team salary
             st.salary = calcTeamSalary(

@@ -55,8 +55,8 @@
 import referenceData from '../utilities/referenceData'
 import addCapExemptionDialog from '../components/dialogs/addCapExemptionDialog'
 import editCapExemptionDialog from '../components/dialogs/editCapExemptionDialog'
-import { node } from '../utilities/axios-node'
-import { catchAxiosNodeError } from '../utilities/catchAxiosErrors'
+// import { node } from '../utilities/axios-node'
+// import { catchAxiosNodeError } from '../utilities/catchAxiosErrors'
 import { myTeamStyle } from '../utilities/formatters'
 import Loading from '../components/Loading'
 
@@ -134,7 +134,7 @@ export default {
   async mounted () {
     await this.getCapExemptions()
     // Check if capExceptions exist for prior league
-    this.checkCapExemptions()
+    // this.checkCapExemptions()
   },
   computed: {
     myTeamStyle () {
@@ -219,19 +219,19 @@ export default {
     //   await this.$store.dispatch('capExemptions/updateMongoWithCE')
     //   this.loaded = true
     // },
-    async checkCapExemptions () {
-      if (this.capExemptions.length === 0) {
-        try {
-          let renewId = this.oldYahooLeagueId.split('_')
-          const response = await node.get(`/capExemptions/check/${renewId[1]}/${this.seasonYear - 1}`)
-          if (response.status === 200) {
-            this.updateCE = true
-          }
-        } catch (error) {
-          catchAxiosNodeError(error)
-        }
-      }
-    },
+    // async checkCapExemptions () {
+    //   if (this.capExemptions.length === 0) {
+    //     try {
+    //       let renewId = this.oldYahooLeagueId.split('_')
+    //       const response = await node.get(`/capExemptions/check/${renewId[1]}/${this.seasonYear - 1}`)
+    //       if (response.status === 200) {
+    //         this.updateCE = true
+    //       }
+    //     } catch (error) {
+    //       catchAxiosNodeError(error)
+    //     }
+    //   }
+    // },
     async applyToTeams (ce) {
       if (ce.year == this.seasonYear) {
         let giver = this.scadTeams.find(t => t.yahooTeamId == ce.yahooTeamGive.team_id)
