@@ -52,7 +52,7 @@ export default {
     async addCapExemption ({ dispatch, rootState }, ce) {
       // console.log('[CAPEXEMPTIONS-ACTION] - addCapExemption()')
       try {
-        ce.addedBy = `${rootState.user.user.given_name} ${rootState.user.user.familyName}`
+        ce.addedBy = `${rootState.user.user.given_name} ${rootState.user.user.family_name}`
         const response = await node.post(`/capExemptions/create`, { data: ce })
         notify.saveSuccessful(response.data)
       } catch (error) {
@@ -77,42 +77,5 @@ export default {
         catchAxiosNodeError(error)
       }
     }
-    // async updateMongoWithCE ({ rootState, state, dispatch }) {
-    //   console.log('updateMongoWithCE', referenceData.draftPickYears(rootState.league.scadSettings.seasonYear))
-    //   let yahooLeagueId = rootState.league.yahooLeagueId
-    //   let year = rootState.league.scadSettings.seasonYear
-    //   try {
-    //     // Check to confirm Cap Exemptions exists for this league already
-    //     let response = await node.get(`/capExemptions/check/${rootState.league.scadLeagueID}`)
-
-    //     if (response.status === 200) {
-    //       console.log('Cap Exemptions Exists, dont add')
-    //     } else {
-    //       console.log('Cap Exemptions Dont Exist, lets update')
-
-    //       let renewId = rootState.league.yahooLeagueDetails.renew.split('_')
-    //       let renewResponse = await node.get(`/capExemptions/check/${renewId[1]}/${year - 1}`)
-    //       console.log('renewResponse: ', renewResponse)
-
-    //       // Check renew league ID to see if SCAD has previous leagues Cap Exemptions, if so, update Cap Exemptions.
-    //       if (renewResponse.status === 200) {
-    //         let update = {
-    //           oldId: renewId[1],
-    //           newId: yahooLeagueId,
-    //           year: year
-    //         }
-    //         let updateResponse = await node.put(`/capExemptions/updateLeague`, { data: update })
-    //         console.log(updateResponse)
-    //       } else {
-    //         console.log('No previous league')
-    //       }
-
-    //       await dispatch('getCapExemptionsByLeague')
-    //       console.log('COMPLETE')
-    //     }
-    //   } catch (error) {
-    //     catchAxiosNodeError(error)
-    //   }
-    // }
   }
 }
