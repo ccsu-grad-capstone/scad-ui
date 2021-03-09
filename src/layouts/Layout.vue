@@ -4,12 +4,12 @@
       q-toolbar.GNL__toolbar
         q-btn.q-mr-sm(v-if="loggedIn" flat dense round @click="leftDrawerOpen = !leftDrawerOpen" aria-label="Menu" icon="menu")
         q-toolbar-title.row.items-center.no-wrap(v-if="$q.screen.gt.xs" shrink)
-          img(src="../statics/scad-logo_v1_100x30.png" clickable @click="iconNavigate")
+          img(src="//scad-assets.s3.amazonaws.com/statics/scad-logo_v1_100x30.png" clickable @click="iconNavigate")
         q-toolbar-title.row.items-center.no-wrap(v-else shrink)
           .text-h5.text-primary.text-weight-bolder SCAD
         q-space
         .q-gutter-sm.row.items-center.no-wrap(v-if="tokens.access_token")
-          .text-weight-bold.text-body1.gt-sm Welcome1 {{ user.user.given_name }}
+          .text-weight-bold.text-body1.gt-sm Welcome {{ user.user.given_name }}
           q-btn(round flat @click="navigate('my-profile')")
             q-avatar(size="40px")
               img(v-if="loaded" :src="getProfilePic()")

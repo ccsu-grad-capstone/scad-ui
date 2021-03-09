@@ -3,7 +3,7 @@
     q-card.q-pa-md.q-ma-md(style="width: 100%")
       q-card-section
         .column.items-center
-          img(src="../statics/scad-logo_v1_700x500.png" style="width: 40%")
+          img(src="//scad-assets.s3.amazonaws.com/statics/scad-logo_v1_700x500.png" style="width: 40%")
       .row.full-width.justify-center.items-center
         .column.col.items-center
           q-btn(label="Sign-In With Yahoo" dense="" no-caps="" color="primary" size="md" @click="loginWithYahoo")

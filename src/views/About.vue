@@ -1,27 +1,27 @@
 <template lang="pug">
   q-page.justify-center
-    img(src="../statics/background4.jpg" style="width: 100%")
+    img(src="//scad-assets.s3.amazonaws.com/statics/background4.jpg" style="width: 100%")
     .bg-white
       q-card.shadow-20.q-pa-md
         .row.full-width.justify-center.q-gutter-sm
           .col-xl.col-lg.col-md.col-sm-10.col-xs-10.q-px-sm
             .row.justify-center.q-gutter-lg
-              img(src="../statics/salaries.png" style="height: 100px")
+              img(src="//scad-assets.s3.amazonaws.com/statics/salaries.png" style="height: 100px")
               .text-center Manage your team like a real GM with player salaries, team salary caps, and more.
           q-separator.gt-sm(vertical)
           .col-xl.col-lg.col-md.col-sm-10.col-xs-10.q-px-sm
             .row.justify-center.q-gutter-lg
-              img(src="../statics/yahoo-ff.png" style="height: 100px")
+              img(src="//scad-assets.s3.amazonaws.com/statics/yahoo-ff.png" style="height: 100px")
               .text-center Built on top of Yahoo!, we let them do what they do best and we take care of the rest.
           q-separator.gt-sm(vertical)
           .col-xl.col-lg.col-md.col-sm-10.col-xs-10.q-px-sm
             .row.justify-center.q-gutter-lg
-              img(src="../statics/handshake.png" style="height: 100px")
+              img(src="//scad-assets.s3.amazonaws.com/statics/handshake.png" style="height: 100px")
               .text-center Let us keep track of the exhausted draft pick and salary cap exemption trade details.
           q-separator.gt-sm(vertical)
           .col-xl.col-lg.col-md.col-sm-10.col-xs-10.q-px-sm
             .row.justify-center.q-gutter-lg
-              img(src="../statics/spreadsheet.png" style="height: 100px")
+              img(src="//scad-assets.s3.amazonaws.com/statics/spreadsheet.png" style="height: 100px")
               .text-center Designed to replace those hard to keep track of spreadsheets.
 
     .row.full-width.justify-center.lt-md
@@ -100,7 +100,7 @@ export default {
 .logo-div
   background-color: rgba(234, 234, 234, 1)
 .bgimg
-  background-image: url('../statics/background2.jpg')
+  background-image: url('//scad-assets.s3.amazonaws.com/statics/background2.jpg')
   background-size: cover
 .info-title
   padding-top: 10px

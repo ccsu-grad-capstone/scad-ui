@@ -5,7 +5,7 @@
       .row.full-width-justify-center
         .div.mobile-hide
           q-avatar(size="75px")
-            img(src="../statics/yahoo-ff.png")
+            img(src="//scad-assets.s3.amazonaws.com/statics/yahoo-ff.png")
         .column.justify-center.align-center.text-center
           .text-h4.text-weight-bolder {{league.yahooLeagueDetails.name}}
           a(:href='league.yahooLeagueDetails.url') {{league.yahooLeagueDetails.url}}
