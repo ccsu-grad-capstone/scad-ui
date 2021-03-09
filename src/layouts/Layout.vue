@@ -9,7 +9,7 @@
           .text-h5.text-primary.text-weight-bolder SCAD
         q-space
         .q-gutter-sm.row.items-center.no-wrap(v-if="tokens.access_token")
-          .text-weight-bold.text-body1.gt-sm Welcome {{ user.user.given_name }}
+          .text-weight-bold.text-body1.gt-sm Welcome1 {{ user.user.given_name }}
           q-btn(round flat @click="navigate('my-profile')")
             q-avatar(size="40px")
               img(v-if="loaded" :src="getProfilePic()")
