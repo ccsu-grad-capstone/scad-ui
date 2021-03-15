@@ -15,7 +15,7 @@ const nodeHeader = (access_token, id_token) => {
   // let tokens = store.state.user.tokens
   // console.log(tokens)
   console.log('NODE URL', getBaseURL('NODE'))
-
+  console.log('process.env.VUE_APP_UI_PROD', process.env.VUE_APP_NODE_DEV)
   return axios.create({
     baseURL: getBaseURL('NODE'),
     timeout: 30000,
