@@ -14,6 +14,7 @@ const node = axios.create({
 const nodeHeader = (access_token, id_token) => {
   // let tokens = store.state.user.tokens
   // console.log(tokens)
+  console.log('NODE URL', getBaseURL('NODE'))
 
   return axios.create({
     baseURL: getBaseURL('NODE'),
