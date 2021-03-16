@@ -15,14 +15,14 @@ const nodeHeader = (access_token, id_token) => {
   // let tokens = store.state.user.tokens
   // console.log(tokens)
   console.log('NODE URL', getBaseURL('NODE'))
-  console.log('process.env.VUE_APP_UI_PROD', process.env.VUE_APP_NODE_DEV)
+  console.log('process.env.VUE_APP_UI_PROD', process.env.VUE_APP_UI_PROD)
   return axios.create({
     baseURL: getBaseURL('NODE'),
     timeout: 30000,
     headers: {
       'Authorization': 'Basic dXNlcjpub2RlLWFwaS1yZWFkd3JpdGU=',
-      'access_token': access_token,
-      'id_token': id_token
+      'accesstoken': access_token,
+      'idtoken': id_token
     }
   })
 }
