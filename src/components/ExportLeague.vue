@@ -1,5 +1,5 @@
 <template lang="pug">
-  div.q-gutter-sm(v-if="commish()")
+  div.q-gutter-sm(v-if="checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)")
     q-badge(v-if="processing" label="processing..." color="info")
     q-btn(v-if="!processing && lineupData.length === 0" label="Prepare Data" color="primary" size="xs" @click="getLineupData()")
     download-excel.gt-sm( v-if="!processing && lineupData.length > 0" :data="lineupData", :fields="lineupFields" :name="getLineupExportName(league.yahooLeagueDetails.name)" type="csv")
@@ -14,6 +14,7 @@
 
 import moment from 'moment'
 import { catchAxiosNodeError } from '../utilities/catchAxiosErrors'
+import { checkIfCommish } from '../utilities/validators'
 // import { getScadPlayer } from '../utilities/functions'
 
 /* eslint-disable eqeqeq */
@@ -89,12 +90,11 @@ export default {
     team () { return this.$store.state.team },
     capExemptions () { return this.$store.state.capExemptions },
     draftPicks () { return this.$store.state.draftPicks },
-    diagnostics () { return this.$store.state.diagnostics }
+    diagnostics () { return this.$store.state.diagnostics },
+    checkIfCommish () { return checkIfCommish }
+
   },
   methods: {
-    commish () {
-      return this.league.scadSettings.isCurrentlyLoggedInUserACommissioner
-    },
     getLineupExportName (name) {
       return `${name}_Lineups_${moment().format('lll')}.xls`
     },
