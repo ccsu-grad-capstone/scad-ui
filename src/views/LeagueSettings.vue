@@ -1,18 +1,6 @@
 <template lang="pug">
   q-page
-    .row.full-width(v-if="!loaded")
-      .row.full-width.justify-center
-        q-circular-progress.q-mt-xl(
-          indeterminate
-          size="90px"
-          :thickness="0.2"
-          color="primary"
-          center-color="grey-5"
-          track-color="transparent"
-          class="q-ma-md"
-          )
-      .row.full-width.justify-center
-        .text-grey Fetching SCAD settings...
+    loading(v-if="!loaded" :message="'Getting League Details'")
     .row.full-width.justify-center(v-else)
       .col-xl-10.col-lg-10.col-md-10.col-sm-12.col-xs-12
         q-card.q-pa-md.q-ma-lg
@@ -21,7 +9,7 @@
               .col
                 .text-h4.text-weight-bolder.gt-xs League Settings
                 .text-h6.text-weight-bolder.lt-sm League Settings
-              div.q-pt-sm(v-if="commish()")
+              div.q-pt-sm(v-if="checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)")
                 q-btn(v-if="!editing" label='Edit Settings' dense color='primary' text-color='white' size='sm' @click="editing = true")
                 div.q-gutter-md(v-else)
                   q-btn( label='Cancel' dense color='secondary' text-color='primary' size='sm' @click="cancel()")
@@ -192,11 +180,15 @@
 <script>
 
 import referenceData from '../utilities/referenceData'
+import { checkIfCommish } from '../utilities/validators'
 // import notify from '../utilities/nofity'
+import Loading from '../components/Loading'
 
 export default {
   name: 'RegisterLeague',
   components: {
+    'loading': Loading
+
   },
   data () {
     return {
@@ -226,11 +218,12 @@ export default {
     },
     scadLeagueId () {
       return this.league.scadLeagueId
-    }
+    },
+    checkIfCommish () { return checkIfCommish }
   },
   methods: {
     async init () {
-      await this.$store.dispatch('league/getAllScadLeagues')
+      // await this.$store.dispatch('league/getAllScadLeagues')
       this.scadSettings = JSON.parse(JSON.stringify(this.settings))
       this.loaded = true
     },
@@ -243,13 +236,6 @@ export default {
       console.log('CANCEL')
       this.init()
       this.editing = false
-    },
-    commish () {
-      if (this.loaded) {
-        // eslint-disable-next-line eqeqeq
-        let league = this.scadLeagues.find(l => l.id == this.scadLeagueId)
-        return league.isCurrentlyLoggedInUserACommissioner
-      }
     },
     leagueSalaryCap () {
       if (this.scadSettings.teamSalaryCap === this.settings.teamSalaryCap) {

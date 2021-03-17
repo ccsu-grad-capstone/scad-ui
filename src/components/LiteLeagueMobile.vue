@@ -14,7 +14,7 @@
           .row.full-width.q-py-xs
             .col-2
               q-avatar(size="27px")
-                img(:src="props.row.team_logos[0].team_logo.url")
+                img(:src="props.row.team_logos[0].url")
             .column.justify-center.text-weight-bold.q-pl-sm
               router-link(:to="{ path: `/team/${props.row.team_id}`}") {{props.row.name}}
       template(v-slot:body-cell-give='props')
@@ -95,7 +95,7 @@ export default {
   },
   methods: {
     getTeamSalary (id) {
-      let team = this.scadTeams.find(t => t.yahooLeagueTeamId == id)
+      let team = this.scadTeams.find(t => t.yahooTeamId == id)
       return team.salary
     },
     checkTeamSalary (id) {
@@ -111,11 +111,11 @@ export default {
       return this.scadSettings.salaryCapExemptionLimit - ce
     },
     getTeamGive (id) {
-      let team = this.scadTeams.find(t => t.yahooLeagueTeamId == id)
+      let team = this.scadTeams.find(t => t.yahooTeamId == id)
       return team.exceptionOut
     },
     getTeamRecieve (id) {
-      let team = this.scadTeams.find(t => t.yahooLeagueTeamId == id)
+      let team = this.scadTeams.find(t => t.yahooTeamId == id)
       return team.exceptionIn
     },
     getTeamRank (rank) {

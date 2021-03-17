@@ -1,5 +1,5 @@
 <template lang="pug">
-  div.q-gutter-sm(v-if="commish()")
+  div.q-gutter-sm(v-if=" this.league.yahooLeagueDetails.is_finished === 1 && checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)")
     q-badge(v-if="processing" label="processing..." color="info")
     q-btn(v-if="!processing && lineupData.length === 0" label="Prepare Data" color="primary" size="xs" @click="getLineupData()")
     download-excel.gt-sm( v-if="!processing && lineupData.length > 0" :data="lineupData", :fields="lineupFields" :name="getLineupExportName(league.yahooLeagueDetails.name)" type="csv")
@@ -14,6 +14,7 @@
 
 import moment from 'moment'
 import { catchAxiosNodeError } from '../utilities/catchAxiosErrors'
+import { checkIfCommish } from '../utilities/validators'
 // import { getScadPlayer } from '../utilities/functions'
 
 /* eslint-disable eqeqeq */
@@ -89,20 +90,19 @@ export default {
     team () { return this.$store.state.team },
     capExemptions () { return this.$store.state.capExemptions },
     draftPicks () { return this.$store.state.draftPicks },
-    diagnostics () { return this.$store.state.diagnostics }
+    diagnostics () { return this.$store.state.diagnostics },
+    checkIfCommish () { return checkIfCommish }
+
   },
   methods: {
-    commish () {
-      return this.league.scadSettings.isCurrentlyLoggedInUserACommissioner
-    },
     getLineupExportName (name) {
-      return `Lineups_${name}_${moment().format('lll')}.xls`
+      return `${name}_Lineups_${moment().format('lll')}.xls`
     },
     getDpExportName (name) {
-      return `DraftPicks_${name}_${moment().format('lll')}.xls`
+      return `${name}_DraftPicks_${moment().format('lll')}.xls`
     },
     getCeExportName (name) {
-      return `CapExemptions_${name}_${moment().format('lll')}.xls`
+      return `${name}_CapExemptions_${moment().format('lll')}.xls`
     },
 
     async getLineupData () {
@@ -110,11 +110,11 @@ export default {
       try {
         // LINEUP
         for (var yt of this.league.yahooTeams) {
-          let st = this.league.scadTeams.find(st => st.yahooLeagueTeamId == yt.team_id)
+          let st = this.league.scadTeams.find(st => st.yahooTeamId == yt.team_id)
           await this.$store.dispatch('team/getTeam', { yahooLeagueId: this.league.yahooLeagueId, yahooTeamId: yt.team_id })
-          await this.$store.dispatch('capExemptions/getCapExemptionsByTeam', { teamId: yt.team_id, year: this.league.scadSettings.seasonYear })
+          await this.$store.dispatch('capExemptions/getCapExemptionsByTeam', { teamId: yt.team_id })
 
-          let yahooPlayers = this.team.yahooTeam.players
+          let yahooPlayers = this.team.yahooTeam.roster
 
           let playersNames = {}
           let salaries = {}
@@ -123,7 +123,7 @@ export default {
           for (let i = 0; i < positions.length; i++) {
             let players = yahooPlayers.filter(p => p.display_position === positions[i])
             for (let j = 0; j < players.length; j++) {
-              let sp = this.team.scadTeam.players.find(player => player.yahooLeaguePlayerId == players[j].player_id)
+              let sp = this.team.scadTeam.roster.find(player => player.yahooPlayerId == players[j].player_id)
               playersNames[`${positions[i]}${j + 1}`] = players[j].name.full
               salaries[`${positions[i]}${j + 1}`] = sp.salary
             }
@@ -138,8 +138,8 @@ export default {
           this.lineupData.push([])
         }
 
-        await this.$store.dispatch('draftPicks/getDraftPicksByLeague', { yahooLeagueId: this.league.yahooLeagueId, year: this.league.scadSettings.seasonYear })
-        await this.$store.dispatch('capExemptions/getCapExemptionsByLeague', { leagueId: this.league.yahooLeagueId, year: this.league.scadSettings.seasonYear })
+        await this.$store.dispatch('draftPicks/getDraftPicksByLeague')
+        await this.$store.dispatch('capExemptions/getCapExemptionsByLeague')
 
         this.processing = false
       } catch (error) {

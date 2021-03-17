@@ -1,7 +1,7 @@
 import Vue from 'vue'
-import { scad } from '../../utilities/axios-scad'
-import { node } from '../../utilities/axios-node'
-import { catchAxiosScadError, catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
+import { nodeHeader, node } from '../../utilities/axios-node'
+
+import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
 
 export default {
   namespaced: true,
@@ -52,6 +52,7 @@ export default {
     updateUser (state, user) {
       // console.log('[USER-MUTATION] - updateUser()')
       state.user = user
+      state.isAdmin = user.isAdmin
       state.active = true
     }
   },
@@ -72,14 +73,14 @@ export default {
     },
     async updateUser ({ state, commit }) {
       try {
-        const res = await scad(
+        const res = await nodeHeader(
           state.tokens.access_token,
           state.tokens.id_token)
-          .get('/api/user')
-        commit('updateUser', res.data)
-        console.log('[USER-ACTION] - updateUser(): ', res.data)
+          .get('/user/details')
+        commit('updateUser', res.data.user)
+        console.log('[USER-ACTION] - updateUser(): ', res.data.user)
       } catch (error) {
-        catchAxiosScadError(error)
+        catchAxiosNodeError(error)
       }
     }
   }

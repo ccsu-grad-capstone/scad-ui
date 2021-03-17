@@ -16,19 +16,7 @@
               q-select(filled dense label="Position" stack-label :options="referenceData.positionFilter" v-model='filter.position')
             div.q-gutter-sm
               q-btn.q-pa-xs(label='Clear' dense color='primary' text-color='white' size='sm' @click="clearFilter")
-        .row.full-width(v-if="!loaded")
-          .row.full-width.justify-center
-            q-circular-progress.q-mt-xl(
-              indeterminate
-              size="90px"
-              :thickness="0.2"
-              color="primary"
-              center-color="grey-5"
-              track-color="transparent"
-              class="q-mt-xl"
-              )
-          .row.full-width.justify-center.q-mt-lg
-            .text-grey Fetching SCAD players...
+        loading(v-if="!loaded" :message="'Fetching SCAD players...'")
         .row.full-width.q-pa-md(v-else)
           div(style="width:100%")
             q-table(
@@ -43,16 +31,16 @@
               )
               template(v-slot:body='props')
                 q-tr(:props='props')
-                  q-td(key='pos' :props='props' auto-width) {{ getPos(props.row.yahooLeaguePlayerId) }}
+                  q-td(key='pos' :props='props' auto-width) {{ getPos(props.row.yahooPlayerId) }}
                   q-td(key='playerName' :props='props')
                     .row.full-width
                       .q-pr-sm
                         q-avatar(size="25px")
-                          img(:src="getHeadshot(props.row.yahooLeaguePlayerId)" style="width: 85%")
+                          img(:src="getHeadshot(props.row.yahooPlayerId)" style="width: 85%")
                       .col.text-weight-bold.text-body2
-                        | {{getPlayerName(props.row.yahooLeaguePlayerId)}}
+                        | {{getPlayerName(props.row.yahooPlayerId)}}
                   q-td(key='team' :props='props')
-                    .text-grey {{getNFLTeam(props.row.yahooLeaguePlayerId)}}
+                    .text-grey {{getNFLTeam(props.row.yahooPlayerId)}}
                   q-td(:class="myTeamStyle(props.row.yahooTeamId, myYahooTeamId)" key='owner' :props='props')
                     | {{ getOwner(props.row.yahooTeamId) }}
                   q-td(key='salary' :props='props' auto-width)
@@ -65,8 +53,12 @@
 import referenceData from '../utilities/referenceData'
 import { myTeamStyle } from '../utilities/formatters'
 import { getHeadshot, getPos, getPlayerName, getNFLTeam, getOwner, searchFilter, positionFilter } from '../utilities/functions'
+import Loading from '../components/Loading'
 
 export default {
+  components: {
+    'loading': Loading
+  },
   data () {
     return {
       loaded: false,
@@ -237,9 +229,9 @@ export default {
       Object.keys(this.filter).forEach(key => {
         if (this.filter[key] !== '') {
           if (key === 'search') {
-            filtered = filtered.filter(p => searchFilter(p.yahooLeaguePlayerId, this.yahooPlayers, this.filter))
+            filtered = filtered.filter(p => searchFilter(p.yahooPlayerId, this.yahooPlayers, this.filter))
           } else if (key === 'position') {
-            filtered = filtered.filter(p => positionFilter(p.yahooLeaguePlayerId, this.yahooPlayers, this.filter))
+            filtered = filtered.filter(p => positionFilter(p.yahooPlayerId, this.yahooPlayers, this.filter))
           }
         }
       })

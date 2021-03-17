@@ -1,17 +1,7 @@
 <template lang="pug">
   q-page.flex
     .row.full-width.justify-center
-      .row.full-width(v-if="!loaded")
-        .row.full-width.justify-center
-          q-circular-progress.q-mt-xl(
-            indeterminate
-            size="90px"
-            :thickness="0.2"
-            color="primary"
-            center-color="grey-5"
-            track-color="transparent"
-            class="q-ma-md"
-            )
+      loading(v-if="!loaded")
       .row.register-width(v-else)
         q-card.q-pa-md.q-ma-lg(v-if="yahooCommishLeagues.length > 0")
           q-card-section.row.justify-center
@@ -214,13 +204,16 @@ import { required } from 'vuelidate/lib/validators'
 import referenceData from '../utilities/referenceData'
 import RegisterLeagueInvites from '../components/dialogs/registerLeagueInvites'
 import notify from '../utilities/nofity'
-import { scad } from '../utilities/axios-scad'
-import { catchAxiosScadError } from '../utilities/catchAxiosErrors'
+import { nodeHeader } from '../utilities/axios-node'
+import { catchAxiosNodeError } from '../utilities/catchAxiosErrors'
+import Loading from '../components/Loading'
 
 export default {
   name: 'RegisterLeague',
   components: {
-    'register-league-invites': RegisterLeagueInvites
+    'register-league-invites': RegisterLeagueInvites,
+    'loading': Loading
+
   },
   data () {
     return {
@@ -242,7 +235,8 @@ export default {
         franchiseTagSpots: '',
         tradingDraftPickYears: '',
         rosterSpotLimit: 0,
-        renewSCADLeagueId: 0,
+        renewSCADLeagueId: '',
+        seasonYear: 0,
         qbMin: '2',
         qbMax: '4',
         rbMin: '4',
@@ -290,7 +284,7 @@ export default {
     }
   },
   async mounted () {
-    await this.$store.dispatch('league/getAllYahooCommishLeagues')
+    // await this.$store.dispatch('league/getAllYahooCommishLeagues')
     this.loaded = true
   },
   computed: {
@@ -363,10 +357,11 @@ export default {
 
       // check if league already exists
       try {
-        const response = await scad(
+        let gameKey = this.selectedLeague.league_key.split('.')[0]
+        const response = await nodeHeader(
           this.tokens.access_token,
           this.tokens.id_token)
-          .get(`/api/scad/league/yahoo/${this.selectedLeague.league_id}`)
+          .get(`/scad/league/yahoo/${gameKey}/${this.selectedLeague.league_id}`)
         console.log('LEAGUE ALREADY EXISTS: ', response)
         notify.leagueAlreadyRegistered()
         this.selectedLeague = ''
@@ -380,23 +375,24 @@ export default {
           this.newLeague.yahooLeagueId = this.selectedLeague.league_id
           this.newLeague.yahooLeagueName = this.selectedLeague.name
           this.newLeague.leagueManagers = this.selectedLeague.num_teams
+          this.newLeague.seasonYear = parseInt(this.selectedLeague.season)
           this.newLeague.yahooGameId = this.selectedLeague.league_key.split('.')[0]
         } else {
-          catchAxiosScadError(err)
+          catchAxiosNodeError(err)
         }
       }
     },
     async sendEmail () {
       console.log('[REGISTERLEAGUE - Methods] - sendRequestEmail()')
       try {
-        const response = await scad(
+        const response = await nodeHeader(
           this.tokens.access_token,
           this.tokens.id_token)
-          .post(`/api/scad/email/request/${this.selectedLeague.league_id}`)
+          .post(`/scad/email/request/${this.selectedLeague.league_id}`)
         notify.emailCommissioner(response.data.msg)
         this.$router.push('/about')
       } catch (err) {
-        catchAxiosScadError(err)
+        catchAxiosNodeError(err)
       }
     }
   }

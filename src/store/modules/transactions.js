@@ -1,9 +1,8 @@
 /* eslint-disable eqeqeq */
 // import notify from '../../utilities/nofity'
-// import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
-import { scad } from '../../utilities/axios-scad'
-import { node } from '../../utilities/axios-node'
-import { getScadTeam } from '../../utilities/functions'
+// import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
+import { node, nodeHeader } from '../../utilities/axios-node'
+import { getScadTeam, getPlayerHistoryLog, getYahooTeamFromYahooTeamId } from '../../utilities/functions'
 import { calcTeamSalary } from '../../utilities/calculator'
 import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
 
@@ -24,7 +23,7 @@ export default {
 
   mutations: {
     updateTransaction (state, t) {
-      state.id = t._id
+      state._id = t._id
       state.lastChecked = moment(t.lastChecked).format('LLL')
       state.lastTimestamp = t.lastTimestamp
     },
@@ -41,7 +40,7 @@ export default {
   actions: {
     async getTransactionTimestamp ({ rootState, commit }) {
       try {
-        const res = await node.get(`/transaction/${rootState.league.yahooLeagueId}`)
+        const res = await node.get(`/transaction/${rootState.league.gameKey}/${rootState.league.yahooLeagueId}`)
         commit('updateTransaction', res.data.data[0])
       } catch (error) {
         catchAxiosNodeError(error)
@@ -52,7 +51,7 @@ export default {
         let update = {
           lastChecked: moment().format('LLL')
         }
-        await node.put(`/transaction/update/${state.id}`, { data: update })
+        await node.put(`/transaction/update/${state._id}`, { data: update })
         commit('updateLastChecked', update)
       } catch (error) {
         catchAxiosNodeError(error)
@@ -63,27 +62,23 @@ export default {
         let update = {
           lastTimestamp: state.transactions[0].timestamp
         }
-        await node.put(`/transaction/update/${state.id}`, { data: update })
+        await node.put(`/transaction/update/${state._id}`, { data: update })
         commit('updateLastTimestamp', update)
       } catch (error) {
         catchAxiosNodeError(error)
       }
     },
+
     async getTransactions ({ rootState, state, commit, dispatch }) {
-      console.log('[TRANSACTIONS-ACTION] - getTransactions()')
+      // console.log('[TRANSACTIONS-ACTION] - getTransactions()')
+
       try {
         dispatch('getTransactionTimestamp')
 
         // const players = await node.get(`/player/yahoo/${rootState.league.yahooLeagueId}/${rootState.user.tokens.access_token}`)
         // console.log(players)
 
-        // // TESTING API..
-        // const test = await node.get(`/yahoo/league/${rootState.league.yahooLeagueId}/teams/${rootState.user.tokens.access_token}`)
-        // console.log('')
-        // console.log('***API TEST***: ', test.data)
-        // console.log('')
-
-        const transactions = await node.get(`/transaction/yahoo/${rootState.league.yahooLeagueId}/${rootState.user.tokens.access_token}`)
+        const transactions = await nodeHeader(rootState.user.tokens.access_token).get(`/yahoo/league/${rootState.league.yahooLeagueId}/transactions`)
         console.log('TRANSACTIONS: ', transactions.data.transactions.transactions)
         commit('updateTransactions', transactions.data.transactions.transactions)
 
@@ -95,33 +90,35 @@ export default {
               if (t.type.indexOf('add') > -1 && t.status === 'successful') { // only execute if it's an add transaction
                 for (let p of t.players) { // loop through players
                   if (p.transaction.type === 'add') {
+                    const yahooTeamId = p.transaction.destination_team_key.split('.')[4]
                     console.log('PLAYER NAME:', p.name.full)
                     try {
-                      const res = await scad(
+                      const res = await nodeHeader(
                         rootState.user.tokens.access_token,
                         rootState.user.tokens.id_token)
-                        .get(`/api/scad/league/yahoo/${rootState.league.yahooLeagueId}/player/${p.player_id}`)
-                      let player = res.data
-                      player.salary = p.transaction.source_type === 'freeagents' ? 1 : t.faab_bid
-                      await dispatch('team/savePlayer', { player: player, yahooTeamId: rootState.league.yahooLeagueId }, { root: true })
-                      if (!updatedTeams.includes(p.transaction.destination_team_key.split('.')[4])) {
-                        updatedTeams.push(p.transaction.destination_team_key.split('.')[4])
+                        .get(`/scad/player/yahoo/${rootState.league.gameKey}/${rootState.league.yahooLeagueId}/player/${p.player_id}`)
+                      let player = res.data.scadPlayer
+                      player.salary = t.faab_bid ? t.faab_bid : 1
+                      let log = getPlayerHistoryLog(player.salary, t.faab_bid ? 'Waivers' : 'FA', getYahooTeamFromYahooTeamId(rootState.league.yahooTeams, yahooTeamId))
+                      await dispatch('team/savePlayer', { player: player, log: log }, { root: true })
+                      if (!updatedTeams.includes(yahooTeamId)) {
+                        updatedTeams.push(yahooTeamId)
                       }
                     } catch (err) {
                       if (err.response && err.response.status === 404) {
                         let player = {
-                          yahooLeaguePlayerId: p.player_id,
+                          yahooPlayerId: p.player_id,
                           yahooLeagueId: rootState.league.yahooLeagueId,
                           scadLeagueId: rootState.league.scadLeagueId,
-                          yahooTeamId: p.transaction.destination_team_key.split('.')[4],
-                          scadTeamId: getScadTeam(rootState.league.scadTeams, p.transaction.destination_team_key.split('.')[4]).id,
-                          salary: p.transaction.source_type === 'freeagents' ? 1 : t.faab_bid,
+                          yahooTeamId: yahooTeamId,
+                          scadTeamId: getScadTeam(rootState.league.scadTeams, yahooTeamId)._id,
+                          salary: t.faab_bid ? t.faab_bid : 1,
                           isFranchiseTag: false,
                           renewSCADLeaguePlayerId: 0,
                           previousYearSalary: 0
                         }
-                        if (!updatedTeams.includes(p.transaction.destination_team_key.split('.')[4])) {
-                          updatedTeams.push(p.transaction.destination_team_key.split('.')[4])
+                        if (!updatedTeams.includes(yahooTeamId)) {
+                          updatedTeams.push(yahooTeamId)
                         }
                         console.log('ADDING PLAYER', player)
                         await dispatch('team/addPlayer', { player: player }, { root: true })
@@ -131,10 +128,10 @@ export default {
                     }
                   } else if (p.transaction.type === 'drop') {
                     // try {
-                    //   const res = await scad(
+                    //   const res = await nodeHeader(
                     //     rootState.user.tokens.access_token,
                     //     rootState.user.tokens.id_token)
-                    //     .get(`/api/scad/league/yahoo/${rootState.league.yahooLeagueId}/player/${p.player_id}`)
+                    //     .get(`/scad/league/yahoo/${rootState.league.yahooLeagueId}/player/${p.player_id}`)
                     //   let player = res.data
                     //   player.salary = 0
                     //   await dispatch('team/savePlayer', { player: player, yahooTeamId: rootState.league.yahooLeagueId }, { root: true })
@@ -153,26 +150,30 @@ export default {
 
           // UPDATE TEAM SALARIES
           for (var id of updatedTeams) {
-            let st = rootState.league.scadTeams.find(st => st.yahooLeagueTeamId == id)
+            let st = rootState.league.scadTeams.find(st => st.yahooTeamId == id)
 
             // Get SCAD Players
-            const scadPlayers = await scad(
+            const scadPlayers = await nodeHeader(
               rootState.user.tokens.access_token,
+
               rootState.user.tokens.id_token)
-              .get(`/api/scad/league/${rootState.league.scadLeagueId}/team/${id}/players`)
+              .get(`/scad/league/yahoo/${rootState.league.gameKey}/${rootState.league.yahooLeagueId}/team/${id}/players`)
+            console.log(scadPlayers.data)
 
             // Get YAHOO Team
-            const yahooTeam = await scad(
+            const yahooTeam = await nodeHeader(
               rootState.user.tokens.access_token,
               rootState.user.tokens.id_token)
-              .get(`/api/yahoo/league/${rootState.league.yahooLeagueId}/team/${st.yahooLeagueTeamId}/roster`)
+              .get(`/yahoo/league/${rootState.league.yahooLeagueId}/team/${st.yahooTeamId}/roster`)
+            console.log(yahooTeam.data)
+
             // Get Cap Exemptions for Team
-            const ce = await node.get(`/capExemptions/${rootState.league.yahooLeagueId}/${rootState.league.scadSettings.seasonYear}/${st.yahooLeagueTeamId}`)
+            const ce = await node.get(`/capExemptions/${rootState.league.scadLeagueId}/${st.yahooTeamId}`)
 
             // CALC new Team salary
             st.salary = calcTeamSalary(
-              yahooTeam.data.team.roster.players,
-              scadPlayers.data.scadLeaguePlayers,
+              yahooTeam.data.team.roster,
+              scadPlayers.data.scadPlayers,
               ce.data.data,
               rootState.league.scadSettings.franchiseTagDiscount,
               rootState.league.scadSettings.irReliefPerc,

@@ -3,7 +3,7 @@ export default {
   rookieDraftRounds: [1, 2, 3, 4, 5],
   rookieDraftStrategy: ['Message Board', 'Offline'],
   rookieWageScale: ['Standard', 'Need other options'],
-  tradingDraftPickYears: [1, 2, 3, 4, 5, 6, 7, 'No Limit'],
+  tradingDraftPickYears: [1, 2, 3, 4, 5, 6, 7],
   position: ['QB', 'RB', 'WR', 'TE', 'RB/WR/TE', 'K', 'DEF'],
   positionFilter: ['QB', 'RB', 'WR', 'TE', 'K', 'DEF'],
   positionChecks: ['qb', 'rb', 'wr', 'te', 'k', 'def'],

@@ -3,7 +3,7 @@
     .row.q-gutter-md.full-width.justify-center.q-pt-lg
       .div
         q-avatar(size="85px")
-          img(src="../statics/yahoo-ff.png")
+          img(src="//scad-assets.s3.amazonaws.com/statics/yahoo-ff.png")
       .column.justify-center.align-center.text-center
         .text-h4.text-weight-bolder {{league.name}}
         a(:href='league.url') {{league.url}}

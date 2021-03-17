@@ -5,8 +5,6 @@
         .row.full-width.q-pa-md
           div.text-h4.text-weight-bolder Draft Picks
           q-space
-          div(v-if="loaded")
-            q-btn.q-mt-sm(v-if="draftPicks.length === 0 && this.scadSettings.isCurrentlyLoggedInUserACommissioner" label='CLICK HERE TO CREATE DRAFT PICKS' dense color='primary' text-color='white' size='sm' @click="updateMongoWithDraftPicks")
         .row.full-width.q-px-md.gt-sm
           .text-subtitle2.text-grey  List of draft picks for drafting incoming rookies for next {{scadSettings.tradingDraftPickYears}} years.  Each rookie draft is {{scadSettings.rookieDraftRds}} rounds.  Each year, all owners are given {{scadSettings.rookieDraftRds}} picks, 1 for each round. Pick value for each draft pick is entered upon completion of fantasy season.
         .row.full-width.justify-center.q-pt-md
@@ -19,19 +17,7 @@
               q-select( filled dense label="Round" stack-label v-model='filter.rd' :options='referenceData.rounds')
             div.q-gutter-sm
               q-btn.q-pa-xs(label='Clear' dense color='primary' text-color='white' size='sm' @click="clearFilter")
-        .row.full-width(v-if="!loaded")
-          .row.full-width.justify-center
-            q-circular-progress.q-mt-xl(
-              indeterminate
-              size="90px"
-              :thickness="0.2"
-              color="primary"
-              center-color="grey-5"
-              track-color="transparent"
-              class="q-mt-xl"
-              )
-          .row.full-width.justify-center.q-mt-lg
-            .text-grey Fetching SCAD draft picks...
+        loading(v-if="!loaded" :message="'Fetching SCAD draft picks...'")
         .row.full-width.q-pa-md(v-else)
           div(style="width:100%")
             q-table(
@@ -67,13 +53,18 @@
 import referenceData from '../utilities/referenceData'
 import editDraftPickDialog from '../components/dialogs/editDraftPickDialog'
 import { myTeamStyle, displayPick } from '../utilities/formatters'
+import Loading from '../components/Loading'
+
 /* eslint-disable eqeqeq */
 
 export default {
   name: 'DraftPicks',
   components: {
-    'edit-draft-pick-dialog': editDraftPickDialog
+    'edit-draft-pick-dialog': editDraftPickDialog,
+    'loading': Loading
+
   },
+
   data () {
     return {
       loaded: false,
@@ -200,17 +191,12 @@ export default {
   },
   methods: {
     async getDraftPicks () {
-      await this.$store.dispatch('draftPicks/getDraftPicksByLeague', { yahooLeagueId: this.leagueId, year: this.scadSettings.seasonYear })
+      await this.$store.dispatch('draftPicks/getDraftPicksByLeague')
       this.loaded = true
     },
     editPick (dp) {
       this.edit.dp = dp
       this.$store.commit('dialog/editDraftPick')
-    },
-    async updateMongoWithDraftPicks () {
-      this.loaded = false
-      await this.$store.dispatch('draftPicks/updateMongoWithDraftPicks')
-      this.getDraftPicks()
     },
     clearFilter () {
       this.filter.team = ''

@@ -1,25 +1,11 @@
 <template lang="pug">
   q-page(v-if="loaded")
-    .row.full-width(v-if="refresh")
-      .row.full-width.justify-center
-        q-circular-progress.q-mt-xl(
-          indeterminate
-          size="90px"
-          :thickness="0.2"
-          color="primary"
-          center-color="grey-5"
-          track-color="transparent"
-          class="q-ma-md"
-          )
-      .row.full-width.justify-center
-        .text-grey Updating SCAD with lastest Yahoo! updates
-      .row.full-width.justify-center
-        .text-primary This may take a moment
+    loading(v-if="!loaded" :message="'Updating SCAD with lastest Yahoo! updates'")
     .row.q-gutter-md.full-width.justify-center.q-pt-lg(v-if="league.isActive && !refresh")
       .row.full-width-justify-center
         .div.mobile-hide
           q-avatar(size="75px")
-            img(src="../statics/yahoo-ff.png")
+            img(src="//scad-assets.s3.amazonaws.com/statics/yahoo-ff.png")
         .column.justify-center.align-center.text-center
           .text-h4.text-weight-bolder {{league.yahooLeagueDetails.name}}
           a(:href='league.yahooLeagueDetails.url') {{league.yahooLeagueDetails.url}}
@@ -32,7 +18,7 @@
           transactions
         .col-xl-4.col-lg-4.col-md-4.col-sm-10.col-xs-10
           lite-my-team
-      .row.full-width.justify-center(v-if="commish()")
+      .row.full-width.justify-center(v-if="checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)")
         .col-10
           league-diagnostics
 
@@ -46,6 +32,8 @@ import Transactions from '../components/Transactions'
 import LiteLeagueMobile from '../components/LiteLeagueMobile'
 import LiteDraftPicks from '../components/LiteDraftPicks'
 import ExportLeague from '../components/ExportLeague'
+import { checkIfCommish } from '../utilities/validators'
+import Loading from '../components/Loading'
 
 export default {
   name: 'Dashboard',
@@ -53,10 +41,12 @@ export default {
     'lite-my-team': LiteMyTeam,
     'lite-league': LiteLeague,
     'league-diagnostics': LeagueDiagnostics,
-    'transactions': Transactions,
+    transactions: Transactions,
     'lite-league-mobile': LiteLeagueMobile,
     'lite-draft-picks': LiteDraftPicks,
-    'export-league': ExportLeague
+    'export-league': ExportLeague,
+    'loading': Loading
+
   },
   data () {
     return {
@@ -91,26 +81,23 @@ export default {
     scadLeagueId () {
       return this.league.scadLeagueId
     },
-    transactionsLoaded () { return this.$store.state.transactions.loaded }
+    transactionsLoaded () {
+      return this.$store.state.transactions.loaded
+    },
+    checkIfCommish () { return checkIfCommish }
   },
   methods: {
     async updateTeamSalaries () {
       this.refresh = true
       await this.$store.dispatch('league/updateTeamSalaries')
       this.refresh = false
-    },
-    commish () {
-      // if (this.user.user.sub === '2OMLCT3C2A42Z3FCGWJZCIDYLU') return true
-
-      // eslint-disable-next-line eqeqeq
-      return this.league.scadSettings.isCurrentlyLoggedInUserACommissioner
     }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-  a
-    color: $info
-    text-decoration: none
+a
+  color: $info
+  text-decoration: none
 </style>

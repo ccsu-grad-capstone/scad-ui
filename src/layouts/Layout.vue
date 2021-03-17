@@ -4,12 +4,12 @@
       q-toolbar.GNL__toolbar
         q-btn.q-mr-sm(v-if="loggedIn" flat dense round @click="leftDrawerOpen = !leftDrawerOpen" aria-label="Menu" icon="menu")
         q-toolbar-title.row.items-center.no-wrap(v-if="$q.screen.gt.xs" shrink)
-          img(src="../statics/scad-logo_v1_100x30.png" clickable @click="iconNavigate")
+          img(src="//scad-assets.s3.amazonaws.com/statics/scad-logo_v1_100x30.png" clickable @click="iconNavigate")
         q-toolbar-title.row.items-center.no-wrap(v-else shrink)
           .text-h5.text-primary.text-weight-bolder SCAD
         q-space
         .q-gutter-sm.row.items-center.no-wrap(v-if="tokens.access_token")
-          .text-weight-bold.text-body1.gt-sm Welcome {{ user.user.givenName }}
+          .text-weight-bold.text-body1.gt-sm Welcome {{ user.user.given_name }}
           q-btn(round flat @click="navigate('my-profile')")
             q-avatar(size="40px")
               img(v-if="loaded" :src="getProfilePic()")
@@ -32,19 +32,7 @@
                 | {{ link.text }}
                 q-icon(v-if="link.icon" :name="link.icon")
     q-page-container
-      .row.full-width(v-if="!loaded")
-        .row.full-width.justify-center
-          q-circular-progress.q-mt-xl(
-            indeterminate
-            size="90px"
-            :thickness="0.2"
-            color="primary"
-            center-color="grey-5"
-            track-color="transparent"
-            class="q-ma-md"
-            )
-        .row.full-width.justify-center
-          .text-grey Updating SCAD with latest Yahoo info...
+      loading(v-if="!loaded" :message="'Updating SCAD with lastest Yahoo! updates'")
       div(v-else)
         router-view
     q-footer.row.q-pa-sm.bg-grey-2.footer
@@ -61,10 +49,14 @@
 /* eslint-disable eqeqeq */
 import { getBaseURL } from '../utilities/enviornment'
 import p from '../../package.json'
+import Loading from '../components/Loading'
 
 export default {
   name: 'DefaultLayout',
 
+  components: {
+    'loading': Loading
+  },
   data () {
     return {
       loaded: false,
@@ -183,7 +175,6 @@ export default {
           await this.$store.commit('user/updateTokens', tokens)
           await this.$store.dispatch('user/refreshToken')
           await this.$store.dispatch('user/updateUser')
-          await this.$store.dispatch('league/getAllScadLeagues')
           await this.$store.dispatch('league/dashboard')
         } catch (error) {
           console.log('SERVER ISSUE, please try again shortly.')
@@ -231,7 +222,7 @@ export default {
       }
     },
     getProfilePic () {
-      return this.user.user.profileImages.image64
+      return this.user.user.profile_images.image64
     },
     leagueIsActiveToggle () {
       this.$store.commit('league/leagueIsActiveToggle')
@@ -243,7 +234,7 @@ export default {
     },
     getLeagueName (id) {
       let league = this.yahooLeagues.find(l => l.league_id == id)
-      return league.name
+      if (league) return league.name
     }
   }
 }

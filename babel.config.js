@@ -1,16 +1,19 @@
 module.exports = {
-  'presets': [
-    '@vue/cli-plugin-babel/preset'
-  ],
-  'plugins': [
+  presets: ['@vue/cli-plugin-babel/preset'],
+  plugins: [
     [
       'transform-imports',
       {
-        'quasar': {
-          'transform': 'quasar/dist/babel-transforms/imports.js',
-          'preventFullImport': true
+        quasar: {
+          transform: 'quasar/dist/babel-transforms/imports.js',
+          preventFullImport: true
         }
       }
     ]
-  ]
+  ],
+  env: {
+    production: {
+      plugins: ['transform-remove-console']
+    }
+  }
 }

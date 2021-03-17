@@ -6,6 +6,11 @@
       "**/.*",
       "**/node_modules/**"
     ],
+    "redirects": [ {
+      "source": "**",
+      "destination": "https://scad.myfantasyplayoffs.com/",
+      "type": 301
+    } ],
     "rewrites": [
       {
         "source": "**",

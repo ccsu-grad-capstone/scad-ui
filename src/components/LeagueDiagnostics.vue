@@ -6,19 +6,7 @@
         q-btn( size='xs' color='info' label='Run Diagnostics' dense @click='runDiagnostics()')
     q-card.full-width(v-if="teams.length <= 0" flat)
       .row.full-width.justify-center.q-py-xl(v-if="!running")
-      div(v-if="!loaded && running")
-        .row.full-width.justify-center
-          q-circular-progress.q-mt-xl(
-            indeterminate
-            size="90px"
-            :thickness="0.2"
-            color="primary"
-            center-color="grey-5"
-            track-color="transparent"
-            class="q-ma-md"
-            )
-        .row.full-width.justify-center.q-pb-md
-          .text-grey Running Diagnostics, this may take a moment..
+      loading(v-if="!loaded && running" :message="'Running Diagnostics, this may take a moment..'")
     q-table(
       v-else
       :data='teams',
@@ -38,27 +26,27 @@
           .row.full-width.q-py-xs
             .column
               q-avatar(size="27px")
-                img(:src="props.row.yahooTeam.team_logos[0].team_logo.url")
+                img(:src="props.row.yahooTeam.team_logos[0].url")
             .column.justify-center.text-weight-bold.q-pl-sm
               router-link(:to="{ path: `/team/${props.row.yahooTeam.team_id}`}") {{props.row.yahooTeam.name}}
       template(v-slot:body-cell-manager='props')
         q-td(:props='props' auto-width)
-          .text-grey {{props.row.yahooTeam.managers[0].manager.nickname}}
+          .text-grey {{props.row.yahooTeam.managers[0].nickname}}
       template(v-slot:body-cell-qb='props')
         q-td.bg-grey-1(:props='props' auto-width)
-          .text-body.text-grey-5 {{ scadSettings.qbMin }} | #[span.qty(v-bind:class="{ 'text-negative': !checkPos('qb', scadSettings, props.row.yahooTeam.players) }") {{props.row.qb}}] | {{ scadSettings.qbMax }}
+          .text-body.text-grey-5 {{ scadSettings.qbMin }} | #[span.qty(v-bind:class="{ 'text-negative': !checkPos('qb', scadSettings, props.row.yahooTeam.roster) }") {{props.row.qb}}] | {{ scadSettings.qbMax }}
       template(v-slot:body-cell-wr='props')
         q-td.bg-grey-1(:props='props' auto-width)
-          .text-body.text-grey-5 {{ scadSettings.wrMin }} | #[span.qty(v-bind:class="{ 'text-negative': !checkPos('wr', scadSettings, props.row.yahooTeam.players) }") {{props.row.wr}}] | {{ scadSettings.wrMax }}
+          .text-body.text-grey-5 {{ scadSettings.wrMin }} | #[span.qty(v-bind:class="{ 'text-negative': !checkPos('wr', scadSettings, props.row.yahooTeam.roster) }") {{props.row.wr}}] | {{ scadSettings.wrMax }}
       template(v-slot:body-cell-rb='props')
         q-td.bg-grey-1(:props='props' auto-width)
-          .text-body.text-grey-5 {{ scadSettings.rbMin }} | #[span.qty(v-bind:class="{ 'text-negative': !checkPos('rb', scadSettings, props.row.yahooTeam.players) }") {{props.row.rb}}] | {{ scadSettings.rbMax }}
+          .text-body.text-grey-5 {{ scadSettings.rbMin }} | #[span.qty(v-bind:class="{ 'text-negative': !checkPos('rb', scadSettings, props.row.yahooTeam.roster) }") {{props.row.rb}}] | {{ scadSettings.rbMax }}
       template(v-slot:body-cell-te='props')
         q-td.bg-grey-1(:props='props' auto-width)
-          .text-body.text-grey-5 {{ scadSettings.teMin }} | #[span.qty(v-bind:class="{ 'text-negative': !checkPos('te', scadSettings, props.row.yahooTeam.players) }") {{props.row.te}}] | {{ scadSettings.teMax }}
+          .text-body.text-grey-5 {{ scadSettings.teMin }} | #[span.qty(v-bind:class="{ 'text-negative': !checkPos('te', scadSettings, props.row.yahooTeam.roster) }") {{props.row.te}}] | {{ scadSettings.teMax }}
       template(v-slot:body-cell-def='props')
         q-td.bg-grey-1(:props='props' auto-width)
-          .text-body.text-grey-5 {{ scadSettings.defMin }} | #[span.qty(v-bind:class="{ 'text-negative': !checkPos('def', scadSettings, props.row.yahooTeam.players) }") {{props.row.def}}] | {{ scadSettings.defMax }}
+          .text-body.text-grey-5 {{ scadSettings.defMin }} | #[span.qty(v-bind:class="{ 'text-negative': !checkPos('def', scadSettings, props.row.yahooTeam.roster) }") {{props.row.def}}] | {{ scadSettings.defMax }}
       template(v-slot:body-cell-ir='props')
         q-td.bg-grey-1(:props='props' auto-width)
           .text-body.text-negative.text-weight-bold(v-if="props.row.ir") {{ props.row.ir}}
@@ -76,9 +64,13 @@
 /* eslint-disable eqeqeq */
 import { checkPos } from '../utilities/validators'
 import { getPosCount } from '../utilities/calculator'
+import Loading from '../components/Loading'
 
 export default {
   name: 'LeagueDiagnostics',
+  components: {
+    'loading': Loading
+  },
   data () {
     return {
       loaded: false,
@@ -208,7 +200,7 @@ export default {
   },
   methods: {
     getTeamSalary (id) {
-      let team = this.scadTeams.find(t => t.yahooLeagueTeamId == id)
+      let team = this.scadTeams.find(t => t.yahooTeamId == id)
       return team.salary
     },
     checkTeamSalary (id) {
@@ -216,11 +208,11 @@ export default {
       return this.scadSettings.teamSalaryCap - salary
     },
     getTeamGive (id) {
-      let team = this.scadTeams.find(t => t.yahooLeagueTeamId == id)
+      let team = this.scadTeams.find(t => t.yahooTeamId == id)
       return team.exceptionOut
     },
     getTeamRecieve (id) {
-      let team = this.scadTeams.find(t => t.yahooLeagueTeamId == id)
+      let team = this.scadTeams.find(t => t.yahooTeamId == id)
       return team.exceptionIn
     },
     getTeamRank (rank) {

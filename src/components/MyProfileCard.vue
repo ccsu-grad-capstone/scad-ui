@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     getProfilePic () {
-      return this.user.user.profileImages.image128
+      return this.user.user.profile_images.image128
     }
   }
 }

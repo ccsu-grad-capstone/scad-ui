@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 // import notify from '../../utilities/nofity'
-// import { scad } from '../../utilities/axios-scad'
-// import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
+// import { nodeHeader } from '../../utilities/axios-node'
+// import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
 
 export default {
   namespaced: true,

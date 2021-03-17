@@ -71,12 +71,10 @@ export default {
     async savePick () {
       // console.log('[DRAFTPICK] Method - savePick()')
       if (this.dp.team.team_id !== this.initOwner.team_id) {
-        let log = `${this.dp.team.name} (${this.dp.team.managers[0].manager.nickname}) - ${moment().format('LLL')}`
+        let log = `${this.dp.team.name} (${this.dp.team.managers[0].nickname}) - ${moment().format('LLL')}`
         if (!this.dp.log) {
           this.dp.log = []
         }
-        console.log('log: ', log)
-        console.log('dp.log: ', this.dp.log)
         this.dp.log.push(log)
       }
       await this.$store.dispatch('draftPicks/saveDraftPick', this.dp)

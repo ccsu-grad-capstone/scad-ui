@@ -14,7 +14,7 @@ export function calcTeamSalary (yahooPlayers, scadPlayers, capExemptions, franch
   let salary = 0
   if (yahooPlayers && scadPlayers && capExemptions && franchiseTagDiscount && irRelieftPerc && yahooTeam && year) {
     yahooPlayers.forEach(p => {
-      salary += calcPlayerSalary(p.player_id, p.selected_position.position, scadPlayers, franchiseTagDiscount, irRelieftPerc)
+      salary += calcPlayerSalary(p.player_id, p.selected_position, scadPlayers, franchiseTagDiscount, irRelieftPerc)
     })
     if (capExemptions) {
       capExemptions.forEach(ce => {
@@ -37,7 +37,7 @@ export function calcTeamSalary (yahooPlayers, scadPlayers, capExemptions, franch
 // Calculates player salary by checking if they're franchise tagged or on IR
 export function calcPlayerSalary (id, pos, scadPlayers, franchiseTagDiscount, irRelieftPerc) {
   if (id && pos && scadPlayers && franchiseTagDiscount && irRelieftPerc >= 0) {
-    let player = scadPlayers.find(p => p.yahooLeaguePlayerId == id)
+    let player = scadPlayers.find(p => p.yahooPlayerId == id)
     if (player) {
       let salary = player.salary
       if (player.isFranchiseTag) {
@@ -91,7 +91,7 @@ export function getPosCount (pos, players) {
   if (players) {
     players.forEach(p => {
       if (p.display_position.toUpperCase() === pos.toUpperCase()) {
-        if (p.selected_position.position.toUpperCase() !== 'IR') {
+        if (p.selected_position.toUpperCase() !== 'IR') {
           count++
         }
       }
@@ -106,7 +106,7 @@ export function getPlayerCount (players) {
   let count = 0
   if (players) {
     players.forEach(p => {
-      if (p.selected_position.position !== 'IR') { count++ }
+      if (p.selected_position !== 'IR') { count++ }
     })
   }
   return count
@@ -124,7 +124,7 @@ export function getPositionSalaryTotal (pos, players, scadPlayers, franchiseTagD
     players.forEach(p => {
       if (p.display_position.toUpperCase() === pos.toUpperCase()) {
         let position
-        if (p.selected_position.position.toUpperCase() === 'IR') {
+        if (p.selected_position.toUpperCase() === 'IR') {
           position = 'IR'
         } else {
           position = p.display_position.toUpperCase()

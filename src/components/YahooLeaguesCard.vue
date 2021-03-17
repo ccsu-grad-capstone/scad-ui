@@ -1,18 +1,6 @@
 <template lang="pug">
   q-card.q-pa-md
-    .row.full-width(v-if="!loaded")
-      .row.full-width.justify-center
-        q-circular-progress.q-mt-xl(
-          indeterminate
-          size="90px"
-          :thickness="0.2"
-          color="primary"
-          center-color="grey-5"
-          track-color="transparent"
-          class="q-ma-md"
-          )
-      .row.full-width.justify-center
-        .text-grey Fetching SCAD team...
+    loading(v-if="!loaded")
     q-item-section(v-else)
       q-card-section(horizontal)
         .col-3.text-h5.text-weight-bolder.q-pt-lg.gt-sm SCAD Leagues
@@ -22,16 +10,16 @@
           .text-grey.q-pl-md Select row to change leagues
           q-separator
           q-list( v-for="(league, index) in scadLeagues" :key="index")
-            q-item(clickable  @click.native="switchLeague(league.id, league.yahooLeagueId)")
+            q-item(clickable  @click.native="switchLeague(league._id, league.yahooLeagueId)")
               .row.full-width.q-pt-sm
                 .col.text-body1.text-weight-bolder.gt-sm {{getLeagueName(league.yahooLeagueId)}}
                 .col.lt-md {{getLeagueName(league.yahooLeagueId)}}
                 .col.text-left.gt-sm
                   .row.full-width.q-gutter-md
-                    .text-primary.text-weight-bold(v-if="(league.id == scadLeagueId)") Active League
+                    .text-primary.text-weight-bold(v-if="(league._id == scadLeagueId)") Active League
                     .text-primary.text-weight-bold(v-else) Switch to League
                     .text-accent.text-weight-bold(v-if="league.isDefault") Default League
-                    q-btn.q-px-xs(v-else label='Set as Default League' flat dense color='white' text-color='accent' size='sm' @click="setAsDefault(league.id)")
+                    q-btn.q-px-xs(v-else label='Set as Default League' flat dense color='white' text-color='accent' size='sm' @click="setAsDefault(league._id)")
                 .col-1.text-right.gt-sm
                     q-btn.q-px-xs(icon='email' flat dense color='white' text-color='accent' size='sm' @click="triggerDialog(league.yahooLeagueId)")
             q-separator
@@ -56,17 +44,20 @@
 </template>
 <script>
 import { openURL } from 'quasar'
-import { scad } from '../utilities/axios-scad'
-import { catchAxiosScadError } from '../utilities/catchAxiosErrors'
+import { nodeHeader } from '../utilities/axios-node'
+import { catchAxiosNodeError } from '../utilities/catchAxiosErrors'
 import { isCommishNotRegistered } from '../utilities/validators'
 import { getScadLeague, getYahooLeague } from '../utilities/functions'
 import notify from '../utilities/nofity'
 import RegisterLeagueInvites from '../components/dialogs/registerLeagueInvites'
+import Loading from '../components/Loading'
 
 export default {
   name: 'YahooLeaguesCard',
   components: {
-    'register-league-invites': RegisterLeagueInvites
+    'register-league-invites': RegisterLeagueInvites,
+    'loading': Loading
+
   },
 
   data () {
@@ -76,7 +67,8 @@ export default {
     }
   },
   async mounted () {
-    await this.$store.dispatch('league/getAllYahooCommishLeagues')
+    // await this.$store.dispatch('league/getAllYahooLeagues')
+    // await this.$store.dispatch('league/getAllScadLeagues')
     this.loaded = true
   },
   computed: {
@@ -127,15 +119,15 @@ export default {
     },
     async setAsDefault (id) {
       try {
-        const response = await scad(
+        const response = await nodeHeader(
           this.tokens.access_token,
           this.tokens.id_token)
-          .put(`/api/scad/league/default/update/${id}`)
+          .put(`/scad/league/default/update/${id}`)
         console.log('Update Default League Response: ', response)
         notify.updateDefaultLeague()
         await this.$store.dispatch('league/getAllScadLeagues')
       } catch (err) {
-        catchAxiosScadError(err)
+        catchAxiosNodeError(err)
       }
     },
     async triggerDialog (yahooLeagueId) {

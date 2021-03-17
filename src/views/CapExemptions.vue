@@ -6,7 +6,7 @@
           div.text-h4.text-weight-bolder Cap Exemptions
           q-space
           div(v-if="loaded")
-            q-btn.q-mt-sm(v-if="updateCE && this.scadSettings.isCurrentlyLoggedInUserACommissioner" label='CLICK HERE TO SYNC CAP EXCEPTIONS' dense color='primary' text-color='white' size='sm' @click="updateMongoWithCE")
+            //- q-btn.q-mt-sm(v-if="updateCE && this.scadSettings.isCurrentlyLoggedInUserACommissioner" label='CLICK HERE TO SYNC CAP EXCEPTIONS' dense color='primary' text-color='white' size='sm' @click="updateMongoWithCE")
         .row.full-width.q-px-md.gt-sm
           .text-subtitle2.text-grey Cap Exceptions are transactions of salaries between two teams, typically as part of a larger trade.  Amount is added or deducted from participating team's salary for the given year. Each team has ${{salaryCapExemptionLimit}} to both give and recieve throughout the course of a season.
         .row.full-width.q-gutter-between.q-pt-md
@@ -20,19 +20,7 @@
                 q-btn.q-pa-xs(label='Clear' dense color='primary' text-color='white' size='xs' @click="clearFilter")
           .col-xl-2.col-lg-2.col-md-2.col-sm-2.col-xs-4.q-pt-sm
             q-btn.q-pa-xs(label='New Cap Exception' dense color='secondary' text-color='primary' size='sm' @click="addCE()")
-        .row.full-width(v-if="!loaded")
-          .row.full-width.justify-center
-            q-circular-progress.q-mt-xl(
-              indeterminate
-              size="90px"
-              :thickness="0.2"
-              color="primary"
-              center-color="grey-5"
-              track-color="transparent"
-              class="q-mt-xl"
-              )
-          .row.full-width.justify-center.q-mt-lg
-            .text-grey Fetching SCAD cap exemptions...
+        loading(v-if="!loaded" :message="'Fetching SCAD cap exemptions...'")
         .row.full-width.q-pa-md(v-else)
           div(style="width:100%")
             q-table(
@@ -67,9 +55,10 @@
 import referenceData from '../utilities/referenceData'
 import addCapExemptionDialog from '../components/dialogs/addCapExemptionDialog'
 import editCapExemptionDialog from '../components/dialogs/editCapExemptionDialog'
-import { node } from '../utilities/axios-node'
-import { catchAxiosNodeError } from '../utilities/catchAxiosErrors'
+// import { node } from '../utilities/axios-node'
+// import { catchAxiosNodeError } from '../utilities/catchAxiosErrors'
 import { myTeamStyle } from '../utilities/formatters'
+import Loading from '../components/Loading'
 
 /* eslint-disable eqeqeq */
 
@@ -77,7 +66,9 @@ export default {
   name: 'CapExemptions',
   components: {
     'add-cap-exemption-dialog': addCapExemptionDialog,
-    'edit-cap-exemption-dialog': editCapExemptionDialog
+    'edit-cap-exemption-dialog': editCapExemptionDialog,
+    'loading': Loading
+
   },
   data () {
     return {
@@ -143,7 +134,7 @@ export default {
   async mounted () {
     await this.getCapExemptions()
     // Check if capExceptions exist for prior league
-    this.checkCapExemptions()
+    // this.checkCapExemptions()
   },
   computed: {
     myTeamStyle () {
@@ -195,7 +186,7 @@ export default {
   methods: {
     async getCapExemptions () {
       // console.log('getCapExemptions()')
-      await this.$store.dispatch('capExemptions/getCapExemptionsByLeague', { leagueId: this.leagueId, year: this.scadSettings.seasonYear })
+      await this.$store.dispatch('capExemptions/getCapExemptionsByLeague')
       this.loaded = true
     },
     addCE () {
@@ -222,33 +213,14 @@ export default {
       this.filter.team = ''
       this.filter.year = ''
     },
-    async updateMongoWithCE () {
-      this.loaded = false
-      this.updateCE = false
-      await this.$store.dispatch('capExemptions/updateMongoWithCE')
-      this.loaded = true
-    },
-    async checkCapExemptions () {
-      if (this.capExemptions.length === 0) {
-        try {
-          let renewId = this.oldYahooLeagueId.split('_')
-          const response = await node.get(`/capExemptions/check/${renewId[1]}/${this.seasonYear - 1}`)
-          if (response.status === 200) {
-            this.updateCE = true
-          }
-        } catch (error) {
-          catchAxiosNodeError(error)
-        }
-      }
-    },
     async applyToTeams (ce) {
       if (ce.year == this.seasonYear) {
-        let giver = this.scadTeams.find(t => t.yahooLeagueTeamId == ce.yahooTeamGive.team_id)
+        let giver = this.scadTeams.find(t => t.yahooTeamId == ce.yahooTeamGive.team_id)
         giver.exceptionOut += ce.amount
         giver.salary += ce.amount
         await this.$store.dispatch('team/saveTeam', giver)
 
-        let reciever = this.scadTeams.find(t => t.yahooLeagueTeamId == ce.yahooTeamRecieve.team_id)
+        let reciever = this.scadTeams.find(t => t.yahooTeamId == ce.yahooTeamRecieve.team_id)
         reciever.exceptionIn += ce.amount
         reciever.salary -= ce.amount
         await this.$store.dispatch('team/saveTeam', reciever)
