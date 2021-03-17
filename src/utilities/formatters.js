@@ -1,11 +1,14 @@
 /* eslint-disable eqeqeq */
 
 import moment from 'moment'
+import { getYahooPlayer } from './functions'
 
-export function myTeamStyle (id, myYahooTeamId) {
+export function myTeamStyle (yahooPlayerId, yahooTeams, yahooPlayers, myYahooTeamId) {
+  let player = getYahooPlayer(yahooPlayers, yahooPlayerId)
+  let yahooTeam = yahooTeams.find(t => t.team_id == player.yahooTeamId)
   return {
-    'text-accent': id == myYahooTeamId,
-    'text-weight-bold': id == myYahooTeamId
+    'text-accent': yahooTeam.team_id == myYahooTeamId,
+    'text-weight-bold': yahooTeam.team_id == myYahooTeamId
   }
 }
 export function fmt (row, col, viewByPos) {

@@ -41,8 +41,8 @@
                         | {{getPlayerName(props.row.yahooPlayerId)}}
                   q-td(key='team' :props='props')
                     .text-grey {{getNFLTeam(props.row.yahooPlayerId)}}
-                  q-td(:class="myTeamStyle(props.row.yahooTeamId, myYahooTeamId)" key='owner' :props='props')
-                    | {{ getOwner(props.row.yahooTeamId) }}
+                  q-td(:class="myTeamStyle(props.row.yahooPlayerId)" key='owner' :props='props')
+                    | {{ getOwner(props.row.yahooPlayerId) }}
                   q-td(key='salary' :props='props' auto-width)
                     .text-primary.text-weight-bolder.text-body2.q-pr-sm ${{props.row.salary}}
 
@@ -153,9 +153,6 @@ export default {
     referenceData () {
       return referenceData
     },
-    myTeamStyle () {
-      return myTeamStyle
-    },
     searchFilter () {
       return searchFilter
     },
@@ -186,6 +183,11 @@ export default {
       await this.$store.dispatch('player/getAllPlayers')
       this.loaded = true
     },
+    myTeamStyle (yahooPlayerId) {
+      if (this.loaded) {
+        return myTeamStyle(yahooPlayerId, this.yahooTeams, this.yahooPlayers, this.myYahooTeamId)
+      }
+    },
     getHeadshot (id) {
       if (this.loaded) {
         return getHeadshot(id, this.yahooPlayers)
@@ -206,9 +208,9 @@ export default {
         return getNFLTeam(id, this.yahooPlayers)
       }
     },
-    getOwner (id) {
+    getOwner (yahooPlayerId) {
       if (this.loaded) {
-        return getOwner(id, this.yahooTeams)
+        return getOwner(yahooPlayerId, this.yahooTeams, this.yahooPlayers)
       }
     },
     async updateTeamFilter () {

@@ -84,9 +84,9 @@ export default {
         const res = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/scad/league/yahoo/${rootState.league.yahooLeagueId}/team/${teamId}/players`)
-        console.log('SCAD-PLAYERS: ', res.data.scadLeaguePlayers)
-        await commit('updateScadPlayers', res.data.scadLeaguePlayers)
+          .get(`/scad/league/yahoo/${rootState.league.gameKey}/${rootState.league.yahooLeagueId}/team/${teamId}/players`)
+        console.log('SCAD-PLAYERS: ', res.data.scadPlayers)
+        await commit('updateScadPlayers', res.data.scadPlayers)
       } catch (err) {
         catchAxiosNodeError(err)
       }

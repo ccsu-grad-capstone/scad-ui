@@ -79,8 +79,9 @@ export function getNFLTeam (id, yahooPlayers) {
   return player ? player.editorial_team_full_name : undefined
 }
 
-export function getOwner (id, yahooTeams) {
-  let yahooTeam = yahooTeams.find(t => t.team_id == id)
+export function getOwner (yahooPlayerId, yahooTeams, yahooPlayers) {
+  let player = getYahooPlayer(yahooPlayers, yahooPlayerId)
+  let yahooTeam = yahooTeams.find(t => t.team_id == player.yahooTeamId)
   return yahooTeam ? yahooTeam.name : undefined
 }
 
