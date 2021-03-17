@@ -1,5 +1,5 @@
 <template lang="pug">
-  div.q-gutter-sm(v-if="checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)")
+  div.q-gutter-sm(v-if=" this.league.yahooLeagueDetails.is_finished === 1 && checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)")
     q-badge(v-if="processing" label="processing..." color="info")
     q-btn(v-if="!processing && lineupData.length === 0" label="Prepare Data" color="primary" size="xs" @click="getLineupData()")
     download-excel.gt-sm( v-if="!processing && lineupData.length > 0" :data="lineupData", :fields="lineupFields" :name="getLineupExportName(league.yahooLeagueDetails.name)" type="csv")
