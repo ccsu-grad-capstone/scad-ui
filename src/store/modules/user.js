@@ -52,6 +52,7 @@ export default {
     updateUser (state, user) {
       // console.log('[USER-MUTATION] - updateUser()')
       state.user = user
+      state.isAdmin = user.isAdmin
       state.active = true
     }
   },
