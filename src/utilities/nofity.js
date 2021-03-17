@@ -165,7 +165,7 @@ export default {
   },
   genericServerIssueWithResponse (code, message) {
     Notify.create({
-      message: `[${code}] ${message}, please try again soon`,
+      message: `${message}, please try again soon`,
       position: 'top',
       timeout: 2500,
       color: 'red',
@@ -176,15 +176,15 @@ export default {
   },
   genericServerIssue (message) {
     Notify.create({
-      message: `[${message}] Please try again soon`,
+      message: `Error Retrieving Info. Please try again soon`,
       position: 'top',
       timeout: 2500,
       color: 'red'
     })
   },
-  scadServerIssueWithResponse (code, message) {
+  nodeServerIssueWithResponse (message) {
     Notify.create({
-      message: `[${code}] ${message}. Unable to retrieve SCAD details. Please try again soon`,
+      message: `${message}. Please try again soon`,
       position: 'top',
       timeout: 2500,
       color: 'red',
@@ -193,42 +193,9 @@ export default {
       ]
     })
   },
-  scadServerIssue (message) {
+  nodeServerIssue () {
     Notify.create({
-      message: `[${message}] Unable to retrieve SCAD details. Please try again soon`,
-      position: 'top',
-      timeout: 2500,
-      color: 'red',
-      actions: [
-        { label: 'Refresh', color: 'white', handler: () => { window.location.reload() } }
-      ]
-    })
-  },
-  scadTimeoutIssue () {
-    Notify.create({
-      message: `Server Timeout Error.  Trying logging out and logging back in.`,
-      position: 'top',
-      timeout: 2500,
-      color: 'red',
-      actions: [
-        { label: 'Refresh', color: 'white', handler: () => { window.location.reload() } }
-      ]
-    })
-  },
-  nodeServerIssueWithResponse (code, message) {
-    Notify.create({
-      message: `[${code}] ${message}. Unable to retrieve NODE details. Please try again soon`,
-      position: 'top',
-      timeout: 2500,
-      color: 'red',
-      actions: [
-        { label: 'Refresh', color: 'white', handler: () => { window.location.reload() } }
-      ]
-    })
-  },
-  nodeServerIssue (message) {
-    Notify.create({
-      message: `[${message}] Unable to retrieve NODE details. Please try again soon`,
+      message: `Error Retrieving Scad Details. Please try again soon`,
       position: 'top',
       timeout: 2500,
       color: 'red',

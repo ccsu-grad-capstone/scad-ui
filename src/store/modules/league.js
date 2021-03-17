@@ -2,7 +2,7 @@
 import notify from '../../utilities/nofity'
 import { nodeHeader } from '../../utilities/axios-node'
 // import leagueSettings from '../../data/leagueSettings'
-import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
+import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
 import { calcTeamSalary } from '../../utilities/calculator'
 import { getGameKey } from '../../utilities/functions'
 
@@ -163,7 +163,7 @@ export default {
           commit('dashboardRegister', dashboard.data.result)
         }
       } catch (err) {
-        catchAxiosScadError(err)
+        catchAxiosNodeError(err)
       }
     },
 
@@ -183,7 +183,7 @@ export default {
         }
         commit('team/updateMyTeamIds', id, { root: true })
       } catch (err) {
-        catchAxiosScadError(err)
+        catchAxiosNodeError(err)
       }
     },
 
@@ -217,7 +217,7 @@ export default {
         console.log('YAHOO-LEAGUE-DETAILS: ', yahooLeague.data)
         commit('updateYahooLeagueDetails', yahooLeague.data.league)
       } catch (err) {
-        catchAxiosScadError(err)
+        catchAxiosNodeError(err)
       }
     },
 
@@ -231,7 +231,7 @@ export default {
         console.log('YAHOO-SETTINGS: ', settings.data)
         commit('updateYahooSettings', settings.data.settings)
       } catch (err) {
-        catchAxiosScadError(err)
+        catchAxiosNodeError(err)
       }
     },
 
@@ -246,7 +246,7 @@ export default {
         console.log('SCAD-SETTINGS: ', res)
         commit('updateScadSettings', res.data.settings)
       } catch (err) {
-        catchAxiosScadError(err)
+        catchAxiosNodeError(err)
       }
     },
 
@@ -261,7 +261,7 @@ export default {
         console.log('SCAD-SETTINGS-ByYAHOO: ', res.data)
         commit('updateScadSettings', res.data.scadLeague)
       } catch (err) {
-        catchAxiosScadError(err)
+        catchAxiosNodeError(err)
       }
     },
 
@@ -275,7 +275,7 @@ export default {
         console.log('YAHOO-TEAMS: ', standings.data)
         commit('updateYahooTeams', standings.data.standings)
       } catch (err) {
-        catchAxiosScadError(err)
+        catchAxiosNodeError(err)
       }
     },
 
@@ -289,7 +289,7 @@ export default {
         console.log('SCAD-TEAMS: ', res.data)
         commit('updateScadTeams', res.data.scadTeams)
       } catch (err) {
-        catchAxiosScadError(err)
+        catchAxiosNodeError(err)
       }
     },
 
@@ -303,7 +303,7 @@ export default {
         console.log('YAHOO-LEAGUES: ', res.data)
         commit('updateYahooLeagues', res.data.leagues)
       } catch (err) {
-        catchAxiosScadError(err)
+        catchAxiosNodeError(err)
       }
     },
 
@@ -317,7 +317,7 @@ export default {
         console.log('SCAD-LEAGUES: ', scadleagues.data)
         commit('updateScadLeagues', scadleagues.data.scadLeagues)
       } catch (err) {
-        catchAxiosScadError(err)
+        catchAxiosNodeError(err)
       }
     },
 
@@ -331,7 +331,7 @@ export default {
         console.log('YAHOO-COMMISH-LEAGUES: ', commishLeagues.data)
         commit('updateYahooCommishLeagues', commishLeagues.data.commishLeagues)
       } catch (err) {
-        catchAxiosScadError(err)
+        catchAxiosNodeError(err)
       }
     },
 
@@ -345,7 +345,7 @@ export default {
         console.log('POST response scadleague: ', res)
         // commit('updateLeague', { league: league })
       } catch (err) {
-        catchAxiosScadError(err)
+        catchAxiosNodeError(err)
       }
     },
     async saveLeagueSettings ({ rootState, commit, state }, { settings }) {
@@ -359,7 +359,7 @@ export default {
         commit('updateScadSettings', res.data.league)
         notify.saveSuccessful('SCAD settings saved successfully')
       } catch (err) {
-        catchAxiosScadError(err)
+        catchAxiosNodeError(err)
       }
     }
   }

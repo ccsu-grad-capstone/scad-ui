@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { nodeHeader, node } from '../../utilities/axios-node'
 
-import { catchAxiosScadError, catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
+import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
 
 export default {
   namespaced: true,
@@ -80,7 +80,7 @@ export default {
         commit('updateUser', res.data.user)
         console.log('[USER-ACTION] - updateUser(): ', res.data.user)
       } catch (error) {
-        catchAxiosScadError(error)
+        catchAxiosNodeError(error)
       }
     }
   }

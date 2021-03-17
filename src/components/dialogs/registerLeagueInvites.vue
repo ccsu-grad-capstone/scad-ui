@@ -13,7 +13,7 @@
 
 <script>
 import { nodeHeader } from '../../utilities/axios-node'
-import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
+import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
 import notify from '../../utilities/nofity'
 
 export default {
@@ -49,7 +49,7 @@ export default {
         this.$store.commit('dialog/registerLeagueInvites')
         notify.emailCommissioner(response.data.msg)
       } catch (err) {
-        catchAxiosScadError(err)
+        catchAxiosNodeError(err)
       }
     },
     triggerDialog () {

@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 // import notify from '../../utilities/nofity'
-// import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
+// import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
 import { node, nodeHeader } from '../../utilities/axios-node'
 import { getScadTeam, getPlayerHistoryLog, getYahooTeamFromYahooTeamId } from '../../utilities/functions'
 import { calcTeamSalary } from '../../utilities/calculator'

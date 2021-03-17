@@ -1,6 +1,6 @@
 // import { notify } from '../../utilities/nofity'
 import { nodeHeader } from '../../utilities/axios-node'
-import { catchAxiosScadError } from '../../utilities/catchAxiosErrors'
+import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
 
 export default {
   namespaced: true,
@@ -49,7 +49,7 @@ export default {
         commit('updateYahooPlayers', res.data.players)
         console.log('ALL-YAHOO-PLAYERS: ', res.data.players)
       } catch (err) {
-        catchAxiosScadError(err)
+        catchAxiosNodeError(err)
       }
     },
     async getAllScadPlayers ({ commit, rootState }, scadLeagueId) {
@@ -62,7 +62,7 @@ export default {
         commit('updateScadPlayers', res.data.scadPlayers)
         console.log('ALL-SCAD-PLAYERS: ', res.data.scadPlayers)
       } catch (err) {
-        catchAxiosScadError(err)
+        catchAxiosNodeError(err)
       }
     },
     async getTeamYahooPlayers ({ commit, rootState }, teamId) {
@@ -75,7 +75,7 @@ export default {
         console.log('TEAM-PLAYERS: ', res.data)
         await commit('updateYahooPlayers', res.data.players)
       } catch (err) {
-        catchAxiosScadError(err)
+        catchAxiosNodeError(err)
       }
     },
     async getTeamScadPlayers ({ commit, rootState }, teamId) {
@@ -88,7 +88,7 @@ export default {
         console.log('SCAD-PLAYERS: ', res.data.scadLeaguePlayers)
         await commit('updateScadPlayers', res.data.scadLeaguePlayers)
       } catch (err) {
-        catchAxiosScadError(err)
+        catchAxiosNodeError(err)
       }
     }
   }

@@ -45,7 +45,7 @@
 <script>
 import { openURL } from 'quasar'
 import { nodeHeader } from '../utilities/axios-node'
-import { catchAxiosScadError } from '../utilities/catchAxiosErrors'
+import { catchAxiosNodeError } from '../utilities/catchAxiosErrors'
 import { isCommishNotRegistered } from '../utilities/validators'
 import { getScadLeague, getYahooLeague } from '../utilities/functions'
 import notify from '../utilities/nofity'
@@ -127,7 +127,7 @@ export default {
         notify.updateDefaultLeague()
         await this.$store.dispatch('league/getAllScadLeagues')
       } catch (err) {
-        catchAxiosScadError(err)
+        catchAxiosNodeError(err)
       }
     },
     async triggerDialog (yahooLeagueId) {

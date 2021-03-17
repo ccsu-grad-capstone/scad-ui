@@ -205,7 +205,7 @@ import referenceData from '../utilities/referenceData'
 import RegisterLeagueInvites from '../components/dialogs/registerLeagueInvites'
 import notify from '../utilities/nofity'
 import { nodeHeader } from '../utilities/axios-node'
-import { catchAxiosScadError } from '../utilities/catchAxiosErrors'
+import { catchAxiosNodeError } from '../utilities/catchAxiosErrors'
 import Loading from '../components/Loading'
 
 export default {
@@ -378,7 +378,7 @@ export default {
           this.newLeague.seasonYear = parseInt(this.selectedLeague.season)
           this.newLeague.yahooGameId = this.selectedLeague.league_key.split('.')[0]
         } else {
-          catchAxiosScadError(err)
+          catchAxiosNodeError(err)
         }
       }
     },
@@ -392,7 +392,7 @@ export default {
         notify.emailCommissioner(response.data.msg)
         this.$router.push('/about')
       } catch (err) {
-        catchAxiosScadError(err)
+        catchAxiosNodeError(err)
       }
     }
   }
