@@ -4,8 +4,8 @@ import { scadPlayers, yahooPlayers, scadLeague, yahooTeam, capExceptionsByTeam }
 describe('calculator.js Test Suite', () => {
   describe('calcTeamSalary tests', () => {
     it('should properly return salary', () => {
-      expect(calcTeamSalary(yahooPlayers, scadPlayers, [], 25, 50, yahooTeam, 2020)).toBe(238)
-      expect(calcTeamSalary(yahooPlayers, scadPlayers, capExceptionsByTeam, 25, 50, yahooTeam, 2020)).toBe(248)
+      expect(calcTeamSalary(yahooPlayers, scadPlayers, [], 25, 50, yahooTeam, 2020)).toBe(211)
+      expect(calcTeamSalary(yahooPlayers, scadPlayers, capExceptionsByTeam, 25, 50, yahooTeam, 2020)).toBe(221)
       let ceTeam = capExceptionsByTeam
       let ce = {
         'prevLeagueIds': [],
@@ -25,7 +25,7 @@ describe('calculator.js Test Suite', () => {
         '__v': 0
       }
       ceTeam.push(ce)
-      expect(calcTeamSalary(yahooPlayers, scadPlayers, ceTeam, 25, 50, yahooTeam, 2020)).toBe(243)
+      expect(calcTeamSalary(yahooPlayers, scadPlayers, ceTeam, 25, 50, yahooTeam, 2020)).toBe(216)
     })
     it('should handle undefined cases properly', () => {
       expect(calcTeamSalary(yahooPlayers, yahooPlayers, undefined, 25)).toBe(0)
@@ -39,12 +39,12 @@ describe('calculator.js Test Suite', () => {
 
   describe('calcPlayerSalary tests', () => {
     it('should properly return salary', () => {
-      expect(calcPlayerSalary(27540, 'RB', scadPlayers, 25, 50)).toBe(23)
-      expect(calcPlayerSalary(27540, 'IR', scadPlayers, 25, 50)).toBe(12)
-      expect(calcPlayerSalary(31379, 'RB', scadPlayers, 25, 50)).toBe(19)
-      expect(calcPlayerSalary(31379, 'WR', scadPlayers, 25, 50)).toBe(19)
-      expect(calcPlayerSalary(31379, 'IR', scadPlayers, 25, 50)).toBe(10)
-      expect(calcPlayerSalary(31379, 'IR', scadPlayers, 25, 40)).toBe(11)
+      expect(calcPlayerSalary(27540, 'WR', scadPlayers, 25, 50)).toBe(42)
+      expect(calcPlayerSalary(27540, 'IR', scadPlayers, 25, 50)).toBe(21)
+      expect(calcPlayerSalary(31379, 'RB', scadPlayers, 25, 50)).toBe(16)
+      expect(calcPlayerSalary(31379, 'WR', scadPlayers, 25, 50)).toBe(16)
+      expect(calcPlayerSalary(31379, 'IR', scadPlayers, 25, 50)).toBe(8)
+      expect(calcPlayerSalary(31379, 'IR', scadPlayers, 25, 40)).toBe(10)
       expect(calcPlayerSalary(11, 'RB', scadPlayers, 25, 40)).toBe(0)
     })
     it('should handle undefined cases properly', () => {
@@ -97,8 +97,8 @@ describe('calculator.js Test Suite', () => {
 
   describe('getPosCount tests', () => {
     it('should properly return salary', () => {
-      expect(getPosCount('QB', yahooPlayers)).toBe(2)
-      expect(getPosCount('def', yahooPlayers)).toBe(3)
+      expect(getPosCount('QB', yahooPlayers)).toBe(3)
+      expect(getPosCount('def', yahooPlayers)).toBe(2)
       expect(getPosCount('TE', yahooPlayers)).toBe(4)
     })
     it('should properly return 0', () => {
@@ -110,7 +110,7 @@ describe('calculator.js Test Suite', () => {
 
   describe('getPlayerCount tests', () => {
     it('should properly return count', () => {
-      expect(getPlayerCount(yahooPlayers)).toBe(23)
+      expect(getPlayerCount(yahooPlayers)).toBe(24)
     })
     it('should properly return 0', () => {
       expect(getPlayerCount(undefined)).toBe(0)
@@ -119,10 +119,10 @@ describe('calculator.js Test Suite', () => {
 
   describe('getPositionSalaryTotal tests', () => {
     it('should properly return proper dollar amount', () => {
-      expect(getPositionSalaryTotal('QB', yahooPlayers, scadPlayers, scadLeague.franchiseTagDiscount, scadLeague.irReliefPerc)).toBe(25)
-      expect(getPositionSalaryTotal('QB', yahooPlayers, scadPlayers, scadLeague.franchiseTagDiscount, 0)).toBe(31)
-      expect(getPositionSalaryTotal('qb', yahooPlayers, scadPlayers, scadLeague.franchiseTagDiscount, scadLeague.irReliefPerc)).toBe(25)
-      expect(getPositionSalaryTotal('TE', yahooPlayers, scadPlayers, scadLeague.franchiseTagDiscount, scadLeague.irReliefPerc)).toBe(23)
+      expect(getPositionSalaryTotal('QB', yahooPlayers, scadPlayers, scadLeague.franchiseTagDiscount, scadLeague.irReliefPerc)).toBe(9)
+      expect(getPositionSalaryTotal('QB', yahooPlayers, scadPlayers, scadLeague.franchiseTagDiscount, 0)).toBe(9)
+      expect(getPositionSalaryTotal('qb', yahooPlayers, scadPlayers, scadLeague.franchiseTagDiscount, scadLeague.irReliefPerc)).toBe(9)
+      expect(getPositionSalaryTotal('TE', yahooPlayers, scadPlayers, scadLeague.franchiseTagDiscount, scadLeague.irReliefPerc)).toBe(11)
     })
     it('should return 0', () => {
       expect(getPositionSalaryTotal('QB', undefined, scadPlayers, scadLeague.franchiseTagDiscount, scadLeague.irReliefPerc)).toBe(0)
@@ -135,9 +135,9 @@ describe('calculator.js Test Suite', () => {
 
   describe('getPerc tests', () => {
     it('should properly return percentage', () => {
-      expect(getPerc(100, 'QB', yahooPlayers, scadPlayers, scadLeague.franchiseTagDiscount, scadLeague.irReliefPerc)).toBe('25')
-      expect(getPerc(250, 'QB', yahooPlayers, scadPlayers, scadLeague.franchiseTagDiscount, scadLeague.irReliefPerc)).toBe('10')
-      expect(getPerc(221, 'QB', yahooPlayers, scadPlayers, scadLeague.franchiseTagDiscount, scadLeague.irReliefPerc)).toBe('11')
+      expect(getPerc(100, 'QB', yahooPlayers, scadPlayers, scadLeague.franchiseTagDiscount, scadLeague.irReliefPerc)).toBe('9')
+      expect(getPerc(250, 'QB', yahooPlayers, scadPlayers, scadLeague.franchiseTagDiscount, scadLeague.irReliefPerc)).toBe('4')
+      expect(getPerc(221, 'QB', yahooPlayers, scadPlayers, scadLeague.franchiseTagDiscount, scadLeague.irReliefPerc)).toBe('4')
     })
     it('should return 0', () => {
       expect(getPositionSalaryTotal(100, 'QB', undefined, scadPlayers, scadLeague.franchiseTagDiscount, scadLeague.irReliefPerc)).toBe(0)

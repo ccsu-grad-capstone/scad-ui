@@ -6,10 +6,10 @@ describe('functions.js Test Suite', () => {
     it('should properly return', () => {
       let scadP = getScadPlayer(scadPlayers, 9265)
       expect(getScadPlayer(scadPlayers, 9265)).toBeDefined()
-      expect(scadP._id).toBe(342)
-      scadP = getScadPlayer(scadPlayers, 100030)
-      expect(getScadPlayer(scadPlayers, 100030)).toBeDefined()
-      expect(scadP._id).toBe(348)
+      expect(scadP._id).toBe('603fdd2f9742d6ad14d606d7')
+      scadP = getScadPlayer(scadPlayers, 30977)
+      expect(getScadPlayer(scadPlayers, 30977)).toBeDefined()
+      expect(scadP._id).toBe('603fdd2e9742d6ad14d606ca')
     })
     it('should properly return undefined', () => {
       expect(getScadPlayer(scadPlayers, 232)).toBeUndefined()
@@ -25,9 +25,9 @@ describe('functions.js Test Suite', () => {
       let yahooP = getYahooPlayer(yahooPlayers, 9265)
       expect(yahooP).toBeDefined()
       expect(yahooP.name.full).toBe('Matthew Stafford')
-      yahooP = getYahooPlayer(yahooPlayers, 100030)
+      yahooP = getYahooPlayer(yahooPlayers, 30977)
       expect(yahooP).toBeDefined()
-      expect(yahooP.name.full).toBe('Jacksonville')
+      expect(yahooP.name.full).toBe('Josh Allen')
     })
     it('should properly return undefined', () => {
       expect(getYahooPlayer(yahooPlayers, 232)).toBeUndefined()
@@ -50,13 +50,13 @@ describe('functions.js Test Suite', () => {
 
   describe('isFranchiseTagged tests', () => {
     let scadTeam = {
-      players: scadPlayers
+      roster: scadPlayers
     }
     it('should return true', () => {
-      expect(isFranchiseTagged('27540', scadTeam)).toBeTruthy()
+      expect(isFranchiseTagged('27540', scadTeam)).toBeFalsy()
     })
     it('should return true', () => {
-      expect(isFranchiseTagged('9265', scadTeam)).toBeFalsy()
+      expect(isFranchiseTagged('9265', scadTeam)).toBeTruthy()
     })
     it('should return true', () => {
       expect(isFranchiseTagged('65', scadTeam)).toBeFalsy()
