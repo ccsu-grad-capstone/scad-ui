@@ -21,6 +21,7 @@
       .row.full-width.justify-center(v-if="checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)")
         .col-10
           league-diagnostics
+    renew-league-dialog(v-if="renewLeague")
 
 </template>
 
@@ -34,6 +35,7 @@ import LiteDraftPicks from '../components/LiteDraftPicks'
 import ExportLeague from '../components/ExportLeague'
 import { checkIfCommish } from '../utilities/validators'
 import Loading from '../components/Loading'
+import RenewLeagueDialog from '../components/dialogs/renewLeagueDialog'
 
 export default {
   name: 'Dashboard',
@@ -45,7 +47,8 @@ export default {
     'lite-league-mobile': LiteLeagueMobile,
     'lite-draft-picks': LiteDraftPicks,
     'export-league': ExportLeague,
-    'loading': Loading
+    'loading': Loading,
+    'renew-league-dialog': RenewLeagueDialog
 
   },
   data () {
@@ -54,37 +57,27 @@ export default {
       refresh: false
     }
   },
-  async created () {
+  async mounted () {
     // await this.$store.dispatch('league/getScadInfo')
     if (!this.league.isActive) {
       this.$router.push('/about')
     } else {
+      if (this.league.renewedAvailable && checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)) {
+        this.$store.commit('dialog/renewLeague')
+      }
       this.loaded = true
     }
   },
   computed: {
-    user () {
-      return this.$store.state.user
-    },
-    loggedIn () {
-      return this.user.active
-    },
-    tokens () {
-      return this.user.tokens
-    },
-    league () {
-      return this.$store.state.league
-    },
-    scadLeagues () {
-      return this.league.scadLeagues
-    },
-    scadLeagueId () {
-      return this.league.scadLeagueId
-    },
-    transactionsLoaded () {
-      return this.$store.state.transactions.loaded
-    },
-    checkIfCommish () { return checkIfCommish }
+    user () { return this.$store.state.user },
+    loggedIn () { return this.user.active },
+    tokens () { return this.user.tokens },
+    league () { return this.$store.state.league },
+    scadLeagues () { return this.league.scadLeagues },
+    scadLeagueId () { return this.league.scadLeagueId },
+    transactionsLoaded () { return this.$store.state.transactions.loaded },
+    checkIfCommish () { return checkIfCommish },
+    renewLeague () { return this.$store.state.dialog.renewLeague }
   },
   methods: {
     async updateTeamSalaries () {

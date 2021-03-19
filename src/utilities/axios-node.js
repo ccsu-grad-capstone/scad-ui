@@ -16,7 +16,7 @@ const nodeHeader = (access_token, id_token) => {
   // console.log(tokens)
   return axios.create({
     baseURL: getBaseURL('NODE'),
-    timeout: 30000,
+    timeout: 60000,
     headers: {
       'Authorization': 'Basic dXNlcjpub2RlLWFwaS1yZWFkd3JpdGU=',
       'accesstoken': access_token,

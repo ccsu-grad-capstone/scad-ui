@@ -15,6 +15,7 @@ export default {
     gameKey: '',
     yahooLeagueId: '',
     scadLeagueId: '',
+    renewedAvailable: false,
 
     yahooLeagueDetails: {},
     yahooSettings: {},
@@ -37,6 +38,10 @@ export default {
       // state.isActive = false
       state.key = dashboard.key
       state.yahooCommishLeagues = dashboard.yahooCommishLeagues
+    },
+    updateRenewedAvailable (state, renew) {
+      // console.log('[LEAGUE-MUTATION] - updateRenewedAvailable()', renew)
+      state.renewedAvailable = renew
     },
     updateYahooLeagueDetails (state, league) {
       // console.log('[LEAGUE-MUTATION] - updateYahooLeagueDetails()')
@@ -142,6 +147,7 @@ export default {
           let scadTeam = dashboard.data.result.scadMyTeam
           scadTeam.roster = dashboard.data.result.scadMyPlayers
           commit('key', dashboard.data.result.key)
+          commit('updateRenewedAvailable', dashboard.data.result.renewedAvailable)
           commit('updateYahooLeagueDetails', dashboard.data.result.yahooLeague)
           commit('updateScadSettings', dashboard.data.result.scadLeague)
           commit('team/updateMyYahooTeam', dashboard.data.result.yahooMyTeam, { root: true })
