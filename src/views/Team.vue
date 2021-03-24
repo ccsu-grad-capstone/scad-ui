@@ -183,15 +183,14 @@ import notify from '../utilities/nofity'
 import DraftPickOverview from '../components/DraftPickOverview.vue'
 import CapExemptionOverview from '../components/CapExemptionOverview.vue'
 import { calcTeamSalary, calcPlayerSalary } from '../utilities/calculator'
-import { getPlayerHistoryLog,
-  getScadPlayer,
+import { getScadPlayer,
   isFranchiseTagged,
   getPlayerPrevSalary,
   getOriginalSalary
 } from '../utilities/functions'
 import { isIR, isScadPlayer } from '../utilities/validators'
 import { fmt } from '../utilities/formatters'
-
+import moment from 'moment'
 import Loading from '../components/Loading'
 
 /* eslint-disable eqeqeq */
@@ -522,7 +521,18 @@ export default {
         salary = salary -= franchiseTagDiscount
       }
 
-      let log = getPlayerHistoryLog(salary, 'Manual', this.team.yahooTeam, this.user.user.name, true)
+      const log = {
+        originalSalary: initSalary,
+        newSalary: salary,
+        type: 'Manual',
+        team: {
+          name: this.team.yahooTeam.name,
+          yahooTeamId: this.team.yahooTeam.team_id
+        },
+        user: this.user.user.name,
+        commment: 'Adding Franchise Tag',
+        date: moment().format()
+      }
       await this.$store.dispatch('team/savePlayer', {
         player: player,
         log: log,
@@ -552,7 +562,18 @@ export default {
       }
 
       player.isFranchiseTag = false
-      let log = getPlayerHistoryLog(player.salary, 'Manual', this.team.yahooTeam, this.user.user.name, false)
+      const log = {
+        originalSalary: salary -= adjustment,
+        newSalary: player.salary,
+        type: 'Manual',
+        team: {
+          name: this.team.yahooTeam.name,
+          yahooTeamId: this.team.yahooTeam.team_id
+        },
+        user: this.user.user.name,
+        comment: 'Removing Franchise Tag',
+        date: moment().format()
+      }
       await this.$store.dispatch('team/savePlayer', {
         player: player,
         log: log,
@@ -568,7 +589,18 @@ export default {
       this.franchiseTag = false
     },
     async savePlayer () {
-      let log = getPlayerHistoryLog(this.editPlayer.salary, 'Manual', this.team.yahooTeam, this.user.user.name)
+      const log = {
+        originalSalary: this.editPlayerInitSalary,
+        newSalary: parseInt(this.editPlayer.salary),
+        type: 'Manual',
+        team: {
+          name: this.team.yahooTeam.name,
+          yahooTeamId: this.team.yahooTeam.team_id
+        },
+        user: this.user.user.name,
+        comment: 'Manual salary adjustment.',
+        date: moment().format()
+      }
       await this.$store.dispatch('team/savePlayer', {
         player: this.editPlayer,
         log: log,

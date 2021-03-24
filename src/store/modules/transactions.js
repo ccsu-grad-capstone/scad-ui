@@ -2,7 +2,7 @@
 // import notify from '../../utilities/nofity'
 // import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
 import { node, nodeHeader } from '../../utilities/axios-node'
-import { getScadTeam, getPlayerHistoryLog, getYahooTeamFromYahooTeamId } from '../../utilities/functions'
+import { getScadTeam, getYahooTeamFromYahooTeamId } from '../../utilities/functions'
 import { calcTeamSalary } from '../../utilities/calculator'
 import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
 
@@ -99,7 +99,18 @@ export default {
                         .get(`/scad/player/yahoo/${rootState.league.gameKey}/${rootState.league.yahooLeagueId}/player/${p.player_id}`)
                       let player = res.data.scadPlayer
                       player.salary = t.faab_bid ? t.faab_bid : 1
-                      let log = getPlayerHistoryLog(player.salary, t.faab_bid ? 'Waivers' : 'FA', getYahooTeamFromYahooTeamId(rootState.league.yahooTeams, yahooTeamId))
+                      const log = {
+                        originalSalary: res.data.scadPlayer.salary,
+                        newSalary: player.salary,
+                        type: t.faab_bid ? 'Waivers' : 'FA',
+                        team: {
+                          name: getYahooTeamFromYahooTeamId(rootState.league.yahooTeams, yahooTeamId).name,
+                          yahooTeamId: getYahooTeamFromYahooTeamId(rootState.league.yahooTeams, yahooTeamId).team_id
+                        },
+                        user: undefined,
+                        comment: 'Automated salary adjustment.',
+                        date: moment().format()
+                      }
                       await dispatch('team/savePlayer', { player: player, log: log }, { root: true })
                       if (!updatedTeams.includes(yahooTeamId)) {
                         updatedTeams.push(yahooTeamId)
