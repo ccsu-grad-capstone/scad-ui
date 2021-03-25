@@ -6,7 +6,8 @@ export default {
   namespaced: true,
   state: {
     yahooPlayers: [],
-    scadPlayers: []
+    scadPlayers: [],
+    scadPlayer: {}
   },
   getters: {
 
@@ -21,10 +22,9 @@ export default {
       // console.log(`[PLAYER-MUTATION] - updateYahooPlayers()`)
       state.scadPlayers = players
     },
-    updatePlayer (state, player) {
-      // console.log(`[PLAYER-MUTATION] - updatePlayer()`)
-      state._id = player._id
-      state.salary = player.salary // <- ??
+    updateScadPlayer (state, player) {
+      // console.log(`[PLAYER-MUTATION] - updateScadPlayer()`)
+      state.scadPlayer = player
     },
     logoutPlayer (state) {
       // console.log('[PLAYER-MUTATION] - logoutPlayer()')
@@ -87,6 +87,19 @@ export default {
           .get(`/scad/league/yahoo/${rootState.league.gameKey}/${rootState.league.yahooLeagueId}/team/${teamId}/players`)
         console.log('SCAD-PLAYERS: ', res.data.scadPlayers)
         await commit('updateScadPlayers', res.data.scadPlayers)
+      } catch (err) {
+        catchAxiosNodeError(err)
+      }
+    },
+    async getScadPlayer ({ commit, rootState }, yahooPlayerId) {
+      // console.log(`[PLAYER-ACTION] - getScadPlayer()`)
+      try {
+        const res = await nodeHeader(
+          rootState.user.tokens.access_token,
+          rootState.user.tokens.id_token)
+          .get(`/scad/player/yahoo/${rootState.league.gameKey}/${rootState.league.yahooLeagueId}/player/${yahooPlayerId}`)
+        console.log('SCAD-PLAYER: ', res.data.scadPlayer)
+        await commit('updateScadPlayer', res.data.scadPlayer)
       } catch (err) {
         catchAxiosNodeError(err)
       }

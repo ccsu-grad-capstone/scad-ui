@@ -139,11 +139,14 @@
                               q-icon.q-pa-xs(v-if="isFranchiseTagged(props.row.player_id)" name='fas fa-tag' color='info')
                       q-td(:class="fmt(props.row, 'team', viewByTeam)" key='team' :props='props')
                         | {{ props.row.editorial_team_full_name }}
+                      q-td(:class="fmt(props.row, 'salaryHistory', viewByTeam)" key='salaryHistory' :props='props' auto-width)
+                        q-icon(name="history" color="info" size="xs" @click="playerHistoryDialog(props.row)")
+                          q-tooltip View {{props.row.name.full}}'s salary history
                       q-td(:class="fmt(props.row, 'previousSalary', viewByTeam)" key='previousSalary' :props='props' auto-width)
                         .text-body2.q-pr-sm ${{ getPlayerPrevSalary(props.row.player_id) }}
                       q-td(:class="fmt(props.row, 'originalSalary', viewByTeam)" key='originalSalary' :props='props' auto-width)
                         .row(v-if="isFranchiseTagged(props.row.player_id) || isIR(props.row.selected_position)")
-                          .col.text-grey.q-pr-sm Original: ${{getOriginalSalary(props.row.player_id)}}
+                          .col.text-grey.q-pr-sm (${{getOriginalSalary(props.row.player_id)}})
                       q-td(:class="fmt(props.row, 'salary', viewByTeam)" key='salary' :props='props' auto-width)
                         .col(v-if="(isScadPlayer(props.row.player_id, scadTeam))" :style=" (editSalaries && !isFranchiseTagged(props.row.player_id)) ? 'border: 1px solid #26A69A;' : 'border: none;' ")
                           .text-weight-bolder.text-body2.q-pr-sm ${{ getPlayerSalary(props.row.player_id, props.row.selected_position) }}
@@ -174,11 +177,12 @@
             team-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
             draft-pick-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
             cap-exemption-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam" @updateTeam="getTeam($route.params.team_id)")
-
+      player-history-dialog(v-if="playerHistory" :player="playerHistoryPlayer")
 </template>
 
 <script>
 import TeamOverview from '../components/TeamOverview'
+import PlayerHistoryDialog from '../components/dialogs/playerHistoryDialog'
 import notify from '../utilities/nofity'
 import DraftPickOverview from '../components/DraftPickOverview.vue'
 import CapExemptionOverview from '../components/CapExemptionOverview.vue'
@@ -201,7 +205,8 @@ export default {
     'team-overview': TeamOverview,
     'draft-pick-overview': DraftPickOverview,
     'cap-exemption-overview': CapExemptionOverview,
-    'loading': Loading
+    'loading': Loading,
+    'player-history-dialog': PlayerHistoryDialog
 
   },
   data () {
@@ -214,6 +219,7 @@ export default {
       scadTeam: {},
       editPlayer: {},
       editPlayerInitSalary: 0,
+      playerHistoryPlayer: {},
       selectedTeam: 'Choose a Team',
       editSalaries: false,
       franchiseTag: false,
@@ -247,6 +253,12 @@ export default {
           name: 'team',
           required: true,
           label: 'Team:',
+          align: 'left',
+          sortable: false
+        },
+        {
+          name: 'salaryHistory',
+          label: '',
           align: 'left',
           sortable: false
         },
@@ -406,7 +418,8 @@ export default {
     },
     irReliefPerc () {
       return this.league.scadSettings.irReliefPerc
-    }
+    },
+    playerHistory () { return this.$store.state.dialog.playerHistory }
   },
   async created () {
     // console.log('[TEAM] - mounted()')
@@ -530,7 +543,7 @@ export default {
           yahooTeamId: this.team.yahooTeam.team_id
         },
         user: this.user.user.name,
-        commment: 'Adding Franchise Tag',
+        comment: 'Adding Franchise Tag',
         date: moment().format()
       }
       await this.$store.dispatch('team/savePlayer', {
@@ -678,6 +691,10 @@ export default {
       }
       await this.$store.dispatch('team/addPlayer', { player: player })
       await this.getTeam(this.scadTeam.yahooTeamId)
+    },
+    playerHistoryDialog (player) {
+      this.playerHistoryPlayer = player
+      this.$store.commit('dialog/playerHistory')
     }
   }
 }

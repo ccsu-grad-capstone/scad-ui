@@ -10,7 +10,8 @@ export default {
     editDraftPick: false,
     addCapExemption: false,
     editCapExemption: false,
-    renewLeague: false
+    renewLeague: false,
+    playerHistory: false
   },
   getters: {
   },
@@ -28,8 +29,11 @@ export default {
       state.registerLeagueInvites = !state.registerLeagueInvites
     },
     renewLeague (state) {
-      console.log('dialog/renewLeague')
       state.renewLeague = !state.renewLeague
+    },
+    playerHistory (state) {
+      console.log('playerHistory dialog')
+      state.playerHistory = !state.playerHistory
     }
   },
   actions: {
