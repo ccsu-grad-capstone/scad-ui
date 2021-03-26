@@ -55,7 +55,7 @@ export default {
   name: 'DefaultLayout',
 
   components: {
-    'loading': Loading
+    loading: Loading
   },
   data () {
     return {
@@ -68,7 +68,11 @@ export default {
         // { icon: 'list', text: 'My Team', route: `team/1` },
         { icon: 'list', text: `My Team`, route: `/team` },
         { icon: 'ballot', text: 'Draft Picks', route: '/draft-picks' },
-        { icon: 'swap_horizontal_circle', text: 'Cap Exemptions', route: '/cap-exemptions' },
+        {
+          icon: 'swap_horizontal_circle',
+          text: 'Cap Exemptions',
+          route: '/cap-exemptions'
+        },
         { icon: 'people', text: 'Players', route: '/players' },
         // { icon: 'home', text: 'League Home', route: 'league-home' },
         {
@@ -120,7 +124,12 @@ export default {
       return this.$store.state.team.myYahooTeamId
     },
     filteredLeagues () {
-      return this.scadLeagues.map(l => Object.assign({}, l, { value: l.yahooLeagueId, label: this.getLeagueName(l.yahooLeagueId) }))
+      return this.scadLeagues.map(l =>
+        Object.assign({}, l, {
+          value: l.yahooLeagueId,
+          label: this.getLeagueName(l.yahooLeagueId)
+        })
+      )
     }
   },
   methods: {
@@ -128,20 +137,23 @@ export default {
       if (nav === 'logout') {
         this.logout()
       } else if (nav === '/team') {
-        this.$router.push({ path: `/team/${this.myYahooTeamId}` })
+        this.$router
+          .push({ path: `/team/${this.myYahooTeamId}` })
           .catch(error => {
             if (error.name !== 'NavigationDuplicated') {
               throw error
             }
           })
       } else {
-        this.$router.push({
-          path: nav
-        }).catch(error => {
-          if (error.name !== 'NavigationDuplicated') {
-            throw error
-          }
-        })
+        this.$router
+          .push({
+            path: nav
+          })
+          .catch(error => {
+            if (error.name !== 'NavigationDuplicated') {
+              throw error
+            }
+          })
       }
     },
 
@@ -164,8 +176,14 @@ export default {
       }
 
       // console.log('[LAYOUT] - refreshStateWithCookies()')
-      if (this.$cookies.isKey('access_token') && !this.tokens.access_token) {
-        console.log('Access_Token is stored in cookies but not in store - Refresh Token and Update Store')
+      if (
+        this.$cookies.isKey('access_token') &&
+        this.$cookies.isKey('refresh_token') &&
+        !this.tokens.access_token
+      ) {
+        console.log(
+          'Access_Token is stored in cookies but not in store - Refresh Token and Update Store'
+        )
         const tokens = {
           access_token: this.$cookies.get('access_token'),
           refresh_token: this.$cookies.get('refresh_token'),
@@ -210,7 +228,10 @@ export default {
       this.loaded = false
       console.log('[LAYOUT] - switchLeagues()')
       console.log('ActiveLeague', this.activeLeague)
-      await this.$store.dispatch('league/switchLeagues', this.activeLeague.yahooLeagueId)
+      await this.$store.dispatch(
+        'league/switchLeagues',
+        this.activeLeague.yahooLeagueId
+      )
       this.navigate('/dashboard')
       this.loaded = true
     },

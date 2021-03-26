@@ -1,8 +1,8 @@
 <template lang="pug">
   q-dialog(v-model='visable' @hide="triggerDialog()")
-    q-card(style="width: 700px; max-width: 80vw;")
+    q-card(style="width: 800px; max-width: 80vw;")
       q-card-section.row.items-center
-        .row.full-width.q-gutter-xs.items-center.justify-center
+        .row.full-width.q-gutter-xs.items-center.justify-center.q-pb-md
           q-space
           q-avatar(size="50px")
             img(:src="player.headshot.url" style="width: 85%")
