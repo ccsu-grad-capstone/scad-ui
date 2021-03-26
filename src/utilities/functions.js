@@ -143,3 +143,11 @@ export function getPlayerHistoryLog (salary, type, team, userName, franchiseTag)
 export function getYahooTeamFromYahooTeamId (teams, id) {
   return teams ? teams.find(t => t.team_id == id) : undefined
 }
+
+export function getSalaryForCatch (t, p) {
+  if (p.transaction.type === 'add') {
+    return t.faab_bid ? t.faab_bid : 1
+  } else if (p.transaction.type === 'drop') {
+    return 0
+  }
+}

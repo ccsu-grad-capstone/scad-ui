@@ -165,7 +165,7 @@ export default {
           }
           commit('team/updateMyTeamIds', id, { root: true })
         } else {
-          notify.dashboardRegister()
+          // notify.dashboardRegister()
           commit('dashboardRegister', dashboard.data.result)
         }
       } catch (err) {

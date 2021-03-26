@@ -63,7 +63,7 @@ export default {
             rootState.user.tokens.id_token)
             .get(`/scad/league/${scadLeagueId}/player/all`)
           commit('updateScadPlayers', res.data.scadPlayers)
-          console.log('ALL-SCAD-PLAYERS: ', res.data.scadPlayers)
+          // console.log('ALL-SCAD-PLAYERS: ', res.data.scadPlayers)
         } catch (err) {
           catchAxiosNodeError(err)
         }

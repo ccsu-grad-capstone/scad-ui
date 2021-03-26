@@ -24,7 +24,7 @@
             )
               template(v-slot:body-cell-comment='props')
                 q-td(auto-width)
-                  | {{ props.row.comment }} #[span.text-grey-6 ({{ props.row.user ? props.row.user : '' }})]
+                  | {{ props.row.comment }} #[span.text-grey-6 ({{ props.row.team.name }})]
 
 </template>
 
@@ -42,6 +42,8 @@ export default {
       visable: true,
       pagination: {
         page: 1,
+        sortBy: 'date',
+        descending: true,
         rowsPerPage: 0 // 0 means all rows
       },
       columns: [
