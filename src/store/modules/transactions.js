@@ -60,11 +60,13 @@ export default {
     async updateLastTimestamp ({ state, commit }) {
       try {
         let update = {
-          lastTimestamp: state.transactions[0].timestamp
+          lastTimestamp: state.transactions[0].timestamp,
+          lastTransactionId: state.transactions[0].transaction_id
         }
         await node.put(`/transaction/update/${state._id}`, { data: update })
         commit('updateLastTimestamp', update)
       } catch (error) {
+        console.error(error)
         catchAxiosNodeError(error)
       }
     },
@@ -85,7 +87,6 @@ export default {
         // Check if lastest transaction is new based on timestamps
         if (state.transactions[0].timestamp > state.lastTimestamp) {
           let updatedTeams = []
-
           for (let t of state.transactions) {
             if (t.timestamp > state.lastTimestamp) { // Check Timestamp of last saved Transaction
               if ((t.type.indexOf('add') > -1 || t.type === 'drop') && t.status === 'successful') { // only execute if it's an add transaction
@@ -158,11 +159,8 @@ export default {
                     }
                   }
                 }
-              } // end add/drop transactions
-              //
-              // UPDATE SALARIES FOR THIS TRANSACTION
-              //
-            } else { break }
+              }
+            }
           }
           console.log('UPDATED TEAMS: ', updatedTeams)
 

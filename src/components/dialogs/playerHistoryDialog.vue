@@ -17,7 +17,7 @@
               dense
               flat
               hide-bottom
-              :data="scadPlayer ? scadPlayer.history : storeScadPlayer.history"
+              :data="history"
               :columns="columns"
               row-key="_id"
               :pagination.sync="pagination"
@@ -42,8 +42,8 @@ export default {
       visable: true,
       pagination: {
         page: 1,
-        sortBy: 'date',
-        descending: true,
+        // sortBy: 'date',
+        // descending: true,
         rowsPerPage: 0 // 0 means all rows
       },
       columns: [
@@ -60,13 +60,12 @@ export default {
           align: 'left'
 
         },
-        {
-          name: 'originalSalary',
-          label: 'Prev Salary',
-          field: row => `$${row.originalSalary}`,
-          align: 'left'
-
-        },
+        // {
+        //   name: 'originalSalary',
+        //   label: 'Prev Salary',
+        //   field: row => `$${row.originalSalary}`,
+        //   align: 'left'
+        // },
         {
           name: 'salary',
           label: 'Salary',
@@ -88,7 +87,15 @@ export default {
   },
   computed: {
     league () { return this.$store.state.league },
-    storeScadPlayer () { return this.$store.state.player.scadPlayer }
+    storeScadPlayer () { return this.$store.state.player.scadPlayer },
+    history () {
+    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      let history = this.scadPlayer ? this.scadPlayer.history : this.storeScadPlayer.history
+      return history.sort(function (a, b) {
+        if (moment(a.date).isBefore(b.date)) return 1
+        else return -1
+      })
+    }
   },
   methods: {
     async getScadPlayer () {
