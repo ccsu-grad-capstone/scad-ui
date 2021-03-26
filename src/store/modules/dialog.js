@@ -32,7 +32,7 @@ export default {
       state.renewLeague = !state.renewLeague
     },
     playerHistory (state) {
-      console.log('playerHistory dialog')
+      // console.log('playerHistory dialog')
       state.playerHistory = !state.playerHistory
     }
   },

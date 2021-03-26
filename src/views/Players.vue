@@ -43,8 +43,12 @@
                     .text-grey {{getNFLTeam(props.row.yahooPlayerId)}}
                   q-td(:class="myTeamStyle(props.row.yahooPlayerId)" key='owner' :props='props')
                     | {{ getOwner(props.row.yahooPlayerId) }}
+                  q-td(key='salaryHistory' :props='props' auto-width)
+                    q-icon(name="history" color="info" size="xs" @click="playerHistoryDialog(props.row)")
+                      q-tooltip View {{ getPlayerName(props.row.yahooPlayerId) }}'s salary history
                   q-td(key='salary' :props='props' auto-width)
                     .text-primary.text-weight-bolder.text-body2.q-pr-sm ${{props.row.salary}}
+      player-history-dialog(v-if="playerHistory" :scadPlayer="playerHistoryScadPlayer" :yahooPlayer="getYahooPlayer(yahooPlayers, playerHistoryScadPlayer.yahooPlayerId)")
 
 </template>
 
@@ -52,16 +56,20 @@
 /* eslint-disable eqeqeq */
 import referenceData from '../utilities/referenceData'
 import { myTeamStyle } from '../utilities/formatters'
-import { getHeadshot, getPos, getPlayerName, getNFLTeam, getOwner, searchFilter, positionFilter } from '../utilities/functions'
+import { getHeadshot, getPos, getPlayerName, getNFLTeam, getOwner, searchFilter, positionFilter, getYahooPlayer } from '../utilities/functions'
 import Loading from '../components/Loading'
+import PlayerHistoryDialog from '../components/dialogs/playerHistoryDialog'
 
 export default {
   components: {
-    'loading': Loading
+    'loading': Loading,
+    'player-history-dialog': PlayerHistoryDialog
+
   },
   data () {
     return {
       loaded: false,
+      playerHistoryScadPlayer: {},
       filter: {
         search: '',
         team: '',
@@ -107,6 +115,12 @@ export default {
           align: 'left',
           sortable: false,
           style: 'width: 250px'
+        },
+        {
+          name: 'salaryHistory',
+          label: '',
+          align: 'left',
+          sortable: false
         },
         {
           name: 'salary',
@@ -176,7 +190,10 @@ export default {
     },
     filteredTeams () {
       return this.yahooTeams.map(t => Object.assign({}, t, { value: t.name, label: t.name }))
-    }
+    },
+    playerHistory () { return this.$store.state.dialog.playerHistory },
+    getYahooPlayer () { return getYahooPlayer }
+
   },
   methods: {
     async getPlayers () {
@@ -225,6 +242,10 @@ export default {
         team: '',
         position: ''
       }
+    },
+    playerHistoryDialog (player) {
+      this.playerHistoryScadPlayer = player
+      this.$store.commit('dialog/playerHistory')
     },
     filteredPlayers () {
       var filtered = this.scadPlayers

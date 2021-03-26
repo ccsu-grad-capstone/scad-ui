@@ -39,30 +39,34 @@ export default {
       await dispatch('getAllScadPlayers', rootState.league.scadLeagueId)
     },
 
-    async getAllYahooPlayers ({ commit, rootState }, leagueId) {
+    async getAllYahooPlayers ({ commit, rootState, state }, leagueId) {
       // console.log(`[PLAYER-ACTION] - getAllYahooPlayers()`)
-      try {
-        const res = await nodeHeader(
-          rootState.user.tokens.access_token,
-          rootState.user.tokens.id_token)
-          .get(`/yahoo/league/${leagueId}/players`)
-        commit('updateYahooPlayers', res.data.players)
-        console.log('ALL-YAHOO-PLAYERS: ', res.data.players)
-      } catch (err) {
-        catchAxiosNodeError(err)
+      if (state.yahooPlayers.length === 0) {
+        try {
+          const res = await nodeHeader(
+            rootState.user.tokens.access_token,
+            rootState.user.tokens.id_token)
+            .get(`/yahoo/league/${leagueId}/players`)
+          commit('updateYahooPlayers', res.data.players)
+          console.log('ALL-YAHOO-PLAYERS: ', res.data.players)
+        } catch (err) {
+          catchAxiosNodeError(err)
+        }
       }
     },
-    async getAllScadPlayers ({ commit, rootState }, scadLeagueId) {
+    async getAllScadPlayers ({ commit, rootState, state }, scadLeagueId) {
       // console.log(`[PLAYER-ACTION] - getAllScadPlayers()`)
-      try {
-        const res = await nodeHeader(
-          rootState.user.tokens.access_token,
-          rootState.user.tokens.id_token)
-          .get(`/scad/league/${scadLeagueId}/player/all`)
-        commit('updateScadPlayers', res.data.scadPlayers)
-        console.log('ALL-SCAD-PLAYERS: ', res.data.scadPlayers)
-      } catch (err) {
-        catchAxiosNodeError(err)
+      if (state.scadPlayers.length === 0) {
+        try {
+          const res = await nodeHeader(
+            rootState.user.tokens.access_token,
+            rootState.user.tokens.id_token)
+            .get(`/scad/league/${scadLeagueId}/player/all`)
+          commit('updateScadPlayers', res.data.scadPlayers)
+          console.log('ALL-SCAD-PLAYERS: ', res.data.scadPlayers)
+        } catch (err) {
+          catchAxiosNodeError(err)
+        }
       }
     },
     async getTeamYahooPlayers ({ commit, rootState }, teamId) {

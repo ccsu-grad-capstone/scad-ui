@@ -93,8 +93,8 @@
                 div
                 q-btn(v-if="!franchiseTag && !editSalaries && scadSettings.franchiseTagSpots > 0" label='Franchise Tag' dense color='secondary' text-color='primary' size='sm' @click="franchiseTag = !franchiseTag")
                 q-btn(v-if="franchiseTag && !editSalaries && scadSettings.franchiseTagSpots > 0" label='Cancel' dense color='primary' text-color='white' size='sm' @click="franchiseTag = false")
-                q-btn(v-if="!editSalaries && !franchiseTag" label='Edit Salaries' dense color='secondary' text-color='primary' size='sm' @click="editSalaries = !editSalaries")
-                q-btn(v-if="editSalaries && !franchiseTag" label='Done' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
+                q-btn(v-if="!editSalaries && !franchiseTag && checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)" label='Edit Salaries' dense color='secondary' text-color='primary' size='sm' @click="editSalaries = !editSalaries")
+                q-btn(v-if="editSalaries && !franchiseTag && checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)" label='Done' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
             .col.full-width
               .q-py-md
                 q-table(
@@ -177,7 +177,7 @@
             team-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
             draft-pick-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
             cap-exemption-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam" @updateTeam="getTeam($route.params.team_id)")
-      player-history-dialog(v-if="playerHistory" :player="playerHistoryPlayer")
+      player-history-dialog(v-if="playerHistory" :yahooPlayer="playerHistoryPlayer")
 </template>
 
 <script>
@@ -192,7 +192,7 @@ import { getScadPlayer,
   getPlayerPrevSalary,
   getOriginalSalary
 } from '../utilities/functions'
-import { isIR, isScadPlayer } from '../utilities/validators'
+import { isIR, isScadPlayer, checkIfCommish } from '../utilities/validators'
 import { fmt } from '../utilities/formatters'
 import moment from 'moment'
 import Loading from '../components/Loading'
@@ -316,6 +316,7 @@ export default {
     }
   },
   computed: {
+    checkIfCommish () { return checkIfCommish },
     isIR () {
       return isIR
     },
@@ -611,7 +612,7 @@ export default {
           yahooTeamId: this.team.yahooTeam.team_id
         },
         user: this.user.user.name,
-        comment: 'Manual salary adjustment.',
+        comment: `Manual salary adjustment`,
         date: moment().format()
       }
       await this.$store.dispatch('team/savePlayer', {
@@ -694,6 +695,7 @@ export default {
     },
     playerHistoryDialog (player) {
       this.playerHistoryPlayer = player
+      console.log(this.playerHistoryPlayer)
       this.$store.commit('dialog/playerHistory')
     }
   }

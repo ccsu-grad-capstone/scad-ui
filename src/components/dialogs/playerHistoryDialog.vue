@@ -1,25 +1,31 @@
 <template lang="pug">
   q-dialog(v-model='visable' @hide="triggerDialog()")
     q-card(style="width: 800px; max-width: 80vw;")
-      q-card-section.row.items-center
-        .row.full-width.q-gutter-xs.items-center.justify-center.q-pb-md
+      .row.items-center.q-pa-sm.bg-grey-4
+        .row.full-width.q-gutter-xs.items-center.justify-center
           q-space
-          q-avatar(size="50px")
-            img(:src="player.headshot.url" style="width: 85%")
-          .text-h4.q-pl-md.text-weight-bolder {{player.name.full}}
+          q-avatar(size="70px" color='white')
+            img.q-pa-xs(:src="yahooPlayer.headshot.url" style="width: 85%")
+          .text-h4.q-pl-md.text-weight-bolder {{yahooPlayer.name.full}}
           q-space
           q-btn(icon="close" flat round dense @click="triggerDialog()")
 
+      q-card-section.row.items-center
         .row.full-width
           .col
             q-table(
               dense
               flat
               hide-bottom
-              :data="scadPlayer.history"
+              :data="scadPlayer ? scadPlayer.history : storeScadPlayer.history"
               :columns="columns"
               row-key="_id"
+              :pagination.sync="pagination"
             )
+              template(v-slot:body-cell-comment='props')
+                q-td(auto-width)
+                  | {{ props.row.comment }} #[span.text-grey-6 ({{ props.row.user ? props.row.user : '' }})]
+
 </template>
 
 <script>
@@ -28,11 +34,16 @@ import moment from 'moment'
 export default {
   name: 'PlayerHistoryDialog',
   props: {
-    player: Object
+    yahooPlayer: Object,
+    scadPlayer: Object
   },
   data () {
     return {
       visable: true,
+      pagination: {
+        page: 1,
+        rowsPerPage: 0 // 0 means all rows
+      },
       columns: [
         {
           name: 'date',
@@ -64,7 +75,7 @@ export default {
         {
           name: 'comment',
           label: 'Comments',
-          field: row => row.comment
+          align: 'left'
         }
       ]
     }
@@ -75,11 +86,13 @@ export default {
   },
   computed: {
     league () { return this.$store.state.league },
-    scadPlayer () { return this.$store.state.player.scadPlayer }
+    storeScadPlayer () { return this.$store.state.player.scadPlayer }
   },
   methods: {
     async getScadPlayer () {
-      await this.$store.dispatch('player/getScadPlayer', this.player.player_id)
+      if (!this.scadPlayer) {
+        await this.$store.dispatch('player/getScadPlayer', this.yahooPlayer.player_id)
+      }
     },
     triggerDialog () {
       this.$store.commit('dialog/playerHistory')
