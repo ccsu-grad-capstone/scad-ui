@@ -39,10 +39,10 @@
                 q-td(:props='props' auto-width)
                   div.q-pr-lg {{ props.row.year }}
               template(v-slot:body-cell-giving='props')
-                q-td(:props='props' auto-width :class="myTeamStyle(props.row.yahooTeamGive.team_id, myYahooTeamId)")
+                q-td(:props='props' auto-width :class="myTeamDPCEStyle(props.row.yahooTeamGive.team_id, myYahooTeamId)")
                   div.q-pr-lg {{ props.row.yahooTeamGive.name }}
               template(v-slot:body-cell-recieving='props')
-                q-td(:props='props' auto-width :class="myTeamStyle(props.row.yahooTeamRecieve.team_id, myYahooTeamId)")
+                q-td(:props='props' auto-width :class="myTeamDPCEStyle(props.row.yahooTeamRecieve.team_id, myYahooTeamId)")
                   div.q-pr-lg {{ props.row.yahooTeamRecieve.name }}
               template(v-slot:body-cell-amount='props')
                 q-td(:props='props' auto-width)
@@ -57,7 +57,7 @@ import addCapExemptionDialog from '../components/dialogs/addCapExemptionDialog'
 import editCapExemptionDialog from '../components/dialogs/editCapExemptionDialog'
 // import { node } from '../utilities/axios-node'
 // import { catchAxiosNodeError } from '../utilities/catchAxiosErrors'
-import { myTeamStyle } from '../utilities/formatters'
+import { myTeamDPCEStyle } from '../utilities/formatters'
 import Loading from '../components/Loading'
 
 /* eslint-disable eqeqeq */
@@ -137,8 +137,8 @@ export default {
     // this.checkCapExemptions()
   },
   computed: {
-    myTeamStyle () {
-      return myTeamStyle
+    myTeamDPCEStyle () {
+      return myTeamDPCEStyle
     },
     user () {
       return this.$store.state.user

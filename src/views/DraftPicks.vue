@@ -41,7 +41,7 @@
                 q-td(:props='props' auto-width)
                   div.q-pr-lg {{ displayPick(props.row.pick) }}
               template(v-slot:body-cell-owner='props')
-                q-td(:props='props' auto-width :class="myTeamStyle(props.row.team.team_id, myYahooTeamId)")
+                q-td(:props='props' auto-width :class="myTeamDPCEStyle(props.row.team.team_id, myYahooTeamId)")
                   div.q-pr-lg.text-weight-bold {{ props.row.team.name }}
               template(v-slot:body-cell-originalOwner='props')
                 q-td(:props='props' auto-width)
@@ -52,7 +52,7 @@
 <script>
 import referenceData from '../utilities/referenceData'
 import editDraftPickDialog from '../components/dialogs/editDraftPickDialog'
-import { myTeamStyle, displayPick } from '../utilities/formatters'
+import { myTeamDPCEStyle, displayPick } from '../utilities/formatters'
 import Loading from '../components/Loading'
 
 /* eslint-disable eqeqeq */
@@ -136,8 +136,8 @@ export default {
     this.getDraftPicks()
   },
   computed: {
-    myTeamStyle () {
-      return myTeamStyle
+    myTeamDPCEStyle () {
+      return myTeamDPCEStyle
     },
     displayPick () {
       return displayPick

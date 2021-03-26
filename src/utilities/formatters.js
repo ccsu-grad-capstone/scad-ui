@@ -11,6 +11,13 @@ export function myTeamStyle (yahooPlayerId, yahooTeams, yahooPlayers, myYahooTea
     'text-weight-bold': yahooTeam.team_id == myYahooTeamId
   }
 }
+
+export function myTeamDPCEStyle (id, myYahooTeamId) {
+  return {
+    'text-accent': id == myYahooTeamId,
+    'text-weight-bold': id == myYahooTeamId
+  }
+}
 export function fmt (row, col, viewByPos) {
   return {
     'text-primary': col === 'salary',
