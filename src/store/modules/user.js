@@ -68,7 +68,9 @@ export default {
           commit('refreshToken', response.data)
         })
         .catch(error => {
-          catchAxiosNodeError(error)
+          commit('logoutUser')
+          console.error(error)
+          // catchAxiosNodeError(error)
         })
     },
     async updateUser ({ state, commit }) {
