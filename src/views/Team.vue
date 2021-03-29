@@ -207,7 +207,6 @@ export default {
     'cap-exemption-overview': CapExemptionOverview,
     'loading': Loading,
     'player-history-dialog': PlayerHistoryDialog
-
   },
   data () {
     return {

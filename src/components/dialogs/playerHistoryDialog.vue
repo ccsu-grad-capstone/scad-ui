@@ -1,6 +1,7 @@
 <template lang="pug">
   q-dialog(v-model='visable' @hide="triggerDialog()")
-    q-card(style="width: 800px; max-width: 80vw;")
+    loading(v-if="!loaded" :message="'Fetching Player History...'")
+    q-card(v-else style="width: 800px; max-width: 80vw;")
       .row.items-center.q-pa-sm.bg-grey-4
         .row.full-width.q-gutter-xs.items-center.justify-center
           q-space
@@ -30,15 +31,20 @@
 
 <script>
 import moment from 'moment'
+import Loading from '../../components/Loading'
 
 export default {
   name: 'PlayerHistoryDialog',
+  components: {
+    'loading': Loading
+  },
   props: {
     yahooPlayer: Object,
     scadPlayer: Object
   },
   data () {
     return {
+      loaded: false,
       visable: true,
       pagination: {
         page: 1,
@@ -81,9 +87,9 @@ export default {
       ]
     }
   },
-  async mounted () {
+  mounted () {
     // console.log('playerHistoryDialog - mounted()')
-    await this.getScadPlayer()
+    this.getScadPlayer()
   },
   computed: {
     league () { return this.$store.state.league },
@@ -99,9 +105,11 @@ export default {
   },
   methods: {
     async getScadPlayer () {
+      this.loaded = false
       if (!this.scadPlayer) {
         await this.$store.dispatch('player/getScadPlayer', this.yahooPlayer.player_id)
       }
+      this.loaded = true
     },
     triggerDialog () {
       this.$store.commit('dialog/playerHistory')

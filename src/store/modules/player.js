@@ -102,7 +102,7 @@ export default {
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .get(`/scad/player/yahoo/${rootState.league.gameKey}/${rootState.league.yahooLeagueId}/player/${yahooPlayerId}`)
-        console.log('SCAD-PLAYER: ', res.data.scadPlayer)
+        // console.log('SCAD-PLAYER: ', res.data.scadPlayer)
         await commit('updateScadPlayer', res.data.scadPlayer)
       } catch (err) {
         catchAxiosNodeError(err)
