@@ -160,7 +160,7 @@ export default {
     },
 
     async savePlayer ({ rootState, dispatch, state }, { player, log, yahooTeamId }) {
-      console.log(`[TEAM-ACTION] - savePlayer()`, player)
+      console.log(`[TEAM-ACTION] - savePlayer()`)
       if (!player.history) {
         player.history = []
       }

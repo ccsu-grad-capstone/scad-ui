@@ -1,7 +1,7 @@
 import notify from './nofity'
 
 const catchAxiosError = (error) => {
-  console.error(error.response)
+  console.error(error)
   if (error.response.data) {
     notify.genericServerIssueWithResponse(error.response.data)
   } else {
@@ -10,7 +10,7 @@ const catchAxiosError = (error) => {
 }
 
 const catchAxiosNodeError = (error) => {
-  console.error(error.response)
+  console.error(error)
   if (error.response.data) {
     notify.nodeServerIssueWithResponse(error.response.data)
   } else {

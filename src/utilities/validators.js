@@ -72,3 +72,12 @@ export function checkIfCommish (yahooLeagueId, yahooCommishLeagues) {
   }
   return false
 }
+
+export function checkToLogEOYSalaries (yahooLeagueDetails, endOfSeasonPlayerHistory) {
+  if (yahooLeagueDetails && endOfSeasonPlayerHistory) {
+    if (yahooLeagueDetails.is_finished === 1 && yahooLeagueDetails.season) {
+      if (!endOfSeasonPlayerHistory.includes(yahooLeagueDetails.season)) return true
+    }
+  }
+  return false
+}

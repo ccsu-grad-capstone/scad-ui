@@ -1,6 +1,9 @@
 // import { notify } from '../../utilities/nofity'
 import { nodeHeader } from '../../utilities/axios-node'
 import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
+import { getOwner } from '../../utilities/functions'
+import { checkToLogEOYSalaries } from '../../utilities/validators'
+import moment from 'moment'
 
 export default {
   namespaced: true,
@@ -63,7 +66,7 @@ export default {
             rootState.user.tokens.id_token)
             .get(`/scad/league/${scadLeagueId}/player/all`)
           commit('updateScadPlayers', res.data.scadPlayers)
-          // console.log('ALL-SCAD-PLAYERS: ', res.data.scadPlayers)
+          console.log('ALL-SCAD-PLAYERS: ', res.data.scadPlayers)
         } catch (err) {
           catchAxiosNodeError(err)
         }
@@ -107,6 +110,33 @@ export default {
       } catch (err) {
         catchAxiosNodeError(err)
       }
+    },
+    async logAllPlayersEndOfYearSalary ({ rootState, state, dispatch }) {
+      // console.log(`[PLAYER-ACTION] - logAllPlayersEndOfYearSalary()`)
+      if (checkToLogEOYSalaries(rootState.league.yahooLeagueDetails, rootState.transactions.endOfSeasonPlayerHistory)) {
+        await dispatch('getAllPlayers')
+        for (const p of state.scadPlayers) {
+          let owner = getOwner(p.yahooPlayerId, rootState.league.yahooTeams, state.yahooPlayers)
+          const log = {
+            originalSalary: p.salary,
+            newSalary: p.salary,
+            type: 'EOY',
+            team: {
+              name: owner ? owner.name : 'Free Agent',
+              yahooTeamId: owner ? owner.team_id : 'Free Agent'
+            },
+            user: undefined,
+            comment: 'End of year salary.',
+            date: moment().format()
+          }
+          await dispatch('team/savePlayer', {
+            player: p,
+            log: log,
+            yahooTeamId: undefined
+          }, { root: true })
+        }
+        await dispatch('transactions/updateEndOfSeasonPlayerHistory', null, { root: true })
+      } else console.log('EOY Salaries have already been logged.')
     }
   }
 }

@@ -227,7 +227,7 @@ export default {
     },
     getOwner (yahooPlayerId) {
       if (this.loaded) {
-        return getOwner(yahooPlayerId, this.yahooTeams, this.yahooPlayers)
+        return getOwner(yahooPlayerId, this.yahooTeams, this.yahooPlayers).name
       }
     },
     async updateTeamFilter () {

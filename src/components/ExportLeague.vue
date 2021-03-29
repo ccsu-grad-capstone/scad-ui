@@ -2,6 +2,7 @@
   div.q-gutter-sm(v-if=" this.league.yahooLeagueDetails.is_finished === 1 && checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)")
     q-badge(v-if="processing" label="processing..." color="info")
     q-btn(v-if="!processing && lineupData.length === 0" label="Prepare Data" color="primary" size="xs" @click="getLineupData()")
+    q-btn(v-if="checkToLogEOYSalaries(league.yahooLeagueDetails, transaction.endOfSeasonPlayerHistory)" label="Log end of year salaries" size="sm", color = "primary" @click="logSalaries()")
     download-excel.gt-sm( v-if="!processing && lineupData.length > 0" :data="lineupData", :fields="lineupFields" :name="getLineupExportName(league.yahooLeagueDetails.name)" type="csv")
       q-btn(label="Export League" color="primary" size="xs")
     download-excel.gt-sm( v-if="!processing && draftPicks.draftPicks.length > 0" :data="draftPicks.draftPicks", :fields="dpFields" :name="getDpExportName(league.yahooLeagueDetails.name)" type="csv")
@@ -14,7 +15,7 @@
 
 import moment from 'moment'
 import { catchAxiosNodeError } from '../utilities/catchAxiosErrors'
-import { checkIfCommish } from '../utilities/validators'
+import { checkIfCommish, checkToLogEOYSalaries } from '../utilities/validators'
 // import { getScadPlayer } from '../utilities/functions'
 
 /* eslint-disable eqeqeq */
@@ -87,11 +88,13 @@ export default {
   computed: {
     user () { return this.$store.state.user },
     league () { return this.$store.state.league },
+    transaction () { return this.$store.state.transactions },
     team () { return this.$store.state.team },
     capExemptions () { return this.$store.state.capExemptions },
     draftPicks () { return this.$store.state.draftPicks },
     diagnostics () { return this.$store.state.diagnostics },
-    checkIfCommish () { return checkIfCommish }
+    checkIfCommish () { return checkIfCommish },
+    checkToLogEOYSalaries () { return checkToLogEOYSalaries }
 
   },
   methods: {
@@ -145,6 +148,9 @@ export default {
       } catch (error) {
         catchAxiosNodeError(error)
       }
+    },
+    async logSalaries () {
+      await this.$store.dispatch('player/logAllPlayersEndOfYearSalary')
     }
   }
 }

@@ -1,4 +1,4 @@
-import { isIR, isCommishNotRegistered, checkPos } from '../../src/utilities/validators'
+import { isIR, isCommishNotRegistered, checkPos, checkToLogEOYSalaries } from '../../src/utilities/validators'
 import { commissionerLeagues, scadLeagues, scadLeague, yahooPlayers } from '../data/testData.json'
 
 describe('validators.js Test Suite', () => {
@@ -48,6 +48,25 @@ describe('validators.js Test Suite', () => {
       expect(checkPos('', scadLeague, yahooPlayers)).toBeFalsy()
       expect(checkPos('RB', undefined, yahooPlayers)).toBeFalsy()
       expect(checkPos('rb', scadLeague, undefined)).toBeFalsy()
+    })
+  })
+
+  describe('checkToLogEOYSalaries tests', () => {
+    let yahooLeagueSettings = {
+      is_finished: 1,
+      season: '2020'
+    }
+    let endOfSeasonPlayerHistory = {}
+
+    it('should return accordingly', () => {
+      expect(checkToLogEOYSalaries(yahooLeagueSettings, endOfSeasonPlayerHistory)).toBeTruthy()
+      endOfSeasonPlayerHistory['2020'] = true
+      expect(checkToLogEOYSalaries(yahooLeagueSettings, endOfSeasonPlayerHistory)).toBeFalsy()
+      yahooLeagueSettings.season = '2021'
+      expect(checkToLogEOYSalaries(yahooLeagueSettings, endOfSeasonPlayerHistory)).toBeTruthy()
+      expect(checkToLogEOYSalaries(undefined, endOfSeasonPlayerHistory)).toBeFalsy()
+      expect(checkToLogEOYSalaries(yahooLeagueSettings)).toBeFalsy()
+      expect(checkToLogEOYSalaries()).toBeFalsy()
     })
   })
 })

@@ -16,7 +16,8 @@ export default {
     lastTimestamp: '',
     loaded: false,
     transactions: [],
-    reversedTransactions: []
+    reversedTransactions: [],
+    endOfSeasonPlayerHistory: {}
   },
   getters: {
 
@@ -27,6 +28,7 @@ export default {
       state._id = t._id
       state.lastChecked = moment(t.lastChecked).format('LLL')
       state.lastTimestamp = t.lastTimestamp
+      state.endOfSeasonPlayerHistory = t.endOfSeasonPlayerHistory
     },
     updateLastChecked (state, t) {
       state.lastChecked = moment(t.lastChecked).format('LLL')
@@ -37,13 +39,31 @@ export default {
     updateTransactions (state, transactions) {
       state.transactions = transactions
       state.reversedTransactions = transactions.slice().reverse()
+    },
+    updateEndOfSeasonPlayerHistory (state, update) {
+      state.endOfSeasonPlayerHistory = update.updateEndOfSeasonPlayerHistory
     }
   },
   actions: {
     async getTransactionTimestamp ({ rootState, commit }) {
       try {
         const res = await node.get(`/transaction/${rootState.league.gameKey}/${rootState.league.yahooLeagueId}`)
-        commit('updateTransaction', res.data.data[0])
+        // console.log(res.data.data[0])
+        await commit('updateTransaction', res.data.data[0])
+      } catch (error) {
+        catchAxiosNodeError(error)
+      }
+    },
+    async updateEndOfSeasonPlayerHistory ({ state, rootState, commit }) {
+      try {
+        let update = {
+          endOfSeasonPlayerHistory: state.endOfSeasonPlayerHistory.slice()
+        }
+        update.endOfSeasonPlayerHistory.push(rootState.league.yahooLeagueDetails.season)
+        console.log(update)
+        await node.put(`/transaction/update/${state._id}`, { data: update })
+        commit('updateEndOfSeasonPlayerHistory', update)
+        // commit('updateTransaction', transaction)
       } catch (error) {
         catchAxiosNodeError(error)
       }

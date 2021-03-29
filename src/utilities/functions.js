@@ -81,8 +81,10 @@ export function getNFLTeam (id, yahooPlayers) {
 
 export function getOwner (yahooPlayerId, yahooTeams, yahooPlayers) {
   let player = getYahooPlayer(yahooPlayers, yahooPlayerId)
-  let yahooTeam = yahooTeams.find(t => t.team_id == player.yahooTeamId)
-  return yahooTeam ? yahooTeam.name : undefined
+  if (player) {
+    let yahooTeam = yahooTeams.find(t => t.team_id == player.yahooTeamId)
+    return yahooTeam || undefined
+  } else return undefined
 }
 
 export function searchFilter (id, yahooPlayers, filter) {
