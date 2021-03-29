@@ -15,7 +15,8 @@ export default {
     lastChecked: '',
     lastTimestamp: '',
     loaded: false,
-    transactions: []
+    transactions: [],
+    reversedTransactions: []
   },
   getters: {
 
@@ -35,6 +36,7 @@ export default {
     },
     updateTransactions (state, transactions) {
       state.transactions = transactions
+      state.reversedTransactions = transactions.slice().reverse()
     }
   },
   actions: {
@@ -81,13 +83,12 @@ export default {
         // console.log(players)
 
         const transactions = await nodeHeader(rootState.user.tokens.access_token).get(`/yahoo/league/${rootState.league.yahooLeagueId}/transactions`)
-        console.log('TRANSACTIONS: ', transactions.data.transactions.transactions)
-        commit('updateTransactions', transactions.data.transactions.transactions)
-
+        console.log('TRANSACTIONS: ', transactions.data.transactions)
+        await commit('updateTransactions', transactions.data.transactions)
         // Check if lastest transaction is new based on timestamps
         if (state.transactions[0].timestamp > state.lastTimestamp) {
           let updatedTeams = []
-          for (let t of state.transactions) {
+          for (let t of state.reversedTransactions) {
             if (t.timestamp > state.lastTimestamp) { // Check Timestamp of last saved Transaction
               if ((t.type.indexOf('add') > -1 || t.type === 'drop') && t.status === 'successful') { // only execute if it's an add transaction
                 for (let p of t.players) { // loop through players
