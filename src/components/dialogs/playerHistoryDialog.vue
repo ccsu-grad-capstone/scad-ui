@@ -67,12 +67,12 @@ export default {
           align: 'left'
 
         },
-        {
-          name: 'originalSalary',
-          label: 'Prev Salary',
-          field: row => `$${row.originalSalary}`,
-          align: 'left'
-        },
+        // {
+        //   name: 'originalSalary',
+        //   label: 'Prev Salary',
+        //   field: row => `$${row.originalSalary}`,
+        //   align: 'left'
+        // },
         {
           name: 'salary',
           label: 'Salary',
