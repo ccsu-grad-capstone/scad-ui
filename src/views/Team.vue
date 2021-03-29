@@ -694,7 +694,7 @@ export default {
     },
     playerHistoryDialog (player) {
       this.playerHistoryPlayer = player
-      console.log(this.playerHistoryPlayer)
+      // console.log(this.playerHistoryPlayer)
       this.$store.commit('dialog/playerHistory')
     }
   }
