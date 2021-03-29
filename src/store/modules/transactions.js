@@ -100,13 +100,15 @@ export default {
                       rootState.user.tokens.id_token)
                       .get(`/scad/player/yahoo/${rootState.league.gameKey}/${rootState.league.yahooLeagueId}/player/${p.player_id}`)
                     let player = res.data.scadPlayer
+                    let newSalary
+                    let originalSalary = res.data.scadPlayer.salary
                     let log
                     if (p.transaction.type === 'add') {
                       yahooTeamId = p.transaction.destination_team_key.split('.')[4]
-                      player.salary = t.faab_bid ? t.faab_bid : 1
+                      newSalary = t.faab_bid ? t.faab_bid : 1
                       log = {
-                        originalSalary: res.data.scadPlayer.salary,
-                        newSalary: player.salary,
+                        originalSalary: originalSalary,
+                        newSalary: newSalary,
                         type: t.faab_bid ? 'Waivers' : 'FA',
                         team: {
                           name: getYahooTeamFromYahooTeamId(rootState.league.yahooTeams, yahooTeamId).name,
@@ -118,10 +120,10 @@ export default {
                       }
                     } else if (p.transaction.type === 'drop') {
                       yahooTeamId = p.transaction.source_team_key.split('.')[4]
-                      player.salary = 0
+                      newSalary = 0
                       log = {
-                        originalSalary: res.data.scadPlayer.salary,
-                        newSalary: 0,
+                        originalSalary: originalSalary,
+                        newSalary: newSalary,
                         type: 'Drop',
                         team: {
                           name: getYahooTeamFromYahooTeamId(rootState.league.yahooTeams, yahooTeamId).name,
@@ -132,6 +134,7 @@ export default {
                         date: new Date(t.timestamp * 1000)
                       }
                     }
+                    player.salary = newSalary
                     await dispatch('team/savePlayer', { player: player, log: log }, { root: true })
                     if (!updatedTeams.includes(yahooTeamId)) {
                       updatedTeams.push(yahooTeamId)

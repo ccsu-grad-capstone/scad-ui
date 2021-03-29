@@ -2,7 +2,7 @@
   q-dialog(v-model='visable' @hide="triggerDialog()")
     q-card(style="width: 800px; max-width: 80vw;")
       loading(v-if="!loaded" :message="'Fetching Player History...'")
-      .row(v-else)
+      .div(v-else)
         .row.items-center.q-pa-sm.bg-grey-4
           .row.full-width.q-gutter-xs.items-center.justify-center
             q-space
@@ -67,12 +67,12 @@ export default {
           align: 'left'
 
         },
-        // {
-        //   name: 'originalSalary',
-        //   label: 'Prev Salary',
-        //   field: row => `$${row.originalSalary}`,
-        //   align: 'left'
-        // },
+        {
+          name: 'originalSalary',
+          label: 'Prev Salary',
+          field: row => `$${row.originalSalary}`,
+          align: 'left'
+        },
         {
           name: 'salary',
           label: 'Salary',
