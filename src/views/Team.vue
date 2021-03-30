@@ -84,10 +84,10 @@
                 .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
                   | {{yahooTeam.draft_grade}}
       .row.full-width.justify-center
-        .row.full-width.q-px-md.justify-center
-          .col-xl-8.col-lg-8.col-md-8.col-sm-11.col-xs-11
-            .row.justify-between
-              q-select(square dense v-model='selectedTeam' :options="filteredTeams" style="width: 250px" @input="updateTeamPage")
+        .row.full-width.justify-center
+          .col-xl-8.col-lg-8.col-md-8.col-sm-12.col-xs-12.q-px-xs
+            .row.justify-between.align-center.q-px-sm
+              q-select(square dense v-model='selectedTeam' :options="filteredTeams" style="width: 300px" @input="updateTeamPage")
               q-toggle.q-pt-sm(v-model="viewByTeam", label="View By Position")
               div.q-gutter-sm.q-pt-sm
                 div
@@ -173,7 +173,7 @@
                             dense
                             autofocus
                             )
-          .col-xl-4.col-lg-4.col-md-4.col-sm-11.col-xs-11
+          .col-xl-4.col-lg-4.col-md-4.col-sm-12.col-xs-12.q-px-xs
             team-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
             draft-pick-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam")
             cap-exemption-overview(v-if="loaded" :yahooTeamId="this.$route.params.team_id" :scadTeam="this.scadTeam" :yahooTeam="this.yahooTeam" @updateTeam="getTeam($route.params.team_id)")

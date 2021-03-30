@@ -7,8 +7,8 @@
           q-space
         .row.full-width.q-px-md.gt-sm
           .text-subtitle2.text-grey  List of draft picks for drafting incoming rookies for next {{scadSettings.tradingDraftPickYears}} years.  Each rookie draft is {{scadSettings.rookieDraftRds}} rounds.  Each year, all owners are given {{scadSettings.rookieDraftRds}} picks, 1 for each round. Pick value for each draft pick is entered upon completion of fantasy season.
-        .row.full-width.justify-center.q-pt-md
-          .row.full-width.q-gutter-sm.q-px-sm
+        .row.full-width.justify-center.q-py-sm
+          .row.full-width.q-gutter-sm.q-pa-sm
             .col-xl-2.col-lg-2.col-md-2.col-sm-2.col-xs-3
               q-select( filled dense label="Owner" stack-label v-model='filter.team' :options='filteredTeams')
             .col-xl-2.col-lg-2.col-md-2.col-sm-2.col-xs-3
@@ -18,7 +18,7 @@
             div.q-gutter-sm
               q-btn.q-pa-xs(label='Clear' dense color='primary' text-color='white' size='sm' @click="clearFilter")
         loading(v-if="!loaded" :message="'Fetching SCAD draft picks...'")
-        .row.full-width.q-pa-md(v-else)
+        .row.full-width.q-pa-xs(v-else)
           div(style="width:100%")
             q-table(
               :data='filteredPicks',
@@ -27,6 +27,8 @@
               :pagination.sync="pagination",
               dense,
               no-data-label='Click the button above to create draft picks'
+              square
+              flat
             )
               template(v-slot:body-cell-edit='props')
                 q-td.q-pr-md(:props='props' auto-width)

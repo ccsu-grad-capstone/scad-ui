@@ -1,5 +1,5 @@
 <template lang="pug">
-  .q-pa-sm.col-xs-4
+  .q-pa-xs.col-xs-4
     .text-h6.text-weight-bolder Standings
     q-table(
       :data='yahooTeams',
@@ -8,6 +8,8 @@
       :pagination.sync="pagination",
       hide-bottom,
       dense
+      flat
+      square
       )
       template(v-slot:body-cell-name='props' auto-width)
         q-td(:props='props')

@@ -3,7 +3,7 @@
     loading(v-if="!loaded" :message="'Getting League Details'")
     .row.full-width.justify-center(v-else)
       .col-xl-10.col-lg-10.col-md-10.col-sm-12.col-xs-12
-        q-card.q-pa-md.q-ma-lg
+        q-card(flat square)
           q-card-section
             .row.full-width.q-gutter-between
               .col

@@ -1,5 +1,5 @@
 <template lang="pug">
-  .q-px-md
+  div
     .text-weight-bold Cap Exemptions:
     q-table(
       class="my-sticky-header-table"

@@ -56,14 +56,13 @@ describe('validators.js Test Suite', () => {
       is_finished: 1,
       season: '2020'
     }
-    let endOfSeasonPlayerHistory = {}
+    let endOfSeasonPlayerHistory = []
 
     it('should return accordingly', () => {
       expect(checkToLogEOYSalaries(yahooLeagueSettings, endOfSeasonPlayerHistory)).toBeTruthy()
-      endOfSeasonPlayerHistory['2020'] = true
+      endOfSeasonPlayerHistory.push('2020')
       expect(checkToLogEOYSalaries(yahooLeagueSettings, endOfSeasonPlayerHistory)).toBeFalsy()
-      yahooLeagueSettings.season = '2021'
-      expect(checkToLogEOYSalaries(yahooLeagueSettings, endOfSeasonPlayerHistory)).toBeTruthy()
+      // yahooLeagueSettings.season = '2021'
       expect(checkToLogEOYSalaries(undefined, endOfSeasonPlayerHistory)).toBeFalsy()
       expect(checkToLogEOYSalaries(yahooLeagueSettings)).toBeFalsy()
       expect(checkToLogEOYSalaries()).toBeFalsy()

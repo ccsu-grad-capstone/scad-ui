@@ -1,5 +1,5 @@
 <template lang="pug">
-  .q-pa-sm.col-xs-4
+  .q-pa-xs.col-xs-4
     .text-h6.text-weight-bolder Recent Transactions #[span.text-caption.text-grey-5 (Last Run: {{ lastChecked }})]
     q-card.full-width(v-if="!loaded")
       loading(v-if="!loaded" :message="'Fetching Transactions'")
@@ -22,16 +22,18 @@
                 .row
                   q-icon.q-pa-xs(name='fas fa-plus' color='positive' size='xs')
                 .row.justify-center
-                  .text-weight-bold.text-body2.text-grey-9 {{props.row.players[0].name.full}}
+                  .text-weight-bold.text-body2.text-grey-9.gt-xs {{props.row.players[0].name.full}}
+                  .text-weight-bold.text-caption.text-grey-9.lt-sm {{props.row.players[0].name.full}}
                   .gt-xs.text-caption.text-grey-6.text-weight-bold.q-pl-sm {{props.row.players[0].display_position}} - {{props.row.players[0].editorial_team_abbr}}
                   .text-caption.text-info.text-weight-bold.q-pl-sm (${{props.row.faab_bid ? props.row.faab_bid : '1'}} {{props.row.players[0].transaction.source_type === 'freeagents' ? 'FA' : 'Waiver'}})
               .row.full-width(v-if="props.row.players[1]")
                 .row
                   q-icon.q-pa-xs(name='fas fa-minus' color='negative' size='xs')
                 .row.justify-center
-                  .text-weight-bold.text-body2.text-grey-9 {{props.row.players[1].name.full}}
+                  .text-weight-bold.text-body2.text-grey-9.gt-xs {{props.row.players[1].name.full}}
+                  .text-weight-bold.text-caption.text-grey-9.lt-sm {{props.row.players[0].name.full}}
                   .gt-xs.text-caption.text-grey-6.text-weight-bold.q-pl-sm {{props.row.players[1].display_position}} - {{props.row.players[1].editorial_team_abbr}}
-                  .text-caption.text-grey-6.q-pl-sm (to {{props.row.players[1].transaction.destination_type}})
+                  .text-caption.text-grey-6.q-pl-sm.gt-sm (to {{props.row.players[1].transaction.destination_type}})
         div(v-else)
       template(v-slot:body-cell-team='props')
         q-td(:props='props' v-if="props.row.type.indexOf('add') > -1 && props.row.status === 'successful'")
@@ -39,7 +41,8 @@
             .row.items-center.q-gutter-sm
               q-avatar.gt-xs(size="30px")
                 img( :src="getTeamPic(props.row.players[0].transaction.destination_team_key)")
-              .text-weight-bold {{ props.row.players[0].transaction.destination_team_name }}
+              .text-weight-bold.gt-xs {{ props.row.players[0].transaction.destination_team_name }}
+              .text-weight-bold.text-caption.lt-sm {{ props.row.players[0].transaction.destination_team_name }}
         div(v-else)
 
 </template>

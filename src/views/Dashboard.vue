@@ -8,15 +8,15 @@
             img(src="//scad-assets.s3.amazonaws.com/statics/yahoo-ff.png")
         .column.justify-center.align-center.text-center
           .text-h4.text-weight-bolder {{league.yahooLeagueDetails.name}}
-          a(:href='league.yahooLeagueDetails.url') {{league.yahooLeagueDetails.url}}
-      .row
+          a.mobile-hide(:href='league.yahooLeagueDetails.url') {{league.yahooLeagueDetails.url}}
+      .row.mobile-hide
         export-league
       .row.full-width.justify-center
-        .col-xl-7.col-lg-7.col-md-7.col-sm-10.col-xs-10
+        .col-xl-7.col-lg-7.col-md-7.col-sm-12.col-xs-12
           lite-league.gt-xs(@updateTeamSalaries="updateTeamSalaries")
           lite-league-mobile.lt-sm(@updateTeamSalaries="updateTeamSalaries")
           transactions
-        .col-xl-4.col-lg-4.col-md-4.col-sm-10.col-xs-10
+        .col-xl-4.col-lg-4.col-md-4.col-sm-12.col-xs-12
           lite-my-team
       .row.full-width.justify-center(v-if="checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)")
         .col-10

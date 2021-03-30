@@ -1,5 +1,5 @@
 <template lang="pug">
-  .q-pa-sm
+  .q-pa-xs
     .text-h6.text-weight-bolder My Team
     q-table(
       :data='myScadTeam.roster',

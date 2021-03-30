@@ -1,5 +1,5 @@
 <template lang="pug">
-  .q-px-md
+  div
     .text-weight-bold Draft Picks:
     loading(v-if="!loaded" :message="'Fetching Draft Picks...'")
     q-table(

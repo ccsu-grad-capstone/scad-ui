@@ -9,7 +9,7 @@
             //- q-btn.q-mt-sm(v-if="updateCE && this.scadSettings.isCurrentlyLoggedInUserACommissioner" label='CLICK HERE TO SYNC CAP EXCEPTIONS' dense color='primary' text-color='white' size='sm' @click="updateMongoWithCE")
         .row.full-width.q-px-md.gt-sm
           .text-subtitle2.text-grey Cap Exceptions are transactions of salaries between two teams, typically as part of a larger trade.  Amount is added or deducted from participating team's salary for the given year. Each team has ${{salaryCapExemptionLimit}} to both give and recieve throughout the course of a season.
-        .row.full-width.q-gutter-between.q-pt-md
+        .row.full-width.q-gutter-between.q-py-sm
           .col.q-px-md
             .row.q-gutter-sm
               .col-xl-2.col-lg-2.col-md-2.col-sm-2.col-xs-4
@@ -21,7 +21,7 @@
           .col-xl-2.col-lg-2.col-md-2.col-sm-2.col-xs-4.q-pt-sm
             q-btn.q-pa-xs(label='New Cap Exception' dense color='secondary' text-color='primary' size='sm' @click="addCE()")
         loading(v-if="!loaded" :message="'Fetching SCAD cap exemptions...'")
-        .row.full-width.q-pa-md(v-else)
+        .row.full-width.q-pa-xs(v-else)
           div(style="width:100%")
             q-table(
               :data='filteredCapExemptions()',
@@ -30,6 +30,8 @@
               :pagination.sync="pagination",
               dense,
               no-data-label='No cap exemptions available yet..'
+              square
+              flat
             )
               template(v-slot:body-cell-edit='props')
                 q-td.q-pr-md(:props='props' auto-width)

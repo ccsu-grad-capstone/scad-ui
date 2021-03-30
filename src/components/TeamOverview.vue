@@ -1,5 +1,5 @@
 <template lang="pug">
-  .q-px-md
+  div
     .text-weight-bold(:class="countStyle(getPlayerCount())") Roster Availability: {{getPlayerCount()}}/{{rosterLimit}}
     q-markup-table(v-if="loaded" dense, flat, square)
       thead
