@@ -423,7 +423,7 @@ export default {
   },
   async created () {
     // console.log('[TEAM] - mounted()')
-    this.$store.dispatch('league/getYahooSettings', this.yahooLeagueId)
+    await this.$store.dispatch('league/getYahooSettings', this.yahooLeagueId)
     this.getTeam(this.$route.params.team_id)
   },
   beforeRouteUpdate (to, from, next) {
