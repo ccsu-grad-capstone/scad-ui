@@ -87,7 +87,7 @@ export default {
       return this.$store.state.league.scadLeagueId
     },
     yahooGameKey () {
-      return this.$store.state.league.gameKey
+      return this.$store.state.league.yahooGameKey
     },
     yahooTeams () {
       return this.$store.state.league.yahooTeams

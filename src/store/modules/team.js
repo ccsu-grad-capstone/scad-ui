@@ -72,7 +72,7 @@ export default {
         const res = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/yahoo/game/${rootState.league.gameKey}/league/${yahooLeagueId}/team/${yahooTeamId}/roster`)
+          .get(`/yahoo/game/${rootState.league.yahooGameKey}/league/${yahooLeagueId}/team/${yahooTeamId}/roster`)
         console.log('YAHOO-TEAM: ', res.data)
         commit('updateYahooTeam', res.data.team)
       } catch (err) {
@@ -81,7 +81,7 @@ export default {
     },
 
     async getScadTeam ({ commit, rootState }, { yahooLeagueId, yahooTeamId }) {
-      console.log(`[TEAM-ACTION] - getScadTeam(${yahooTeamId})`, rootState.league.gameKey)
+      console.log(`[TEAM-ACTION] - getScadTeam(${yahooTeamId})`, rootState.league.yahooGameKey)
       try {
         const team = await nodeHeader(
           rootState.user.tokens.access_token,
@@ -92,7 +92,7 @@ export default {
         const players = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/scad/league/yahoo/${rootState.league.gameKey}/${yahooLeagueId}/team/${yahooTeamId}/players`)
+          .get(`/scad/league/yahoo/${rootState.league.yahooGameKey}/${yahooLeagueId}/team/${yahooTeamId}/players`)
         // console.log('SCAD-TEAM - PLAYERS: ', players.data)
 
         let scadTeam = team.data.team
@@ -111,7 +111,7 @@ export default {
         const team = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/yahoo/league/${rootState.league.yahooLeagueId}/myTeam`)
+          .get(`/yahoo/game/${rootState.league.yahooGameKey}/league/${rootState.league.yahooLeagueId}/myTeam`)
 
         console.log('MY-YAHOO-TEAM: ', team.data)
         commit('updateMyYahooTeam', team.data.myTeam)
@@ -126,7 +126,7 @@ export default {
         const team = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/scad/league/${rootState.league.scadLeagueId}/team/myTeam`)
+          .get(`/scad/league/${rootState.league.scadLeagueId}/game/${rootState.league.yahooGameKey}/team/myTeam`)
         // console.log('MY-SCAD-TEAM - TEAM INFO: ', team.data)
 
         const players = await nodeHeader(

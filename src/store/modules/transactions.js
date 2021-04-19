@@ -47,7 +47,7 @@ export default {
   actions: {
     async getTransactionTimestamp ({ rootState, commit }) {
       try {
-        const res = await node.get(`/transaction/${rootState.league.gameKey}/${rootState.league.yahooLeagueId}`)
+        const res = await node.get(`/transaction/${rootState.league.yahooGameKey}/${rootState.league.yahooLeagueId}`)
         // console.log(res.data.data[0])
         await commit('updateTransaction', res.data.data[0])
       } catch (error) {
@@ -102,7 +102,7 @@ export default {
         // const players = await node.get(`/player/yahoo/${rootState.league.yahooLeagueId}/${rootState.user.tokens.access_token}`)
         // console.log(players)
 
-        const transactions = await nodeHeader(rootState.user.tokens.access_token).get(`/yahoo/league/${rootState.league.yahooLeagueId}/transactions`)
+        const transactions = await nodeHeader(rootState.user.tokens.access_token).get(`/yahoo/game/${rootState.league.yahooGameKey}/league/${rootState.league.yahooLeagueId}/transactions`)
         console.log('TRANSACTIONS: ', transactions.data.transactions)
         await commit('updateTransactions', transactions.data.transactions)
         // Check if lastest transaction is new based on timestamps
@@ -118,7 +118,7 @@ export default {
                     const res = await nodeHeader(
                       rootState.user.tokens.access_token,
                       rootState.user.tokens.id_token)
-                      .get(`/scad/player/yahoo/${rootState.league.gameKey}/${rootState.league.yahooLeagueId}/player/${p.player_id}`)
+                      .get(`/scad/player/yahoo/${rootState.league.yahooGameKey}/${rootState.league.yahooLeagueId}/player/${p.player_id}`)
                     let player = res.data.scadPlayer
                     let newSalary
                     let originalSalary = res.data.scadPlayer.salary
@@ -197,14 +197,14 @@ export default {
               rootState.user.tokens.access_token,
 
               rootState.user.tokens.id_token)
-              .get(`/scad/league/yahoo/${rootState.league.gameKey}/${rootState.league.yahooLeagueId}/team/${id}/players`)
+              .get(`/scad/league/yahoo/${rootState.league.yahooGameKey}/${rootState.league.yahooLeagueId}/team/${id}/players`)
             console.log(scadPlayers.data)
 
             // Get YAHOO Team
             const yahooTeam = await nodeHeader(
               rootState.user.tokens.access_token,
               rootState.user.tokens.id_token)
-              .get(`/yahoo/league/${rootState.league.yahooLeagueId}/team/${st.yahooTeamId}/roster`)
+              .get(`/yahoo/game/${rootState.league.yahooGameKey}/league/${rootState.league.yahooLeagueId}/team/${st.yahooTeamId}/roster`)
             console.log(yahooTeam.data)
 
             // Get Cap Exemptions for Team

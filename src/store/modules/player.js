@@ -49,7 +49,7 @@ export default {
           const res = await nodeHeader(
             rootState.user.tokens.access_token,
             rootState.user.tokens.id_token)
-            .get(`/yahoo/league/${leagueId}/players`)
+            .get(`/yahoo/game/${rootState.league.yahooGameKey}/league/${leagueId}/players`)
           commit('updateYahooPlayers', res.data.players)
           console.log('ALL-YAHOO-PLAYERS: ', res.data.players)
         } catch (err) {
@@ -78,7 +78,7 @@ export default {
         const res = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/yahoo/league/${rootState.league.yahooLeagueId}/team/${teamId}/players`)
+          .get(`/yahoo/game/${rootState.league.yahooGameKey}/league/${rootState.league.yahooLeagueId}/team/${teamId}/players`)
         console.log('TEAM-PLAYERS: ', res.data)
         await commit('updateYahooPlayers', res.data.players)
       } catch (err) {
@@ -91,7 +91,7 @@ export default {
         const res = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/scad/league/yahoo/${rootState.league.gameKey}/${rootState.league.yahooLeagueId}/team/${teamId}/players`)
+          .get(`/scad/league/yahoo/${rootState.league.yahooGameKey}/${rootState.league.yahooLeagueId}/team/${teamId}/players`)
         console.log('SCAD-PLAYERS: ', res.data.scadPlayers)
         await commit('updateScadPlayers', res.data.scadPlayers)
       } catch (err) {
@@ -104,7 +104,7 @@ export default {
         const res = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/scad/player/yahoo/${rootState.league.gameKey}/${rootState.league.yahooLeagueId}/player/${yahooPlayerId}`)
+          .get(`/scad/player/yahoo/${rootState.league.yahooGameKey}/${rootState.league.yahooLeagueId}/player/${yahooPlayerId}`)
         // console.log('SCAD-PLAYER: ', res.data.scadPlayer)
         await commit('updateScadPlayer', res.data.scadPlayer)
       } catch (err) {

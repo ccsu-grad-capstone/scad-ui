@@ -12,7 +12,7 @@ export default {
     isActive: false,
     key: '',
 
-    gameKey: '',
+    yahooGameKey: '',
     yahooLeagueId: '',
     scadLeagueId: '',
     renewedAvailable: false,
@@ -45,7 +45,7 @@ export default {
     },
     updateYahooLeagueDetails (state, league) {
       // console.log('[LEAGUE-MUTATION] - updateYahooLeagueDetails()')
-      state.gameKey = getGameKey(league.league_key)
+      state.yahooGameKey = getGameKey(league.league_key)
       state.yahooLeagueDetails = league
       state.yahooLeagueId = league.league_id
     },
@@ -219,7 +219,7 @@ export default {
         const yahooLeague = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/yahoo/league/${leagueId}`)
+          .get(`/yahoo/game/${state.yahooGameKey}/league/${leagueId}`)
         console.log('YAHOO-LEAGUE-DETAILS: ', yahooLeague.data)
         commit('updateYahooLeagueDetails', yahooLeague.data.league)
       } catch (err) {
@@ -233,7 +233,7 @@ export default {
         const settings = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/yahoo/league/${leagueId}/settings`)
+          .get(`/yahoo/game/${state.yahooGameKey}/league/${leagueId}/settings`)
         console.log('YAHOO-SETTINGS: ', settings.data)
         commit('updateYahooSettings', settings.data.settings)
       } catch (err) {
@@ -262,7 +262,7 @@ export default {
         const res = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/scad/league/yahoo/${state.gameKey}/${yahooId}`)
+          .get(`/scad/league/yahoo/${state.yahooGameKey}/${yahooId}`)
           // .get(`/scadleague/default`)
         console.log('SCAD-SETTINGS-ByYAHOO: ', res.data)
         commit('updateScadSettings', res.data.scadLeague)
@@ -277,7 +277,7 @@ export default {
         const standings = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/yahoo/league/${leagueId}/standings`)
+          .get(`/yahoo/game/${state.yahooGameKey}/league/${leagueId}/standings`)
         console.log('YAHOO-TEAMS: ', standings.data)
         commit('updateYahooTeams', standings.data.standings)
       } catch (err) {
@@ -299,13 +299,13 @@ export default {
       }
     },
 
-    async getAllYahooLeagues ({ rootState, commit }) {
+    async getAllYahooLeagues ({ rootState, commit, state }) {
       // console.log('[LEAGUE-ACTION] - getAllYahooLeagues()')
       try {
         const res = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/yahoo/league/get/all`)
+          .get(`/yahoo/game/${state.yahooGameKey}/league/get/all`)
         console.log('YAHOO-LEAGUES: ', res.data)
         commit('updateYahooLeagues', res.data.leagues)
       } catch (err) {
@@ -327,13 +327,13 @@ export default {
       }
     },
 
-    async getAllYahooCommishLeagues ({ rootState, commit }) {
+    async getAllYahooCommishLeagues ({ rootState, commit, state }) {
       // console.log('[LEAGUE-ACTION] - getAllYahooCommishLeagues()')
       try {
         const commishLeagues = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/yahoo/league/commissioner/all`)
+          .get(`/yahoo/game/${state.yahooGameKey}/league/commissioner/all`)
         console.log('YAHOO-COMMISH-LEAGUES: ', commishLeagues.data)
         commit('updateYahooCommishLeagues', commishLeagues.data.commishLeagues)
       } catch (err) {
