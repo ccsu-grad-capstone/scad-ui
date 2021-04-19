@@ -72,7 +72,7 @@ export default {
         const res = await nodeHeader(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/yahoo/league/${yahooLeagueId}/team/${yahooTeamId}/roster`)
+          .get(`/yahoo/game/${rootState.league.gameKey}/league/${yahooLeagueId}/team/${yahooTeamId}/roster`)
         console.log('YAHOO-TEAM: ', res.data)
         commit('updateYahooTeam', res.data.team)
       } catch (err) {

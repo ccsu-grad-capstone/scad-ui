@@ -112,7 +112,7 @@ export default {
             if (t.timestamp > state.lastTimestamp) { // Check Timestamp of last saved Transaction
               if ((t.type.indexOf('add') > -1 || t.type === 'drop') && t.status === 'successful') { // only execute if it's an add transaction
                 for (let p of t.players) { // loop through players
-                  console.log('PLAYER NAME:', p.name.full)
+                  console.log('PLAYER NAME:', p.name.full, 'Timestamp', t.timestamp)
                   let yahooTeamId
                   try {
                     const res = await nodeHeader(
