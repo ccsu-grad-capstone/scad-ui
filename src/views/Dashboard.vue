@@ -21,7 +21,7 @@
       .row.full-width.justify-center(v-if="checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)")
         .col-10
           league-diagnostics
-    renew-league-dialog(v-if="renewLeague")
+    renew-league-dialog(v-if="checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues) && user.user.guid === '2OMLCT3C2A42Z3FCGWJZCIDYLU' && renewLeague")
 
 </template>
 
