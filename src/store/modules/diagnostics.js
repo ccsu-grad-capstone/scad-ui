@@ -5,6 +5,7 @@ import moment from 'moment'
 import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
 import { calcTeamSalary, getPosCount } from '../../utilities/calculator'
 import { checkIRCount, checkCovidCount } from '../../utilities/validators'
+import { getTeamGuid } from '../../utilities/functions'
 
 export default {
   namespaced: true,
@@ -55,9 +56,9 @@ export default {
       try {
         let teams = []
         for (var yt of rootState.league.yahooTeams) {
-          let st = rootState.league.scadTeams.find(st => st.yahooTeamId == yt.team_id)
+          let st = rootState.league.scadTeams.find(st => st.guid == getTeamGuid(yt))
           await dispatch('team/getTeam', { yahooLeagueId: rootState.league.yahooLeagueId, yahooTeamId: yt.team_id }, { root: true })
-          await dispatch('capExemptions/getCapExemptionsByTeam', { teamId: yt.team_id }, { root: true })
+          await dispatch('capExemptions/getCapExemptionsByTeam', { guid: getTeamGuid(yt) }, { root: true })
           st.salary = calcTeamSalary(
             rootState.team.yahooTeam.roster,
             rootState.team.scadTeam.roster,
@@ -67,6 +68,11 @@ export default {
             rootState.team.yahooTeam,
             rootState.league.scadSettings.seasonYear
           )
+          for (const ce of rootState.capExemptions.capExemptionsByTeam) {
+            if (ce.year == rootState.league.scadLeague.seasonYear) {
+
+            }
+          }
           let team = {
             yahooTeam: rootState.team.yahooTeam,
             qb: getPosCount('QB', rootState.team.yahooTeam.roster),

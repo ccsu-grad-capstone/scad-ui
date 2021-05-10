@@ -80,6 +80,7 @@ export function getNFLTeam (id, yahooPlayers) {
 }
 
 export function getOwner (yahooPlayerId, yahooTeams, yahooPlayers) {
+  console.log(yahooPlayerId, yahooTeams, yahooPlayers)
   let player = getYahooPlayer(yahooPlayers, yahooPlayerId)
   if (player) {
     let yahooTeam = yahooTeams.find(t => t.team_id == player.yahooTeamId)
@@ -152,4 +153,10 @@ export function getSalaryForCatch (t, p) {
   } else if (p.transaction.type === 'drop') {
     return 0
   }
+}
+
+export function getTeamGuid (team) {
+  if (team.managers[0].manager) {
+    return team.managers[0].manager.guid
+  } else if (team.managers[0].guid) return team.managers[0].guid
 }

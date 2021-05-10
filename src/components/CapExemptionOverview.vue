@@ -36,6 +36,7 @@
 
 <script>
 import editCapExemptionDialog from '../components/dialogs/editCapExemptionDialog'
+import { getTeamGuid } from '../utilities/functions'
 
 export default {
   name: 'CapExemptionOverview',
@@ -116,14 +117,14 @@ export default {
       this.edit.ce = ce
     },
     getType (ce) {
-      if (ce.yahooTeamGive.team_id === this.yahooTeam.team_id) {
+      if (getTeamGuid(ce.yahooTeamGive) === getTeamGuid(this.yahooTeam)) {
         return 'Give'
       } else {
         return 'Recieve'
       }
     },
     getOtherTeam (ce) {
-      if (ce.yahooTeamGive.team_id === this.yahooTeam.team_id) {
+      if (getTeamGuid(ce.yahooTeamGive) === getTeamGuid(this.yahooTeam)) {
         return ce.yahooTeamRecieve.name
       } else {
         return ce.yahooTeamGive.name

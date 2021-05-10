@@ -41,10 +41,10 @@
                 q-td(:props='props' auto-width)
                   div.q-pr-lg {{ props.row.year }}
               template(v-slot:body-cell-giving='props')
-                q-td(:props='props' auto-width :class="myTeamDPCEStyle(props.row.yahooTeamGive.team_id, myYahooTeamId)")
+                q-td(:props='props' auto-width :class="myTeamDPCEStyle(getTeamGuid(props.row.yahooTeamGive), user.user.guid)")
                   div.q-pr-lg {{ props.row.yahooTeamGive.name }}
               template(v-slot:body-cell-recieving='props')
-                q-td(:props='props' auto-width :class="myTeamDPCEStyle(props.row.yahooTeamRecieve.team_id, myYahooTeamId)")
+                q-td(:props='props' auto-width :class="myTeamDPCEStyle(getTeamGuid(props.row.yahooTeamRecieve), user.user.guid)")
                   div.q-pr-lg {{ props.row.yahooTeamRecieve.name }}
               template(v-slot:body-cell-amount='props')
                 q-td(:props='props' auto-width)
@@ -61,6 +61,7 @@ import editCapExemptionDialog from '../components/dialogs/editCapExemptionDialog
 // import { catchAxiosNodeError } from '../utilities/catchAxiosErrors'
 import { myTeamDPCEStyle } from '../utilities/formatters'
 import Loading from '../components/Loading'
+import { getTeamGuid } from '../utilities/functions'
 
 /* eslint-disable eqeqeq */
 
@@ -181,8 +182,8 @@ export default {
     oldYahooLeagueId () {
       return this.$store.state.league.yahooLeagueDetails.renew
     },
-    myYahooTeamId () {
-      return this.$store.state.team.myYahooTeamId
+    getTeamGuid () {
+      return getTeamGuid
     }
   },
   methods: {
@@ -203,7 +204,7 @@ export default {
       Object.keys(this.filter).forEach(key => {
         if (this.filter[key] !== '') {
           if (key === 'team') {
-            filtered = filtered.filter(ce => ce.yahooTeamGive.team_id === this.filter.team.team_id || ce.yahooTeamRecieve.team_id === this.filter.team.team_id)
+            filtered = filtered.filter(ce => getTeamGuid(ce.yahooTeamGive) === getTeamGuid(this.filter.team) || getTeamGuid(ce.yahooTeamRecieve) === getTeamGuid(this.filter.team))
           } else {
             filtered = filtered.filter(ce => ce[key] == this.filter[key])
           }
@@ -217,12 +218,12 @@ export default {
     },
     async applyToTeams (ce) {
       if (ce.year == this.seasonYear) {
-        let giver = this.scadTeams.find(t => t.yahooTeamId == ce.yahooTeamGive.team_id)
+        let giver = this.scadTeams.find(t => t.yahooGuid == getTeamGuid(ce.yahooTeamGive))
         giver.exceptionOut += ce.amount
         giver.salary += ce.amount
         await this.$store.dispatch('team/saveTeam', giver)
 
-        let reciever = this.scadTeams.find(t => t.yahooTeamId == ce.yahooTeamRecieve.team_id)
+        let reciever = this.scadTeams.find(t => t.yahooGuid == getTeamGuid(ce.yahooTeamRecieve))
         reciever.exceptionIn += ce.amount
         reciever.salary -= ce.amount
         await this.$store.dispatch('team/saveTeam', reciever)

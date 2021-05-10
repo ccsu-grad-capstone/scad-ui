@@ -30,6 +30,7 @@
 <script>
 import referenceData from '../../utilities/referenceData'
 import { outputRound } from '../../utilities/formatters'
+import { getTeamGuid } from '../../utilities/functions'
 import moment from 'moment'
 
 export default {
@@ -70,7 +71,7 @@ export default {
   methods: {
     async savePick () {
       // console.log('[DRAFTPICK] Method - savePick()')
-      if (this.dp.team.team_id !== this.initOwner.team_id) {
+      if (getTeamGuid(this.dp.team) !== getTeamGuid(this.initOwner)) {
         let log = `${this.dp.team.name} (${this.dp.team.managers[0].nickname}) - ${moment().format('LLL')}`
         if (!this.dp.log) {
           this.dp.log = []

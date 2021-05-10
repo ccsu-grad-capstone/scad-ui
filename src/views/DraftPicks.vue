@@ -43,7 +43,7 @@
                 q-td(:props='props' auto-width)
                   div.q-pr-lg {{ displayPick(props.row.pick) }}
               template(v-slot:body-cell-owner='props')
-                q-td(:props='props' auto-width :class="myTeamDPCEStyle(props.row.team.team_id, myYahooTeamId)")
+                q-td(:props='props' auto-width :class="myTeamDPCEStyle(getTeamGuid(props.row.team), user.user.guid)")
                   div.q-pr-lg.text-weight-bold {{ props.row.team.name }}
               template(v-slot:body-cell-originalOwner='props')
                 q-td(:props='props' auto-width)
@@ -55,6 +55,7 @@
 import referenceData from '../utilities/referenceData'
 import editDraftPickDialog from '../components/dialogs/editDraftPickDialog'
 import { myTeamDPCEStyle, displayPick } from '../utilities/formatters'
+import { getTeamGuid } from '../utilities/functions'
 import Loading from '../components/Loading'
 
 /* eslint-disable eqeqeq */
@@ -171,12 +172,15 @@ export default {
     myYahooTeamId () {
       return this.$store.state.team.myYahooTeamId
     },
+    getTeamGuid () {
+      return getTeamGuid
+    },
     filteredPicks () {
       var filtered = this.draftPicks
       Object.keys(this.filter).forEach(key => {
         if (this.filter[key] !== '') {
           if (key === 'team') {
-            filtered = filtered.filter(dp => dp.team.team_id === this.filter.team.team_id)
+            filtered = filtered.filter(dp => getTeamGuid(dp.team) === getTeamGuid(this.filter.team))
           } else {
             filtered = filtered.filter(dp => dp[key] === this.filter[key])
           }

@@ -130,7 +130,8 @@ export default {
   },
   methods: {
     async getPicks () {
-      await this.$store.dispatch('draftPicks/getDraftPicksByTeam', { teamId: this.yahooTeamId })
+      console.log(this.yahooTeam)
+      await this.$store.dispatch('draftPicks/getDraftPicksByTeam', { guid: this.yahooTeam.managers[0].guid })
       this.loaded = true
     },
     editPick (dp) {

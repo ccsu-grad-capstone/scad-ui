@@ -1,5 +1,7 @@
 // import notify from './nofity'
 
+import { getTeamGuid } from './functions'
+
 /* eslint-disable eqeqeq */
 
 // yahooPlayers: array of team's yahooPlayers
@@ -19,7 +21,7 @@ export function calcTeamSalary (yahooPlayers, scadPlayers, capExemptions, franch
     if (capExemptions) {
       capExemptions.forEach(ce => {
         if (year == ce.year) {
-          if (ce.yahooTeamGive.team_id == yahooTeam.team_id) {
+          if (getTeamGuid(ce.yahooTeamGive) == getTeamGuid(yahooTeam)) {
             salary += ce.amount
           } else { salary -= ce.amount }
         }

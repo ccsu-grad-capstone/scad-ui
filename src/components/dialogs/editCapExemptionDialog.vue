@@ -32,7 +32,7 @@
 /* eslint-disable eqeqeq */
 import referenceData from '../../utilities/referenceData'
 import { displayTeamName, fmtCeDate } from '../../utilities/formatters'
-import { getYears } from '../../utilities/functions'
+import { getYears, getTeamGuid } from '../../utilities/functions'
 
 export default {
   name: 'EditCapExemptionDialog',
@@ -99,12 +99,12 @@ export default {
     },
     async saveTeamsOnRemove () {
       if (this.capExemption.year == this.seasonYear) {
-        let giver = this.scadTeams.find(t => t.yahooTeamId == this.capExemption.yahooTeamGive.team_id)
+        let giver = this.scadTeams.find(t => t.yahooGuid == getTeamGuid(this.capExemption.yahooTeamGive))
         giver.exceptionOut -= this.capExemption.amount
         giver.salary -= this.capExemption.amount
         await this.$store.dispatch('team/saveTeam', giver)
 
-        let reciever = this.scadTeams.find(t => t.yahooTeamId == this.capExemption.yahooTeamRecieve.team_id)
+        let reciever = this.scadTeams.find(t => t.yahooGuid == getTeamGuid(this.capExemption.yahooTeamRecieve))
         reciever.exceptionIn -= this.capExemption.amount
         reciever.salary += this.capExemption.amount
         await this.$store.dispatch('team/saveTeam', reciever)

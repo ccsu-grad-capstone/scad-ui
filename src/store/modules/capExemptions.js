@@ -39,10 +39,10 @@ export default {
         catchAxiosNodeError(error)
       }
     },
-    async getCapExemptionsByTeam ({ commit, state, rootState }, { teamId }) {
-      // console.log('[CAPEXEMPTIONS-ACTION] - getCapExemptionsByTeam()')
+    async getCapExemptionsByTeam ({ commit, state, rootState }, { guid }) {
+      console.log('[CAPEXEMPTIONS-ACTION] - getCapExemptionsByTeam()', guid)
       try {
-        const response = await node.get(`/capExemptions/${rootState.league.scadLeagueId}/${teamId}`)
+        const response = await node.get(`/capExemptions/${rootState.league.scadLeagueId}/${guid}`)
         console.log('CAP-EXEMPTIONS-team', response.data.data)
         commit('updateCapExemptionsTeam', { ce: response.data.data })
       } catch (error) {

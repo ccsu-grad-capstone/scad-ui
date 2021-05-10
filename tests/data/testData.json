@@ -14562,7 +14562,19 @@
       "year": 2020,
       "timestamp": "2020-06-23T18:45:38.863Z",
       "addedBy": "Ryan Lauzon",
-      "yahooTeamGive": { "team_id": 2 },
+      "yahooTeamGive": { "team_id": 2, "managers": [
+        {
+          "manager": {
+            "manager_id": "2",
+            "nickname": "Ryan",
+            "guid": "2OMLCT3C2A42Z3FCGWJZCIDYLU",
+            "is_commissioner": "1",
+            "is_current_login": "1",
+            "email": "lauzon232@gmail.com",
+            "image_url": "https://s.yimg.com/ag/images/5877/59490392552_ac9b6a_64sq.jpg"
+          }
+        }
+      ] },
       "yahooTeamRecieve": { "team_id": 9 },
       "amount": 10,
       "appliedToTeams": true,

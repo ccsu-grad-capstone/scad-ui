@@ -39,10 +39,10 @@ export default {
         catchAxiosNodeError(error)
       }
     },
-    async getDraftPicksByTeam ({ commit, state, rootState }, { teamId }) {
-      // console.log('[DRAFTPICK-ACTION] - getDraftPicksByTeam()')
+    async getDraftPicksByTeam ({ commit, state, rootState }, { guid }) {
+      console.log('[DRAFTPICK-ACTION] - getDraftPicksByTeam()', guid)
       try {
-        const response = await node.get(`/draftPicks/${rootState.league.scadLeagueId}/${teamId}`)
+        const response = await node.get(`/draftPicks/${rootState.league.scadLeagueId}/${guid}`)
         console.log('DRAFTPICKS-team', response.data)
         commit('updateDraftPicksByTeam', { dp: response.data.data })
       } catch (error) {

@@ -1,7 +1,7 @@
 // import { notify } from '../../utilities/nofity'
 import { nodeHeader } from '../../utilities/axios-node'
 import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
-import { getOwner } from '../../utilities/functions'
+import { getOwner, getTeamGuid } from '../../utilities/functions'
 import { checkToLogEOYSalaries } from '../../utilities/validators'
 import moment from 'moment'
 
@@ -124,7 +124,8 @@ export default {
             type: 'EOY',
             team: {
               name: owner ? owner.name : 'Free Agent',
-              yahooTeamId: owner ? owner.team_id : 'Free Agent'
+              yahooTeamId: owner ? owner.team_id : 'Free Agent',
+              yahooGuid: owner ? getTeamGuid(owner) : 'Free Agnet'
             },
             user: undefined,
             comment: 'End of year salary.',

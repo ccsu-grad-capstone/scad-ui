@@ -191,9 +191,10 @@ import { getScadPlayer,
   isFranchiseTagged,
   getPlayerPrevSalary,
   getOriginalSalary
-} from '../utilities/functions'
+  , getTeamGuid } from '../utilities/functions'
 import { isIR, isScadPlayer, checkIfCommish } from '../utilities/validators'
 import { fmt } from '../utilities/formatters'
+
 import moment from 'moment'
 import Loading from '../components/Loading'
 
@@ -446,7 +447,7 @@ export default {
         })
       }
       await this.$store.dispatch('capExemptions/getCapExemptionsByTeam', {
-        teamId: this.$route.params.team_id
+        guid: this.yahooTeam.managers[0].guid
       })
       this.scadTeam = JSON.parse(
         JSON.stringify(this.$store.state.team.scadTeam)
@@ -540,7 +541,8 @@ export default {
         type: 'Manual',
         team: {
           name: this.team.yahooTeam.name,
-          yahooTeamId: this.team.yahooTeam.team_id
+          yahooTeamId: this.team.yahooTeam.team_id,
+          yahooGuid: getTeamGuid(this.team.yahooTeam)
         },
         user: this.user.user.name,
         comment: 'Adding Franchise Tag',
@@ -581,7 +583,8 @@ export default {
         type: 'Manual',
         team: {
           name: this.team.yahooTeam.name,
-          yahooTeamId: this.team.yahooTeam.team_id
+          yahooTeamId: this.team.yahooTeam.team_id,
+          yahooGuid: getTeamGuid(this.team.yahooTeam)
         },
         user: this.user.user.name,
         comment: 'Removing Franchise Tag',
@@ -608,7 +611,8 @@ export default {
         type: 'Manual',
         team: {
           name: this.team.yahooTeam.name,
-          yahooTeamId: this.team.yahooTeam.team_id
+          yahooTeamId: this.team.yahooTeam.team_id,
+          yahooGuid: getTeamGuid(this.team.yahooTeam)
         },
         user: this.user.user.name,
         comment: `Manual salary adjustment`,

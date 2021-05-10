@@ -55,7 +55,7 @@
 <script>
 /* eslint-disable eqeqeq */
 import referenceData from '../utilities/referenceData'
-import { myTeamStyle } from '../utilities/formatters'
+// import { myTeamStyle } from '../utilities/formatters'
 import { getHeadshot, getPos, getPlayerName, getNFLTeam, getOwner, searchFilter, positionFilter, getYahooPlayer } from '../utilities/functions'
 import Loading from '../components/Loading'
 import PlayerHistoryDialog from '../components/dialogs/playerHistoryDialog'
@@ -202,7 +202,8 @@ export default {
     },
     myTeamStyle (yahooPlayerId) {
       if (this.loaded) {
-        return myTeamStyle(yahooPlayerId, this.yahooTeams, this.yahooPlayers, this.myYahooTeamId)
+        // return myTeamStyle(yahooPlayerId, this.yahooTeams, this.yahooPlayers, this.myYahooTeamId)
+
       }
     },
     getHeadshot (id) {
@@ -227,7 +228,8 @@ export default {
     },
     getOwner (yahooPlayerId) {
       if (this.loaded) {
-        return getOwner(yahooPlayerId, this.yahooTeams, this.yahooPlayers).name
+        let owner = getOwner(yahooPlayerId, this.yahooTeams, this.yahooPlayers)
+        console.log(owner)
       }
     },
     async updateTeamFilter () {
@@ -248,7 +250,7 @@ export default {
       this.$store.commit('dialog/playerHistory')
     },
     filteredPlayers () {
-      var filtered = this.scadPlayers
+      let filtered = this.scadPlayers
       Object.keys(this.filter).forEach(key => {
         if (this.filter[key] !== '') {
           if (key === 'search') {
