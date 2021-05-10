@@ -1,14 +1,19 @@
 <template lang="pug">
-  div.q-gutter-sm(v-if=" this.league.yahooLeagueDetails.is_finished === 1 && checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)")
-    q-badge(v-if="processing" label="processing..." color="info")
-    q-btn(v-if="!processing && lineupData.length === 0" label="Prepare Data" color="primary" size="xs" @click="getLineupData()")
-    q-btn(v-if="checkToLogEOYSalaries(league.yahooLeagueDetails, transaction.endOfSeasonPlayerHistory)" label="Log end of year salaries" size="sm", color = "primary" @click="logSalaries()")
-    download-excel.gt-sm( v-if="!processing && lineupData.length > 0" :data="lineupData", :fields="lineupFields" :name="getLineupExportName(league.yahooLeagueDetails.name)" type="csv")
-      q-btn(label="Export League" color="primary" size="xs")
-    download-excel.gt-sm( v-if="!processing && draftPicks.draftPicks.length > 0" :data="draftPicks.draftPicks", :fields="dpFields" :name="getDpExportName(league.yahooLeagueDetails.name)" type="csv")
-      q-btn(label="Export Draft Picks" color="primary" size="xs")
-    download-excel.gt-sm( v-if="!processing && capExemptions.capExemptions.length > 0" :data="capExemptions.capExemptions", :fields="ceFields" :name="getCeExportName(league.yahooLeagueDetails.name)" type="csv")
-      q-btn(label="Export Cap Exemptions" color="primary" size="xs")
+  div
+    div.q-gutter-sm(v-if=" this.league.yahooLeagueDetails.is_finished === 1 && checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)")
+      q-badge(v-if="processing" label="processing..." color="info")
+      q-btn(v-if="!processing && lineupData.length === 0" label="Prepare Data" color="primary" size="xs" @click="getLineupData()")
+      q-btn(v-if="checkToLogEOYSalaries(league.yahooLeagueDetails, transaction.endOfSeasonPlayerHistory)" label="Log end of year salaries" size="sm", color = "primary" @click="logSalaries()")
+      download-excel.gt-sm( v-if="!processing && lineupData.length > 0" :data="lineupData", :fields="lineupFields" :name="getLineupExportName(league.yahooLeagueDetails.name)" type="csv")
+        q-btn(label="Export League" color="primary" size="xs")
+      download-excel.gt-sm( v-if="!processing && lineupData.length > 0" :data="playersData", :fields="playersFields" :name="getPlayersExportName(league.yahooLeagueDetails.name)" type="csv")
+        q-btn(label="Export Players For Corrections" color="primary" size="xs")
+      download-excel.gt-sm( v-if="!processing && draftPicks.draftPicks.length > 0" :data="draftPicks.draftPicks", :fields="dpFields" :name="getDpExportName(league.yahooLeagueDetails.name)" type="csv")
+        q-btn(label="Export Draft Picks" color="primary" size="xs")
+      download-excel.gt-sm( v-if="!processing && capExemptions.capExemptions.length > 0" :data="capExemptions.capExemptions", :fields="ceFields" :name="getCeExportName(league.yahooLeagueDetails.name)" type="csv")
+        q-btn(label="Export Cap Exemptions" color="primary" size="xs")
+      q-btn(label="Import Updated Salaries" color="accent" size="xs" @click="openImportUpdatedSalaries()")
+    import-updated-salaries-dialog(v-if="importUpdatedSalaries")
 </template>
 
 <script>
@@ -16,6 +21,8 @@
 import moment from 'moment'
 import { catchAxiosNodeError } from '../utilities/catchAxiosErrors'
 import { checkIfCommish, checkToLogEOYSalaries } from '../utilities/validators'
+import importUpdatedSalariesDialog from '../components/dialogs/importUpdatedSalariesDialog'
+
 // import { getScadPlayer } from '../utilities/functions'
 
 /* eslint-disable eqeqeq */
@@ -24,11 +31,22 @@ export default {
 
   name: 'ExportLeague',
   components: {
+    'import-updated-salaries-dialog': importUpdatedSalariesDialog
   },
   data () {
     return {
       processing: false,
       lineupData: [],
+      playersData: [],
+      playersFields: {
+        'Name': 'yahooPlayer.name.full',
+        'Salary': 'scadPlayer.salary',
+        'Was Franchise Tagged': 'scadPlayer.isFranchiseTag',
+        '_id': 'scadPlayer._id',
+        'scadLeagueId': 'scadPlayer.scadLeagueId',
+        'yahooLeagueId': 'scadPlayer.yahooLeagueId',
+        'yahooPlayerId': 'yahooPlayer.player_id'
+      },
       lineupFields: {
         'Team Name': 'yahooTeam.name',
         'Manager': 'yahooTeam.manager',
@@ -94,12 +112,16 @@ export default {
     draftPicks () { return this.$store.state.draftPicks },
     diagnostics () { return this.$store.state.diagnostics },
     checkIfCommish () { return checkIfCommish },
-    checkToLogEOYSalaries () { return checkToLogEOYSalaries }
+    checkToLogEOYSalaries () { return checkToLogEOYSalaries },
+    importUpdatedSalaries () { return this.$store.state.dialog.importUpdatedSalaries }
 
   },
   methods: {
     getLineupExportName (name) {
       return `${name}_Lineups_${moment().format('lll')}.xls`
+    },
+    getPlayersExportName (name) {
+      return `${name}_Players_${moment().format('lll')}.xls`
     },
     getDpExportName (name) {
       return `${name}_DraftPicks_${moment().format('lll')}.xls`
@@ -107,10 +129,12 @@ export default {
     getCeExportName (name) {
       return `${name}_CapExemptions_${moment().format('lll')}.xls`
     },
-
+    openImportUpdatedSalaries () { this.$store.commit('dialog/importUpdatedSalaries') },
     async getLineupData () {
       this.processing = true
+
       try {
+        let leaguePlayers = []
         // LINEUP
         for (var yt of this.league.yahooTeams) {
           let st = this.league.scadTeams.find(st => st.yahooTeamId == yt.team_id)
@@ -127,15 +151,18 @@ export default {
             let players = yahooPlayers.filter(p => p.display_position === positions[i])
             for (let j = 0; j < players.length; j++) {
               let sp = this.team.scadTeam.roster.find(player => player.yahooPlayerId == players[j].player_id)
+              this.playersData.push({ scadPlayer: sp, yahooPlayer: players[j] })
               playersNames[`${positions[i]}${j + 1}`] = players[j].name.full
               salaries[`${positions[i]}${j + 1}`] = sp.salary
             }
           }
 
           let team = { players: playersNames, yahooTeam: this.team.yahooTeam }
-          team.yahooTeam.manager = yt.managers[0].manager.nickname
+          team.yahooTeam.manager = team.yahooTeam.managers[0].nickname
           salaries.overallSalary = st.salary
 
+          console.log(this.playersData)
+          leaguePlayers.push(team.yahooTeam.roster)
           this.lineupData.push(team)
           this.lineupData.push({ players: salaries })
           this.lineupData.push([])

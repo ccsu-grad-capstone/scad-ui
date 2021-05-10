@@ -65,6 +65,7 @@ export default {
             rootState.user.tokens.access_token,
             rootState.user.tokens.id_token)
             .get(`/scad/league/${scadLeagueId}/player/all`)
+          console.log(res)
           commit('updateScadPlayers', res.data.scadPlayers)
           console.log('ALL-SCAD-PLAYERS: ', res.data.scadPlayers)
         } catch (err) {

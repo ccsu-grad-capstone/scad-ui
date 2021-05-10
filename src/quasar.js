@@ -55,7 +55,8 @@ import {
   QCircularProgress,
   QTh,
   QFooter,
-  QParallax
+  QParallax,
+  QUploader
 
 } from 'quasar'
 
@@ -118,7 +119,8 @@ Vue.use(Quasar, {
     QCircularProgress,
     QTh,
     QFooter,
-    QParallax
+    QParallax,
+    QUploader
   },
   directives: {
     Ripple

@@ -11,7 +11,8 @@ export default {
     addCapExemption: false,
     editCapExemption: false,
     renewLeague: false,
-    playerHistory: false
+    playerHistory: false,
+    importUpdatedSalaries: false
   },
   getters: {
   },
@@ -34,6 +35,9 @@ export default {
     playerHistory (state) {
       // console.log('playerHistory dialog')
       state.playerHistory = !state.playerHistory
+    },
+    importUpdatedSalaries (state) {
+      state.importUpdatedSalaries = !state.importUpdatedSalaries
     }
   },
   actions: {
