@@ -32,7 +32,7 @@ export default {
     async getDraftPicksByLeague ({ commit, state, rootState }) {
       // console.log('[DRAFTPICK-ACTION] - getDraftPicksByLeague()')
       try {
-        const response = await node.get(`/draftPicks/${rootState.league.scadLeagueId}`)
+        const response = await node.get(`/draftPicks/${rootState.league.scadLeagueId}/${rootState.league.scadSettings.seasonYear}`)
         console.log('DRAFTPICKS-league', response.data)
         commit('updateDraftPicks', { dp: response.data.data })
       } catch (error) {
@@ -41,8 +41,9 @@ export default {
     },
     async getDraftPicksByTeam ({ commit, state, rootState }, { guid }) {
       console.log('[DRAFTPICK-ACTION] - getDraftPicksByTeam()', guid)
+      console.log(rootState.league.scadSettings.seasonYear)
       try {
-        const response = await node.get(`/draftPicks/${rootState.league.scadLeagueId}/${guid}`)
+        const response = await node.get(`/draftPicks/${rootState.league.scadLeagueId}/${rootState.league.scadSettings.seasonYear}/${guid}`)
         console.log('DRAFTPICKS-team', response.data)
         commit('updateDraftPicksByTeam', { dp: response.data.data })
       } catch (error) {

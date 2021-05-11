@@ -32,7 +32,7 @@ export default {
     async getCapExemptionsByLeague ({ commit, state, rootState }) {
       // console.log('[CAPEXEMPTIONS-ACTION] - getCapExemptionsByLeague()')
       try {
-        const response = await node.get(`/capExemptions/${rootState.league.scadLeagueId}`)
+        const response = await node.get(`/capExemptions/${rootState.league.scadLeagueId}/${rootState.league.scadSettings.seasonYear}`)
         console.log('CAP-EXEMPTIONS-league', response.data.data)
         commit('updateCapExemptions', { ce: response.data.data })
       } catch (error) {
@@ -42,7 +42,7 @@ export default {
     async getCapExemptionsByTeam ({ commit, state, rootState }, { guid }) {
       console.log('[CAPEXEMPTIONS-ACTION] - getCapExemptionsByTeam()', guid)
       try {
-        const response = await node.get(`/capExemptions/${rootState.league.scadLeagueId}/${guid}`)
+        const response = await node.get(`/capExemptions/${rootState.league.scadLeagueId}/${rootState.league.scadSettings.seasonYear}/${guid}`)
         console.log('CAP-EXEMPTIONS-team', response.data.data)
         commit('updateCapExemptionsTeam', { ce: response.data.data })
       } catch (error) {

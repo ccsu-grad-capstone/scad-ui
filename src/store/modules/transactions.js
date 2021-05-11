@@ -105,7 +105,7 @@ export default {
         const transactions = await nodeHeader(rootState.user.tokens.access_token).get(`/yahoo/game/${rootState.league.yahooGameKey}/league/${rootState.league.yahooLeagueId}/transactions`)
         console.log('TRANSACTIONS: ', transactions.data.transactions)
         // Check if lastest transaction is new based on timestamps
-        if (state.transactions.length > 0) {
+        if (transactions.data.transactions.length > 0) {
           await commit('updateTransactions', transactions.data.transactions)
           if (state.transactions[0].timestamp > state.lastTimestamp) {
             let updatedTeams = []
