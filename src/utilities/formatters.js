@@ -1,21 +1,21 @@
 /* eslint-disable eqeqeq */
 
 import moment from 'moment'
-import { getYahooPlayer } from './functions'
+import { getYahooPlayer, getTeamGuid } from './functions'
 
-export function myTeamStyle (yahooPlayerId, yahooTeams, yahooPlayers, myYahooTeamId) {
+export function myTeamStyle (yahooPlayerId, yahooTeams, yahooPlayers, userGuid) {
   let player = getYahooPlayer(yahooPlayers, yahooPlayerId)
   let yahooTeam = yahooTeams.find(t => t.team_id == player.yahooTeamId)
   return {
-    'text-accent': yahooTeam.team_id == myYahooTeamId,
-    'text-weight-bold': yahooTeam.team_id == myYahooTeamId
+    'text-accent': getTeamGuid(yahooTeam) == userGuid,
+    'text-weight-bold': getTeamGuid(yahooTeam) == userGuid
   }
 }
 
-export function myTeamDPCEStyle (id, myYahooTeamId) {
+export function myTeamDPCEStyle (teamGuid, userGuid) {
   return {
-    'text-accent': id == myYahooTeamId,
-    'text-weight-bold': id == myYahooTeamId
+    'text-accent': teamGuid == userGuid,
+    'text-weight-bold': teamGuid == userGuid
   }
 }
 export function fmt (row, col, viewByPos) {

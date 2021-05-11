@@ -80,7 +80,6 @@ export function getNFLTeam (id, yahooPlayers) {
 }
 
 export function getOwner (yahooPlayerId, yahooTeams, yahooPlayers) {
-  console.log(yahooPlayerId, yahooTeams, yahooPlayers)
   let player = getYahooPlayer(yahooPlayers, yahooPlayerId)
   if (player) {
     let yahooTeam = yahooTeams.find(t => t.team_id == player.yahooTeamId)

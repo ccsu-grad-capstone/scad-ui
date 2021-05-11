@@ -22,7 +22,7 @@
             q-table(
               v-if="loaded"
               dense
-              :data='filteredPlayers()'
+              :data='filteredPlayers'
               :pagination.sync="pagination",
               :columns='windowWidth > 600 ? columns : columnsMobile',
               row-key='name'
@@ -55,7 +55,7 @@
 <script>
 /* eslint-disable eqeqeq */
 import referenceData from '../utilities/referenceData'
-// import { myTeamStyle } from '../utilities/formatters'
+import { myTeamStyle } from '../utilities/formatters'
 import { getHeadshot, getPos, getPlayerName, getNFLTeam, getOwner, searchFilter, positionFilter, getYahooPlayer } from '../utilities/functions'
 import Loading from '../components/Loading'
 import PlayerHistoryDialog from '../components/dialogs/playerHistoryDialog'
@@ -164,6 +164,7 @@ export default {
     this.getPlayers()
   },
   computed: {
+    user () { return this.$store.state.user },
     referenceData () {
       return referenceData
     },
@@ -175,6 +176,9 @@ export default {
     },
     scadPlayers () {
       return this.$store.state.player.scadPlayers
+    },
+    scadTeamPlayers () {
+      return this.$store.state.player.scadTeamPlayers
     },
     yahooPlayers () {
       return this.$store.state.player.yahooPlayers
@@ -192,18 +196,38 @@ export default {
       return this.yahooTeams.map(t => Object.assign({}, t, { value: t.name, label: t.name }))
     },
     playerHistory () { return this.$store.state.dialog.playerHistory },
-    getYahooPlayer () { return getYahooPlayer }
+    getYahooPlayer () { return getYahooPlayer },
+    filteredPlayers () {
+      let filtered
+      if (this.filter.team) {
+        filtered = this.scadTeamPlayers
+      } else {
+        filtered = this.scadPlayers
+      }
+      Object.keys(this.filter).forEach(key => {
+        if (this.filter[key] !== '') {
+          if (key === 'search') {
+            filtered = filtered.filter(p => searchFilter(p.yahooPlayerId, this.yahooPlayers, this.filter))
+          } else if (key === 'position') {
+            filtered = filtered.filter(p => positionFilter(p.yahooPlayerId, this.yahooPlayers, this.filter))
+          }
+        }
+      })
+      return filtered
+    }
 
   },
   methods: {
     async getPlayers () {
+      console.log('****')
+
+      this.loaded = false
       await this.$store.dispatch('player/getAllPlayers')
       this.loaded = true
     },
     myTeamStyle (yahooPlayerId) {
       if (this.loaded) {
-        // return myTeamStyle(yahooPlayerId, this.yahooTeams, this.yahooPlayers, this.myYahooTeamId)
-
+        return myTeamStyle(yahooPlayerId, this.yahooTeams, this.yahooPlayers, this.user.user.guid)
       }
     },
     getHeadshot (id) {
@@ -228,8 +252,7 @@ export default {
     },
     getOwner (yahooPlayerId) {
       if (this.loaded) {
-        let owner = getOwner(yahooPlayerId, this.yahooTeams, this.yahooPlayers)
-        console.log(owner)
+        return getOwner(yahooPlayerId, this.yahooTeams, this.yahooPlayers).name
       }
     },
     async updateTeamFilter () {
@@ -237,8 +260,12 @@ export default {
       await this.$store.dispatch('player/getTeamScadPlayers', this.filter.team.team_id)
       this.loaded = true
     },
-    clearFilter () {
-      this.$store.dispatch('player/getAllPlayers')
+    async clearFilter () {
+      console.log('clearFilter')
+      if (this.filter.team) {
+        console.log('**')
+        await this.getPlayers()
+      }
       this.filter = {
         search: '',
         team: '',
@@ -248,19 +275,6 @@ export default {
     playerHistoryDialog (player) {
       this.playerHistoryScadPlayer = player
       this.$store.commit('dialog/playerHistory')
-    },
-    filteredPlayers () {
-      let filtered = this.scadPlayers
-      Object.keys(this.filter).forEach(key => {
-        if (this.filter[key] !== '') {
-          if (key === 'search') {
-            filtered = filtered.filter(p => searchFilter(p.yahooPlayerId, this.yahooPlayers, this.filter))
-          } else if (key === 'position') {
-            filtered = filtered.filter(p => positionFilter(p.yahooPlayerId, this.yahooPlayers, this.filter))
-          }
-        }
-      })
-      return filtered
     }
   }
 }
