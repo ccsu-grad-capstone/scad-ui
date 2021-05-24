@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    div.q-gutter-sm(v-if=" this.league.yahooLeagueDetails.is_finished === 1 && checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)")
+    div.q-gutter-sm(v-if="checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)")
       q-badge(v-if="processing" label="processing..." color="info")
       q-btn(v-if="!processing && lineupData.length === 0" label="Prepare Data" color="primary" size="xs" @click="getLineupData()")
       q-btn(v-if="checkToLogEOYSalaries(league.yahooLeagueDetails, transaction.endOfSeasonPlayerHistory)" label="Log end of year salaries" size="sm", color = "primary" @click="logSalaries()")
@@ -39,13 +39,15 @@ export default {
       lineupData: [],
       playersData: [],
       playersFields: {
-        'Name': 'yahooPlayer.name.full',
-        'Salary': 'scadPlayer.salary',
-        'Was Franchise Tagged': 'scadPlayer.isFranchiseTag',
+        'name': 'yahooPlayer.name.full',
+        'prevSalary': 'scadPlayer.salary',
+        'wasFranchiseTagged': 'scadPlayer.isFranchiseTag',
         '_id': 'scadPlayer._id',
         'scadLeagueId': 'scadPlayer.scadLeagueId',
         'yahooLeagueId': 'scadPlayer.yahooLeagueId',
-        'yahooPlayerId': 'yahooPlayer.player_id'
+        'yahooPlayerId': 'yahooPlayer.player_id',
+        'adjustment': 0,
+        'newSalary': 0
       },
       lineupFields: {
         'Team Name': 'yahooTeam.name',

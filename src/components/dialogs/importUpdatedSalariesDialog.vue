@@ -1,63 +1,86 @@
 <template lang="pug">
   q-dialog(v-model='visable' @hide="triggerDialog()")
     q-card
-      q-card-section.row
-        .col.text-center.text-h5.text-weight-bolder  Import Updated Salaries
-      q-card-section.row.items-center.justify-center
-        q-uploader(
-          label='Import Spreadsheet'
-          boarderd
-          :url="getUrl()"
-          @start= "start"
-          @added= "added"
-          @failed= "failed"
-          @uploaded= "uploaded"
-          @finished= "finished"
-        )
+      loading.q-pb-lg(v-if="uploading" :message="'Updating SCAD Player Salaries.  This may take a moment.'")
+    q-card
+        q-card-section.row
+          .col.text-center.text-h5.text-weight-bolder  Import Updated Salaries
+        q-card-section.row.items-center.justify-center
+          q-uploader(
+            label='Import Spreadsheet'
+            boarderd
+            :url="getUrl()"
+            :headers="returnHeaders()"
+            @start= "start"
+            @added= "added"
+            @failed= "failed"
+            @uploaded= "uploaded"
+            @finish= "finished"
+          )
 
 </template>
 
 <script>
 /* eslint-disable eqeqeq */
+import { getBaseURL } from '../../utilities/enviornment'
+import Loading from '../Loading'
 
 export default {
   name: 'ImportUpdatedSalaries',
-  props: {
+  props: {},
+  components: {
+    'loading': Loading
 
   },
   data () {
     return {
-      visable: false
+      visable: false,
+      uploading: false
     }
   },
   mounted () {
     this.visable = true
   },
   computed: {
-    league () { return this.$store.league },
-    importUpdatedSalaries () { return this.$store.state.dialog.importUpdatedSalaries }
+    tokens () { return this.$store.state.user.tokens },
+    league () {
+      return this.$store.league
+    },
+    importUpdatedSalaries () {
+      return this.$store.state.dialog.importUpdatedSalaries
+    }
   },
   methods: {
     triggerDialog () {
       this.$store.commit('dialog/importUpdatedSalaries')
     },
     getUrl () {
-      return `${process.env.VUE_APP_NODE_DEV}/scad/player/importUpdates`
+      return `${getBaseURL('NODE')}/scad/player/importUpdates`
     },
     start () {
-
+      console.log('STARTED')
+      this.uploading = true
     },
-    added () {
-
+    added (info) {
+      console.log('ADDED', info)
     },
-    failed () {
-
+    failed (info) {
+      console.log('FAILED', info)
+      this.uploading = false
     },
-    uploaded () {
-
+    uploaded (info) {
+      console.log('UPLOADED', info)
     },
     finished () {
-
+      console.log('FINISHED')
+      this.uploading = false
+    },
+    returnHeaders () {
+      return [
+        { name: 'Authorization', value: 'Basic dXNlcjpub2RlLWFwaS1yZWFkd3JpdGU=' },
+        { name: 'accesstoken', value: this.tokens.access_token },
+        { name: 'idtoken', value: this.tokens.id_token }
+      ]
     }
   }
 }

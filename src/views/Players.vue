@@ -219,8 +219,6 @@ export default {
   },
   methods: {
     async getPlayers () {
-      console.log('****')
-
       this.loaded = false
       await this.$store.dispatch('player/getAllPlayers')
       this.loaded = true
