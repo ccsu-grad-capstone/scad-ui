@@ -159,8 +159,9 @@ export default {
           await dispatch('transactions/getTransactions', null, { root: true })
           dispatch('getAllYahooLeagues')
           dispatch('getAllScadLeagues')
+          let myYahooTeam = state.yahooTeams.find(t => t.managers[0].guid === rootState.user.user.guid) // needed for when getting previous team preseason
           let id = {
-            myYahooTeamId: dashboard.data.result.yahooMyTeam.team_id,
+            myYahooTeamId: myYahooTeam.team_id,
             myScadTeamId: dashboard.data.result.scadMyTeam._id
           }
           commit('team/updateMyTeamIds', id, { root: true })

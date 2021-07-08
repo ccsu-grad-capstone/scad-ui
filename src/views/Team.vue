@@ -211,7 +211,7 @@ export default {
   },
   data () {
     return {
-      viewByTeam: false,
+      viewByTeam: true,
       teamSalary: 0,
       loaded: false,
       error: false,
