@@ -382,18 +382,37 @@ export default {
       })
     },
     playersByPos () {
+      let scadTeamRoster = this.scadTeam.roster
+      let franchiseTagDiscount = this.franchiseTagDiscount
+      let irReliefPerc = this.irReliefPerc
+      let yahooTeam = this.yahooTeam
+      function getPlayerSalary (id, pos) {
+        let salary = calcPlayerSalary(
+          id,
+          pos,
+          scadTeamRoster,
+          franchiseTagDiscount,
+          irReliefPerc,
+          yahooTeam
+        )
+        return salary
+      }
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       return this.yahooTeam.roster.sort(function (a, b) {
-        if (b.display_position === 'QB') return 1
-        else if (b.display_position === 'WR') {
+        if (b.display_position === 'QB') {
+          if (a.display_position === 'QB' && getPlayerSalary(b.player_id, b.selected_position) < getPlayerSalary(a.player_id, a.selected_position)) { return -1 }
+        } else if (b.display_position === 'WR') {
           if (a.display_position === 'QB') return -1
+          else if (a.display_position === 'WR' && getPlayerSalary(b.player_id, b.selected_position) < getPlayerSalary(a.player_id, a.selected_position)) { return -1 }
         } else if (b.display_position === 'RB') {
           if (a.display_position === 'QB') return -1
           if (a.display_position === 'WR') return -1
+          else if (a.display_position === 'RB' && getPlayerSalary(b.player_id, b.selected_position) < getPlayerSalary(a.player_id, a.selected_position)) { return -1 }
         } else if (b.display_position === 'TE') {
           if (a.display_position === 'QB') return -1
           if (a.display_position === 'WR') return -1
           if (a.display_position === 'RB') return -1
+          else if (a.display_position === 'TE' && getPlayerSalary(b.player_id, b.selected_position) < getPlayerSalary(a.player_id, a.selected_position)) { return -1 }
         } else return -1
       })
     },
