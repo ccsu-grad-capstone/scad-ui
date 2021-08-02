@@ -20,6 +20,8 @@
       .col.q-pa-xs.q-gutter-lg
             q-btn(label='Test Lambda' dense no-caps color='orange' text-color='white' size='md' @click="testLambdas")
       .col.q-pa-xs.q-gutter-lg
+            q-btn(label='Hello From Lambda' dense no-caps color='yellow' text-color='black' size='md' @click="hello")
+      .col.q-pa-xs.q-gutter-lg
             q-btn(label='getMyTeams' dense no-caps color='orange' text-color='white' size='md' @click="getMyTeams")
       .col.q-pa-xs.q-gutter-lg
             q-btn(label='getMyTeam' dense no-caps color='orange' text-color='white' size='md' @click="getMyTeam")
@@ -79,44 +81,54 @@ export default {
     async testAPIwithYahooEndpoints () {
       try {
       // TESTING API..
-        const getDashboard = await nodeHeader(this.user.tokens.access_token).get(`/scad/dashboard/details`)
+        const getDashboard = await nodeHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/scad/dashboard/details`)
         console.log('API YAHOO TEST getDashboard: ', getDashboard.data)
 
-        const getMyTeams = await nodeHeader(this.user.tokens.access_token).get(`/yahoo/myTeams`)
-        console.log('API YAHOO TEST getMyTeams: ', getMyTeams.data)
+        // const getMyTeams = await nodeHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/myTeams`)
+        // console.log('API YAHOO TEST getMyTeams: ', getMyTeams.data)
 
-        const getMyTeam = await nodeHeader(this.user.tokens.access_token).get(`/yahoo/game/this.league.yahooGameKey/league/13088/myTeam`)
+        const getMyTeam = await nodeHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/${this.league.yahooLeagueId}/myTeam`)
         console.log('API YAHOO TEST getMyTeam: ', getMyTeam.data)
 
-        const getLeagueMeta = await nodeHeader(this.user.tokens.access_token).get(`/yahoo/game/this.league.yahooGameKey/league/13088`)
+        const getLeagueMeta = await nodeHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/${this.league.yahooLeagueId}`)
         console.log('API YAHOO TEST getLeagueMeta: ', getLeagueMeta.data)
 
-        const getLeagueSettings = await nodeHeader(this.user.tokens.access_token).get(`/yahoo/game/this.league.yahooGameKey/league/13088/settings`)
+        const getLeagueSettings = await nodeHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/${this.league.yahooLeagueId}/settings`)
         console.log('API YAHOO TEST getLeagueSettings: ', getLeagueSettings.data)
 
-        const getLeagueStandings = await nodeHeader(this.user.tokens.access_token).get(`/yahoo/game/this.league.yahooGameKey/league/13088/standings`)
+        const getLeagueStandings = await nodeHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/${this.league.yahooLeagueId}/standings`)
         console.log('API YAHOO TEST getLeagueStandings: ', getLeagueStandings.data)
 
-        const getLeagueTeams = await nodeHeader(this.user.tokens.access_token).get(`/yahoo/game/this.league.yahooGameKey/league/13088/teams`)
+        const getLeagueTeams = await nodeHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/${this.league.yahooLeagueId}/teams`)
         console.log('API YAHOO TEST getLeagueTeams: ', getLeagueTeams.data)
 
-        const getAllUsersLeagues = await nodeHeader(this.user.tokens.access_token).get(`/yahoo/game/this.league.yahooGameKey/league/get/all`)
+        const getAllUsersLeagues = await nodeHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/get/all`)
         console.log('API YAHOO TEST getAllUsersLeagues: ', getAllUsersLeagues.data)
 
-        const getLeagueTransactions = await nodeHeader(this.user.tokens.access_token).get(`/yahoo/game/this.league.yahooGameKey/league/13088/transactions`)
+        const getLeagueTransactions = await nodeHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/${this.league.yahooLeagueId}/transactions`)
         console.log('API YAHOO TEST getLeagueTransactions: ', getLeagueTransactions.data)
 
-        const getTeamWithRoster = await nodeHeader(this.user.tokens.access_token).get(`/yahoo/game/this.league.yahooGameKey/league/13088/team/2/roster`)
+        const getTeamWithRoster = await nodeHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/${this.league.yahooLeagueId}/team/2/roster`)
         console.log('API YAHOO TEST getTeamWithRoster: ', getTeamWithRoster.data)
 
-        const getGames = await nodeHeader(this.user.tokens.access_token).get(`/yahoo/game`)
+        const getGames = await nodeHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game`)
         console.log('API YAHOO TEST getGames: ', getGames.data)
 
-        const getAllCommishLeagues = await nodeHeader(this.user.tokens.access_token).get(`/yahoo/game/this.league.yahooGameKey/league/commissioner/all`)
+        const getAllCommishLeagues = await nodeHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/commissioner/all`)
         console.log('API YAHOO TEST getAllCommishLeagues: ', getAllCommishLeagues.data)
 
-        const getAllLeaguePlayers = await nodeHeader(this.user.tokens.access_token).get(`/yahoo/game/this.league.yahooGameKey/league/13088/players`)
+        const getAllLeaguePlayers = await nodeHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/${this.league.yahooLeagueId}/players`)
         console.log('API YAHOO TEST getAllLeaguePlayers: ', getAllLeaguePlayers.data)
+      } catch (error) {
+        catchAxiosNodeError(error)
+      }
+    },
+
+    // LAMBDAS
+    async hello () {
+      try {
+        const hello = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/hello`)
+        console.log('LAMBDA TEST Hello from Lambda:', hello)
       } catch (error) {
         catchAxiosNodeError(error)
       }
@@ -132,52 +144,52 @@ export default {
     },
 
     async getMyTeam () {
-      const getMyTeam = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/this.league.yahooGameKey/league/13088/myTeam`)
+      const getMyTeam = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/${this.league.yahooLeagueId}/myTeam`)
       console.log('LAMBDA TEST getMyTeam:', getMyTeam)
     },
 
     async getTeamWithRoster () {
-      const getTeamWithRoster = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/this.league.yahooGameKey/league/13088/team/2/roster`)
+      const getTeamWithRoster = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/${this.league.yahooLeagueId}/team/2/roster`)
       console.log('LAMBDA TEST getTeamWithRoster:', getTeamWithRoster)
     },
 
     async getLeagueMeta () {
-      const getLeagueMeta = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/this.league.yahooGameKey/league/13088`)
+      const getLeagueMeta = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/${this.league.yahooLeagueId}`)
       console.log('LAMBDA TEST getLeagueMeta:', getLeagueMeta)
     },
 
     async getLeagueSettings () {
-      const getLeagueSettings = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/this.league.yahooGameKey/league/13088/settings`)
+      const getLeagueSettings = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/${this.league.yahooLeagueId}/settings`)
       console.log('LAMBDA TEST getLeagueSettings:', getLeagueSettings)
     },
 
     async getLeagueStandings () {
-      const getLeagueStandings = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/this.league.yahooGameKey/league/13088/standings`)
+      const getLeagueStandings = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/${this.league.yahooLeagueId}/standings`)
       console.log('LAMBDA TEST getLeagueStandings:', getLeagueStandings)
     },
 
     async getLeagueTeams () {
-      const getLeagueTeams = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/this.league.yahooGameKey/league/13088/teams`)
+      const getLeagueTeams = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/${this.league.yahooLeagueId}/teams`)
       console.log('LAMBDA TEST getLeagueTeams:', getLeagueTeams)
     },
 
     async getLeagueTransactions () {
-      const getLeagueTransactions = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/this.league.yahooGameKey/league/13088/transactions`)
+      const getLeagueTransactions = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/${this.league.yahooLeagueId}/transactions`)
       console.log('LAMBDA TEST getLeagueTransactions:', getLeagueTransactions)
     },
 
     async getUserLeaguesByCurrentSeason () {
-      const getUserLeaguesByCurrentSeason = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/this.league.yahooGameKey/league/get/all`)
+      const getUserLeaguesByCurrentSeason = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/get/all`)
       console.log('LAMBDA TEST getUserLeaguesByCurrentSeason:', getUserLeaguesByCurrentSeason)
     },
 
     async getAllCommishLeagues () {
-      const getAllCommishLeagues = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/this.league.yahooGameKey/league/commissioner/all`)
+      const getAllCommishLeagues = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/commissioner/all`)
       console.log('LAMBDA TEST getAllCommishLeagues:', getAllCommishLeagues)
     },
 
     async getAllLeaguePlayers () {
-      const getAllLeaguePlayers = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/this.league.yahooGameKey/league/13088/players`)
+      const getAllLeaguePlayers = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/${this.league.yahooLeagueId}/players`)
       console.log('LAMBDA TEST getAllLeaguePlayers:', getAllLeaguePlayers)
     },
 
