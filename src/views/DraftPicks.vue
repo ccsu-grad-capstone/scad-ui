@@ -35,13 +35,16 @@
                   q-btn(size='xs' color='accent' round dense @click='editPick(props.row)' icon="edit")
               template(v-slot:body-cell-year='props')
                 q-td(:props='props' auto-width)
-                  div.q-pr-md {{ props.row.year }}
+                  div.q-pr-sm {{ props.row.year }}
               template(v-slot:body-cell-rd='props')
                 q-td(:props='props' auto-width)
-                  div.q-pr-md {{ props.row.rd }}
+                  div.q-pr-sm {{ props.row.rd }}
               template(v-slot:body-cell-pick='props')
                 q-td(:props='props' auto-width)
-                  div.q-pr-lg {{ displayPick(props.row.pick) }}
+                  div {{ displayPick(props.row.pick) }}
+              template(v-slot:body-cell-cost='props')
+                q-td.bg-grey-2(:props='props' auto-width)
+                  div.text-weight-bolder.text-primary {{ getCost(props.row) }}
               template(v-slot:body-cell-owner='props')
                 q-td(:props='props' auto-width :class="myTeamDPCEStyle(getTeamGuid(props.row.team), user.user.guid)")
                   div.q-pr-lg.text-weight-bold {{ props.row.team.name }}
@@ -108,8 +111,15 @@ export default {
           name: 'pick',
           required: true,
           label: 'Pick:',
-          align: 'center',
-          sortable: true
+          align: 'left',
+          sortable: false
+        },
+        {
+          name: 'cost',
+          required: false,
+          label: 'Cost:',
+          align: 'left',
+          sortable: false
         },
         {
           name: 'owner',
@@ -208,6 +218,15 @@ export default {
       this.filter.team = ''
       this.filter.year = ''
       this.filter.rd = ''
+    },
+    getCost (dp) {
+      if (dp) {
+        if (dp.pick) {
+          if (dp.rd === 1) return `$${this.referenceData.rdOneRookieWages[dp.pick - 1]}`
+          else if (dp.rd === 2) return `$${this.referenceData.rdTwoRookieWages[dp.pick - 1]}`
+          else if (dp.rd === 3) return '$1'
+        } else return '-'
+      }
     }
   }
 }

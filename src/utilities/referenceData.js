@@ -68,6 +68,9 @@ export default {
       list.push(i)
     }
     return list
-  }
+  },
+  rdOneRookieWages: [ 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9 ],
+  rdTwoRookieWages: [ 7, 7, 7, 5, 5, 5, 3, 3, 3, 1, 1, 1 ],
+  rdThreeRookieWages: [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ]
 
 }
