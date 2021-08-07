@@ -164,6 +164,10 @@ export default {
                       }
                     } catch (err) {
                       // If scad player doesn't exist, we will add him to the DB
+                      console.log('yahooTeamId', yahooTeamId)
+                      if (p.transaction.type === 'add') {
+                        yahooTeamId = p.transaction.destination_team_key.split('.')[4]
+                      }
                       if (err.response && err.response.status === 404) {
                         let player = {
                           yahooPlayerId: p.player_id,
