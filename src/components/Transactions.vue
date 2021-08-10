@@ -31,7 +31,7 @@
                   q-icon.q-pa-xs(name='fas fa-minus' color='negative' size='xs')
                 .row.justify-center
                   .text-weight-bold.text-body2.text-grey-9.gt-xs {{props.row.players[1].name.full}}
-                  .text-weight-bold.text-caption.text-grey-9.lt-sm {{props.row.players[0].name.full}}
+                  .text-weight-bold.text-caption.text-grey-9.lt-sm {{props.row.players[1].name.full}}
                   .gt-xs.text-caption.text-grey-6.text-weight-bold.q-pl-sm {{props.row.players[1].display_position}} - {{props.row.players[1].editorial_team_abbr}}
                   .text-caption.text-grey-6.q-pl-sm.gt-sm (to {{props.row.players[1].transaction.destination_type}})
         div(v-else)
