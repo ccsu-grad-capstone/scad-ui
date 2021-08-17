@@ -143,6 +143,7 @@
                               .text-caption.q-pl-sm(v-if="checkPlayerStatus(props.row.selected_position)") {{ props.row.status }}
                               .text-grey.text-caption.q-pl-sm ({{props.row.display_position}})
                               q-icon.q-pa-xs(v-if="isFranchiseTagged(props.row.player_id)" name='fas fa-tag' color='info')
+                              q-icon.q-pa-xs(v-if="isPreseasonIR(props.row.player_id)" name='fas fa-crutch' color='accent')
                       q-td(:class="fmt(props.row, 'team', viewByTeam)" key='team' :props='props')
                         | {{ props.row.editorial_team_full_name }}
                       q-td(:class="fmt(props.row, 'salaryHistory', viewByTeam)" key='salaryHistory' :props='props' auto-width)
