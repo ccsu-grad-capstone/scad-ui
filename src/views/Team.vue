@@ -91,10 +91,10 @@
               q-toggle.q-pt-sm(v-model="viewByTeam", label="View By Position")
               div.q-gutter-sm.q-pt-sm
                 div
-                q-btn(v-if="!franchiseTag && !editSalaries && !preseasonIR && checkPreseason()" label='PreseasonIR' dense color='secondary' text-color='primary' size='sm' @click="preseasonIR = true")
-                q-btn(v-if="!franchiseTag && !editSalaries && preseasonIR && checkPreseason()" label='Cancel' dense color='primary' text-color='white' size='sm' @click="preseasonIR = false")
                 q-btn(v-if="!franchiseTag && !editSalaries && !preseasonIR && checkFranchiseTag() && scadSettings.franchiseTagSpots > 0" label='Franchise Tag' dense color='secondary' text-color='primary' size='sm' @click="franchiseTag = !franchiseTag")
                 q-btn(v-if="franchiseTag && !editSalaries && !preseasonIR && checkFranchiseTag() && scadSettings.franchiseTagSpots > 0" label='Cancel' dense color='primary' text-color='white' size='sm' @click="franchiseTag = false")
+                q-btn(v-if="!franchiseTag && !editSalaries && !preseasonIR && checkPreseason()" label='Preseason IR' dense color='secondary' text-color='primary' size='sm' @click="preseasonIR = true")
+                q-btn(v-if="!franchiseTag && !editSalaries && preseasonIR && checkPreseason()" label='Cancel' dense color='primary' text-color='white' size='sm' @click="preseasonIR = false")
                 q-btn(v-if="!editSalaries && !franchiseTag && !preseasonIR && checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)" label='Edit Salaries' dense color='secondary' text-color='primary' size='sm' @click="editSalaries = !editSalaries")
                 q-btn(v-if="editSalaries && !franchiseTag && !preseasonIR && checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)" label='Done' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
             .col.full-width
