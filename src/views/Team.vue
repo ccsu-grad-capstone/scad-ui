@@ -93,8 +93,8 @@
                 div
                 q-btn(v-if="!franchiseTag && !editSalaries && !preseasonIR && checkPreseason()" label='PreseasonIR' dense color='secondary' text-color='primary' size='sm' @click="preseasonIR = true")
                 q-btn(v-if="!franchiseTag && !editSalaries && preseasonIR && checkPreseason()" label='Cancel' dense color='primary' text-color='white' size='sm' @click="preseasonIR = false")
-                q-btn(v-if="!franchiseTag && !editSalaries && !preseasonIR && scadSettings.franchiseTagSpots > 0" label='Franchise Tag' dense color='secondary' text-color='primary' size='sm' @click="franchiseTag = !franchiseTag")
-                q-btn(v-if="franchiseTag && !editSalaries && !preseasonIR && scadSettings.franchiseTagSpots > 0" label='Cancel' dense color='primary' text-color='white' size='sm' @click="franchiseTag = false")
+                q-btn(v-if="!franchiseTag && !editSalaries && !preseasonIR && checkFranchiseTag() && scadSettings.franchiseTagSpots > 0" label='Franchise Tag' dense color='secondary' text-color='primary' size='sm' @click="franchiseTag = !franchiseTag")
+                q-btn(v-if="franchiseTag && !editSalaries && !preseasonIR && checkFranchiseTag() && scadSettings.franchiseTagSpots > 0" label='Cancel' dense color='primary' text-color='white' size='sm' @click="franchiseTag = false")
                 q-btn(v-if="!editSalaries && !franchiseTag && !preseasonIR && checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)" label='Edit Salaries' dense color='secondary' text-color='primary' size='sm' @click="editSalaries = !editSalaries")
                 q-btn(v-if="editSalaries && !franchiseTag && !preseasonIR && checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)" label='Done' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
             .col.full-width
@@ -547,9 +547,13 @@ export default {
       this.error = false
       this.errorMessage = ''
     },
+    checkFranchiseTag () {
+      if (moment().isBefore(moment(new Date('8-28-2021')))) return true
+      else return false
+    },
     checkPreseason () {
-      // if (moment().isBefore(moment(new Date(this.league.yahooLeagueDetails.start_date)))) return true
-      if (moment().isBefore(moment(new Date('2020-09-09')))) return true
+      console.log('checkPreseason: ', this.league.yahooLeagueDetails.start_date)
+      if (moment().isBefore(moment(new Date(this.league.yahooLeagueDetails.start_date)))) return true
       else return false
     },
     async savePreseasonIR (id) {
