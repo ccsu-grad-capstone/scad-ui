@@ -102,6 +102,12 @@ export function isFranchiseTagged (id, scadTeam) {
   return scadPlayer ? scadPlayer.isFranchiseTag : false
 }
 
+export function isPreseasonIR (id, scadTeam) {
+  let scadPlayer = getScadPlayer(scadTeam.roster, id)
+  if (scadPlayer && scadPlayer.preseasonIR) return scadPlayer.preseasonIR
+  else return false
+}
+
 export function getPlayerPrevSalary (id, scadTeam) {
   let player = getScadPlayer(scadTeam.roster, id)
   return player ? player.previousYearSalary : undefined

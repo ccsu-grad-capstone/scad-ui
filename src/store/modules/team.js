@@ -161,10 +161,12 @@ export default {
 
     async savePlayer ({ rootState, dispatch, state }, { player, log, yahooTeamId }) {
       console.log(`[TEAM-ACTION] - savePlayer()`)
-      if (!player.history) {
-        player.history = []
+      if (log) {
+        if (!player.history) {
+          player.history = []
+        }
+        player.history.push(log)
       }
-      player.history.push(log)
       try {
         await nodeHeader(
           rootState.user.tokens.access_token,

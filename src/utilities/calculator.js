@@ -42,11 +42,12 @@ export function calcPlayerSalary (id, pos, scadPlayers, franchiseTagDiscount, ir
     let player = scadPlayers.find(p => p.yahooPlayerId == id)
     if (player) {
       let salary = player.salary
+      let preseasonIR = player.preseasonIR ? player.preseasonIR : undefined
       if (player.isFranchiseTag) {
         salary = calcFranchiseTagSalary(salary, franchiseTagDiscount)
       }
       if (pos.toUpperCase() === 'IR') {
-        salary = calcIrSalary(salary, irRelieftPerc)
+        salary = calcIrSalary(salary, irRelieftPerc, preseasonIR)
       }
       return salary
     } else {
@@ -72,9 +73,13 @@ export function calcFranchiseTagSalary (salary, franchiseTagDiscount) {
 // salary: players original salary
 // irReliefPerc: SCAD league setting for discount on irReliefPerc
 // Returns player salary if they're on the IR
-export function calcIrSalary (salary, irReliefPerc) {
+export function calcIrSalary (salary, irReliefPerc, preseasonIR) {
   if (salary && irReliefPerc > 0) {
-    salary -= salary * irReliefPerc / 100
+    if (preseasonIR) {
+      salary -= salary * 75 / 100
+    } else {
+      salary -= salary * irReliefPerc / 100
+    }
     if (Number.isInteger(salary)) {
       return salary
     } else {

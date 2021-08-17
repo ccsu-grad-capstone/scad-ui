@@ -91,10 +91,12 @@
               q-toggle.q-pt-sm(v-model="viewByTeam", label="View By Position")
               div.q-gutter-sm.q-pt-sm
                 div
-                q-btn(v-if="!franchiseTag && !editSalaries && scadSettings.franchiseTagSpots > 0" label='Franchise Tag' dense color='secondary' text-color='primary' size='sm' @click="franchiseTag = !franchiseTag")
-                q-btn(v-if="franchiseTag && !editSalaries && scadSettings.franchiseTagSpots > 0" label='Cancel' dense color='primary' text-color='white' size='sm' @click="franchiseTag = false")
-                q-btn(v-if="!editSalaries && !franchiseTag && checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)" label='Edit Salaries' dense color='secondary' text-color='primary' size='sm' @click="editSalaries = !editSalaries")
-                q-btn(v-if="editSalaries && !franchiseTag && checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)" label='Done' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
+                q-btn(v-if="!franchiseTag && !editSalaries && !preseasonIR && checkPreseason()" label='PreseasonIR' dense color='secondary' text-color='primary' size='sm' @click="preseasonIR = true")
+                q-btn(v-if="!franchiseTag && !editSalaries && preseasonIR && checkPreseason()" label='Cancel' dense color='primary' text-color='white' size='sm' @click="preseasonIR = false")
+                q-btn(v-if="!franchiseTag && !editSalaries && !preseasonIR && scadSettings.franchiseTagSpots > 0" label='Franchise Tag' dense color='secondary' text-color='primary' size='sm' @click="franchiseTag = !franchiseTag")
+                q-btn(v-if="franchiseTag && !editSalaries && !preseasonIR && scadSettings.franchiseTagSpots > 0" label='Cancel' dense color='primary' text-color='white' size='sm' @click="franchiseTag = false")
+                q-btn(v-if="!editSalaries && !franchiseTag && !preseasonIR && checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)" label='Edit Salaries' dense color='secondary' text-color='primary' size='sm' @click="editSalaries = !editSalaries")
+                q-btn(v-if="editSalaries && !franchiseTag !preseasonIR && && checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)" label='Done' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
             .col.full-width
               .q-py-md
                 q-table(
@@ -123,6 +125,11 @@
                             q-btn( v-if="isFranchiseTagged(props.row.player_id)" size='xs' color='negative' round dense @click='removeFranchiseTag(props.row)' icon="fas fa-minus")
                           div(v-else)
                             q-btn( size='xs' color='info' round dense @click='saveFranchiseTag(props.row)' icon="fas fa-tag")
+                        div(v-if="preseasonIR")
+                          div
+                            //- q-btn( v-if="!checkPreseasonIR() && props.row.selected_position === 'IR' && props.row.status === 'IR'", size='xs' color='accent' round dense @click='savePreseasonIR(props.row.player_id)' icon="fas fa-crutch")
+                            q-btn( v-if="!checkPreseasonIR() && props.row.selected_position === 'IR'", size='xs' color='accent' round dense @click='savePreseasonIR(props.row.player_id)' icon="fas fa-crutch")
+                            q-btn( v-if="checkPreseasonIR() && props.row.selected_position === 'IR'", size='xs' color='accent' round dense @click='removePreseasonIR(props.row.player_id)' icon="fas fa-crutch")
                       q-td(:class="fmt(props.row, 'pos', viewByTeam)" key='pos' :props='props' auto-width)
                         .text-body(v-if="viewByTeam") {{ props.row.display_position }}
                         .text-body(v-else) {{ props.row.selected_position }}
@@ -190,7 +197,8 @@ import { calcTeamSalary, calcPlayerSalary } from '../utilities/calculator'
 import { getScadPlayer,
   isFranchiseTagged,
   getPlayerPrevSalary,
-  getOriginalSalary
+  getOriginalSalary,
+  isPreseasonIR
   , getTeamGuid } from '../utilities/functions'
 import { isIR, isScadPlayer, checkIfCommish } from '../utilities/validators'
 import { fmt } from '../utilities/formatters'
@@ -223,6 +231,7 @@ export default {
       selectedTeam: 'Choose a Team',
       editSalaries: false,
       franchiseTag: false,
+      preseasonIR: false,
       selected: [],
       pagination: {
         page: 1,
@@ -445,6 +454,7 @@ export default {
     // console.log('[TEAM] - mounted()')
     await this.$store.dispatch('league/getYahooSettings', this.yahooLeagueId)
     this.getTeam(this.$route.params.team_id)
+    await this.updatePreseasonIR()
   },
   beforeRouteUpdate (to, from, next) {
     this.selectedTeam = 'Choose a Team'
@@ -538,6 +548,68 @@ export default {
       this.error = false
       this.errorMessage = ''
     },
+    checkPreseason () {
+      if (moment().isBefore(moment(new Date(this.league.yahooLeagueDetails.start_date)))) return true
+      else return false
+    },
+    async savePreseasonIR (id) {
+      console.log(`[TEAM] - savePreseasonIR()`, id)
+
+      if (this.checkPreseason()) {
+        let player = getScadPlayer(this.scadTeam.roster, id)
+        player.preseasonIR = true
+        await this.$store.dispatch('team/savePlayer', {
+          player: player,
+          log: undefined,
+          yahooTeamId: this.scadTeam.yahooTeamId
+        })
+      }
+      // Update SCAD-TEAM
+      this.updateTeamSalary()
+      await this.saveTeam()
+      this.preseasonIR = false
+    },
+
+    async removePreseasonIR (id) {
+      console.log(`[TEAM] - removePreseasonIR()`, id)
+
+      let player = getScadPlayer(this.scadTeam.roster, id)
+      player.preseasonIR = false
+      await this.$store.dispatch('team/savePlayer', {
+        player: player,
+        log: undefined,
+        yahooTeamId: this.scadTeam.yahooTeamId
+      })
+      // Update SCAD-TEAM
+      this.updateTeamSalary()
+      await this.saveTeam()
+      this.preseasonIR = false
+    },
+
+    checkPreseasonIR () {
+      let preseasonIRPlayer = this.scadTeam.roster.find(p => p.preseasonIR)
+      if (preseasonIRPlayer) return true
+      else return false
+    },
+
+    async updatePreseasonIR () {
+      let preseasonIRPlayer = this.scadTeam.roster.find(p => p.preseasonIR)
+      if (preseasonIRPlayer) {
+        let yahooPlayer = this.yahooTeam.roster.find(p => p.player_id == preseasonIRPlayer.yahooPlayerId)
+        if (yahooPlayer.selected_position !== 'IR') {
+          preseasonIRPlayer.preseasonIR = false
+          await this.$store.dispatch('team/savePlayer', {
+            player: preseasonIRPlayer,
+            log: undefined,
+            yahooTeamId: this.scadTeam.yahooTeamId
+          })
+          // Update SCAD-TEAM
+          this.updateTeamSalary()
+          await this.saveTeam()
+        }
+      }
+    },
+
     async saveFranchiseTag (yahooPlayer) {
       console.log(`[TEAM] - saveFranchiseTag()`)
 
@@ -576,8 +648,8 @@ export default {
       // Update SCAD-TEAM
       this.scadTeam.isFranchiseTag = true
       this.scadTeam.salary += salary - initSalary
-      await this.saveTeam()
       this.updateTeamSalary()
+      await this.saveTeam()
 
       this.franchiseTag = false
     },
@@ -618,8 +690,8 @@ export default {
       // Update SCAD-TEAM
       this.scadTeam.isFranchiseTag = false
       this.scadTeam.salary += adjustment
-      await this.saveTeam()
       this.updateTeamSalary()
+      await this.saveTeam()
 
       this.franchiseTag = false
     },
@@ -689,6 +761,9 @@ export default {
     },
     isFranchiseTagged (id) {
       return isFranchiseTagged(id, this.scadTeam)
+    },
+    isPreseasonIR (id) {
+      return isPreseasonIR(id, this.scadTeam)
     },
     getPlayerPrevSalary (id) {
       if (this.loaded) {
