@@ -549,8 +549,9 @@ export default {
       this.errorMessage = ''
     },
     checkFranchiseTag () {
-      if (moment().isBefore(moment(new Date('2021-8-28')))) return true
-      else return false
+      return true
+      // if (moment().isBefore(moment(new Date('2021-8-28')))) return true
+      // else return false
     },
     checkPreseason () {
       console.log('checkPreseason: ', this.league.yahooLeagueDetails.start_date)
