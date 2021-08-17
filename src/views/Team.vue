@@ -549,7 +549,7 @@ export default {
       this.errorMessage = ''
     },
     checkFranchiseTag () {
-      if (moment().isBefore(moment(new Date('8-28-2021')))) return true
+      if (moment().isBefore(moment(new Date('2021-8-28')))) return true
       else return false
     },
     checkPreseason () {
