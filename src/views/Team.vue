@@ -96,7 +96,7 @@
                 q-btn(v-if="!franchiseTag && !editSalaries && !preseasonIR && scadSettings.franchiseTagSpots > 0" label='Franchise Tag' dense color='secondary' text-color='primary' size='sm' @click="franchiseTag = !franchiseTag")
                 q-btn(v-if="franchiseTag && !editSalaries && !preseasonIR && scadSettings.franchiseTagSpots > 0" label='Cancel' dense color='primary' text-color='white' size='sm' @click="franchiseTag = false")
                 q-btn(v-if="!editSalaries && !franchiseTag && !preseasonIR && checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)" label='Edit Salaries' dense color='secondary' text-color='primary' size='sm' @click="editSalaries = !editSalaries")
-                q-btn(v-if="editSalaries && !franchiseTag !preseasonIR && && checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)" label='Done' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
+                q-btn(v-if="editSalaries && !franchiseTag && !preseasonIR && checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)" label='Done' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
             .col.full-width
               .q-py-md
                 q-table(
@@ -129,7 +129,7 @@
                           div
                             //- q-btn( v-if="!checkPreseasonIR() && props.row.selected_position === 'IR' && props.row.status === 'IR'", size='xs' color='accent' round dense @click='savePreseasonIR(props.row.player_id)' icon="fas fa-crutch")
                             q-btn( v-if="!checkPreseasonIR() && props.row.selected_position === 'IR'", size='xs' color='accent' round dense @click='savePreseasonIR(props.row.player_id)' icon="fas fa-crutch")
-                            q-btn( v-if="checkPreseasonIR() && props.row.selected_position === 'IR'", size='xs' color='accent' round dense @click='removePreseasonIR(props.row.player_id)' icon="fas fa-crutch")
+                            q-btn( v-if="checkPreseasonIR() && props.row.selected_position === 'IR'", size='xs' color='accent' round dense @click='removePreseasonIR(props.row.player_id)' icon="fas fa-minus")
                       q-td(:class="fmt(props.row, 'pos', viewByTeam)" key='pos' :props='props' auto-width)
                         .text-body(v-if="viewByTeam") {{ props.row.display_position }}
                         .text-body(v-else) {{ props.row.selected_position }}
