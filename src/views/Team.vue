@@ -127,7 +127,6 @@
                             q-btn( size='xs' color='info' round dense @click='saveFranchiseTag(props.row)' icon="fas fa-tag")
                         div(v-if="preseasonIR")
                           div
-                            //- q-btn( v-if="!checkPreseasonIR() && props.row.selected_position === 'IR' && props.row.status === 'IR'", size='xs' color='accent' round dense @click='savePreseasonIR(props.row.player_id)' icon="fas fa-crutch")
                             q-btn( v-if="!checkPreseasonIR() && props.row.selected_position === 'IR'", size='xs' color='accent' round dense @click='savePreseasonIR(props.row.player_id)' icon="fas fa-crutch")
                             q-btn( v-if="checkPreseasonIR() && props.row.selected_position === 'IR'", size='xs' color='accent' round dense @click='removePreseasonIR(props.row.player_id)' icon="fas fa-minus")
                       q-td(:class="fmt(props.row, 'pos', viewByTeam)" key='pos' :props='props' auto-width)
@@ -453,7 +452,7 @@ export default {
   async created () {
     // console.log('[TEAM] - mounted()')
     await this.$store.dispatch('league/getYahooSettings', this.yahooLeagueId)
-    this.getTeam(this.$route.params.team_id)
+    await this.getTeam(this.$route.params.team_id)
     await this.updatePreseasonIR()
   },
   beforeRouteUpdate (to, from, next) {
@@ -549,7 +548,8 @@ export default {
       this.errorMessage = ''
     },
     checkPreseason () {
-      if (moment().isBefore(moment(new Date(this.league.yahooLeagueDetails.start_date)))) return true
+      // if (moment().isBefore(moment(new Date(this.league.yahooLeagueDetails.start_date)))) return true
+      if (moment().isBefore(moment(new Date('2020-09-09')))) return true
       else return false
     },
     async savePreseasonIR (id) {
