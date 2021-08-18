@@ -5,10 +5,12 @@ import { getYahooPlayer, getTeamGuid } from './functions'
 
 export function myTeamStyle (yahooPlayerId, yahooTeams, yahooPlayers, userGuid) {
   let player = getYahooPlayer(yahooPlayers, yahooPlayerId)
-  let yahooTeam = yahooTeams.find(t => t.team_id == player.yahooTeamId)
-  return {
-    'text-accent': getTeamGuid(yahooTeam) == userGuid,
-    'text-weight-bold': getTeamGuid(yahooTeam) == userGuid
+  if (player) {
+    let yahooTeam = yahooTeams.find(t => t.team_id == player.yahooTeamId)
+    return {
+      'text-accent': getTeamGuid(yahooTeam) == userGuid,
+      'text-weight-bold': getTeamGuid(yahooTeam) == userGuid
+    }
   }
 }
 

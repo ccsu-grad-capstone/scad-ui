@@ -30,7 +30,7 @@
               square
               )
               template(v-slot:body='props')
-                q-tr(:props='props')
+                q-tr(:props='props' v-if="getOwner(props.row.yahooPlayerId)")
                   q-td(key='pos' :props='props' auto-width) {{ getPos(props.row.yahooPlayerId) }}
                   q-td(key='playerName' :props='props')
                     .row.full-width
@@ -250,7 +250,8 @@ export default {
     },
     getOwner (yahooPlayerId) {
       if (this.loaded) {
-        return getOwner(yahooPlayerId, this.yahooTeams, this.yahooPlayers).name
+        let owner = getOwner(yahooPlayerId, this.yahooTeams, this.yahooPlayers)
+        if (owner) return owner.name
       }
     },
     async updateTeamFilter () {
