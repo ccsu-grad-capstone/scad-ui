@@ -141,6 +141,7 @@ export default {
                           date: new Date(t.timestamp * 1000)
                         }
                       } else if (p.transaction.type === 'drop') {
+                        if (player.preseasonIR) player.preseasonIR = false
                         yahooTeamId = p.transaction.source_team_key.split('.')[4]
                         newSalary = 0
                         log = {
