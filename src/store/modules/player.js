@@ -12,7 +12,8 @@ export default {
     scadPlayers: [],
     yahooTeamPlayers: [],
     scadTeamPlayers: [],
-    scadPlayer: {}
+    scadPlayer: {},
+    franchiseTaggedPlayers: []
   },
   getters: {
 
@@ -26,6 +27,10 @@ export default {
     updateScadPlayers (state, players) {
       // console.log(`[PLAYER-MUTATION] - updateYahooPlayers()`)
       state.scadPlayers = players
+    },
+    updateFranchiseTaggedPlayers (state, players) {
+      // console.log(`[PLAYER-MUTATION] - updateYahooPlayers()`)
+      state.franchiseTaggedPlayers = players
     },
     updateYahooTeamPlayers (state, players) {
       // console.log(`[PLAYER-MUTATION] - updateYahooPlayers()`)
@@ -118,6 +123,19 @@ export default {
           .get(`/scad/player/yahoo/${rootState.league.yahooGameKey}/${rootState.league.yahooLeagueId}/player/${yahooPlayerId}`)
         // console.log('SCAD-PLAYER: ', res.data.scadPlayer)
         await commit('updateScadPlayer', res.data.scadPlayer)
+      } catch (err) {
+        catchAxiosNodeError(err)
+      }
+    },
+    async getFranchiseTaggedPlayers ({ commit, rootState, state }) {
+      // console.log(`[PLAYER-ACTION] - getFranchiseTaggedPlayers()`)
+      try {
+        const res = await nodeHeader(
+          rootState.user.tokens.access_token,
+          rootState.user.tokens.id_token)
+          .get(`/scad/player/yahoo/${rootState.league.yahooGameKey}/${rootState.league.yahooLeagueId}/franchiseTagged`)
+        console.log('FranchiseTaggedPlayers: ', res.data.scadPlayerFranchiseTagged)
+        await commit('updateFranchiseTaggedPlayers', res.data.scadPlayerFranchiseTagged)
       } catch (err) {
         catchAxiosNodeError(err)
       }

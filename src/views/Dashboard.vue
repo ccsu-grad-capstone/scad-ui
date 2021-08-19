@@ -17,6 +17,7 @@
           lite-league-mobile.lt-sm(@updateTeamSalaries="updateTeamSalaries")
           transactions
         .col-xl-4.col-lg-4.col-md-4.col-sm-12.col-xs-12
+          franchise-tagged-players
           lite-my-team
       .row.full-width.justify-center(v-if="checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)")
         .col-10
@@ -36,6 +37,7 @@ import ExportLeague from '../components/ExportLeague'
 import { checkIfCommish } from '../utilities/validators'
 import Loading from '../components/Loading'
 import RenewLeagueDialog from '../components/dialogs/renewLeagueDialog'
+import FranchiseTagPlayers from '../components/FranchiseTagPlayers.vue'
 
 export default {
   name: 'Dashboard',
@@ -48,7 +50,8 @@ export default {
     'lite-draft-picks': LiteDraftPicks,
     'export-league': ExportLeague,
     'loading': Loading,
-    'renew-league-dialog': RenewLeagueDialog
+    'renew-league-dialog': RenewLeagueDialog,
+    'franchise-tagged-players': FranchiseTagPlayers
 
   },
   data () {

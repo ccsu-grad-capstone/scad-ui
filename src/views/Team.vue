@@ -656,7 +656,7 @@ export default {
       this.scadTeam.salary += salary - initSalary
       this.updateTeamSalary()
       await this.saveTeam()
-
+      await this.$store.dispatch('player/getFranchiseTaggedPlayers')
       this.franchiseTag = false
     },
     async removeFranchiseTag (yahooPlayer) {
