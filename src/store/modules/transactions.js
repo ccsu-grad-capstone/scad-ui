@@ -200,32 +200,34 @@ export default {
             for (var id of updatedTeams) {
               let st = rootState.league.scadTeams.find(st => st.yahooTeamId == id)
 
-              // Get SCAD Players
-              const scadPlayers = await nodeHeader(
-                rootState.user.tokens.access_token,
+              // // Get SCAD Players
+              // const scadPlayers = await nodeHeader(
+              //   rootState.user.tokens.access_token,
+              //   rootState.user.tokens.id_token)
+              //   .get(`/scad/league/yahoo/${rootState.league.yahooGameKey}/${rootState.league.yahooLeagueId}/team/${id}/players`)
+              // console.log(scadPlayers.data)
 
-                rootState.user.tokens.id_token)
-                .get(`/scad/league/yahoo/${rootState.league.yahooGameKey}/${rootState.league.yahooLeagueId}/team/${id}/players`)
-              console.log(scadPlayers.data)
-
-              // Get YAHOO Team
-              const yahooTeam = await nodeHeader(
-                rootState.user.tokens.access_token,
-                rootState.user.tokens.id_token)
-                .get(`/yahoo/game/${rootState.league.yahooGameKey}/league/${rootState.league.yahooLeagueId}/team/${st.yahooTeamId}/roster`)
-              console.log(yahooTeam.data)
+              // // Get YAHOO Team
+              // const yahooTeam = await nodeHeader(
+              //   rootState.user.tokens.access_token,
+              //   rootState.user.tokens.id_token)
+              //   .get(`/yahoo/game/${rootState.league.yahooGameKey}/league/${rootState.league.yahooLeagueId}/team/${st.yahooTeamId}/roster`)
+              // console.log(yahooTeam.data)
 
               // Get Cap Exemptions for Team
-              const ce = await node.get(`/capExemptions/${rootState.league.scadLeagueId}/${st.yahooTeamId}`)
+              // const ce = await node.get(`/capExemptions/${rootState.league.scadLeagueId}/${st.yahooTeamId}`)
+
+              await dispatch('team/getTeam', { yahooLeagueId: rootState.league.yahooLeagueId, yahooTeamId: id }, { root: true })
+              await dispatch('capExemptions/getCapExemptionsByTeam', { guid: getTeamGuid(rootState.team.yahooTeam) }, { root: true })
 
               // CALC new Team salary
               st.salary = calcTeamSalary(
-                yahooTeam.data.team.roster,
-                scadPlayers.data.scadPlayers,
-                ce.data.data,
+                rootState.team.yahooTeam.roster,
+                rootState.team.scadTeam.roster,
+                rootState.capExemptions.capExemptionsByTeam,
                 rootState.league.scadSettings.franchiseTagDiscount,
                 rootState.league.scadSettings.irReliefPerc,
-                yahooTeam.data.team,
+                rootState.team.yahooTeam,
                 rootState.league.scadSettings.seasonYear
               )
 
