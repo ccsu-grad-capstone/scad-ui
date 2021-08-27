@@ -127,6 +127,7 @@ export default {
                       if (p.transaction.type === 'add') {
                         yahooTeamId = p.transaction.destination_team_key.split('.')[4]
                         newSalary = t.faab_bid ? t.faab_bid : 1
+                        if (newSalary == 0) newSalary = 1
                         log = {
                           originalSalary: originalSalary,
                           newSalary: newSalary,
