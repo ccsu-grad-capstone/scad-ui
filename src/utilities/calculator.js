@@ -1,6 +1,6 @@
 // import notify from './nofity'
 
-import { getTeamGuid } from './functions'
+import { getDisplayPosition, getTeamGuid } from './functions'
 
 /* eslint-disable eqeqeq */
 
@@ -97,7 +97,8 @@ export function getPosCount (pos, players) {
   let count = 0
   if (players) {
     players.forEach(p => {
-      if (p.display_position.toUpperCase() === pos.toUpperCase()) {
+      let displayPosition = getDisplayPosition(p.display_position)
+      if (displayPosition.toUpperCase() === pos.toUpperCase()) {
         if (p.selected_position.toUpperCase() !== 'IR') {
           count++
         }
@@ -129,14 +130,12 @@ export function getPositionSalaryTotal (pos, players, scadPlayers, franchiseTagD
   let total = 0
   if (pos && players && scadPlayers && franchiseTagDiscount && irReliefPerc >= 0) {
     players.forEach(p => {
-      if (p.display_position.toUpperCase() === pos.toUpperCase()) {
-        let position
+      let displayPosition = getDisplayPosition(p.display_position)
+      if (displayPosition.toUpperCase() === pos.toUpperCase()) {
         if (p.selected_position.toUpperCase() === 'IR') {
-          position = 'IR'
-        } else {
-          position = p.display_position.toUpperCase()
+          displayPosition = 'IR'
         }
-        let salary = calcPlayerSalary(p.player_id, position, scadPlayers, franchiseTagDiscount, irReliefPerc)
+        let salary = calcPlayerSalary(p.player_id, displayPosition, scadPlayers, franchiseTagDiscount, irReliefPerc)
         total += salary
       }
     })

@@ -130,7 +130,7 @@
                             q-btn( v-if="!checkPreseasonIR() && props.row.selected_position === 'IR'", size='xs' color='accent' round dense @click='savePreseasonIR(props.row.player_id)' icon="fas fa-crutch")
                             q-btn( v-if="checkPreseasonIR() && props.row.selected_position === 'IR'", size='xs' color='accent' round dense @click='removePreseasonIR(props.row.player_id)' icon="fas fa-minus")
                       q-td(:class="fmt(props.row, 'pos', viewByTeam)" key='pos' :props='props' auto-width)
-                        .text-body(v-if="viewByTeam") {{ props.row.display_position }}
+                        .text-body(v-if="viewByTeam") {{ getDisplayPosition(props.row.display_position) }}
                         .text-body(v-else) {{ props.row.selected_position }}
                       q-td(:class="fmt(props.row, 'playerName', viewByTeam)" key='playerName' :props='props')
                         .row.full-width
@@ -198,8 +198,9 @@ import { getScadPlayer,
   isFranchiseTagged,
   getPlayerPrevSalary,
   getOriginalSalary,
-  isPreseasonIR
-  , getTeamGuid } from '../utilities/functions'
+  isPreseasonIR,
+  getTeamGuid,
+  getDisplayPosition } from '../utilities/functions'
 import { isIR, isScadPlayer, checkIfCommish } from '../utilities/validators'
 import { fmt } from '../utilities/formatters'
 
@@ -408,20 +409,20 @@ export default {
       }
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       return this.yahooTeam.roster.sort(function (a, b) {
-        if (b.display_position === 'QB') {
-          if (a.display_position === 'QB' && getPlayerSalary(b.player_id, b.selected_position) < getPlayerSalary(a.player_id, a.selected_position)) { return -1 }
-        } else if (b.display_position === 'WR') {
-          if (a.display_position === 'QB') return -1
-          else if (a.display_position === 'WR' && getPlayerSalary(b.player_id, b.selected_position) < getPlayerSalary(a.player_id, a.selected_position)) { return -1 }
-        } else if (b.display_position === 'RB') {
-          if (a.display_position === 'QB') return -1
-          if (a.display_position === 'WR') return -1
-          else if (a.display_position === 'RB' && getPlayerSalary(b.player_id, b.selected_position) < getPlayerSalary(a.player_id, a.selected_position)) { return -1 }
-        } else if (b.display_position === 'TE') {
-          if (a.display_position === 'QB') return -1
-          if (a.display_position === 'WR') return -1
-          if (a.display_position === 'RB') return -1
-          else if (a.display_position === 'TE' && getPlayerSalary(b.player_id, b.selected_position) < getPlayerSalary(a.player_id, a.selected_position)) { return -1 }
+        if (getDisplayPosition(b.display_position) === 'QB') {
+          if (getDisplayPosition(a.display_position) === 'QB' && getPlayerSalary(b.player_id, b.selected_position) < getPlayerSalary(a.player_id, a.selected_position)) { return -1 }
+        } else if (getDisplayPosition(b.display_position) === 'WR') {
+          if (getDisplayPosition(a.display_position) === 'QB') return -1
+          else if (getDisplayPosition(a.display_position) === 'WR' && getPlayerSalary(b.player_id, b.selected_position) < getPlayerSalary(a.player_id, a.selected_position)) { return -1 }
+        } else if (getDisplayPosition(b.display_position) === 'RB') {
+          if (getDisplayPosition(a.display_position) === 'QB') return -1
+          if (getDisplayPosition(a.display_position) === 'WR') return -1
+          else if (getDisplayPosition(a.display_position) === 'RB' && getPlayerSalary(b.player_id, b.selected_position) < getPlayerSalary(a.player_id, a.selected_position)) { return -1 }
+        } else if (getDisplayPosition(b.display_position) === 'TE') {
+          if (getDisplayPosition(a.display_position) === 'QB') return -1
+          if (getDisplayPosition(a.display_position) === 'WR') return -1
+          if (getDisplayPosition(a.display_position) === 'RB') return -1
+          else if (getDisplayPosition(a.display_position) === 'TE' && getPlayerSalary(b.player_id, b.selected_position) < getPlayerSalary(a.player_id, a.selected_position)) { return -1 }
         } else return -1
       })
     },
@@ -448,7 +449,8 @@ export default {
     irReliefPerc () {
       return this.league.scadSettings.irReliefPerc
     },
-    playerHistory () { return this.$store.state.dialog.playerHistory }
+    playerHistory () { return this.$store.state.dialog.playerHistory },
+    getDisplayPosition () { return getDisplayPosition }
   },
   async created () {
     // console.log('[TEAM] - mounted()')

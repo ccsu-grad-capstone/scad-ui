@@ -22,6 +22,7 @@ import moment from 'moment'
 import { catchAxiosNodeError } from '../utilities/catchAxiosErrors'
 import { checkIfCommish, checkToLogEOYSalaries } from '../utilities/validators'
 import importUpdatedSalariesDialog from '../components/dialogs/importUpdatedSalariesDialog'
+import { getDisplayPosition } from '../utilities/functions'
 
 // import { getScadPlayer } from '../utilities/functions'
 
@@ -150,7 +151,7 @@ export default {
           let positions = ['QB', 'WR', 'RB', 'TE', 'DEF']
 
           for (let i = 0; i < positions.length; i++) {
-            let players = yahooPlayers.filter(p => p.display_position === positions[i])
+            let players = yahooPlayers.filter(p => getDisplayPosition(p.display_position) === positions[i])
             for (let j = 0; j < players.length; j++) {
               let sp = this.team.scadTeam.roster.find(player => player.yahooPlayerId == players[j].player_id)
               this.playersData.push({ scadPlayer: sp, yahooPlayer: players[j] })

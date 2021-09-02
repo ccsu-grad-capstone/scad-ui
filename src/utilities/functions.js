@@ -165,3 +165,12 @@ export function getTeamGuid (team) {
     return team.managers[0].manager.guid
   } else if (team.managers[0].guid) return team.managers[0].guid
 }
+
+export function getDisplayPosition (disPos) {
+  if (disPos.includes(',')) {
+    let positions = disPos.split(',')
+    if (positions.includes('TE')) {
+      return 'TE'
+    } else return positions[0]
+  } else return disPos
+}
