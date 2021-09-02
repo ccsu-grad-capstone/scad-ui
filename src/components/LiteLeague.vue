@@ -34,9 +34,8 @@
           .text-warning.text-weight-bold(v-else) ${{getTeamRecieve(props.row.team_id)}}
       template(v-slot:body-cell-salary='props')
         q-td(:props='props' auto-width)
-          .text-positive.text-weight-bolder(v-if="checkTeamSalary(props.row.team_id) > 5") ${{getTeamSalary(props.row.team_id)}}
-          .text-negative.text-weight-bolder(v-else-if="checkTeamSalary(props.row.team_id) < 0") ${{getTeamSalary(props.row.team_id)}}
-          .text-warning.text-weight-bolder(v-else) ${{getTeamSalary(props.row.team_id)}}
+          .text-positive.text-weight-bolder(v-if="checkTeamSalary(props.row.team_id) >= 0") ${{getTeamSalary(props.row.team_id)}}
+          .text-negative.text-weight-bolder(v-else) ${{getTeamSalary(props.row.team_id)}}
 
 </template>
 
