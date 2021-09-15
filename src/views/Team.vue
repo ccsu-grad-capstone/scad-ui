@@ -556,7 +556,7 @@ export default {
       else return false
     },
     checkPreseason () {
-      console.log('checkPreseason: ', this.league.yahooLeagueDetails.start_date)
+      // console.log('checkPreseason: ', this.league.yahooLeagueDetails.start_date)
       if (moment().isBefore(moment(new Date(this.league.yahooLeagueDetails.start_date)))) return true
       else return false
     },

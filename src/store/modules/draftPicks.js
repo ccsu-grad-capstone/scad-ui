@@ -40,8 +40,7 @@ export default {
       }
     },
     async getDraftPicksByTeam ({ commit, state, rootState }, { guid }) {
-      console.log('[DRAFTPICK-ACTION] - getDraftPicksByTeam()', guid)
-      console.log(rootState.league.scadSettings.seasonYear)
+      // console.log('[DRAFTPICK-ACTION] - getDraftPicksByTeam()', guid)
       try {
         const response = await node.get(`/draftPicks/${rootState.league.scadLeagueId}/${rootState.league.scadSettings.seasonYear}/${guid}`)
         console.log('DRAFTPICKS-team', response.data)

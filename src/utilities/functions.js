@@ -171,6 +171,6 @@ export function getDisplayPosition (disPos) {
     let positions = disPos.split(',')
     if (positions.includes('TE')) {
       return 'TE'
-    } else return positions[0]
+    } else return positions[1]
   } else return disPos
 }

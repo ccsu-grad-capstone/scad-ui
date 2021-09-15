@@ -40,7 +40,7 @@ export default {
       }
     },
     async getCapExemptionsByTeam ({ commit, state, rootState }, { guid }) {
-      console.log('[CAPEXEMPTIONS-ACTION] - getCapExemptionsByTeam()', guid)
+      // console.log('[CAPEXEMPTIONS-ACTION] - getCapExemptionsByTeam()', guid)
       try {
         const response = await node.get(`/capExemptions/${rootState.league.scadLeagueId}/${rootState.league.scadSettings.seasonYear}/${guid}`)
         console.log('CAP-EXEMPTIONS-team', response.data.data)
