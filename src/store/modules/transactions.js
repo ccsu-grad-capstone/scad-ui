@@ -113,7 +113,7 @@ export default {
               if (t.timestamp > state.lastTimestamp) { // Check Timestamp of last saved Transaction
                 if ((t.type.indexOf('add') > -1 || t.type === 'drop') && t.status === 'successful') { // only execute if it's an add transaction
                   for (let p of t.players) { // loop through players
-                    console.log('PLAYER NAME:', p.name.full, 'Timestamp', t.timestamp)
+                    console.log('PLAYER NAME:', p.name.full, 'Timestamp', t.timestamp, 'id', p.player_id)
                     let yahooTeamId
                     try {
                       const res = await nodeHeader(
@@ -143,6 +143,7 @@ export default {
                         }
                       } else if (p.transaction.type === 'drop') {
                         if (player.preseasonIR) player.preseasonIR = false
+                        if (player.isFranchiseTag) player.isFranchiseTag = false
                         yahooTeamId = p.transaction.source_team_key.split('.')[4]
                         newSalary = 0
                         log = {

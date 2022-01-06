@@ -114,6 +114,13 @@ const routes = [
     ]
   },
   {
+    path: '/offseason',
+    component: () => import('../layouts/Layout.vue'),
+    children: [
+      { path: '', component: () => import('../views/Offseason.vue') }
+    ]
+  },
+  {
     path: '/my-profile',
     name: 'my-profile',
     component: () => import('../layouts/Layout.vue'),

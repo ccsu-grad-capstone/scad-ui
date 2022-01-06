@@ -9,6 +9,7 @@ export default {
     user: {},
     isAdmin: false,
     active: false,
+    offseason: false,
     tokens: {
       access_token: '',
       refresh_token: '',
@@ -54,6 +55,9 @@ export default {
       state.user = user
       state.isAdmin = user.isAdmin
       state.active = true
+    },
+    offseason (state) {
+      if (!state.active) state.offseason = true
     }
   },
   actions: {

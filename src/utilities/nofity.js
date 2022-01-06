@@ -1,6 +1,18 @@
 import { Notify } from 'quasar'
 
 export default {
+  offseason () {
+    Notify.create({
+      // position: 'top',
+      type: 'warning',
+      multiLine: true,
+      message: '[OFFSEASON MODE] - Below are screenshots of all teams final rosters, draft picks and cap exceptions following the 2021 season. I am working on some updates and will have it back running sooner than later.  Any draft picks and / or cap exemptions made in the meantime will be entered once the site is live again.',
+      timeout: 30000,
+      actions: [
+        { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+      ]
+    })
+  },
   saveSuccessful (message) {
     Notify.create({
       message: `${message}`,
