@@ -2,6 +2,7 @@ import notify from './nofity'
 
 const catchAxiosError = (error) => {
   console.error(error)
+  console.log(error)
   if (error.response && error.response.data) {
     if (error.response.data.includes('html')) {
       notify.error('Session has ended. Please login again.')
@@ -15,6 +16,7 @@ const catchAxiosError = (error) => {
 
 const catchAxiosNodeError = (error) => {
   console.error(error)
+  console.log(error)
   if (error.response && error.response.data) {
     if (error.response.data.includes('html')) {
       notify.error('Session has ended. Please login again.')

@@ -17,36 +17,52 @@
           | {{tokens.id_token}}
       .col.q-pa-md.q-gutter-lg
             q-btn(label='Refresh Token' dense no-caps color='secondary' text-color='primary' size='md' @click="refreshToken")
+
+      //- DRAFT PICKS
       .col.q-pa-xs.q-gutter-lg
-            q-btn(label='Test Lambda' dense no-caps color='orange' text-color='white' size='md' @click="testLambdas")
+            q-btn(label='getDraftPick' dense no-caps color='orange' text-color='white' size='md' @click="getDraftPick")
       .col.q-pa-xs.q-gutter-lg
-            q-btn(label='Hello From Lambda' dense no-caps color='yellow' text-color='black' size='md' @click="hello")
+            q-btn(label='createDraftPick' dense no-caps color='orange' text-color='white' size='md' @click="createDraftPick")
       .col.q-pa-xs.q-gutter-lg
-            q-btn(label='getMyTeams' dense no-caps color='orange' text-color='white' size='md' @click="getMyTeams")
+            q-btn(label='updateDraftPick' dense no-caps color='orange' text-color='white' size='md' @click="updateDraftPick")
       .col.q-pa-xs.q-gutter-lg
-            q-btn(label='getMyTeam' dense no-caps color='orange' text-color='white' size='md' @click="getMyTeam")
+            q-btn(label='deleteDraftPick' dense no-caps color='orange' text-color='white' size='md' @click="deleteDraftPick")
       .col.q-pa-xs.q-gutter-lg
-            q-btn(label='getTeamWithRoster' dense no-caps color='orange' text-color='white' size='md' @click="getTeamWithRoster")
+            q-btn(label='checkDraftPick' dense no-caps color='orange' text-color='white' size='md' @click="checkDraftPick")
       .col.q-pa-xs.q-gutter-lg
-            q-btn(label='getLeagueMeta' dense no-caps color='orange' text-color='white' size='md' @click="getLeagueMeta")
+            q-btn(label='getAllDraftPicksByLeague' dense no-caps color='orange' text-color='white' size='md' @click="getAllDraftPicksByLeague")
       .col.q-pa-xs.q-gutter-lg
-            q-btn(label='getLeagueSettings' dense no-caps color='orange' text-color='white' size='md' @click="getLeagueSettings")
+            q-btn(label='getAllDraftPicksByTeam' dense no-caps color='orange' text-color='white' size='md' @click="getAllDraftPicksByTeam")
+
+      //- YAHOO
+      //- .col.q-pa-xs.q-gutter-lg
+      //-       q-btn(label='Test Lambda - Yahoo' dense no-caps color='orange' text-color='white' size='md' @click="testLambdas")
       .col.q-pa-xs.q-gutter-lg
-            q-btn(label='getLeagueStandings' dense no-caps color='orange' text-color='white' size='md' @click="getLeagueStandings")
-      .col.q-pa-xs.q-gutter-lg
-            q-btn(label='getLeagueTeams' dense no-caps color='orange' text-color='white' size='md' @click="getLeagueTeams")
-      .col.q-pa-xs.q-gutter-lg
-            q-btn(label='getLeagueTransactions' dense no-caps color='orange' text-color='white' size='md' @click="getLeagueTransactions")
-      .col.q-pa-xs.q-gutter-lg
-            q-btn(label='getUserLeaguesByCurrentSeason' dense no-caps color='orange' text-color='white' size='md' @click="getUserLeaguesByCurrentSeason")
-      .col.q-pa-xs.q-gutter-lg
-            q-btn(label='getAllCommishLeagues' dense no-caps color='orange' text-color='white' size='md' @click="getAllCommishLeagues")
-      .col.q-pa-xs.q-gutter-lg
-            q-btn(label='getAllLeaguePlayers' dense no-caps color='orange' text-color='white' size='md' @click="getAllLeaguePlayers")
-      .col.q-pa-xs.q-gutter-lg
-            q-btn(label='getGames' dense no-caps color='orange' text-color='white' size='md' @click="getGames")
-      .col.q-pa-md.q-gutter-lg
-            q-btn(label='Test Yahoo API' dense no-caps color='orange' text-color='white' size='md' @click="testAPIwithYahooEndpoints")
+            q-btn(label='getMyLeagues' dense no-caps color='orange' text-color='white' size='md' @click="getMyYahooLeagues")
+      //- .col.q-pa-xs.q-gutter-lg
+      //-       q-btn(label='getMyTeam' dense no-caps color='orange' text-color='white' size='md' @click="getMyTeam")
+      //- .col.q-pa-xs.q-gutter-lg
+      //-       q-btn(label='getTeamWithRoster' dense no-caps color='orange' text-color='white' size='md' @click="getTeamWithRoster")
+      //- .col.q-pa-xs.q-gutter-lg
+      //-       q-btn(label='getLeagueMeta' dense no-caps color='orange' text-color='white' size='md' @click="getLeagueMeta")
+      //- .col.q-pa-xs.q-gutter-lg
+      //-       q-btn(label='getLeagueSettings' dense no-caps color='orange' text-color='white' size='md' @click="getLeagueSettings")
+      //- .col.q-pa-xs.q-gutter-lg
+      //-       q-btn(label='getLeagueStandings' dense no-caps color='orange' text-color='white' size='md' @click="getLeagueStandings")
+      //- .col.q-pa-xs.q-gutter-lg
+      //-       q-btn(label='getLeagueTeams' dense no-caps color='orange' text-color='white' size='md' @click="getLeagueTeams")
+      //- .col.q-pa-xs.q-gutter-lg
+      //-       q-btn(label='getLeagueTransactions' dense no-caps color='orange' text-color='white' size='md' @click="getLeagueTransactions")
+      //- .col.q-pa-xs.q-gutter-lg
+      //-       q-btn(label='getUserLeaguesByCurrentSeason' dense no-caps color='orange' text-color='white' size='md' @click="getUserLeaguesByCurrentSeason")
+      //- .col.q-pa-xs.q-gutter-lg
+      //-       q-btn(label='getAllCommishLeagues' dense no-caps color='orange' text-color='white' size='md' @click="getAllCommishLeagues")
+      //- .col.q-pa-xs.q-gutter-lg
+      //-       q-btn(label='getAllLeaguePlayers' dense no-caps color='orange' text-color='white' size='md' @click="getAllLeaguePlayers")
+      //- .col.q-pa-xs.q-gutter-lg
+      //-       q-btn(label='getGames' dense no-caps color='orange' text-color='white' size='md' @click="getGames")
+      //- .col.q-pa-md.q-gutter-lg
+      //-       q-btn(label='Test Yahoo API - NODE service' dense no-caps color='orange' text-color='white' size='md' @click="testAPIwithYahooEndpoints")
 </template>
 
 <script>
@@ -125,24 +141,46 @@ export default {
     },
 
     // LAMBDAS
-    async hello () {
+
+    // DRAFT PICKS
+    async getDraftPick () {
       try {
-        const hello = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/hello`)
-        console.log('LAMBDA TEST Hello from Lambda:', hello)
+        const getDraftPick = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/draftPicks/611c08fab0bf94e85c16f0af`)
+        console.log('LAMBDA TEST getDraftPick:', getDraftPick.data)
       } catch (error) {
-        catchAxiosNodeError(error)
+        console.log(error.message)
       }
     },
-
-    async getMyTeams () {
-      try {
-        const getMyTeams = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/myTeams`)
-        console.log('LAMBDA TEST getMyTeams:', getMyTeams)
-      } catch (error) {
-        catchAxiosNodeError(error)
-      }
+    async createDraftPick () {
+      const createDraftPick = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).post(`/draftPicks/create`, { 'data': { 'name': 'avery lauzon' } })
+      console.log('LAMBDA TEST createDraftPick:', createDraftPick.data)
+    },
+    async deleteDraftPick () {
+      const deleteDraftPick = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).delete(`/draftPicks/611c08fbb0bf94e85c16f0d3`)
+      console.log('LAMBDA TEST deleteDraftPick:', deleteDraftPick.data)
+    },
+    async updateDraftPick () {
+      const updateDraftPick = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).patch(`/draftPicks/611c08fab0bf94e85c16f0af`, { 'data': { comments: 'test' } })
+      console.log('LAMBDA TEST updateDraftPick:', updateDraftPick.data)
+    },
+    async checkDraftPick () {
+      const checkDraftPick = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/draftPicks/check/${this.league.scadLeagueId}`)
+      console.log('LAMBDA TEST checkDraftPick:', checkDraftPick.data)
+    },
+    async getAllDraftPicksByLeague () {
+      const getAllDraftPicksByLeague = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/draftPicks/${this.league.scadLeagueId}/${this.league.scadSettings.seasonYear}`)
+      console.log('LAMBDA TEST getAllDraftPicksByLeague:', getAllDraftPicksByLeague.data)
+    },
+    async getAllDraftPicksByTeam () {
+      const getAllDraftPicksByTeam = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/draftPicks/${this.league.scadLeagueId}/${this.league.scadSettings.seasonYear}/${this.user.user.guid}`)
+      console.log('LAMBDA TEST getAllDraftPicksByTeam:', getAllDraftPicksByTeam.data)
     },
 
+    // YAHOO
+    async getMyYahooLeagues () {
+      const getMyLeagues = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/get/all`)
+      console.log('LAMBDA TEST getMyLeagues:', getMyLeagues.data)
+    },
     async getMyTeam () {
       const getMyTeam = await awsHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/${this.league.yahooLeagueId}/myTeam`)
       console.log('LAMBDA TEST getMyTeam:', getMyTeam)

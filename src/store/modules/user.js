@@ -57,7 +57,7 @@ export default {
       state.active = true
     },
     offseason (state) {
-      if (!state.active) state.offseason = true
+      state.offseason = true
     }
   },
   actions: {

@@ -7,7 +7,7 @@ const node = axios.create({
   baseURL: getBaseURL('NODE'),
   timeout: 20000,
   headers: {
-    'Authorization': 'Basic dXNlcjpub2RlLWFwaS1yZWFkd3JpdGU='
+    Authorization: 'Basic dXNlcjpub2RlLWFwaS1yZWFkd3JpdGU='
   }
 })
 
@@ -18,9 +18,9 @@ const nodeHeader = (access_token, id_token) => {
     baseURL: getBaseURL('NODE'),
     timeout: 60000,
     headers: {
-      'Authorization': 'Basic dXNlcjpub2RlLWFwaS1yZWFkd3JpdGU=',
-      'accesstoken': access_token,
-      'idtoken': id_token
+      Authorization: 'Basic dXNlcjpub2RlLWFwaS1yZWFkd3JpdGU=',
+      accesstoken: access_token,
+      idtoken: id_token
     }
   })
 }
@@ -32,12 +32,12 @@ const aws = axios.create({
 
 const awsHeader = (access_token, id_token) => {
   return axios.create({
-    baseURL: 'http://127.0.0.1:3000/',
+    baseURL: 'https://3020zm1u41.execute-api.us-east-1.amazonaws.com/',
     timeout: 60000,
     headers: {
-      'Authorization': 'Basic dXNlcjpub2RlLWFwaS1yZWFkd3JpdGU=',
-      'access_token': access_token,
-      'id_token': id_token
+      Authorization: 'Basic dXNlcjpub2RlLWFwaS1yZWFkd3JpdGU=',
+      access_token: access_token,
+      id_token: id_token
     }
   })
 }

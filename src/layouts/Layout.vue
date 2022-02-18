@@ -93,9 +93,8 @@ export default {
     }
   },
   created () {
-    // this.persistState()
-    this.loaded = true
-    this.navigate('offseason')
+    this.persistState()
+    // this.offseason()
   },
   computed: {
     p () {
@@ -211,6 +210,10 @@ export default {
       this.activeLeague = this.league.yahooLeagueDetails.name
       this.loaded = true
       this.$q.loadingBar.stop()
+    },
+    offseason () {
+      this.navigate('offseason')
+      this.loaded = true
     },
     async logout () {
       console.log('[LAYOUT] - logout()')

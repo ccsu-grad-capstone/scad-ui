@@ -171,7 +171,7 @@ export default {
                       if (p.transaction.type === 'add') {
                         yahooTeamId = p.transaction.destination_team_key.split('.')[4]
                       }
-                      if (err.response && err.response.status === 404) {
+                      if (yahooTeamId && err.response && err.response.status === 404) {
                         let player = {
                           yahooPlayerId: p.player_id,
                           yahooLeagueId: rootState.league.yahooLeagueId,
