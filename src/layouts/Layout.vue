@@ -32,7 +32,7 @@
                 | {{ link.text }}
                 q-icon(v-if="link.icon" :name="link.icon")
     q-page-container
-      loading(v-if="!loaded" :message="'Updating SCAD with lastest Yahoo! updates'")
+      loading(v-if="!loaded" :message="'Updating SCAD with latest Yahoo! updates'")
       div(v-else)
         router-view
     q-footer.row.q-pa-sm.bg-grey-2.footer

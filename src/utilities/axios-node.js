@@ -30,9 +30,9 @@ const aws = axios.create({
   timeout: 20000
 })
 
-const awsHeader = (access_token, id_token) => {
+const api = (access_token, id_token) => {
   return axios.create({
-    baseURL: 'https://3020zm1u41.execute-api.us-east-1.amazonaws.com/',
+    baseURL: 'https://5ydvittlv5.execute-api.us-east-1.amazonaws.com/',
     timeout: 60000,
     headers: {
       Authorization: 'Basic dXNlcjpub2RlLWFwaS1yZWFkd3JpdGU=',
@@ -42,4 +42,4 @@ const awsHeader = (access_token, id_token) => {
   })
 }
 
-export { node, nodeHeader, aws, awsHeader }
+export { node, nodeHeader, aws, api }
