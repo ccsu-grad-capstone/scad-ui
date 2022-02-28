@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 import notify from '../../utilities/nofity'
-import { nodeHeader } from '../../utilities/axios-node'
+import { api } from '../../utilities/axios-node'
 // import leagueSettings from '../../data/leagueSettings'
 import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
 import { calcTeamSalary } from '../../utilities/calculator'
@@ -137,7 +137,7 @@ export default {
     async dashboard ({ state, commit, rootState, dispatch }) {
       // console.log('[LEAGUE-ACTION] - dashboard()')
       try {
-        const dashboard = await nodeHeader(
+        const dashboard = await api(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .get(`/scad/dashboard/details`)
@@ -218,7 +218,7 @@ export default {
     async getYahooLeagueDetails ({ rootState, state, commit }, leagueId) {
       // console.log('[LEAGUE-ACTION] - getYahooLeagueDetails()')
       try {
-        const yahooLeague = await nodeHeader(
+        const yahooLeague = await api(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .get(`/yahoo/game/${state.yahooGameKey}/league/${leagueId}`)
@@ -232,7 +232,7 @@ export default {
     async getYahooSettings ({ rootState, state, commit }, leagueId) {
       // console.log('[LEAGUE-ACTION] - getYahooSettings()')
       try {
-        const settings = await nodeHeader(
+        const settings = await api(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .get(`/yahoo/game/${state.yahooGameKey}/league/${leagueId}/settings`)
@@ -246,7 +246,7 @@ export default {
     async getScadSettings ({ rootState, state, commit }, id) {
       // console.log('[LEAGUE-ACTION] - getScadSettings()')
       try {
-        const res = await nodeHeader(
+        const res = await api(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .get(`/scad/league/${id}`)
@@ -261,7 +261,7 @@ export default {
     async getScadSettingsByYahooId ({ rootState, state, commit }, yahooId) {
       // console.log('[LEAGUE-ACTION] - getScadSettingsByYahooId()')
       try {
-        const res = await nodeHeader(
+        const res = await api(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .get(`/scad/league/yahoo/${state.yahooGameKey}/${yahooId}`)
@@ -276,7 +276,7 @@ export default {
     async getYahooTeams ({ rootState, state, commit }, leagueId) {
       // console.log('[LEAGUE-ACTION] - getYahooTeams()')
       try {
-        const standings = await nodeHeader(
+        const standings = await api(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .get(`/yahoo/game/${state.yahooGameKey}/league/${leagueId}/standings`)
@@ -290,7 +290,7 @@ export default {
     async getScadTeams ({ rootState, commit }, id) {
       // console.log('[TEAM-ACTION] - getScadTeams()')
       try {
-        const res = await nodeHeader(
+        const res = await api(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .get(`/scad/league/${id}/team/all`)
@@ -304,7 +304,7 @@ export default {
     async getAllYahooLeagues ({ rootState, commit, state }) {
       // console.log('[LEAGUE-ACTION] - getAllYahooLeagues()')
       try {
-        const res = await nodeHeader(
+        const res = await api(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .get(`/yahoo/game/${state.yahooGameKey}/league/get/all`)
@@ -318,7 +318,7 @@ export default {
     async getAllScadLeagues ({ rootState, commit, dispatch }) {
       // console.log('[LEAGUE-ACTION] - getAllScadLeagues()')
       try {
-        const scadleagues = await nodeHeader(
+        const scadleagues = await api(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .get(`/scad/league/get/all`)
@@ -332,7 +332,7 @@ export default {
     async getAllYahooCommishLeagues ({ rootState, commit, state }) {
       // console.log('[LEAGUE-ACTION] - getAllYahooCommishLeagues()')
       try {
-        const commishLeagues = await nodeHeader(
+        const commishLeagues = await api(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .get(`/yahoo/game/${state.yahooGameKey}/league/commissioner/all`)
@@ -346,7 +346,7 @@ export default {
     async registerLeague ({ rootState, commit, state }, { league }) {
       // console.log('[LEAGUE-ACTION] - registerLeague()')
       try {
-        const res = await nodeHeader(
+        const res = await api(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .post('/scad/league', { data: league })
@@ -359,7 +359,7 @@ export default {
     async saveLeagueSettings ({ rootState, commit, state }, { settings }) {
       console.log('[LEAGUE-ACTION] - saveLeagueSettings(): ', settings)
       try {
-        const res = await nodeHeader(
+        const res = await api(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .put(`/scad/league/${settings._id}`, { data: settings })

@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { nodeHeader, node } from '../../utilities/axios-node'
+import { api } from '../../utilities/axios-node'
 
 import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
 
@@ -66,7 +66,10 @@ export default {
     async refreshToken ({ commit, state }) {
       console.log('[USER-ACTION] - refreshToken()')
 
-      await node.get(`auth/yahoo/refresh?refresh_token=${state.tokens.refresh_token}`)
+      await api(
+        state.tokens.access_token,
+        state.tokens.id_token)
+        .get(`auth/yahoo/refresh?refresh_token=${state.tokens.refresh_token}`)
         .then((response) => {
           Vue.$cookies.set('access_token', response.data.access_token)
           commit('refreshToken', response.data)
@@ -79,7 +82,7 @@ export default {
     },
     async updateUser ({ state, commit }) {
       try {
-        const res = await nodeHeader(
+        const res = await api(
           state.tokens.access_token,
           state.tokens.id_token)
           .get('/user/details')

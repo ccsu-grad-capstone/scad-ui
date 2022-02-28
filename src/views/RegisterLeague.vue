@@ -10,7 +10,7 @@
           q-card-section.lt-sm.row.justify-center
             .text-body2.text-center Rotate your phone or tablet to register your league.
           q-card-section.gt-xs.row.justify-center
-            .text-body2.text-center To register your league with SCAD you must be an eligable commissioner of your Yahoo League.  If the league you're looking to register is not listed below, please reach out to the league commissioner to register with SCAD.
+            .text-body2.text-center To register your league with SCAD you must be an eligible commissioner of your Yahoo League.  If the league you're looking to register is not listed below, please reach out to the league commissioner to register with SCAD.
             router-link.text-primary.text-weight-bold(to="my-profile") View your profile for more information.
           q-form.gt-xs(@submit='onSubmit')
             q-separator.q-mb-lg(color='secondary' inset)
@@ -185,7 +185,7 @@
                 | Yahoo! Fantasy Football leagues.  Based on our information, that doesn't not appear to be the case.
             .row.full-width.justify-center.q-pt-lg
               .text-body1.text-weight-bolder.text-primary.text-uppercase
-                | We appologize for the inconvenience.
+                | We apologize for the inconvenience.
             .row.full-width.justify-center.q-pt-lg
               .text-body1
                 | Feel free to choose your league below, and we'll send along an email to the commissioner on your behalf.
@@ -204,7 +204,7 @@ import { required } from 'vuelidate/lib/validators'
 import referenceData from '../utilities/referenceData'
 import RegisterLeagueInvites from '../components/dialogs/registerLeagueInvites'
 import notify from '../utilities/nofity'
-import { nodeHeader } from '../utilities/axios-node'
+import { nodeHeader, api } from '../utilities/axios-node'
 import { catchAxiosNodeError } from '../utilities/catchAxiosErrors'
 import Loading from '../components/Loading'
 
@@ -319,12 +319,12 @@ export default {
   },
   methods: {
     async onSubmit () {
-      console.log('[REGISTERLEAGUE - Methods] - onSubmit()')
+      console.log('[REGISTER-LEAGUE - Methods] - onSubmit()')
       this.$v.$touch()
       if (this.$v.$invalid) {
-        console.log('REGISTERLEAGUE Validation Failed')
+        console.log('REGISTER-LEAGUE Validation Failed')
       } else {
-        console.log('REGISTERLEAGUE Validation Successful', this.newLeague)
+        console.log('REGISTER-LEAGUE Validation Successful', this.newLeague)
 
         // Show the page as loading for 5 seconds, then redirect to the dashboard
         this.$q.loading.show({
@@ -353,12 +353,12 @@ export default {
       })
     },
     async update () {
-      console.log('[REGISTERLEAGUE - Methods] - update()')
+      console.log('[REGISTER-LEAGUE - Methods] - update()')
 
       // check if league already exists
       try {
         let yahooGameKey = this.selectedLeague.league_key.split('.')[0]
-        const response = await nodeHeader(
+        const response = await api(
           this.tokens.access_token,
           this.tokens.id_token)
           .get(`/scad/league/yahoo/${yahooGameKey}/${this.selectedLeague.league_id}`)
@@ -383,7 +383,7 @@ export default {
       }
     },
     async sendEmail () {
-      console.log('[REGISTERLEAGUE - Methods] - sendRequestEmail()')
+      console.log('[REGISTER-LEAGUE - Methods] - sendRequestEmail()')
       try {
         const response = await nodeHeader(
           this.tokens.access_token,

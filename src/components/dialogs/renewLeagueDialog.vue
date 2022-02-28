@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { nodeHeader } from '../../utilities/axios-node'
+import { api } from '../../utilities/axios-node'
 import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
 import notify from '../../utilities/nofity'
 
@@ -40,7 +40,7 @@ export default {
         this.$q.loading.show({
           message: 'Sit tight while we renew your SCAD league'
         })
-        const response = await nodeHeader(
+        const response = await api(
           this.tokens.access_token,
           this.tokens.id_token)
           .post(`/scad/league/${this.league.scadLeagueId}/renew/${this.league.renewedAvailable}`)

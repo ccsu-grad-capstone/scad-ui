@@ -1,7 +1,5 @@
 /* eslint-disable eqeqeq */
 import notify from '../../utilities/nofity'
-// import { nodeHeader } from '../../utilities/axios-node'
-// import leagueStandings from '../../data/leagueStandings'
 import { api } from '../../utilities/axios-node'
 import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
 

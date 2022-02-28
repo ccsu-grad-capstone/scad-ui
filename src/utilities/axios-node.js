@@ -7,7 +7,7 @@ const node = axios.create({
   baseURL: getBaseURL('NODE'),
   timeout: 20000,
   headers: {
-    Authorization: 'Basic dXNlcjpub2RlLWFwaS1yZWFkd3JpdGU='
+    Authorization: process.env.VUE_APP_AUTH
   }
 })
 
@@ -18,7 +18,7 @@ const nodeHeader = (access_token, id_token) => {
     baseURL: getBaseURL('NODE'),
     timeout: 60000,
     headers: {
-      Authorization: 'Basic dXNlcjpub2RlLWFwaS1yZWFkd3JpdGU=',
+      Authorization: process.env.VUE_APP_AUTH,
       accesstoken: access_token,
       idtoken: id_token
     }
@@ -32,10 +32,10 @@ const aws = axios.create({
 
 const api = (access_token, id_token) => {
   return axios.create({
-    baseURL: 'https://5ydvittlv5.execute-api.us-east-1.amazonaws.com/',
+    baseURL: `${process.env.VUE_APP_API}/`,
     timeout: 60000,
     headers: {
-      Authorization: 'Basic dXNlcjpub2RlLWFwaS1yZWFkd3JpdGU=',
+      Authorization: process.env.VUE_APP_AUTH,
       access_token: access_token,
       id_token: id_token
     }

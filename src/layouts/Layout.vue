@@ -47,7 +47,7 @@
 
 <script>
 /* eslint-disable eqeqeq */
-import { getBaseURL } from '../utilities/enviornment'
+// import { getBaseURL } from '../utilities/enviornment'
 import p from '../../package.json'
 import Loading from '../components/Loading'
 
@@ -256,7 +256,8 @@ export default {
     loginWithYahoo () {
       console.log('[LAYOUT] - loginWithYahoo()')
       this.$cookies.keys().forEach(cookie => this.$cookies.remove(cookie))
-      window.location = `${getBaseURL('NODE')}/auth/yahoo`
+      // window.location = `${getBaseURL('NODE')}/auth/yahoo`
+      window.location = `${process.env.VUE_APP_API}/auth/yahoo`
     },
     getLeagueName (id) {
       let league = this.yahooLeagues.find(l => l.league_id == id)

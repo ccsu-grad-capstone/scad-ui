@@ -68,9 +68,8 @@
 <script>
 /* eslint-disable no-unused-vars */
 
-import { aws, api, node, nodeHeader } from '../utilities/axios-node'
+import { api } from '../utilities/axios-node'
 import { catchAxiosNodeError } from '../utilities/catchAxiosErrors'
-import axios from 'axios'
 export default {
   name: 'MyTokens',
   data () {
@@ -93,51 +92,6 @@ export default {
     async refreshToken () {
       console.log('[DASHBOARD] - refreshToken()')
       await this.$store.dispatch('user/refreshToken')
-    },
-    async testAPIwithYahooEndpoints () {
-      try {
-      // TESTING API..
-        const getDashboard = await nodeHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/scad/dashboard/details`)
-        console.log('API YAHOO TEST getDashboard: ', getDashboard.data)
-
-        // const getMyTeams = await nodeHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/myTeams`)
-        // console.log('API YAHOO TEST getMyTeams: ', getMyTeams.data)
-
-        const getMyTeam = await nodeHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/${this.league.yahooLeagueId}/myTeam`)
-        console.log('API YAHOO TEST getMyTeam: ', getMyTeam.data)
-
-        const getLeagueMeta = await nodeHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/${this.league.yahooLeagueId}`)
-        console.log('API YAHOO TEST getLeagueMeta: ', getLeagueMeta.data)
-
-        const getLeagueSettings = await nodeHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/${this.league.yahooLeagueId}/settings`)
-        console.log('API YAHOO TEST getLeagueSettings: ', getLeagueSettings.data)
-
-        const getLeagueStandings = await nodeHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/${this.league.yahooLeagueId}/standings`)
-        console.log('API YAHOO TEST getLeagueStandings: ', getLeagueStandings.data)
-
-        const getLeagueTeams = await nodeHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/${this.league.yahooLeagueId}/teams`)
-        console.log('API YAHOO TEST getLeagueTeams: ', getLeagueTeams.data)
-
-        const getAllUsersLeagues = await nodeHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/get/all`)
-        console.log('API YAHOO TEST getAllUsersLeagues: ', getAllUsersLeagues.data)
-
-        const getLeagueTransactions = await nodeHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/${this.league.yahooLeagueId}/transactions`)
-        console.log('API YAHOO TEST getLeagueTransactions: ', getLeagueTransactions.data)
-
-        const getTeamWithRoster = await nodeHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/${this.league.yahooLeagueId}/team/2/roster`)
-        console.log('API YAHOO TEST getTeamWithRoster: ', getTeamWithRoster.data)
-
-        const getGames = await nodeHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game`)
-        console.log('API YAHOO TEST getGames: ', getGames.data)
-
-        const getAllCommishLeagues = await nodeHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/commissioner/all`)
-        console.log('API YAHOO TEST getAllCommishLeagues: ', getAllCommishLeagues.data)
-
-        const getAllLeaguePlayers = await nodeHeader(this.user.tokens.access_token, this.user.tokens.id_token).get(`/yahoo/game/${this.league.yahooGameKey}/league/${this.league.yahooLeagueId}/players`)
-        console.log('API YAHOO TEST getAllLeaguePlayers: ', getAllLeaguePlayers.data)
-      } catch (error) {
-        catchAxiosNodeError(error)
-      }
     },
 
     // LAMBDAS

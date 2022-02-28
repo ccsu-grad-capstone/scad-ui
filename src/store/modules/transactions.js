@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 // import notify from '../../utilities/nofity'
 // import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
-import { node, nodeHeader } from '../../utilities/axios-node'
+import { api } from '../../utilities/axios-node'
 import { getScadTeam, getYahooTeamFromYahooTeamId, getSalaryForCatch, getTeamGuid } from '../../utilities/functions'
 import { calcTeamSalary } from '../../utilities/calculator'
 import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
@@ -47,8 +47,8 @@ export default {
   actions: {
     async getTransactionTimestamp ({ rootState, commit }) {
       try {
-        const res = await node.get(`/transaction/${rootState.league.yahooGameKey}/${rootState.league.yahooLeagueId}`)
-        console.log(res.data.data[0])
+        const res = await api(rootState.user.tokens.access_token, rootState.user.tokens.id_token).get(`/transaction/${rootState.league.yahooGameKey}/${rootState.league.yahooLeagueId}`)
+        console.log('TRANSACTION', res.data.data[0])
         await commit('updateTransaction', res.data.data[0])
       } catch (error) {
         catchAxiosNodeError(error)
@@ -61,31 +61,32 @@ export default {
         }
         update.endOfSeasonPlayerHistory.push(rootState.league.yahooLeagueDetails.season)
         console.log(update)
-        await node.put(`/transaction/update/${state._id}`, { data: update })
+        // await node.put(`/transaction/update/${state._id}`, { data: update })
+        await api(rootState.user.tokens.access_token, rootState.user.tokens.id_token).put(`/transaction/${state._id}`, { data: update })
         commit('updateEndOfSeasonPlayerHistory', update)
         // commit('updateTransaction', transaction)
       } catch (error) {
         catchAxiosNodeError(error)
       }
     },
-    async updateLastChecked ({ state, commit }) {
+    async updateLastChecked ({ state, commit, rootState }) {
       try {
         let update = {
           lastChecked: moment().format('LLL')
         }
-        await node.put(`/transaction/update/${state._id}`, { data: update })
+        await api(rootState.user.tokens.access_token, rootState.user.tokens.id_token).put(`/transaction/${state._id}`, { data: update })
         commit('updateLastChecked', update)
       } catch (error) {
         catchAxiosNodeError(error)
       }
     },
-    async updateLastTimestamp ({ state, commit }) {
+    async updateLastTimestamp ({ state, commit, rootState }) {
       try {
         let update = {
           lastTimestamp: state.transactions[0].timestamp,
           lastTransactionId: state.transactions[0].transaction_id
         }
-        await node.put(`/transaction/update/${state._id}`, { data: update })
+        await api(rootState.user.tokens.access_token, rootState.user.tokens.id_token).put(`/transaction/${state._id}`, { data: update })
         commit('updateLastTimestamp', update)
       } catch (error) {
         console.error(error)
@@ -102,7 +103,7 @@ export default {
         // const players = await node.get(`/player/yahoo/${rootState.league.yahooLeagueId}/${rootState.user.tokens.access_token}`)
         // console.log(players)
 
-        const transactions = await nodeHeader(rootState.user.tokens.access_token).get(`/yahoo/game/${rootState.league.yahooGameKey}/league/${rootState.league.yahooLeagueId}/transactions`)
+        const transactions = await api(rootState.user.tokens.access_token).get(`/yahoo/game/${rootState.league.yahooGameKey}/league/${rootState.league.yahooLeagueId}/transactions`)
         console.log('TRANSACTIONS: ', transactions.data.transactions)
         // Check if lastest transaction is new based on timestamps
         if (transactions.data.transactions.length > 0) {
@@ -116,7 +117,7 @@ export default {
                     console.log('PLAYER NAME:', p.name.full, 'Timestamp', t.timestamp, 'id', p.player_id)
                     let yahooTeamId
                     try {
-                      const res = await nodeHeader(
+                      const res = await api(
                         rootState.user.tokens.access_token,
                         rootState.user.tokens.id_token)
                         .get(`/scad/player/yahoo/${rootState.league.yahooGameKey}/${rootState.league.yahooLeagueId}/player/${p.player_id}`)
@@ -201,23 +202,6 @@ export default {
             // UPDATE TEAM SALARIES
             for (var id of updatedTeams) {
               let st = rootState.league.scadTeams.find(st => st.yahooTeamId == id)
-
-              // // Get SCAD Players
-              // const scadPlayers = await nodeHeader(
-              //   rootState.user.tokens.access_token,
-              //   rootState.user.tokens.id_token)
-              //   .get(`/scad/league/yahoo/${rootState.league.yahooGameKey}/${rootState.league.yahooLeagueId}/team/${id}/players`)
-              // console.log(scadPlayers.data)
-
-              // // Get YAHOO Team
-              // const yahooTeam = await nodeHeader(
-              //   rootState.user.tokens.access_token,
-              //   rootState.user.tokens.id_token)
-              //   .get(`/yahoo/game/${rootState.league.yahooGameKey}/league/${rootState.league.yahooLeagueId}/team/${st.yahooTeamId}/roster`)
-              // console.log(yahooTeam.data)
-
-              // Get Cap Exemptions for Team
-              // const ce = await node.get(`/capExemptions/${rootState.league.scadLeagueId}/${st.yahooTeamId}`)
 
               await dispatch('team/getTeam', { yahooLeagueId: rootState.league.yahooLeagueId, yahooTeamId: id }, { root: true })
               await dispatch('capExemptions/getCapExemptionsByTeam', { guid: getTeamGuid(rootState.team.yahooTeam) }, { root: true })

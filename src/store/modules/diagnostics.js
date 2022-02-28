@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 // import notify from '../../utilities/nofity'
-import { node } from '../../utilities/axios-node'
+import { api } from '../../utilities/axios-node'
 import moment from 'moment'
 import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
 import { calcTeamSalary, getPosCount } from '../../utilities/calculator'
@@ -34,25 +34,25 @@ export default {
   actions: {
     async getDiagnostic ({ rootState, commit }) {
       try {
-        const res = await node.get(`/diagnostic/${rootState.league.yahooGameKey}/${rootState.league.yahooLeagueId}`)
+        const res = await api(rootState.user.tokens.access_token, rootState.user.tokens.id_token).get(`/diagnostic/${rootState.league.yahooGameKey}/${rootState.league.yahooLeagueId}`)
         commit('updateDiagnostic', res.data.data[0])
       } catch (error) {
         catchAxiosNodeError(error)
       }
     },
-    async updateDiagnostic ({ state, commit }) {
+    async updateDiagnostic ({ state, commit, rootState }) {
       try {
         let update = {
           lastChecked: moment()
         }
         commit('updateLastChecked', update.lastChecked)
 
-        await node.put(`/diagnostic/update/${state._id}`, { data: update })
+        await api(rootState.user.tokens.access_token, rootState.user.tokens.id_token).put(`/diagnostic/${state._id}`, { data: update })
       } catch (error) {
         catchAxiosNodeError(error)
       }
     },
-    async runDiagnostics ({ rootState, state, commit, dispatch }) {
+    async runDiagnostics ({ rootState, commit, dispatch }) {
       try {
         let teams = []
         for (var yt of rootState.league.yahooTeams) {

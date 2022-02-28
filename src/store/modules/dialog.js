@@ -1,7 +1,3 @@
-// import { notify } from '../../utilities/nofity'
-// import { nodeHeader } from '../../utilities/axios-node'
-// import axios from 'axios'
-// import { node } from '../../utilities/axios-node'
 
 export default {
   namespaced: true,
