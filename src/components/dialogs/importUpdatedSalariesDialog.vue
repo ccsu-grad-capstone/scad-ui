@@ -77,7 +77,7 @@ export default {
     },
     returnHeaders () {
       return [
-        { name: 'Authorization', value: 'Basic dXNlcjpub2RlLWFwaS1yZWFkd3JpdGU=' },
+        { name: 'Authorization', value: process.env.VUE_APP_AUTH },
         { name: 'accesstoken', value: this.tokens.access_token },
         { name: 'idtoken', value: this.tokens.id_token }
       ]
