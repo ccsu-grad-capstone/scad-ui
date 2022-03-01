@@ -3,7 +3,7 @@
     .row.full-width.justify-center
       .col-xl-10.col-lg-10.col-md-10.col-sm-12.col-xs-12
         .row.full-width.q-pa-md
-          div.text-h4.text-weight-bolder Draft Picks
+          div.text-h4.text-weight-bolder Draft Picks {{getDraftPicksByLeagueError}}
           q-space
         .row.full-width.q-px-md.gt-sm
           .text-subtitle2.text-grey  List of draft picks for drafting incoming rookies for next {{scadSettings.tradingDraftPickYears}} years.  Each rookie draft is {{scadSettings.rookieDraftRds}} rounds.  Each year, all owners are given {{scadSettings.rookieDraftRds}} picks, 1 for each round. Pick value for each draft pick is entered upon completion of fantasy season.
@@ -18,6 +18,9 @@
             div.q-gutter-sm
               q-btn.q-pa-xs(label='Clear' dense color='primary' text-color='white' size='sm' @click="clearFilter")
         loading(v-if="!loaded" :message="'Fetching SCAD draft picks...'")
+        .row.justify-center.full-width.bg-white.q-py-lg(v-else-if="loaded && getDraftPicksByLeagueError")
+          .row.full-width.justify-center.text-caption.text-grey-7 Issue getting draft picks try:
+          .row.full-width.justify-center: q-btn.q-pa-xs(label='Refresh' color='grey-5' text-color='white' size='md' @click="getDraftPicks()")
         .row.full-width.q-pa-xs(v-else)
           div(style="width:100%")
             q-table(
@@ -47,10 +50,10 @@
                   div.text-weight-bolder.text-primary {{ getCost(props.row) }}
               template(v-slot:body-cell-owner='props')
                 q-td(:props='props' auto-width :class="myTeamDPCEStyle(getTeamGuid(props.row.team), user.user.guid)")
-                  div.q-pr-lg.text-weight-bold {{ props.row.team.name }}
+                  div.q-pr-lg.text-weight-bold {{ getTeamName(props.row.team, yahooTeams) }}
               template(v-slot:body-cell-originalOwner='props')
                 q-td(:props='props' auto-width)
-                  div.q-pr-lg.text-grey {{ props.row.originalTeam.name }}
+                  div.q-pr-lg.text-grey {{ getTeamName(props.row.originalTeam, yahooTeams) }}
         edit-draft-pick-dialog(v-if="editDraftPick" :dp="edit.dp" @saved="getDraftPicks")
 </template>
 
@@ -58,7 +61,7 @@
 import referenceData from '../utilities/referenceData'
 import editDraftPickDialog from '../components/dialogs/editDraftPickDialog'
 import { myTeamDPCEStyle, displayPick } from '../utilities/formatters'
-import { getTeamGuid } from '../utilities/functions'
+import { getTeamGuid, getTeamName } from '../utilities/functions'
 import Loading from '../components/Loading'
 
 /* eslint-disable eqeqeq */
@@ -161,6 +164,7 @@ export default {
     draftPicks () {
       return this.$store.state.draftPicks.draftPicks
     },
+    getDraftPicksByLeagueError () { return this.$store.state.draftPicks.getDraftPicksByLeagueError },
     yahooTeams () {
       return this.$store.state.league.yahooTeams
     },
@@ -184,6 +188,9 @@ export default {
     },
     getTeamGuid () {
       return getTeamGuid
+    },
+    getTeamName () {
+      return getTeamName
     },
     filteredPicks () {
       var filtered = this.draftPicks

@@ -174,3 +174,9 @@ export function getDisplayPosition (disPos) {
     } else return positions[1]
   } else return disPos
 }
+
+export function getTeamName (team, yahooTeams) {
+  let guid = this.getTeamGuid(team)
+  let yahooTeam = yahooTeams.find(t => getTeamGuid(t) === guid)
+  return yahooTeam.name
+}

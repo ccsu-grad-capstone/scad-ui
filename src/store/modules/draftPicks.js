@@ -8,6 +8,7 @@ export default {
   state: {
     draftPicks: [],
     draftPicksByTeam: [],
+    getDraftPicksByLeagueError: true,
     getDraftPicksByTeamError: false
   },
   getters: {
@@ -18,11 +19,17 @@ export default {
     updateDraftPicks (state, { dp }) {
       // console.log('[DRAFTPICK-MUTATION] - updateDraftPicks()')
       state.draftPicks = dp
+      state.getDraftPicksByLeagueError = false
     },
     updateDraftPicksByTeam (state, { dp }) {
       // console.log('[DRAFTPICK-MUTATION] - updateDraftPicks()')
       state.draftPicksByTeam = dp
       state.getDraftPicksByTeamError = false
+    },
+    getDraftPicksByLeagueError (state) {
+      // console.log('[DRAFTPICK-MUTATION] - updateDraftPicks()')
+      state.draftPicks = []
+      state.getDraftPicksByLeagueError = true
     },
     getDraftPicksByTeamError (state) {
       // console.log('[DRAFTPICK-MUTATION] - updateDraftPicks()')
@@ -39,6 +46,7 @@ export default {
         console.log('DRAFTPICKS-league', response.data)
         commit('updateDraftPicks', { dp: response.data.data })
       } catch (error) {
+        commit('getDraftPicksByLeagueError')
         catchAxiosNodeError(error)
       }
     },
