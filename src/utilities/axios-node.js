@@ -31,6 +31,15 @@ const aws = axios.create({
 })
 
 const api = (access_token, id_token) => {
+  // return axios.create({
+  //   baseURL: getBaseURL('NODE'),
+  //   timeout: 60000,
+  //   headers: {
+  //     Authorization: process.env.VUE_APP_AUTH,
+  //     accesstoken: access_token,
+  //     idtoken: id_token
+  //   }
+  // })
   return axios.create({
     baseURL: `${process.env.VUE_APP_API}/`,
     timeout: 60000,

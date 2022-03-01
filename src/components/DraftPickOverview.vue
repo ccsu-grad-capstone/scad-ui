@@ -2,6 +2,9 @@
   div
     .text-weight-bold Draft Picks:
     loading(v-if="!loaded" :message="'Fetching Draft Picks...'")
+    .row.justify-center.full-width.bg-white.q-py-lg(v-else-if="loaded && getDraftPicksByTeamError")
+      .row.full-width.justify-center.text-caption.text-grey-7 Issue getting draft picks try:
+      .row.full-width.justify-center: q-btn.q-pa-xs(label='Refresh' color='grey-5' text-color='white' size='md' @click="getPicks()")
     q-table(
       class="my-sticky-header-table"
       v-else
@@ -126,10 +129,12 @@ export default {
     },
     scadSettings () {
       return this.$store.state.league.scadSettings
-    }
+    },
+    getDraftPicksByTeamError () { return this.$store.state.draftPicks.getDraftPicksByTeamError }
   },
   methods: {
     async getPicks () {
+      this.loaded = false
       await this.$store.dispatch('draftPicks/getDraftPicksByTeam', { guid: this.yahooTeam.managers[0].guid })
       this.loaded = true
     },
