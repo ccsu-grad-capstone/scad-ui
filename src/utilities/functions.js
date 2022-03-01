@@ -176,7 +176,7 @@ export function getDisplayPosition (disPos) {
 }
 
 export function getTeamName (team, yahooTeams) {
-  let guid = this.getTeamGuid(team)
+  let guid = getTeamGuid(team)
   let yahooTeam = yahooTeams.find(t => getTeamGuid(t) === guid)
   return yahooTeam.name
 }

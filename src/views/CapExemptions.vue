@@ -42,10 +42,10 @@
                   div.q-pr-lg {{ props.row.year }}
               template(v-slot:body-cell-giving='props')
                 q-td(:props='props' auto-width :class="myTeamDPCEStyle(getTeamGuid(props.row.yahooTeamGive), user.user.guid)")
-                  div.q-pr-lg {{ props.row.yahooTeamGive.name }}
+                  div.q-pr-lg {{ getTeamName(props.row.yahooTeamGive, yahooTeams) }}
               template(v-slot:body-cell-recieving='props')
                 q-td(:props='props' auto-width :class="myTeamDPCEStyle(getTeamGuid(props.row.yahooTeamRecieve), user.user.guid)")
-                  div.q-pr-lg {{ props.row.yahooTeamRecieve.name }}
+                  div.q-pr-lg {{ getTeamName(props.row.yahooTeamRecieve, yahooTeams) }}
               template(v-slot:body-cell-amount='props')
                 q-td(:props='props' auto-width)
                   div.q-pr-lg ${{ props.row.amount }}
@@ -61,7 +61,7 @@ import editCapExemptionDialog from '../components/dialogs/editCapExemptionDialog
 // import { catchAxiosNodeError } from '../utilities/catchAxiosErrors'
 import { myTeamDPCEStyle } from '../utilities/formatters'
 import Loading from '../components/Loading'
-import { getTeamGuid } from '../utilities/functions'
+import { getTeamGuid, getTeamName } from '../utilities/functions'
 
 /* eslint-disable eqeqeq */
 
@@ -184,6 +184,9 @@ export default {
     },
     getTeamGuid () {
       return getTeamGuid
+    },
+    getTeamName () {
+      return getTeamName
     }
   },
   methods: {

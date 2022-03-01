@@ -36,7 +36,7 @@
 
 <script>
 import editCapExemptionDialog from '../components/dialogs/editCapExemptionDialog'
-import { getTeamGuid } from '../utilities/functions'
+import { getTeamGuid, getTeamName } from '../utilities/functions'
 
 export default {
   name: 'CapExemptionOverview',
@@ -106,7 +106,8 @@ export default {
     },
     scadSettings () {
       return this.$store.state.league.scadSettings
-    }
+    },
+    yahooTeams () { return this.$store.state.league.yahooTeams }
   },
   methods: {
     async getExemptions () {
@@ -120,19 +121,22 @@ export default {
       if (getTeamGuid(ce.yahooTeamGive) === getTeamGuid(this.yahooTeam)) {
         return 'Give'
       } else {
-        return 'Recieve'
+        return 'Receive'
       }
     },
     getOtherTeam (ce) {
       if (getTeamGuid(ce.yahooTeamGive) === getTeamGuid(this.yahooTeam)) {
-        return ce.yahooTeamRecieve.name
+        return getTeamName(ce.yahooTeamRecieve, this.yahooTeams)
       } else {
-        return ce.yahooTeamGive.name
+        return getTeamName(ce.yahooTeamGive, this.yahooTeams)
       }
     },
     updateTeam () {
       this.$emit('updateTeam')
     }
+    // getTeamName () {
+    //   return getTeamName
+    // }
   }
 }
 </script>
