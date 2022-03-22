@@ -27,11 +27,15 @@
             .row
               .text-center.text-grey-7 (${{props.row.scadPlayer.salary}})
               .text-primary.text-weight-bolder.text-center.q-pl-sm ${{calcFranchiseTagSalary(props.row.scadPlayer.salary)}}
+    .text-center.text-grey-8.text-caption(v-if="checkFranchiseTag()") Franchise Tag Deadline: {{moment(scadSettings.franchiseTagDeadline).format('LL')}}
+    .text-center.text-grey-8.text-caption(v-else) Deadline Passed: {{moment(scadSettings.franchiseTagDeadline).format('LL')}}
+
 </template>
 
 <script>
 
 import { calcFranchiseTagSalary } from '../utilities/calculator'
+import moment from 'moment'
 
 export default {
   name: 'FranchiseTaggedPlayers',
@@ -88,12 +92,19 @@ export default {
     myScadTeam () {
       return this.team.myScadTeam
     },
+    scadSettings () { return this.$store.state.league.scadSettings },
     franchiseTagDiscount () { return this.$store.state.league.scadSettings.franchiseTagDiscount },
-    franchiseTaggedPlayers () { return this.$store.state.player.franchiseTaggedPlayers }
+    franchiseTaggedPlayers () { return this.$store.state.player.franchiseTaggedPlayers },
+    moment () { return moment }
   },
   methods: {
     calcFranchiseTagSalary (salary) {
       return calcFranchiseTagSalary(salary, this.franchiseTagDiscount)
+    },
+    checkFranchiseTag () {
+      // return true
+      if (moment().isBefore(moment(this.scadSettings.franchiseTagDeadline))) return true
+      else return false
     }
   }
 

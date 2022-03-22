@@ -23,7 +23,7 @@
             .col.text-negative.text-weight-bold.text-body-1
               | ${{scadTeam.exceptionOut}}
           .row.full-width.justify-center
-            .col-7.text-grey-8.text-caption.text-right Cap Exemption Recieve:
+            .col-7.text-grey-8.text-caption.text-right Cap Exemption Receive:
             .col.text-positive.text-weight-bold.text-body-1
               | ${{scadTeam.exceptionIn}}
           .row.full-width.justify-center
@@ -49,9 +49,16 @@
                 .text-negative.text-weight-bold.text-body-1.q-pl-sm
                   | ${{scadTeam.exceptionOut}}
               .row
-                .col-7.text-grey-8.text-caption.text-right Cap Exemption Recieve:
+                .col-7.text-grey-8.text-caption.text-right Cap Exemption Receive:
                 .text-positive.text-weight-bold.text-body-1.q-pl-sm
                   | ${{scadTeam.exceptionIn}}
+              .row
+                .col-7.text-grey-8.text-caption.text-right Franchise Tag Deadline:
+                .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
+                  span(v-if="scadSettings.franchiseTagSpots > 0")
+                    .text-negative.text-strike(v-if="moment().isAfter(scadSettings.franchiseTagDeadline)") {{moment(scadSettings.franchiseTagDeadline).format('LL')}}
+                    .text-positive(v-else) {{moment(scadSettings.franchiseTagDeadline).format('LL')}}
+                  span(v-else) N/A
               .row
                 .col-7.text-grey-8.text-caption.text-right Franchise Tag:
                 .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
@@ -91,12 +98,12 @@
               q-toggle.q-pt-sm(v-model="viewByTeam", label="View By Position")
               div.q-gutter-sm.q-pt-sm
                 div
-                q-btn(v-if="!franchiseTag && !editSalaries && !preseasonIR && checkFranchiseTag() && scadSettings.franchiseTagSpots > 0" label='Franchise Tag' dense color='secondary' text-color='primary' size='sm' @click="franchiseTag = !franchiseTag")
-                q-btn(v-if="franchiseTag && !editSalaries && !preseasonIR && checkFranchiseTag() && scadSettings.franchiseTagSpots > 0" label='Cancel' dense color='primary' text-color='white' size='sm' @click="franchiseTag = false")
-                q-btn(v-if="!franchiseTag && !editSalaries && !preseasonIR && checkPreseason()" label='Preseason IR' dense color='secondary' text-color='primary' size='sm' @click="preseasonIR = true")
-                q-btn(v-if="!franchiseTag && !editSalaries && preseasonIR && checkPreseason()" label='Cancel' dense color='primary' text-color='white' size='sm' @click="preseasonIR = false")
-                q-btn(v-if="!editSalaries && !franchiseTag && !preseasonIR && checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)" label='Edit Salaries' dense color='secondary' text-color='primary' size='sm' @click="editSalaries = !editSalaries")
-                q-btn(v-if="editSalaries && !franchiseTag && !preseasonIR && checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)" label='Done' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
+                q-btn(v-if="showFranchiseTagButton()" label='Franchise Tag' dense color='secondary' text-color='primary' size='sm' @click="franchiseTag = !franchiseTag")
+                q-btn(v-if="showCancelFranchiseTagButton()" label='Cancel' dense color='primary' text-color='white' size='sm' @click="franchiseTag = false")
+                q-btn(v-if="showPreseasonIrButton()" label='Preseason IR' dense color='secondary' text-color='primary' size='sm' @click="preseasonIR = true")
+                q-btn(v-if="showCancelPreseasonIrButton()" label='Cancel' dense color='primary' text-color='white' size='sm' @click="preseasonIR = false")
+                q-btn(v-if="showEditSalariesButton()" label='Edit Salaries' dense color='secondary' text-color='primary' size='sm' @click="editSalaries = !editSalaries")
+                q-btn(v-if="showDoneEditSalariesButton()" label='Done' dense color='primary' text-color='white' size='sm' @click="saveSalaries()")
             .col.full-width
               .q-py-md
                 q-table(
@@ -326,6 +333,7 @@ export default {
     }
   },
   computed: {
+    moment () { return moment },
     checkIfCommish () { return checkIfCommish },
     isIR () {
       return isIR
@@ -552,7 +560,7 @@ export default {
     },
     checkFranchiseTag () {
       // return true
-      if (moment().isBefore(moment(new Date('2021-8-27')))) return true
+      if (moment().isBefore(moment(this.scadSettings.franchiseTagDeadline))) return true
       else return false
     },
     checkPreseason () {
@@ -802,6 +810,63 @@ export default {
       this.playerHistoryPlayer = player
       // console.log(this.playerHistoryPlayer)
       this.$store.commit('dialog/playerHistory')
+    },
+    showFranchiseTagButton () {
+      if (
+        this.checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues) &&
+        !this.franchiseTag &&
+        !this.editSalaries &&
+        !this.preseasonIR &&
+        this.team.myYahooTeamId === this.team.yahooTeam.team_id &&
+        this.checkFranchiseTag() &&
+        this.scadSettings.franchiseTagSpots > 0) {
+        return true
+      } else return false
+    },
+    showCancelFranchiseTagButton () {
+      if (
+        this.franchiseTag &&
+        !this.editSalaries &&
+        !this.preseasonIR &&
+        this.checkFranchiseTag() &&
+        this.scadSettings.franchiseTagSpots > 0) {
+        return true
+      } else return false
+    },
+    showPreseasonIrButton () {
+      if (
+        !this.franchiseTag &&
+        !this.editSalaries &&
+        !this.preseasonIR &&
+        this.checkPreseason()) {
+        return true
+      } else return false
+    },
+    showCancelPreseasonIrButton () {
+      if (
+        !this.franchiseTag &&
+        !this.editSalaries &&
+        this.preseasonIR &&
+        this.checkPreseason()) {
+        return true
+      } else return false
+    },
+    showEditSalariesButton () {
+      if (!this.editSalaries &&
+        !this.franchiseTag &&
+        !this.preseasonIR &&
+        this.checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)) {
+        return true
+      } else return false
+    },
+    showDoneEditSalariesButton () {
+      if (
+        this.editSalaries &&
+        !this.franchiseTag &&
+        !this.preseasonIR &&
+        this.checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)) {
+        return true
+      } else return false
     }
   }
 }

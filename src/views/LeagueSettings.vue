@@ -98,6 +98,20 @@
             q-item(clickable)
               .row.full-width.q-pl-lg
                 .col-5.text-body1.text-left
+                  | Franchise Tag Deadline:
+                .col-4.text-body1.q-pl-lg.text-weight-bolder
+                  div(v-if="editing")
+                    q-input(filled v-model='scadSettings.franchiseTagDeadline' mask='date' dense :rules="['date']")
+                      template(v-slot:append)
+                        q-icon.cursor-pointer(name='event')
+                          q-popup-proxy(ref='qDateProxy' cover transition-show='scale' transition-hide='scale')
+                            q-date(v-model='scadSettings.franchiseTagDeadline')
+                              .row.items-center.justify-end
+                                q-btn(v-close-popup label='Close' color='primary' flat)
+                  div(v-else) {{moment(scadSettings.franchiseTagDeadline).format('LL')}}
+            q-item(clickable)
+              .row.full-width.q-pl-lg
+                .col-5.text-body1.text-left
                   | Year Limit on Trading Draft Picks in Advance:
                 .col-2.text-body1.q-pl-lg.text-weight-bolder
                   q-select(v-if="editing" filled dense v-model='scadSettings.tradingDraftPickYears' :options='referenceData.tradingDraftPickYears')
@@ -183,6 +197,7 @@ import referenceData from '../utilities/referenceData'
 import { checkIfCommish } from '../utilities/validators'
 // import notify from '../utilities/nofity'
 import Loading from '../components/Loading'
+import moment from 'moment'
 
 export default {
   name: 'RegisterLeague',
@@ -201,6 +216,7 @@ export default {
     this.init()
   },
   computed: {
+    moment () { return moment },
     referenceData () {
       return referenceData
     },

@@ -56,7 +56,10 @@ import {
   QTh,
   QFooter,
   QParallax,
-  QUploader
+  QUploader,
+  QPopupProxy,
+  QDate,
+  ClosePopup
 
 } from 'quasar'
 
@@ -120,10 +123,13 @@ Vue.use(Quasar, {
     QTh,
     QFooter,
     QParallax,
-    QUploader
+    QUploader,
+    QPopupProxy,
+    QDate
   },
   directives: {
-    Ripple
+    Ripple,
+    ClosePopup
   },
   plugins: {
     Loading,

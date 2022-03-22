@@ -105,6 +105,23 @@
                     | When a player is franchise tagged, their salary is discounted for the year, but you must cut them after the season.
             .row
               .col-3.text-subtitle2.text-right.q-pt-sm
+                | Franchise Tag Deadline Date:
+              .col-3
+                template
+                  .q-pl-lg(style='max-width: 400px')
+                    q-input(filled v-model='newLeague.franchiseTagDeadline' mask='date' dense :rules="['date']")
+                      template(v-slot:append)
+                        q-icon.cursor-pointer(name='event')
+                          q-popup-proxy(ref='qDateProxy' cover transition-show='scale' transition-hide='scale')
+                            q-date(v-model='newLeague.franchiseTagDeadline')
+                              .row.items-center.justify-end
+                                q-btn(v-close-popup label='Close' color='primary' flat)
+              .col-2.q-px-sm.q-pt-sm
+                q-btn(rounded dense color='info' size='xs' label="What's This?")
+                  q-tooltip
+                    | Deadline date for managers to declare their franchise tagged players. Editable after league is created.
+            .row
+              .col-3.text-subtitle2.text-right.q-pt-sm
                 | Draft Pick Trading Limit:
               .col-2.q-pl-lg
                 q-select( filled dense label='Years' stack-label v-model='newLeague.tradingDraftPickYears' :options='referenceData.tradingDraftPickYears' :error='$v.newLeague.tradingDraftPickYears.$error' error-message='Required Field')
@@ -207,6 +224,7 @@ import notify from '../utilities/nofity'
 import { nodeHeader, api } from '../utilities/axios-node'
 import { catchAxiosNodeError } from '../utilities/catchAxiosErrors'
 import Loading from '../components/Loading'
+import moment from 'moment'
 
 export default {
   name: 'RegisterLeague',
@@ -233,6 +251,7 @@ export default {
         irReliefPerc: 50,
         franchiseTagDiscount: 25,
         franchiseTagSpots: '',
+        franchiseTagDeadline: null,
         tradingDraftPickYears: '',
         rosterSpotLimit: 0,
         renewSCADLeagueId: '',
@@ -267,6 +286,7 @@ export default {
       irReliefPerc: { required },
       franchiseTagDiscount: { required },
       franchiseTagSpots: { required },
+      franchiseTagDeadline: { required },
       tradingDraftPickYears: { required },
       rosterSpotLimit: { required },
       qbMin: { required },
@@ -288,6 +308,7 @@ export default {
     this.loaded = true
   },
   computed: {
+    moment () { return moment },
     referenceData () {
       return referenceData
     },
