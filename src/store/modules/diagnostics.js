@@ -34,8 +34,12 @@ export default {
   actions: {
     async getDiagnostic ({ rootState, commit }) {
       try {
-        const res = await api(rootState.user.tokens.access_token, rootState.user.tokens.id_token).get(`/diagnostic/${rootState.league.yahooGameKey}/${rootState.league.yahooLeagueId}`)
+        const res = await api(
+          rootState.user.tokens.access_token,
+          rootState.user.tokens.id_token,
+          rootState.user.tokens.refresh_token).get(`/diagnostic/${rootState.league.yahooGameKey}/${rootState.league.yahooLeagueId}`)
         commit('updateDiagnostic', res.data.data[0])
+        // console.log('DIAGNOSTIC', res.data.data[0])
       } catch (error) {
         catchAxiosNodeError(error)
       }

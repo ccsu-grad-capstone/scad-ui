@@ -158,6 +158,7 @@ export default {
           await dispatch('getAllYahooCommishLeagues')
           await dispatch('transactions/getTransactions', null, { root: true })
           await dispatch('player/getFranchiseTaggedPlayers', null, { root: true })
+          dispatch('diagnostics/getDiagnostic', null, { root: true })
           dispatch('getAllYahooLeagues')
           dispatch('getAllScadLeagues')
           let myYahooTeam = state.yahooTeams.find(t => t.managers[0].guid === rootState.user.user.guid) // needed for when getting previous team preseason

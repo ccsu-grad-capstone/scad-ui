@@ -30,24 +30,17 @@ const aws = axios.create({
   timeout: 20000
 })
 
-const api = (access_token, id_token) => {
-  // return axios.create({
-  //   baseURL: getBaseURL('NODE'),
-  //   timeout: 60000,
-  //   headers: {
-  //     Authorization: process.env.VUE_APP_AUTH,
-  //     accesstoken: access_token,
-  //     idtoken: id_token
-  //   }
-  // })
+const api = (access_token, id_token, refresh_token) => {
+  let headers = {
+    Authorization: process.env.VUE_APP_AUTH,
+    access_token: access_token,
+    id_token: id_token
+  }
+  // if (refresh_token) headers.refresh_token = refresh_token
   return axios.create({
     baseURL: `${process.env.VUE_APP_API}/`,
     timeout: 60000,
-    headers: {
-      Authorization: process.env.VUE_APP_AUTH,
-      access_token: access_token,
-      id_token: id_token
-    }
+    headers: headers
   })
 }
 

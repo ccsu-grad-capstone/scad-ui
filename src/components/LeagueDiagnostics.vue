@@ -196,7 +196,7 @@ export default {
   },
 
   async mounted () {
-    this.$store.dispatch('diagnostics/getDiagnostic')
+    // this.$store.dispatch('diagnostics/getDiagnostic')
   },
   methods: {
     getTeamSalary (id) {
