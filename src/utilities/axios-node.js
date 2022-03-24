@@ -34,7 +34,8 @@ const api = (access_token, id_token, refresh_token) => {
   let headers = {
     Authorization: process.env.VUE_APP_AUTH,
     access_token: access_token,
-    id_token: id_token
+    id_token: id_token,
+    refresh_token: refresh_token
   }
   // if (refresh_token) headers.refresh_token = refresh_token
   return axios.create({
