@@ -153,14 +153,15 @@ export default {
           commit('team/updateMyYahooTeam', dashboard.data.result.yahooMyTeam, { root: true })
           commit('team/updateMyScadTeam', scadTeam, { root: true })
 
+          // Move these calls to Layout.vue?
           await dispatch('getYahooTeams', state.yahooLeagueId)
           await dispatch('getScadTeams', state.scadLeagueId)
-          await dispatch('getAllYahooCommishLeagues')
-          await dispatch('transactions/getTransactions', null, { root: true })
-          await dispatch('player/getFranchiseTaggedPlayers', null, { root: true })
-          dispatch('diagnostics/getDiagnostic', null, { root: true })
-          dispatch('getAllYahooLeagues')
-          dispatch('getAllScadLeagues')
+          // await dispatch('getAllYahooCommishLeagues')
+          // await dispatch('transactions/getTransactions', null, { root: true })
+          // await dispatch('player/getFranchiseTaggedPlayers', null, { root: true })
+          // dispatch('diagnostics/getDiagnostic', null, { root: true })
+          // dispatch('getAllYahooLeagues')
+          // dispatch('getAllScadLeagues')
           let myYahooTeam = state.yahooTeams.find(t => t.managers[0].guid === rootState.user.user.guid) // needed for when getting previous team preseason
           let id = {
             myYahooTeamId: myYahooTeam.team_id,
