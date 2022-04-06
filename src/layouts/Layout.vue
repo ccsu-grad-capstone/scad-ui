@@ -219,7 +219,7 @@ export default {
       //   this.$router.push('about')
       // }
       this.activeLeague = this.league.yahooLeagueDetails.name
-      // this.loaded = true
+      this.loaded = true
       this.$q.loadingBar.stop()
     },
     offseason () {
