@@ -1,39 +1,47 @@
 <template lang="pug">
-  .q-pa-xs
+  div
     .text-h6.text-weight-bolder My Team
-    q-table(
-      :data='myScadTeam.roster',
-      :columns='columns',
-      row-key='playerName',
-      :pagination.sync="pagination",
-      hide-bottom,
-      flat
-      dense
-      square
-      )
+    q-card(v-if="!loaded" flat dense square)
+      loading(:message="'Getting My Roster'")
+    .q-pa-xs(v-else)
+      q-table(
+        :data='myScadTeam.roster',
+        :columns='columns',
+        row-key='playerName',
+        :pagination.sync="pagination",
+        hide-bottom,
+        flat
+        dense
+        square
+        )
 
-      template(v-slot:body='props')
-        q-tr(:props='props')
-          q-td {{getPos(props.row.yahooPlayerId)}}
-          q-td(key='playerName' :props='props')
-            .row.full-width
-              .col-2
-                q-avatar(size="30px")
-                  img(:src="getPlayerPic(props.row.yahooPlayerId)" style="width: 80%")
-              .column.justify-center.q-pl-sm.text-body2.text-weight-bold
-                .row.full-width
-                  | {{getPlayerName(props.row.yahooPlayerId)}}
-          q-td.text-primary.text-weight-bolder.text-center ${{props.row.salary}}
+        template(v-slot:body='props')
+          q-tr(:props='props')
+            q-td {{getPos(props.row.yahooPlayerId)}}
+            q-td(key='playerName' :props='props')
+              .row.full-width
+                .col-2
+                  q-avatar(size="30px")
+                    img(:src="getPlayerPic(props.row.yahooPlayerId)" style="width: 80%")
+                .column.justify-center.q-pl-sm.text-body2.text-weight-bold
+                  .row.full-width
+                    | {{getPlayerName(props.row.yahooPlayerId)}}
+            q-td.text-primary.text-weight-bolder.text-center ${{props.row.salary}}
 </template>
 
 <script>
 
 import { getYahooPlayer } from '../utilities/functions'
+import Loading from '../components/Loading'
 
 export default {
   name: 'LiteMyTeam',
+  components: {
+    'loading': Loading
+  },
   data () {
     return {
+      loaded: false,
       pagination: {
         page: 1,
         rowsPerPage: 0,
@@ -75,6 +83,10 @@ export default {
         }
       ]
     }
+  },
+  async mounted () {
+    // await this.$store.dispatch('player/getFranchiseTaggedPlayers')
+    this.loaded = true
   },
   computed: {
     team () {

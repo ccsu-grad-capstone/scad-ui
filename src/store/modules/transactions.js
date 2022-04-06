@@ -1,5 +1,5 @@
 /* eslint-disable eqeqeq */
-// import notify from '../../utilities/nofity'
+import notify from '../../utilities/nofity'
 // import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
 import { api } from '../../utilities/axios-node'
 import { getScadTeam, getYahooTeamFromYahooTeamId, getSalaryForCatch, getTeamGuid } from '../../utilities/functions'
@@ -109,6 +109,7 @@ export default {
         if (transactions.data.transactions.length > 0) {
           await commit('updateTransactions', transactions.data.transactions)
           if (state.transactions[0].timestamp > state.lastTimestamp) {
+            notify.warning('Updating teams based on recent transactions')
             let updatedTeams = []
             for (let t of state.reversedTransactions) {
               if (t.timestamp > state.lastTimestamp) { // Check Timestamp of last saved Transaction
@@ -222,6 +223,7 @@ export default {
             await dispatch('league/getYahooTeams', rootState.league.yahooLeagueId, { root: true })
             await dispatch('league/getScadTeams', rootState.league.scadLeagueId, { root: true })
             dispatch('updateLastTimestamp')
+            notify.success('Transactions update complete')
           } else {
             console.log('No new Transactions')
           }

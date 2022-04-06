@@ -29,6 +29,14 @@ export default {
       icon: 'check'
     })
   },
+  warning (message) {
+    Notify.create({
+      message: `${message}`,
+      position: 'top',
+      color: 'warning',
+      icon: 'warning'
+    })
+  },
   salarySaveSuccessful () {
     Notify.create({
       message: ` Salary Saved`,
