@@ -107,8 +107,8 @@ export default {
   },
 
   async mounted () {
-    await this.$store.dispatch('transactions/getTransactionTimestamp')
-    await this.$store.dispatch('transactions/getTransactions')
+    // await this.$store.dispatch('transactions/getTransactionTimestamp')
+    // await this.$store.dispatch('transactions/getTransactions')
     this.loaded = true
   },
   methods: {
