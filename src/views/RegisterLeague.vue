@@ -129,6 +129,24 @@
                 q-btn(rounded dense color='info' size='xs' label="What's This?")
                   q-tooltip
                     | Limit the number of years teams can trade future draft picks.
+            .row.q-mb-sm
+              .col-3.text-subtitle2.text-right.q-pt-sm
+                | Run Diagnostic Daily During Season:
+              .col-1.q-pl-lg.q-pt-sm
+                q-toggle(size="lg" filled dense stack-label v-model='newLeague.runDiagnosticDailyDuringSeason')
+              .col-2.q-px-sm.q-pt-sm
+                q-btn(rounded dense color='info' size='xs' label="What's This?")
+                  q-tooltip
+                    | SCAD will run a diagnostic check on all teams in league to confirm all leagues rules and regulations are followed.
+            .row.q-my-lg(v-if="newLeague.runDiagnosticDailyDuringSeason")
+              .col-3.text-subtitle2.text-right.q-pt-sm
+                | Email Managers When Diagnostic Fails:
+              .col-1.q-pl-lg.q-pt-sm
+                q-toggle(size="lg" filled dense stack-label v-model='newLeague.emailManagersWithIllegalLineup')
+              .col-2.q-px-sm.q-pt-sm
+                q-btn(rounded dense color='info' size='xs' label="What's This?")
+                  q-tooltip
+                    | SCAD will email managers when diagnostic is complete if there's an issue with their roster.
             .row
               .col-3.text-subtitle2.text-right.q-pt-sm
                 | Roster Limits:
@@ -267,7 +285,9 @@ export default {
         kMin: '0',
         kMax: '2',
         defMin: '2',
-        defMax: '4'
+        defMax: '4',
+        runDiagnosticDailyDuringSeason: false,
+        emailManagersWithIllegalLineup: false
       }
     }
   },

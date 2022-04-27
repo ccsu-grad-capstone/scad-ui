@@ -3,7 +3,7 @@
     .row.full-width.justify-center
       .col-xl-10.col-lg-10.col-md-10.col-sm-12.col-xs-12
         .row.full-width.q-pa-md
-          div.text-h4.text-weight-bolder Draft Picks {{getDraftPicksByLeagueError}}
+          div.text-h4.text-weight-bolder Draft Picks
           q-space
         .row.full-width.q-px-md.gt-sm
           .text-subtitle2.text-grey  List of draft picks for drafting incoming rookies for next {{scadSettings.tradingDraftPickYears}} years.  Each rookie draft is {{scadSettings.rookieDraftRds}} rounds.  Each year, all owners are given {{scadSettings.rookieDraftRds}} picks, 1 for each round. Pick value for each draft pick is entered upon completion of fantasy season.

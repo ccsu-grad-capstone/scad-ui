@@ -105,6 +105,7 @@ export default {
 
         const transactions = await api(rootState.user.tokens.access_token).get(`/yahoo/game/${rootState.league.yahooGameKey}/league/${rootState.league.yahooLeagueId}/transactions`)
         console.log('TRANSACTIONS: ', transactions.data.transactions)
+        await commit('updateTransactions', transactions.data.transactions)
         const process = await api(rootState.user.tokens.access_token, rootState.user.tokens.id_token).get(`/transaction/${rootState.league.yahooGameKey}/${rootState.league.yahooLeagueId}/process`)
         console.log('PROCESS TRANSACTIONS: ', process.data)
 

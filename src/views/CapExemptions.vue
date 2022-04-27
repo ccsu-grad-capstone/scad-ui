@@ -8,7 +8,7 @@
           div(v-if="loaded")
             //- q-btn.q-mt-sm(v-if="updateCE && this.scadSettings.isCurrentlyLoggedInUserACommissioner" label='CLICK HERE TO SYNC CAP EXCEPTIONS' dense color='primary' text-color='white' size='sm' @click="updateMongoWithCE")
         .row.full-width.q-px-md.gt-sm
-          .text-subtitle2.text-grey Cap Exceptions are transactions of salaries between two teams, typically as part of a larger trade.  Amount is added or deducted from participating team's salary for the given year. Each team has ${{salaryCapExemptionLimit}} to both give and recieve throughout the course of a season.
+          .text-subtitle2.text-grey Cap Exceptions are transactions of salaries between two teams, typically as part of a larger trade.  Amount is added or deducted from participating team's salary for the given year. Each team has ${{salaryCapExemptionLimit}} to both give and receive throughout the course of a season.
         .row.full-width.q-gutter-between.q-py-sm
           .col.q-px-md
             .row.q-gutter-sm
