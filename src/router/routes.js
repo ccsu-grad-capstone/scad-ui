@@ -86,6 +86,17 @@ const routes = [
     }
   },
   {
+    path: '/league-diagnostic',
+    component: () => import('../layouts/Layout.vue'),
+    children: [
+      { path: '', component: () => import('../views/LeagueDiagnostics.vue') }
+    ],
+    meta: {
+      requiresAuth: true,
+      requiresLeague: true
+    }
+  },
+  {
     path: '/trade',
     component: () => import('../layouts/Layout.vue'),
     children: [

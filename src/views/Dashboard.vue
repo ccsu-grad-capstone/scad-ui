@@ -29,7 +29,6 @@
 <script>
 import LiteMyTeam from '../components/LiteMyTeam'
 import LiteLeague from '../components/LiteLeague'
-import LeagueDiagnostics from '../components/LeagueDiagnostics'
 import Transactions from '../components/Transactions'
 import LiteLeagueMobile from '../components/LiteLeagueMobile'
 import LiteDraftPicks from '../components/LiteDraftPicks'
@@ -44,7 +43,6 @@ export default {
   components: {
     'lite-my-team': LiteMyTeam,
     'lite-league': LiteLeague,
-    'league-diagnostics': LeagueDiagnostics,
     transactions: Transactions,
     'lite-league-mobile': LiteLeagueMobile,
     'lite-draft-picks': LiteDraftPicks,

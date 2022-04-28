@@ -79,6 +79,11 @@ export default {
           icon: 'settings_applications',
           text: 'League Settings',
           route: '/league-settings'
+        },
+        {
+          icon: 'settings_applications',
+          text: 'League Diagnostic',
+          route: '/league-diagnostic'
         }
       ],
       noLeagueLinks: [

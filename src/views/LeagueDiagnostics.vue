@@ -1,63 +1,68 @@
 <template lang="pug">
-  .q-pa-sm.col-xs-4
-    .row
-      .text-h6.text-weight-bolder League Diagnostics #[span.text-caption.text-grey-5 (Last Run: {{ lastChecked }})]
-      .column.justify-center.q-pl-md
-        q-btn( size='xs' color='info' label='Run Diagnostics' dense @click='runDiagnostics()')
-    q-card.full-width(v-if="teams.length <= 0" flat)
-      .row.full-width.justify-center.q-py-xl(v-if="!running")
-      loading(v-if="!loaded && running" :message="'Running Diagnostics, this may take a moment..'")
-    q-table(
-      v-else
-      :data='teams',
-      :columns='columns',
-      row-key='name',
-      :pagination.sync="pagination",
-      hide-bottom,
-      dense,
-      flat,
-      square
-      )
-      template(v-slot:body-cell-rank='props' auto-width)
-        q-td(:props='props' auto-width)
-          | {{getTeamRank(props.row.yahooTeam.team_standings)}}
-      template(v-slot:body-cell-name='props' auto-width)
-        q-td(:props='props')
-          .row.full-width.q-py-xs
-            .column
-              q-avatar(size="27px")
-                img(:src="props.row.yahooTeam.team_logos[0].url")
-            .column.justify-center.text-weight-bold.q-pl-sm
-              router-link(:to="{ path: `/team/${props.row.yahooTeam.team_id}`}") {{props.row.yahooTeam.name}}
-      template(v-slot:body-cell-manager='props')
-        q-td(:props='props' auto-width)
-          .text-grey {{props.row.yahooTeam.managers[0].nickname}}
-      template(v-slot:body-cell-qb='props')
-        q-td.bg-grey-1(:props='props' auto-width)
-          .text-body.text-grey-5 {{ scadSettings.qbMin }} | #[span.qty(v-bind:class="{ 'text-negative': !checkPos('qb', scadSettings, props.row.yahooTeam.roster) }") {{props.row.qb}}] | {{ scadSettings.qbMax }}
-      template(v-slot:body-cell-wr='props')
-        q-td.bg-grey-1(:props='props' auto-width)
-          .text-body.text-grey-5 {{ scadSettings.wrMin }} | #[span.qty(v-bind:class="{ 'text-negative': !checkPos('wr', scadSettings, props.row.yahooTeam.roster) }") {{props.row.wr}}] | {{ scadSettings.wrMax }}
-      template(v-slot:body-cell-rb='props')
-        q-td.bg-grey-1(:props='props' auto-width)
-          .text-body.text-grey-5 {{ scadSettings.rbMin }} | #[span.qty(v-bind:class="{ 'text-negative': !checkPos('rb', scadSettings, props.row.yahooTeam.roster) }") {{props.row.rb}}] | {{ scadSettings.rbMax }}
-      template(v-slot:body-cell-te='props')
-        q-td.bg-grey-1(:props='props' auto-width)
-          .text-body.text-grey-5 {{ scadSettings.teMin }} | #[span.qty(v-bind:class="{ 'text-negative': !checkPos('te', scadSettings, props.row.yahooTeam.roster) }") {{props.row.te}}] | {{ scadSettings.teMax }}
-      template(v-slot:body-cell-def='props')
-        q-td.bg-grey-1(:props='props' auto-width)
-          .text-body.text-grey-5 {{ scadSettings.defMin }} | #[span.qty(v-bind:class="{ 'text-negative': !checkPos('def', scadSettings, props.row.yahooTeam.roster) }") {{props.row.def}}] | {{ scadSettings.defMax }}
-      template(v-slot:body-cell-ir='props')
-        q-td.bg-grey-1(:props='props' auto-width)
-          .text-body.text-negative.text-weight-bold(v-if="props.row.ir") {{ props.row.ir}}
-          q-icon.q-pa-xs(v-else name='fas fa-check' color='primary' size='xs')
-      template(v-slot:body-cell-salary='props')
-        q-td.bg-grey-1(:props='props' auto-width)
-          .text-primary.text-weight-bolder(v-if="checkTeamSalary(props.row.yahooTeam.team_id) >= 0") ${{getTeamSalary(props.row.yahooTeam.team_id)}}
-          .text-negative.text-weight-bolder(v-else) ${{getTeamSalary(props.row.yahooTeam.team_id)}}
-      template(v-slot:body-cell-status='props')
-        q-td.bg-grey-1(:props='props' auto-width)
-          .text-weight-bolder.text-positive(v-bind:class="{ 'text-negative': !runStatusCheck(props.row) }") {{displayStatus(props.row)}}
+  q-page
+    .row.full-width.justify-center
+      .col-xl-10.col-lg-10.col-md-10.col-sm-12.col-xs-12
+        .row.full-width.q-pa-md.items-center
+          .text-h4.text-weight-bolder League Diagnostics
+        .row.full-width.gt-sm.q-pa-sm
+          .text-subtitle2.text-grey A diagnostic will iterate through each team and confirm it's adhering to all specific SCAD settings. Results are shown below.  Any issues are shown in red.
+        .row.full-width.q-pa-sm.q-gutter-between
+          .col.text-subtitle2.text-grey Last Run: {{ lastChecked }}
+          .col.align-end.q-pl-md
+            q-btn( size='sm' color='info' label='Run Diagnostics' @click='runDiagnostics()')
+            q-btn( v-if="illegalRosterExists()" size='sm' color='negative' label='Email Illegal Lineups' @click='sendDiagnosticTeamIssueEmail()')
+        loading(v-if="!loaded && running" :message="'Running Diagnostics, this may take a moment..'")
+        q-table(
+          v-else
+          :data='teams',
+          :columns='columns',
+          row-key='name',
+          :pagination.sync="pagination",
+          hide-bottom,
+          dense,
+          flat,
+          square
+          )
+          template(v-slot:body-cell-rank='props' auto-width)
+            q-td(:props='props' auto-width)
+              | {{getTeamRank(props.row.yahooTeam.team_standings)}}
+          template(v-slot:body-cell-name='props' auto-width)
+            q-td(:props='props')
+              .row.full-width.q-py-xs
+                .column
+                  q-avatar(size="27px")
+                    img(:src="props.row.yahooTeam.team_logos[0].url")
+                .column.justify-center.text-weight-bold.q-pl-sm
+                  router-link(:to="{ path: `/team/${props.row.yahooTeam.team_id}`}") {{props.row.yahooTeam.name}}
+          template(v-slot:body-cell-manager='props')
+            q-td(:props='props' auto-width)
+              .text-grey {{props.row.yahooTeam.managers[0].nickname}}
+          template(v-slot:body-cell-qb='props')
+            q-td.bg-grey-1(:props='props' auto-width)
+              .text-body.text-grey-5 {{ scadSettings.qbMin }} | #[span.qty(v-bind:class="{ 'text-negative': !checkPos('qb', scadSettings, props.row.yahooTeam.roster) }") {{props.row.qb}}] | {{ scadSettings.qbMax }}
+          template(v-slot:body-cell-wr='props')
+            q-td.bg-grey-1(:props='props' auto-width)
+              .text-body.text-grey-5 {{ scadSettings.wrMin }} | #[span.qty(v-bind:class="{ 'text-negative': !checkPos('wr', scadSettings, props.row.yahooTeam.roster) }") {{props.row.wr}}] | {{ scadSettings.wrMax }}
+          template(v-slot:body-cell-rb='props')
+            q-td.bg-grey-1(:props='props' auto-width)
+              .text-body.text-grey-5 {{ scadSettings.rbMin }} | #[span.qty(v-bind:class="{ 'text-negative': !checkPos('rb', scadSettings, props.row.yahooTeam.roster) }") {{props.row.rb}}] | {{ scadSettings.rbMax }}
+          template(v-slot:body-cell-te='props')
+            q-td.bg-grey-1(:props='props' auto-width)
+              .text-body.text-grey-5 {{ scadSettings.teMin }} | #[span.qty(v-bind:class="{ 'text-negative': !checkPos('te', scadSettings, props.row.yahooTeam.roster) }") {{props.row.te}}] | {{ scadSettings.teMax }}
+          template(v-slot:body-cell-def='props')
+            q-td.bg-grey-1(:props='props' auto-width)
+              .text-body.text-grey-5 {{ scadSettings.defMin }} | #[span.qty(v-bind:class="{ 'text-negative': !checkPos('def', scadSettings, props.row.yahooTeam.roster) }") {{props.row.def}}] | {{ scadSettings.defMax }}
+          template(v-slot:body-cell-ir='props')
+            q-td.bg-grey-1(:props='props' auto-width)
+              .text-body.text-negative.text-weight-bold(v-if="props.row.ir") {{ props.row.ir}}
+              q-icon.q-pa-xs(v-else name='fas fa-check' color='primary' size='xs')
+          template(v-slot:body-cell-salary='props')
+            q-td.bg-grey-1(:props='props' auto-width)
+              .text-primary.text-weight-bolder(v-if="checkTeamSalary(props.row.yahooTeam.team_id) >= 0") ${{getTeamSalary(props.row.yahooTeam.team_id)}}
+              .text-negative.text-weight-bolder(v-else) ${{getTeamSalary(props.row.yahooTeam.team_id)}}
+          template(v-slot:body-cell-status='props')
+            q-td.bg-grey-1(:props='props' auto-width)
+              .text-weight-bolder.text-positive(v-bind:class="{ 'text-negative': !runStatusCheck(props.row) }") {{displayStatus(props.row)}}
 </template>
 
 <script>
@@ -248,6 +253,13 @@ export default {
       this.running = true
       await this.$store.dispatch('diagnostics/runDiagnostics')
       this.loaded = true
+    },
+    async sendDiagnosticTeamIssueEmail () {
+      await this.$store.dispatch('diagnostics/sendDiagnosticTeamIssueEmail')
+    },
+    illegalRosterExists () {
+      if (this.teams.find(t => t.passedStatusCheck === false)) return true
+      else return false
     }
   }
 

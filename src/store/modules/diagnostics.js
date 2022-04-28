@@ -5,7 +5,8 @@ import moment from 'moment'
 import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
 // import { calcTeamSalary, getPosCount } from '../../utilities/calculator'
 // import { checkIRCount, checkCovidCount } from '../../utilities/validators'
-// import { getTeamGuid } from '../../utilities/functions'
+import { getTeamGuid } from '../../utilities/functions'
+import notify from '../../utilities/nofity'
 
 export default {
   namespaced: true,
@@ -26,6 +27,7 @@ export default {
     updateDiagnostic (state, d) {
       state._id = d._id
       state.lastChecked = moment(d.lastChecked).format('LLL')
+      state.teams = d.teams
     },
     updateLastChecked (state, d) {
       state.lastChecked = moment(d).format('LLL')
@@ -56,11 +58,33 @@ export default {
         catchAxiosNodeError(error)
       }
     },
+    async sendDiagnosticTeamIssueEmail ({ state, commit, rootState }) {
+      try {
+        let illegalTeams = state.teams.filter(t => t.passedStatusCheck === false)
+        // Get League Commish Email(s)
+        let leagueCommishEmails = []
+        let leagueCommish = rootState.league.yahooTeams.filter((t) => t.managers[0].is_commissioner === '1')
+        for (const team of leagueCommish) {
+          let email = rootState.league.scadSettings.emails.find((e) => e.guid === getTeamGuid(team))
+          if (email) leagueCommishEmails.push(email.email)
+        }
+        await api(rootState.user.tokens.access_token, rootState.user.tokens.id_token).post(`/scad/email/sendDiagnosticTeamIssueEmail`, {
+          teams: illegalTeams,
+          leagueName: rootState.league.yahooLeagueDetails.name,
+          scadLeague: rootState.league.scadSettings,
+          leagueCommishEmails: leagueCommishEmails
+        })
+        notify.success('Emails Sent Successfully')
+      } catch (error) {
+        catchAxiosNodeError(error)
+      }
+    },
     async runDiagnostics ({ rootState, state, commit, dispatch }) {
       try {
         await dispatch('transactions/getTransactions', null, { root: true })
-        const process = await api(rootState.user.tokens.access_token, rootState.user.tokens.id_token).get(`/diagnostic/${state._id}/run`)
+        const process = await api(rootState.user.tokens.access_token, rootState.user.tokens.id_token).get(`/diagnostic/${rootState.league.scadLeagueId}/run`)
         console.log('RUN DIAGNOSTIC: ', process.data)
+        commit('updateTeams', process.data.teams)
       } catch (error) {
         console.log(error)
       }
@@ -82,7 +106,6 @@ export default {
       //     )
       //     for (const ce of rootState.capExemptions.capExemptionsByTeam) {
       //       if (ce.year == rootState.league.scadSettings.seasonYear) {
-
       //       }
       //     }
       //     let team = {

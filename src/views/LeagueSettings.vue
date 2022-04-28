@@ -36,13 +36,6 @@
             q-item(clickable)
               .row.full-width.q-pl-lg
                 .column.justify-center.col-5.text-body1.text-left
-                  | Managers Emails:
-                .col.text-body1.q-pl-lg.text-weight-bolder
-                  q-btn(v-if="!editing" color="white" text-color="primary" flat label = "Edit Managers Emails" @click="editEmails = true" dense)
-                  q-btn(v-else color="white" text-color="primary" flat label = "Edit Managers Emails" @click="editEmails = true" disable dense)
-            q-item(clickable)
-              .row.full-width.q-pl-lg
-                .column.justify-center.col-5.text-body1.text-left
                   | Run Diagnostic Daily:
                 .column.justify-center.text-body1.q-pl-lg.text-weight-bolder
                   q-toggle(v-if="editing" filled dense v-model='scadSettings.runDiagnosticDailyDuringSeason')
@@ -57,7 +50,14 @@
                   q-toggle(v-if="editing" filled dense v-model='scadSettings.emailManagersWithIllegalLineup')
                   q-toggle(v-else disable filled dense v-model='scadSettings.emailManagersWithIllegalLineup')
                 .col.q-pl-md
-                  .text-caption SCAD will email each manager when diagnostic is complete if there's an issue with their roster. By default, commissioner will be CC'd on all emails.
+                  .text-caption SCAD will email each manager when diagnostic is complete if there's an issue with their roster. By default, commissioner will be CC'd on all emails. Edit emails below.
+            q-item(clickable)
+              .row.full-width.q-pl-lg
+                .column.justify-center.col-5.text-body1.text-left
+                  | Managers Emails:
+                .col.text-body1.q-pl-lg.text-weight-bolder
+                  q-btn(v-if="!editing" color="white" text-color="primary" flat label = "Edit Managers Emails" @click="editEmails = true" dense)
+                  q-btn(v-else color="white" text-color="primary" flat label = "Edit Managers Emails" @click="editEmails = true" disable dense)
             q-item(clickable)
               .row.full-width.q-pl-lg
                 .column.justify-center.col-5.text-body1.text-left
