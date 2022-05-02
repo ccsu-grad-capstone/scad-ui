@@ -22,7 +22,7 @@
           div.q-pr {{ getType(props.row) }}
       template(v-slot:body-cell-amount='props')
         q-td(:props='props' auto-width)
-          div.q-pr(:class="{'text-negative text-weight-bold': getType(props.row) === 'Give', 'text-positive text-weight-bold': getType(props.row) === 'Recieve'}") ${{ props.row.amount }}
+          div.q-pr(:class="{'text-negative text-weight-bold': getType(props.row) === 'Give', 'text-positive text-weight-bold': getType(props.row) === 'Receive'}") ${{ props.row.amount }}
       template(v-slot:body-cell-otherTeam='props')
         q-td(:props='props' auto-width)
           div.q-pr {{ getOtherTeam(props.row) }}

@@ -41,7 +41,7 @@ export default {
           rootState.user.tokens.id_token,
           rootState.user.tokens.refresh_token).get(`/diagnostic/${rootState.league.yahooGameKey}/${rootState.league.yahooLeagueId}`)
         commit('updateDiagnostic', res.data.data[0])
-        // console.log('DIAGNOSTIC', res.data.data[0])
+        console.log('DIAGNOSTIC', res.data.data[0])
       } catch (error) {
         catchAxiosNodeError(error)
       }

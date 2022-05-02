@@ -22,9 +22,11 @@
               q-select( filled dense label="League" v-model='activeLeague' :options='filteredLeagues' @input="switchLeagues()")
           q-item.GNL__drawer-item(@click="navigate(link.route)" v-if="league.isActive" v-ripple v-for="link in hasLeagueLinks" :key="link.text" clickable)
             q-item-section(avatar)
+              //- q-icon(:name="link.icon")
               q-icon(:name="link.icon")
             q-item-section
               q-item-label {{ link.text }}
+                q-badge(v-if="getDiagIllegalCount() > 0 && link.icon === 'fact_check'" color="negative", floating rounded) {{ getDiagIllegalCount() }}
           q-separator.q-my-sm(v-if="league.isActive" inset)
           q-item.GNL__drawer-item(@click="navigate(link.click)" v-ripple v-for="link in links3" :key="link.text" clickable)
             q-item-section
@@ -81,7 +83,8 @@ export default {
           route: '/league-settings'
         },
         {
-          icon: 'settings_applications',
+          // icon: 'fas fa-flag',
+          icon: 'fact_check',
           text: 'League Diagnostic',
           route: '/league-diagnostic'
         }
@@ -128,6 +131,9 @@ export default {
     },
     myYahooTeamId () {
       return this.$store.state.team.myYahooTeamId
+    },
+    diagnosticTeam () {
+      return this.$store.state.diagnostics.teams
     },
     filteredLeagues () {
       return this.scadLeagues.map(l =>
@@ -278,6 +284,9 @@ export default {
     getLeagueName (id) {
       let league = this.yahooLeagues.find(l => l.league_id == id)
       if (league) return league.name
+    },
+    getDiagIllegalCount () {
+      return this.diagnosticTeam.filter(t => !t.passedStatusCheck).length
     }
   }
 }

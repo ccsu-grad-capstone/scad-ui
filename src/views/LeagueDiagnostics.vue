@@ -8,9 +8,9 @@
           .text-subtitle2.text-grey A diagnostic will iterate through each team and confirm it's adhering to all specific SCAD settings. Results are shown below.  Any issues are shown in red.
         .row.full-width.q-pa-sm.q-gutter-between
           .col.text-subtitle2.text-grey Last Run: {{ lastChecked }}
-          .col.align-end.q-pl-md
-            q-btn( size='sm' color='info' label='Run Diagnostics' @click='runDiagnostics()')
-            q-btn( v-if="illegalRosterExists()" size='sm' color='negative' label='Email Illegal Lineups' @click='sendDiagnosticTeamIssueEmail()')
+          .col.q-gutter-sm.text-right
+              q-btn( size='sm' color='primary' label='Run Diagnostics' @click='runDiagnostics()')
+              q-btn( v-if="illegalRosterExists() && checkIfCommish()" size='sm' color='info' label='Email Illegal Lineups' @click='sendDiagnosticTeamIssueEmail()')
         loading(v-if="!loaded && running" :message="'Running Diagnostics, this may take a moment..'")
         q-table(
           v-else
@@ -67,7 +67,7 @@
 
 <script>
 /* eslint-disable eqeqeq */
-import { checkPos } from '../utilities/validators'
+import { checkPos, checkIfCommish } from '../utilities/validators'
 import { getPosCount } from '../utilities/calculator'
 import Loading from '../components/Loading'
 
@@ -260,6 +260,9 @@ export default {
     illegalRosterExists () {
       if (this.teams.find(t => t.passedStatusCheck === false)) return true
       else return false
+    },
+    checkIfCommish () {
+      return checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)
     }
   }
 
