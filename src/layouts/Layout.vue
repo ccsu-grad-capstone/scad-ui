@@ -212,7 +212,7 @@ export default {
           // Need to add loaded variables for these calls, and loading component
           // await this.$store.dispatch('league/getYahooTeams', this.league.yahooLeagueId)
           // await this.$store.dispatch('league/getScadTeams', this.league.scadLeagueId)
-          this.$store.dispatch('league/getAllYahooCommishLeagues')
+          // this.$store.dispatch('league/getAllYahooCommishLeagues')
           // this.$store.dispatch('player/getFranchiseTaggedPlayers')
           this.$store.dispatch('diagnostics/getDiagnostic')
           this.$store.dispatch('league/getAllYahooLeagues')

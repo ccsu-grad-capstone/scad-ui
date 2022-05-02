@@ -13,6 +13,7 @@
       download-excel.gt-sm( v-if="!processing && capExemptions.capExemptions.length > 0" :data="capExemptions.capExemptions", :fields="ceFields" :name="getCeExportName(league.yahooLeagueDetails.name)" type="csv")
         q-btn(label="Export Cap Exemptions" color="primary" size="xs")
       q-btn(label="Import Updated Salaries" color="accent" size="xs" @click="openImportUpdatedSalaries()")
+      q-btn(v-if="checkIfCommish(league.yahooLeagueId, league.yahooCommishLeagues) && user.user.guid === '2OMLCT3C2A42Z3FCGWJZCIDYLU' && league.renewedAvailable" label="Renew League" color="primary" size="xs" @click="triggerRenewLeague()")
     import-updated-salaries-dialog(v-if="importUpdatedSalaries")
 </template>
 
@@ -116,7 +117,8 @@ export default {
     diagnostics () { return this.$store.state.diagnostics },
     checkIfCommish () { return checkIfCommish },
     checkToLogEOYSalaries () { return checkToLogEOYSalaries },
-    importUpdatedSalaries () { return this.$store.state.dialog.importUpdatedSalaries }
+    importUpdatedSalaries () { return this.$store.state.dialog.importUpdatedSalaries },
+    renewLeague () { return this.$store.state.dialog.renewLeague }
 
   },
   methods: {
@@ -181,6 +183,9 @@ export default {
     },
     async logSalaries () {
       await this.$store.dispatch('player/logAllPlayersEndOfYearSalary')
+    },
+    triggerRenewLeague () {
+      this.$store.commit('dialog/renewLeague')
     }
   }
 }
