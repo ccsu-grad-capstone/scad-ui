@@ -26,6 +26,7 @@ export default {
       state.registerLeagueInvites = !state.registerLeagueInvites
     },
     renewLeague (state) {
+      console.log('Triggering RenewLeague Dialog')
       state.renewLeague = !state.renewLeague
     },
     playerHistory (state) {
