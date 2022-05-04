@@ -84,9 +84,10 @@ export default {
         await dispatch('transactions/getTransactions', null, { root: true })
         const process = await api(rootState.user.tokens.access_token, rootState.user.tokens.id_token).get(`/diagnostic/${rootState.league.scadLeagueId}/run`)
         console.log('RUN DIAGNOSTIC: ', process.data)
-        commit('updateTeams', process.data.teams)
+        commit('updateDiagnostic', process.data.diagnostic)
       } catch (error) {
         console.log(error)
+        await dispatch('getDiagnostic')
       }
 
       // try {
