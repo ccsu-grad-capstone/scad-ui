@@ -69,7 +69,6 @@
 </template>
 
 <script>
-import { getBaseURL } from '../utilities/enviornment'
 
 export default {
   name: 'About',
@@ -85,7 +84,7 @@ export default {
     loginWithYahoo () {
       console.log('[ABOUT] - loginWithYahoo()')
       this.$cookies.keys().forEach(cookie => this.$cookies.remove(cookie))
-      window.location = `${getBaseURL('NODE')}/auth/yahoo`
+      window.location = `${process.env.VUE_APP_API}/auth/yahoo`
     },
     registerLeague () {
       this.$router.push('register-league')
