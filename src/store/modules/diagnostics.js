@@ -87,7 +87,7 @@ export default {
         notify.success('Diagnostic ran successfully')
       } catch (error) {
         console.log(error)
-        notify.success('Diagnostic failed to complete.')
+        notify.warning('Diagnostic failed to complete.')
         await dispatch('getDiagnostic')
       }
 
