@@ -36,10 +36,10 @@ export default {
   methods: {
     async renewLeague () {
       console.log('renewLeague')
+      this.$q.loading.show({
+        message: 'Sit tight while we renew your SCAD league'
+      })
       try {
-        this.$q.loading.show({
-          message: 'Sit tight while we renew your SCAD league'
-        })
         const response = await api(
           this.tokens.access_token,
           this.tokens.id_token)
@@ -48,14 +48,14 @@ export default {
         notify.success(response.data)
         await this.$store.dispatch('league/dashboard')
         this.$router.push('/dashboard')
-        this.timer = setTimeout(() => {
-          this.$q.loading.hide()
-          this.timer = void 0
-        }, 5000)
-        this.triggerDialog()
       } catch (err) {
         catchAxiosNodeError(err)
       }
+      this.timer = setTimeout(() => {
+        this.$q.loading.hide()
+        this.timer = void 0
+      }, 5000)
+      this.triggerDialog()
     },
     triggerDialog () {
       this.$store.commit('dialog/renewLeague')

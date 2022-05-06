@@ -83,7 +83,7 @@ export default {
       },
       filter: {
         team: '',
-        year: 2021,
+        year: '',
         rd: ''
       },
       pagination: {
@@ -150,6 +150,7 @@ export default {
   },
   mounted () {
     this.getDraftPicks()
+    this.filter.year = this.scadSettings.seasonYear
   },
   computed: {
     myTeamDPCEStyle () {

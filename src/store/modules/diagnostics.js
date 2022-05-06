@@ -1,12 +1,11 @@
 /* eslint-disable eqeqeq */
-// import notify from '../../utilities/nofity'
+import notify from '../../utilities/nofity'
 import { api } from '../../utilities/axios-node'
 import moment from 'moment'
 import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
 // import { calcTeamSalary, getPosCount } from '../../utilities/calculator'
 // import { checkIRCount, checkCovidCount } from '../../utilities/validators'
 import { getTeamGuid } from '../../utilities/functions'
-import notify from '../../utilities/nofity'
 
 export default {
   namespaced: true,
@@ -85,8 +84,10 @@ export default {
         const process = await api(rootState.user.tokens.access_token, rootState.user.tokens.id_token).get(`/diagnostic/${rootState.league.scadLeagueId}/run`)
         console.log('RUN DIAGNOSTIC: ', process.data)
         commit('updateDiagnostic', process.data.diagnostic)
+        notify.success('Diagnostic ran successfully')
       } catch (error) {
         console.log(error)
+        notify.success('Diagnostic failed to complete.')
         await dispatch('getDiagnostic')
       }
 
