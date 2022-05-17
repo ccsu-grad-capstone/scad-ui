@@ -396,31 +396,35 @@ export default {
     async update () {
       console.log('[REGISTER-LEAGUE - Methods] - update()')
 
-      // check if league already exists
-      try {
-        let yahooGameKey = this.selectedLeague.league_key.split('.')[0]
-        const response = await api(
-          this.tokens.access_token,
-          this.tokens.id_token)
-          .get(`/scad/league/yahoo/${yahooGameKey}/${this.selectedLeague.league_id}`)
-        console.log('LEAGUE ALREADY EXISTS: ', response)
-        notify.leagueAlreadyRegistered()
-        this.selectedLeague = ''
-        this.newLeague.yahooLeagueId = ''
-        this.newLeague.yahooLeagueName = ''
-        this.newLeague.leagueManagers = ''
-        this.newLeague.yahooGameId = ''
-      } catch (err) {
-        if (err.response && err.response.status === 404) {
-          console.log('League not found, you may proceed registering..')
-          this.newLeague.yahooLeagueId = this.selectedLeague.league_id
-          this.newLeague.yahooLeagueName = this.selectedLeague.name
-          this.newLeague.leagueManagers = this.selectedLeague.num_teams
-          this.newLeague.seasonYear = parseInt(this.selectedLeague.season)
-          this.newLeague.yahooGameId = this.selectedLeague.league_key.split('.')[0]
-        } else {
-          catchAxiosNodeError(err)
+      if (this.selectedLeague.draft_status === 'postdraft') {
+        // check if league already exists
+        try {
+          let yahooGameKey = this.selectedLeague.league_key.split('.')[0]
+          const response = await api(
+            this.tokens.access_token,
+            this.tokens.id_token)
+            .get(`/scad/league/yahoo/${yahooGameKey}/${this.selectedLeague.league_id}`)
+          console.log('LEAGUE ALREADY EXISTS: ', response)
+          notify.leagueAlreadyRegistered()
+          this.selectedLeague = ''
+          this.newLeague.yahooLeagueId = ''
+          this.newLeague.yahooLeagueName = ''
+          this.newLeague.leagueManagers = ''
+          this.newLeague.yahooGameId = ''
+        } catch (err) {
+          if (err.response && err.response.status === 404) {
+            console.log('League not found, you may proceed registering..')
+            this.newLeague.yahooLeagueId = this.selectedLeague.league_id
+            this.newLeague.yahooLeagueName = this.selectedLeague.name
+            this.newLeague.leagueManagers = this.selectedLeague.num_teams
+            this.newLeague.seasonYear = parseInt(this.selectedLeague.season)
+            this.newLeague.yahooGameId = this.selectedLeague.league_key.split('.')[0]
+          } else {
+            catchAxiosNodeError(err)
+          }
         }
+      } else {
+        notify.error('Can not register a league until draft is complete.')
       }
     },
     async sendEmail () {
