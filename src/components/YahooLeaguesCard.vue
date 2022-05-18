@@ -7,10 +7,11 @@
         .col-3.text-weight-bolder.q-pt-lg.lt-md SCAD Leagues
         q-separator(vertical)
         .col
-          .text-grey.q-pl-md Select row to change leagues
+          .text-grey.q-pl-md Select row to change leagues {{ league.yahooGameKey }}
           q-separator
-          q-list( v-for="(league, index) in scadLeagues" :key="index")
-            q-item(clickable  @click.native="switchLeague(league._id, league.yahooLeagueId)")
+          q-list( v-for="(league, index) in filteredScadLeagues" :key="index")
+            //- q-item(clickable  @click.native="switchLeague(league._id, league.yahooLeagueId)")
+            q-item()
               .row.full-width.q-pt-sm
                 .col.text-body1.text-weight-bolder.gt-sm {{getLeagueName(league.yahooLeagueId)}}
                 .col.lt-md {{getLeagueName(league.yahooLeagueId)}}
@@ -18,8 +19,8 @@
                   .row.full-width.q-gutter-md
                     .text-primary.text-weight-bold(v-if="(league._id == scadLeagueId)") Active League
                     .text-primary.text-weight-bold(v-else) Switch to League
-                    .text-accent.text-weight-bold(v-if="league.isDefault") Default League
-                    q-btn.q-px-xs(v-else label='Set as Default League' flat dense color='white' text-color='accent' size='sm' @click="setAsDefault(league._id)")
+                    .text-info.text-weight-bold(v-if="league.yahooLeagueId === user.defaultLeague.yahooLeagueId") Default League
+                    q-btn.q-px-xs(v-else label='Set as Default League' flat dense color='white' text-color='accent' size='sm' @click="setAsDefault(league)")
                 .col-1.text-right.gt-sm
                     q-btn.q-px-xs(icon='email' flat dense color='white' text-color='accent' size='sm' @click="triggerDialog(league.yahooLeagueId)")
             q-separator
@@ -44,11 +45,8 @@
 </template>
 <script>
 import { openURL } from 'quasar'
-import { nodeHeader } from '../utilities/axios-node'
-import { catchAxiosNodeError } from '../utilities/catchAxiosErrors'
 import { isCommishNotRegistered } from '../utilities/validators'
 import { getScadLeague, getYahooLeague } from '../utilities/functions'
-import notify from '../utilities/nofity'
 import RegisterLeagueInvites from '../components/dialogs/registerLeagueInvites'
 import Loading from '../components/Loading'
 
@@ -67,13 +65,14 @@ export default {
     }
   },
   async mounted () {
-    // await this.$store.dispatch('league/getAllYahooLeagues')
-    // await this.$store.dispatch('league/getAllScadLeagues')
-    this.loaded = true
+    await this.getLeagues()
   },
   computed: {
     user () {
       return this.$store.state.user
+    },
+    league () {
+      return this.$store.state.league
     },
     tokens () {
       return this.user.tokens
@@ -95,9 +94,17 @@ export default {
     },
     registerLeagueInvites () {
       return this.$store.state.dialog.registerLeagueInvites
+    },
+    filteredScadLeagues () {
+      return this.scadLeagues.filter(l => l.yahooGameKey === this.league.yahooGameKey)
     }
   },
   methods: {
+    async getLeagues () {
+      await this.$store.dispatch('league/getAllYahooLeagues')
+      await this.$store.dispatch('league/getAllScadLeagues')
+      this.loaded = true
+    },
     getLeagueName (id) {
       return getYahooLeague(this.yahooLeagues, id).name
     },
@@ -117,18 +124,8 @@ export default {
         openURL(url)
       }
     },
-    async setAsDefault (id) {
-      try {
-        const response = await nodeHeader(
-          this.tokens.access_token,
-          this.tokens.id_token)
-          .put(`/scad/league/default/update/${id}`)
-        console.log('Update Default League Response: ', response)
-        notify.updateDefaultLeague()
-        await this.$store.dispatch('league/getAllScadLeagues')
-      } catch (err) {
-        catchAxiosNodeError(err)
-      }
+    async setAsDefault (league) {
+      await this.$store.dispatch('user/setDefaultLeague', league)
     },
     async triggerDialog (yahooLeagueId) {
       this.emailLeagueId = yahooLeagueId

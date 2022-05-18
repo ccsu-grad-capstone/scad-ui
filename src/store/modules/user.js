@@ -10,6 +10,7 @@ export default {
     isAdmin: false,
     active: false,
     offseason: false,
+    defaultLeague: {},
     tokens: {
       access_token: '',
       refresh_token: '',
@@ -58,6 +59,9 @@ export default {
     },
     offseason (state) {
       state.offseason = true
+    },
+    setDefaultLeague (state, league) {
+      state.defaultLeague = league
     }
   },
   actions: {
@@ -88,6 +92,20 @@ export default {
           .get('/user/details')
         commit('updateUser', res.data.user)
         console.log('[USER-ACTION] - updateUser(): ', res.data.user)
+      } catch (error) {
+        catchAxiosNodeError(error)
+      }
+    },
+    async setDefaultLeague ({ state, commit }, league) {
+      console.log('setDefaultLeague', league)
+      try {
+        const res = await api(
+          state.tokens.access_token,
+          state.tokens.id_token)
+          .put(`/udl/update/${league.yahooGameKey}/${league.yahooLeagueId}/${league._id}`)
+        console.log('SET-DEFAULT-LEAGUE RES', res.data)
+        commit('setDefaultLeague', res.data.udl)
+        console.log('[USER-ACTION] - setDefaultLeague(): ', res.data)
       } catch (error) {
         catchAxiosNodeError(error)
       }

@@ -22,7 +22,7 @@
 
 <script>
 /* eslint-disable eqeqeq */
-import { getBaseURL } from '../../utilities/enviornment'
+// import { getBaseURL } from '../../utilities/enviornment'
 import Loading from '../Loading'
 
 export default {
@@ -55,7 +55,7 @@ export default {
       this.$store.commit('dialog/importUpdatedSalaries')
     },
     getUrl () {
-      return `${getBaseURL('NODE')}/scad/player/importUpdates`
+      return `${process.env.VUE_APP_API}/scad/player/importUpdates`
     },
     start () {
       console.log('STARTED')
@@ -78,8 +78,8 @@ export default {
     returnHeaders () {
       return [
         { name: 'Authorization', value: process.env.VUE_APP_AUTH },
-        { name: 'accesstoken', value: this.tokens.access_token },
-        { name: 'idtoken', value: this.tokens.id_token }
+        { name: 'access_token', value: this.tokens.access_token },
+        { name: 'id_token', value: this.tokens.id_token }
       ]
     }
   }
