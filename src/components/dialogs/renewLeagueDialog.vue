@@ -13,7 +13,7 @@
 
 <script>
 import { api } from '../../utilities/axios-node'
-import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
+import { catchAxiosError } from '../../utilities/catchAxiosErrors'
 import notify from '../../utilities/nofity'
 
 export default {
@@ -49,7 +49,7 @@ export default {
         await this.$store.dispatch('league/dashboard')
         this.$router.push('/dashboard')
       } catch (err) {
-        catchAxiosNodeError(err)
+        catchAxiosError(err)
       }
       this.timer = setTimeout(() => {
         this.$q.loading.hide()

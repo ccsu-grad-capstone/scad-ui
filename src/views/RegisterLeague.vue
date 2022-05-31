@@ -240,7 +240,7 @@ import referenceData from '../utilities/referenceData'
 import RegisterLeagueInvites from '../components/dialogs/registerLeagueInvites'
 import notify from '../utilities/nofity'
 import { nodeHeader, api } from '../utilities/axios-node'
-import { catchAxiosNodeError } from '../utilities/catchAxiosErrors'
+import { catchAxiosError } from '../utilities/catchAxiosErrors'
 import Loading from '../components/Loading'
 import moment from 'moment'
 
@@ -420,7 +420,7 @@ export default {
             this.newLeague.seasonYear = parseInt(this.selectedLeague.season)
             this.newLeague.yahooGameId = this.selectedLeague.league_key.split('.')[0]
           } else {
-            catchAxiosNodeError(err)
+            catchAxiosError(err)
           }
         }
       } else {
@@ -437,7 +437,7 @@ export default {
         notify.emailCommissioner(response.data.msg)
         this.$router.push('/about')
       } catch (err) {
-        catchAxiosNodeError(err)
+        catchAxiosError(err)
       }
     }
   }

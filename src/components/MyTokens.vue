@@ -69,7 +69,7 @@
 /* eslint-disable no-unused-vars */
 
 import { api } from '../utilities/axios-node'
-import { catchAxiosNodeError } from '../utilities/catchAxiosErrors'
+import { catchAxiosError } from '../utilities/catchAxiosErrors'
 export default {
   name: 'MyTokens',
   data () {
@@ -206,7 +206,7 @@ export default {
         await this.getAllLeaguePlayers()
         await this.getGames()
       } catch (error) {
-        catchAxiosNodeError(error)
+        catchAxiosError(error)
       }
     }
   }

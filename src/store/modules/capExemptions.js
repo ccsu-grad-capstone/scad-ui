@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 import notify from '../../utilities/nofity'
 import { api } from '../../utilities/axios-node'
-import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
+import { catchAxiosError } from '../../utilities/catchAxiosErrors'
 
 export default {
   namespaced: true,
@@ -34,7 +34,7 @@ export default {
         console.log('CAP-EXEMPTIONS-league', response.data.data)
         commit('updateCapExemptions', { ce: response.data.data })
       } catch (error) {
-        catchAxiosNodeError(error)
+        catchAxiosError(error)
       }
     },
     async getCapExemptionsByTeam ({ commit, rootState }, { guid }) {
@@ -44,7 +44,7 @@ export default {
         console.log('CAP-EXEMPTIONS-team', response.data.data)
         commit('updateCapExemptionsTeam', { ce: response.data.data })
       } catch (error) {
-        catchAxiosNodeError(error)
+        catchAxiosError(error)
       }
     },
     async addCapExemption ({ rootState }, ce) {
@@ -54,7 +54,7 @@ export default {
         const response = await api(rootState.user.tokens.access_token, rootState.user.tokens.id_token).post(`/capExemptions/create`, { data: ce })
         notify.saveSuccessful(response.data)
       } catch (error) {
-        catchAxiosNodeError(error)
+        catchAxiosError(error)
       }
     },
     async saveCapExemption ({ rootState }, ce) {
@@ -63,7 +63,7 @@ export default {
         const response = await api(rootState.user.tokens.access_token, rootState.user.tokens.id_token).put(`/capExemptions/${ce._id}`, { data: ce })
         notify.saveSuccessful(response.data)
       } catch (error) {
-        catchAxiosNodeError(error)
+        catchAxiosError(error)
       }
     },
     async removeCapExemption ({ rootState }, id) {
@@ -72,7 +72,7 @@ export default {
         const response = await api(rootState.user.tokens.access_token, rootState.user.tokens.id_token).delete(`/capExemptions/remove/${id}`)
         notify.saveSuccessful(response.data)
       } catch (error) {
-        catchAxiosNodeError(error)
+        catchAxiosError(error)
       }
     }
   }

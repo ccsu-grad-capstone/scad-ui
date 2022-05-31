@@ -142,6 +142,18 @@ const routes = [
       requiresAuth: true
       // isAdmin: true
     }
+  },
+  {
+    path: '/yahooError',
+    name: 'yahooError',
+    component: () => import('../layouts/Layout.vue'),
+    children: [
+      { path: '', component: () => import('../views/YahooError.vue') }
+    ],
+    meta: {
+      requiresAuth: true
+      // isAdmin: true
+    }
   }
 ]
 

@@ -2,7 +2,7 @@
 import notify from '../../utilities/nofity'
 import { api } from '../../utilities/axios-node'
 import moment from 'moment'
-import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
+import { catchAxiosError } from '../../utilities/catchAxiosErrors'
 // import { calcTeamSalary, getPosCount } from '../../utilities/calculator'
 // import { checkIRCount, checkCovidCount } from '../../utilities/validators'
 import { getTeamGuid } from '../../utilities/functions'
@@ -42,7 +42,7 @@ export default {
         commit('updateDiagnostic', res.data.data[0])
         console.log('DIAGNOSTIC', res.data.data[0])
       } catch (error) {
-        catchAxiosNodeError(error)
+        catchAxiosError(error)
       }
     },
     async updateDiagnostic ({ state, commit, rootState }) {
@@ -54,7 +54,7 @@ export default {
 
         await api(rootState.user.tokens.access_token, rootState.user.tokens.id_token).put(`/diagnostic/${state._id}`, { data: update })
       } catch (error) {
-        catchAxiosNodeError(error)
+        catchAxiosError(error)
       }
     },
     async sendDiagnosticTeamIssueEmail ({ state, commit, rootState }) {
@@ -75,7 +75,7 @@ export default {
         })
         notify.success('Emails Sent Successfully')
       } catch (error) {
-        catchAxiosNodeError(error)
+        catchAxiosError(error)
       }
     },
     async runDiagnostics ({ rootState, state, commit, dispatch }) {
@@ -134,7 +134,7 @@ export default {
       //   await dispatch('league/getScadTeams', rootState.league.scadLeagueId, { root: true })
       //   await dispatch('updateDiagnostic')
       // } catch (error) {
-      //   catchAxiosNodeError(error)
+      //   catchAxiosError(error)
       // }
     }
   }

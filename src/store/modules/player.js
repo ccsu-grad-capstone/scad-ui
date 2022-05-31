@@ -1,6 +1,6 @@
 // import { notify } from '../../utilities/nofity'
 import { api } from '../../utilities/axios-node'
-import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
+import { catchAxiosError } from '../../utilities/catchAxiosErrors'
 import { getOwner, getTeamGuid } from '../../utilities/functions'
 import { checkToLogEOYSalaries } from '../../utilities/validators'
 import moment from 'moment'
@@ -68,7 +68,7 @@ export default {
           commit('updateYahooPlayers', res.data.players)
           console.log('ALL-YAHOO-PLAYERS: ', res.data.players)
         } catch (err) {
-          catchAxiosNodeError(err)
+          catchAxiosError(err)
         }
       }
     },
@@ -84,7 +84,7 @@ export default {
           commit('updateScadPlayers', res.data.scadPlayers)
           console.log('ALL-SCAD-PLAYERS: ', res.data.scadPlayers)
         } catch (err) {
-          catchAxiosNodeError(err)
+          catchAxiosError(err)
         }
       }
     },
@@ -98,7 +98,7 @@ export default {
         console.log('TEAM-PLAYERS: ', res.data)
         await commit('updateYahooTeamPlayers', res.data.players)
       } catch (err) {
-        catchAxiosNodeError(err)
+        catchAxiosError(err)
       }
     },
     async getTeamScadPlayers ({ commit, rootState }, teamId) {
@@ -111,7 +111,7 @@ export default {
         console.log('SCAD-PLAYERS: ', res.data.scadPlayers)
         await commit('updateScadTeamPlayers', res.data.scadPlayers)
       } catch (err) {
-        catchAxiosNodeError(err)
+        catchAxiosError(err)
       }
     },
     async getScadPlayer ({ commit, rootState }, yahooPlayerId) {
@@ -124,7 +124,7 @@ export default {
         // console.log('SCAD-PLAYER: ', res.data.scadPlayer)
         await commit('updateScadPlayer', res.data.scadPlayer)
       } catch (err) {
-        catchAxiosNodeError(err)
+        catchAxiosError(err)
       }
     },
     async getFranchiseTaggedPlayers ({ commit, rootState, state }) {
@@ -137,7 +137,7 @@ export default {
         console.log('FranchiseTaggedPlayers: ', res.data.scadPlayerFranchiseTagged)
         await commit('updateFranchiseTaggedPlayers', res.data.scadPlayerFranchiseTagged)
       } catch (err) {
-        catchAxiosNodeError(err)
+        catchAxiosError(err)
       }
     },
     async logAllPlayersEndOfYearSalary ({ rootState, state, dispatch }) {

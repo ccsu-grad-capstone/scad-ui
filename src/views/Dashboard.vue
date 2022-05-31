@@ -19,9 +19,6 @@
         .col-xl-4.col-lg-4.col-md-4.col-sm-12.col-xs-12
           franchise-tagged-players
           lite-my-team
-      .row.full-width.justify-center(v-if="checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)")
-        .col-10
-          league-diagnostics
     renew-league-dialog(v-if="checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues) && user.user.guid === '2OMLCT3C2A42Z3FCGWJZCIDYLU' && renewLeague")
 
 </template>

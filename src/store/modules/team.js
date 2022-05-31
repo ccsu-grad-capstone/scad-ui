@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 import notify from '../../utilities/nofity'
 import { api } from '../../utilities/axios-node'
-import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
+import { catchAxiosError } from '../../utilities/catchAxiosErrors'
 
 export default {
   namespaced: true,
@@ -76,7 +76,7 @@ export default {
         console.log('YAHOO-TEAM: ', res.data)
         commit('updateYahooTeam', res.data.team)
       } catch (err) {
-        catchAxiosNodeError(err)
+        catchAxiosError(err)
       }
     },
 
@@ -101,7 +101,7 @@ export default {
         console.log('SCAD-TEAM: ', scadTeam)
         commit('updateScadTeam', scadTeam)
       } catch (err) {
-        catchAxiosNodeError(err)
+        catchAxiosError(err)
       }
     },
 
@@ -116,7 +116,7 @@ export default {
         console.log('MY-YAHOO-TEAM: ', team.data)
         commit('updateMyYahooTeam', team.data.myTeam)
       } catch (err) {
-        catchAxiosNodeError(err)
+        catchAxiosError(err)
       }
     },
 
@@ -141,7 +141,7 @@ export default {
         console.log('MY-SCAD-TEAM: ', scadTeam)
         commit('updateMyScadTeam', scadTeam)
       } catch (err) {
-        catchAxiosNodeError(err)
+        catchAxiosError(err)
       }
     },
 
@@ -155,7 +155,7 @@ export default {
         console.log('ADD-PLAYER: ', res)
         // notify.salarySaveSuccessful()
       } catch (err) {
-        catchAxiosNodeError(err)
+        catchAxiosError(err)
       }
     },
 
@@ -178,7 +178,7 @@ export default {
           await dispatch('getMyScadTeam', { yahooLeagueId: rootState.league.yahooLeagueId, yahooTeamId: yahooTeamId })
         }
       } catch (err) {
-        catchAxiosNodeError(err)
+        catchAxiosError(err)
       }
     },
 
@@ -192,7 +192,7 @@ export default {
         console.log('SAVE-TEAM: ', res)
         // notify.teamSaveSuccessful()
       } catch (err) {
-        catchAxiosNodeError(err)
+        catchAxiosError(err)
       }
     }
   }

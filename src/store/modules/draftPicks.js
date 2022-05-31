@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 import notify from '../../utilities/nofity'
 import { api } from '../../utilities/axios-node'
-import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
+import { catchAxiosError } from '../../utilities/catchAxiosErrors'
 
 export default {
   namespaced: true,
@@ -47,7 +47,7 @@ export default {
         commit('updateDraftPicks', { dp: response.data.data })
       } catch (error) {
         commit('getDraftPicksByLeagueError')
-        catchAxiosNodeError(error)
+        catchAxiosError(error)
       }
     },
     async getDraftPicksByTeam ({ commit, state, rootState }, { guid }) {
@@ -58,7 +58,7 @@ export default {
         commit('updateDraftPicksByTeam', { dp: response.data.data })
       } catch (error) {
         commit('getDraftPicksByTeamError')
-        catchAxiosNodeError(error)
+        catchAxiosError(error)
       }
     },
     async saveDraftPick ({ dispatch, rootState }, dp) {
@@ -67,7 +67,7 @@ export default {
         const response = await api(rootState.user.tokens.access_token, rootState.user.tokens.id_token).put(`/draftPicks/${dp._id}`, { data: dp })
         notify.saveSuccessful(response.data)
       } catch (error) {
-        catchAxiosNodeError(error)
+        catchAxiosError(error)
       }
     }
   }

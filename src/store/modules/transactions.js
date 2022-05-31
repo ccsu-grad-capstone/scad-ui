@@ -1,10 +1,10 @@
 /* eslint-disable eqeqeq */
 // import notify from '../../utilities/nofity'
-// import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
+// import { catchAxiosError } from '../../utilities/catchAxiosErrors'
 import { api } from '../../utilities/axios-node'
 // import { getScadTeam, getYahooTeamFromYahooTeamId, getSalaryForCatch, getTeamGuid } from '../../utilities/functions'
 // import { calcTeamSalary } from '../../utilities/calculator'
-import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
+import { catchAxiosError } from '../../utilities/catchAxiosErrors'
 
 import moment from 'moment'
 
@@ -51,7 +51,7 @@ export default {
         console.log('TRANSACTION', res.data.data[0])
         await commit('updateTransaction', res.data.data[0])
       } catch (error) {
-        catchAxiosNodeError(error)
+        catchAxiosError(error)
       }
     },
     async updateEndOfSeasonPlayerHistory ({ state, rootState, commit }) {
@@ -66,7 +66,7 @@ export default {
         commit('updateEndOfSeasonPlayerHistory', update)
         // commit('updateTransaction', transaction)
       } catch (error) {
-        catchAxiosNodeError(error)
+        catchAxiosError(error)
       }
     },
     async updateLastChecked ({ state, commit, rootState }) {
@@ -77,7 +77,7 @@ export default {
         await api(rootState.user.tokens.access_token, rootState.user.tokens.id_token).put(`/transaction/${state._id}`, { data: update })
         commit('updateLastChecked', update)
       } catch (error) {
-        catchAxiosNodeError(error)
+        catchAxiosError(error)
       }
     },
     async updateLastTimestamp ({ state, commit, rootState }) {
@@ -90,7 +90,7 @@ export default {
         commit('updateLastTimestamp', update)
       } catch (error) {
         console.error(error)
-        catchAxiosNodeError(error)
+        catchAxiosError(error)
       }
     },
 
@@ -235,8 +235,7 @@ export default {
         // dispatch('updateLastChecked')
         // state.loaded = true
       } catch (error) {
-        console.log(error)
-        catchAxiosNodeError(error)
+        catchAxiosError(error)
       }
     }
   }

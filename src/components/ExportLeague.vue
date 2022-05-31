@@ -20,7 +20,7 @@
 <script>
 
 import moment from 'moment'
-import { catchAxiosNodeError } from '../utilities/catchAxiosErrors'
+import { catchAxiosError } from '../utilities/catchAxiosErrors'
 import { checkIfCommish, checkToLogEOYSalaries } from '../utilities/validators'
 import importUpdatedSalariesDialog from '../components/dialogs/importUpdatedSalariesDialog'
 import { getDisplayPosition } from '../utilities/functions'
@@ -178,7 +178,7 @@ export default {
 
         this.processing = false
       } catch (error) {
-        catchAxiosNodeError(error)
+        catchAxiosError(error)
       }
     },
     async logSalaries () {

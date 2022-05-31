@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { api } from '../../utilities/axios-node'
 
-import { catchAxiosNodeError } from '../../utilities/catchAxiosErrors'
+import { catchAxiosError } from '../../utilities/catchAxiosErrors'
 
 export default {
   namespaced: true,
@@ -81,7 +81,7 @@ export default {
         .catch(error => {
           commit('logoutUser')
           console.error(error)
-          // catchAxiosNodeError(error)
+          // catchAxiosError(error)
         })
     },
     async updateUser ({ state, commit }) {
@@ -93,7 +93,7 @@ export default {
         commit('updateUser', res.data.user)
         console.log('[USER-ACTION] - updateUser(): ', res.data.user)
       } catch (error) {
-        catchAxiosNodeError(error)
+        catchAxiosError(error)
       }
     },
     async setDefaultLeague ({ state, commit }, league) {
@@ -107,7 +107,7 @@ export default {
         commit('setDefaultLeague', res.data.udl)
         console.log('[USER-ACTION] - setDefaultLeague(): ', res.data)
       } catch (error) {
-        catchAxiosNodeError(error)
+        catchAxiosError(error)
       }
     }
   }
