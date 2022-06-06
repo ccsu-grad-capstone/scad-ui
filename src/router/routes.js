@@ -144,6 +144,18 @@ const routes = [
     }
   },
   {
+    path: '/commissioner',
+    name: 'Commissioner',
+    component: () => import('../layouts/Layout.vue'),
+    children: [
+      { path: '', component: () => import('../views/Commissioner.vue') }
+    ],
+    meta: {
+      requiresAuth: true
+      // isAdmin: true
+    }
+  },
+  {
     path: '/yahooError',
     name: 'yahooError',
     component: () => import('../layouts/Layout.vue'),

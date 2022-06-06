@@ -9,7 +9,7 @@ const catchAxiosError = (error) => {
     } else if (error.response.data.message) {
       notify.nodeServerIssueWithResponse(error.response.data.message)
     } else {
-      notify.error('Error Retrieving SCAD info. Please try again shortly.')
+      notify.nodeServerIssueWithResponse(error.response.data)
     }
     if (error.response.data.yahooConnectionIssue) {
       console.log('re-routing to yahooError.vue')

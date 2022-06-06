@@ -9,8 +9,6 @@
         .column.justify-center.align-center.text-center
           .text-h4.text-weight-bolder {{league.yahooLeagueDetails.name}}
           a.mobile-hide(:href='league.yahooLeagueDetails.url') {{league.yahooLeagueDetails.url}}
-      .row.mobile-hide
-        export-league
       .row.full-width.justify-center
         .col-xl-7.col-lg-7.col-md-7.col-sm-12.col-xs-12
           lite-league.gt-xs(@updateTeamSalaries="updateTeamSalaries")
@@ -29,7 +27,6 @@ import LiteLeague from '../components/LiteLeague'
 import Transactions from '../components/Transactions'
 import LiteLeagueMobile from '../components/LiteLeagueMobile'
 import LiteDraftPicks from '../components/LiteDraftPicks'
-import ExportLeague from '../components/ExportLeague'
 import { checkIfCommish } from '../utilities/validators'
 import Loading from '../components/Loading'
 import RenewLeagueDialog from '../components/dialogs/renewLeagueDialog'
@@ -43,7 +40,6 @@ export default {
     transactions: Transactions,
     'lite-league-mobile': LiteLeagueMobile,
     'lite-draft-picks': LiteDraftPicks,
-    'export-league': ExportLeague,
     'loading': Loading,
     'renew-league-dialog': RenewLeagueDialog,
     'franchise-tagged-players': FranchiseTagPlayers

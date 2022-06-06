@@ -27,6 +27,12 @@
             q-item-section
               q-item-label {{ link.text }}
                 q-badge(v-if="getDiagIllegalCount() > 0 && link.icon === 'fact_check'" color="negative", floating rounded) {{ getDiagIllegalCount() }}
+          q-item.GNL__drawer-item(@click="navigate('/commissioner')" v-if="league.isActive && checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)" v-ripple clickable)
+            q-item-section(avatar)
+              //- q-icon(:name="link.icon")
+              q-icon(:name="'settings_applications'")
+            q-item-section
+              q-item-label Commissioner
           q-separator.q-my-sm(v-if="league.isActive" inset)
           q-item.GNL__drawer-item(@click="navigate(link.click)" v-ripple v-for="link in links3" :key="link.text" clickable)
             q-item-section
@@ -52,6 +58,7 @@
 // import { getBaseURL } from '../utilities/enviornment'
 import p from '../../package.json'
 import Loading from '../components/Loading'
+import { checkIfCommish } from '../utilities/validators'
 
 export default {
   name: 'DefaultLayout',
@@ -135,6 +142,7 @@ export default {
     diagnosticTeam () {
       return this.$store.state.diagnostics.teams
     },
+    checkIfCommish () { return checkIfCommish },
     filteredLeagues () {
       return this.scadLeagues.map(l =>
         Object.assign({}, l, {
