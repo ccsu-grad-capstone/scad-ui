@@ -247,6 +247,8 @@ export default {
       } else return false
     },
     isBetween (min, max, num) {
+      if (min === 'No Limit') min = -1
+      if (max === 'No Limit') max = 100
       if (min <= num && max >= num) { return true } else { return false }
     },
     async runDiagnostics () {

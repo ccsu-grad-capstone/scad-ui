@@ -29,12 +29,12 @@
           td.text-body.text-grey-5 {{ scadSettings.teMin }} | #[span.qty(v-bind:class="{ 'text-red': !checkPos('te') }") {{getPosCount('TE')}}] | {{ scadSettings.teMax }}
           td ${{getPositionSalaryTotal('TE')}}
           td {{getPerc('TE')}}%
-        tr(v-if="scadSettings.kMin >0")
+        tr(v-if="scadSettings.kMin > 0")
           td.pos K
           td.text-body.text-grey-5 {{ scadSettings.kMin }} | #[span.qty(v-bind:class="{ 'text-red': !checkPos('k') }") {{getPosCount('K')}}] | {{ scadSettings.kMax }}
           td ${{getPositionSalaryTotal('K')}}
           td {{getPerc('K')}}%
-        tr
+        tr(v-if="scadSettings.defMin > 0")
           td.pos DEF
           td.text-body.text-grey-5 {{ scadSettings.defMin }} | #[span.qty(v-bind:class="{ 'text-red': !checkPos('def') }") {{getPosCount('DEF')}}] | {{ scadSettings.defMax }}
           td ${{getPositionSalaryTotal('DEF')}}
@@ -131,11 +131,13 @@ export default {
     },
     notifyIllegalRoster () {
       referenceData.positionChecks.forEach(pos => {
+        let min = this.scadSettings[`${pos}Min`] === 'No Limit' ? -1 : this.scadSettings[`${pos}Min`]
+        let max = this.scadSettings[`${pos}Max`] === 'No Limit' ? 100 : this.scadSettings[`${pos}Max`]
         let count = this.getPosCount(pos.toUpperCase())
-        if (count > this.scadSettings[`${pos}Max`]) {
-          notify.rosterMaxError(pos.toUpperCase(), count, this.scadSettings[`${pos}Max`])
-        } else if (count < this.scadSettings[`${pos}Min`]) {
-          notify.rosterMinError(pos.toUpperCase(), count, this.scadSettings[`${pos}Min`])
+        if (count > max) {
+          notify.rosterMaxError(pos.toUpperCase(), count, max)
+        } else if (count < min) {
+          notify.rosterMinError(pos.toUpperCase(), count, min)
         }
       })
       if (!checkIRCount(this.yahooTeam.roster)) {

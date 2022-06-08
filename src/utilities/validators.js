@@ -29,7 +29,9 @@ export function isCommishNotRegistered (id, yahooCommishLeagues, scadLeagues) {
 export function checkPos (pos, scadSettings, players) {
   if (scadSettings && players) {
     let count = getPosCount(pos.toUpperCase(), players)
-    if ((count <= scadSettings[`${pos.toLowerCase()}Max`]) && (count >= scadSettings[`${pos.toLowerCase()}Min`])) {
+    let min = scadSettings[`${pos}Min`] === 'No Limit' ? -1 : scadSettings[`${pos}Min`]
+    let max = scadSettings[`${pos}Max`] === 'No Limit' ? 100 : scadSettings[`${pos}Max`]
+    if ((count <= max) && (count >= min)) {
       return true
     } else { return false }
   } else { return false }
