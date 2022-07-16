@@ -213,6 +213,14 @@ export default {
       ]
     })
   },
+  nodeServerIssueDraftPick (message) {
+    Notify.create({
+      message: `${message}. Hit refresh button on page`,
+      position: 'top',
+      timeout: 2500,
+      color: 'red'
+    })
+  },
   nodeServerIssue () {
     Notify.create({
       message: `Error Retrieving Scad Details. Please try again soon`,

@@ -7,9 +7,11 @@ const catchAxiosError = (error) => {
     if (JSON.stringify(error.response.data).includes('html')) {
       notify.error('Session has ended. Please login again.')
     } else if (error.response.data.message) {
-      notify.nodeServerIssueWithResponse(error.response.data.message)
+      if (error.response.data.message.includes('Getting Draft Picks')) notify.nodeServerIssueDraftPick(error.response.data.message)
+      else notify.nodeServerIssueWithResponse(error.response.data.message)
     } else {
-      notify.nodeServerIssueWithResponse(error.response.data)
+      if (error.response.data.includes('Getting Draft Picks')) notify.nodeServerIssueDraftPick(error.response.data)
+      else notify.nodeServerIssueWithResponse(error.response.data)
     }
     if (error.response.data.yahooConnectionIssue) {
       console.log('re-routing to yahooError.vue')
