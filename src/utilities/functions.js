@@ -161,9 +161,14 @@ export function getSalaryForCatch (t, p) {
 }
 
 export function getTeamGuid (team) {
+  let guid
   if (team.managers[0].manager) {
-    return team.managers[0].manager.guid
-  } else if (team.managers[0].guid) return team.managers[0].guid
+    guid = team.managers[0].manager.guid
+  } else if (team.managers[0].guid) {
+    guid = team.managers[0].guid
+  }
+  if (guid === 'RAL6NBFQ3AGEUH4AHH3GVGGY5M') guid = 'QWA63MEQ6LG4E74F3CQEMO563Q'
+  return guid
 }
 
 export function getDisplayPosition (disPos) {
