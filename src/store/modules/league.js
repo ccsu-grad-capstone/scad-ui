@@ -4,7 +4,7 @@ import { api } from '../../utilities/axios-node'
 // import leagueSettings from '../../data/leagueSettings'
 import { catchAxiosError } from '../../utilities/catchAxiosErrors'
 import { calcTeamSalary } from '../../utilities/calculator'
-import { getGameKey } from '../../utilities/functions'
+import { getGameKey, getTeamGuid } from '../../utilities/functions'
 
 export default {
   namespaced: true,
@@ -162,7 +162,7 @@ export default {
           // dispatch('diagnostics/getDiagnostic', null, { root: true })
           // dispatch('getAllYahooLeagues')
           // dispatch('getAllScadLeagues')
-          let myYahooTeam = state.yahooTeams.find(t => t.managers[0].guid === rootState.user.user.guid) // needed for when getting previous team preseason
+          let myYahooTeam = state.yahooTeams.find(t => getTeamGuid(t) === rootState.user.user.guid) // needed for when getting previous team preseason
           let id = {
             myYahooTeamId: myYahooTeam.team_id,
             myScadTeamId: dashboard.data.result.scadMyTeam._id

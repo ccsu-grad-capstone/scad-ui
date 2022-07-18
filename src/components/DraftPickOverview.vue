@@ -33,6 +33,7 @@
 <script>
 import editDraftPickDialog from '../components/dialogs/editDraftPickDialog'
 import Loading from '../components/Loading'
+import { getTeamGuid } from '../utilities/functions'
 
 export default {
   name: 'DraftPickOverview',
@@ -135,7 +136,7 @@ export default {
   methods: {
     async getPicks () {
       this.loaded = false
-      await this.$store.dispatch('draftPicks/getDraftPicksByTeam', { guid: this.yahooTeam.managers[0].guid })
+      await this.$store.dispatch('draftPicks/getDraftPicksByTeam', { guid: getTeamGuid(this.yahooTeam) })
       this.loaded = true
     },
     editPick (dp) {
