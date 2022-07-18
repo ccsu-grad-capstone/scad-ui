@@ -154,6 +154,7 @@ export default {
           commit('team/updateMyScadTeam', scadTeam, { root: true })
           commit('user/setDefaultLeague', dashboard.data.result.udl, { root: true })
           // Move these calls to Layout.vue?
+          dispatch('draftPicks/getDraftPicksByLeague', null, { root: true })
           await dispatch('getYahooTeams', state.yahooLeagueId)
           await dispatch('getScadTeams', state.scadLeagueId)
           dispatch('getAllYahooCommishLeagues')

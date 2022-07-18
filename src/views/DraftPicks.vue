@@ -17,7 +17,7 @@
               q-select( filled dense label="Round" stack-label v-model='filter.rd' :options='referenceData.rounds')
             div.q-gutter-sm
               q-btn.q-pa-xs(label='Clear' dense color='primary' text-color='white' size='sm' @click="clearFilter")
-        loading(v-if="!loaded" :message="'Fetching SCAD draft picks...'")
+        loading(v-if="draftPicks.length < 1" :message="'Fetching SCAD draft picks...'")
         .row.justify-center.full-width.bg-white.q-py-lg(v-else-if="loaded && getDraftPicksByLeagueError")
           .row.full-width.justify-center.text-caption.text-grey-7 Issue getting draft picks try:
           .row.full-width.justify-center: q-btn.q-pa-xs(label='Refresh' color='grey-5' text-color='white' size='md' @click="getDraftPicks()")
@@ -215,7 +215,7 @@ export default {
   },
   methods: {
     async getDraftPicks () {
-      await this.$store.dispatch('draftPicks/getDraftPicksByLeague')
+      // await this.$store.dispatch('draftPicks/getDraftPicksByLeague')
       this.loaded = true
     },
     editPick (dp) {

@@ -49,12 +49,12 @@ export default {
   },
   data () {
     return {
-      draftPicks: [],
+      teamPicks: [],
       edit: {
         visable: false,
         dp: {}
       },
-      loaded: false,
+      loaded: true,
       pagination: {
         page: 1,
         rowsPerPage: 36 // 0 means all rows
@@ -112,12 +112,17 @@ export default {
     }
   },
   async mounted () {
-    await this.getPicks()
+    // await this.draftPicksByTeam()
   },
   computed: {
+    allDraftPicks () { return this.$store.state.draftPicks.draftPicks },
     draftPicksByTeam () {
+      const guid = getTeamGuid(this.yahooTeam)
+      let teamPicks = []
+      for (const dp of this.allDraftPicks) if (getTeamGuid(dp.team) === guid) teamPicks.push(dp)
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      return this.$store.state.draftPicks.draftPicksByTeam.sort(function (a, b) {
+      this.loaded = true
+      return teamPicks.sort(function (a, b) {
         if (a.rd === b.rd && a.year === b.year) {
           return a.pick > b.pick ? 1 : a.pick < b.pick ? -1 : 0
         } else if (a.year === b.year) {
@@ -132,13 +137,15 @@ export default {
       return this.$store.state.league.scadSettings
     },
     getDraftPicksByTeamError () { return this.$store.state.draftPicks.getDraftPicksByTeamError }
+
   },
   methods: {
-    async getPicks () {
-      this.loaded = false
-      await this.$store.dispatch('draftPicks/getDraftPicksByTeam', { guid: getTeamGuid(this.yahooTeam) })
-      this.loaded = true
-    },
+    // getPicks () {
+    //   console.log('getPicks')
+    //   this.loaded = true
+    //   return teamPicks
+    //   // await this.$store.dispatch('draftPicks/getDraftPicksByTeam', { guid: getTeamGuid(this.yahooTeam) })
+    // },
     editPick (dp) {
       this.$store.commit('dialog/editDraftPick')
       this.edit.dp = dp
