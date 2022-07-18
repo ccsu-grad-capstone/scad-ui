@@ -66,6 +66,7 @@ export default {
       try {
         const response = await api(rootState.user.tokens.access_token, rootState.user.tokens.id_token).put(`/draftPicks/${dp._id}`, { data: dp })
         notify.saveSuccessful(response.data)
+        dispatch('getDraftPicksByLeague')
       } catch (error) {
         catchAxiosError(error)
       }
