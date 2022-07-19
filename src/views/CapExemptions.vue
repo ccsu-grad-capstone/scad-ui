@@ -192,8 +192,8 @@ export default {
   methods: {
     async getCapExemptions () {
       // console.log('getCapExemptions()')
-      await this.$store.dispatch('capExemptions/getCapExemptionsByLeague')
       this.loaded = true
+      await this.$store.dispatch('capExemptions/getCapExemptionsByLeague')
     },
     addCE () {
       this.$store.commit('dialog/addCapExemption')
