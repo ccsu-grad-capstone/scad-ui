@@ -485,7 +485,7 @@ export default {
           yahooTeamId: yahooTeamId
         })
       }
-      this.$store.dispatch('capExemptions/getCapExemptionsByTeam', {
+      await this.$store.dispatch('capExemptions/getCapExemptionsByTeam', {
         guid: getTeamGuid(this.yahooTeam)
       })
       this.scadTeam = JSON.parse(
