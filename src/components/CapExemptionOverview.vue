@@ -99,7 +99,13 @@ export default {
   },
   computed: {
     capExemptionsByTeam () {
-      return this.$store.state.capExemptions.capExemptionsByTeam
+      const guid = getTeamGuid(this.yahooTeam)
+      let teamCE = []
+      for (const ce of this.$store.state.capExemptions.capExemptions) {
+        if (getTeamGuid(ce.yahooTeamGive) === guid) teamCE.push(ce)
+        else if (getTeamGuid(ce.yahooTeamRecieve) === guid) teamCE.push(ce)
+      }
+      return teamCE
     },
     editCapExemption () {
       return this.$store.state.dialog.editCapExemption
