@@ -99,7 +99,6 @@ export default {
   },
   computed: {
     capExemptionsByTeam () {
-      const guid = getTeamGuid(this.yahooTeam)
       return this.$store.state.capExemptions.capExemptionsByTeam
     },
     editCapExemption () {
