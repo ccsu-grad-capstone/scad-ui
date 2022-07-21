@@ -11,7 +11,7 @@ const catchAxiosError = (error) => {
       else notify.nodeServerIssueWithResponse(error.response.data.message)
     } else {
       if (error.response.data.includes('Getting Draft Picks')) notify.nodeServerIssueDraftPick(error.response.data)
-      else notify.nodeServerIssueWithResponse(error.response.data)
+      // else notify.nodeServerIssueWithResponse(error.response.data)
     }
     if (error.response.data.yahooConnectionIssue) {
       console.log('re-routing to yahooError.vue')

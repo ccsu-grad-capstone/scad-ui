@@ -4,7 +4,7 @@
     loading(v-if="!loaded" :message="'Fetching Draft Picks...'")
     .row.justify-center.full-width.bg-white.q-py-lg(v-else-if="loaded && getDraftPicksByTeamError")
       .row.full-width.justify-center.text-caption.text-grey-7 Issue getting draft picks try:
-      .row.full-width.justify-center: q-btn.q-pa-xs(label='Refresh' color='grey-5' text-color='white' size='md' @click="getPicks()")
+      .row.full-width.justify-center: q-btn.q-pa-xs(label='Refresh' color='secondary' text-color='primary' size='md' @click="getPicks()")
     q-table(
       class="my-sticky-header-table"
       v-else
