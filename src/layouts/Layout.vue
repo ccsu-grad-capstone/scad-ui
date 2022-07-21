@@ -214,7 +214,6 @@ export default {
           await this.$store.dispatch('user/refreshToken')
           await this.$store.dispatch('user/updateUser')
           await this.$store.dispatch('league/dashboard')
-          await this.$store.dispatch('transactions/getTransactions')
           this.loaded = true
 
           // Need to add loaded variables for these calls, and loading component

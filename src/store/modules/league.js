@@ -156,6 +156,7 @@ export default {
           // Move these calls to Layout.vue?
           dispatch('draftPicks/getDraftPicksByLeague', null, { root: true })
           dispatch('capExemptions/getCapExemptionsByLeague', null, { root: true })
+          await dispatch('transactions/getTransactions', null, { root: true })
           await dispatch('getYahooTeams', state.yahooLeagueId)
           await dispatch('getScadTeams', state.scadLeagueId)
           dispatch('getAllYahooCommishLeagues')
