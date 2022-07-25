@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    .text-h6.text-weight-bolder Franchise Tagged Players
+    .text-h6.text-weight-bolder 2022 Franchise Tagged Players
     q-card(v-if="!loaded" flat dense square)
       loading(:message="'Getting Franchise Tagged Players'")
     .q-pa-xs(v-else)
@@ -32,6 +32,36 @@
                 .text-primary.text-weight-bolder.text-center.q-pl-sm ${{calcFranchiseTagSalary(props.row.scadPlayer.salary)}}
       .text-center.text-grey-8.text-caption(v-if="checkFranchiseTag()") Franchise Tag Deadline: {{moment(scadSettings.franchiseTagDeadline).format('LL')}}
       .text-center.text-grey-8.text-caption(v-else) Deadline Passed: {{moment(scadSettings.franchiseTagDeadline).format('LL')}}
+      div(v-if="previousYearsFranchiseTaggedPlayers.length > 0")
+        .text-h6.text-weight-bolder 2021 Franchise Tagged Players
+        q-card(v-if="!loaded" flat dense square)
+          loading(:message="'Getting Franchise Tagged Players'")
+        q-table(
+          :data='previousYearsFranchiseTaggedPlayers',
+          :columns='columns',
+          row-key='playerName',
+          :pagination.sync="pagination",
+          hide-bottom,
+          flat
+          dense
+          square
+          )
+
+          template(v-slot:body='props')
+            q-tr(:props='props')
+              q-td {{ props.row.yahooPlayer.display_position }}
+              q-td(key='playerName' :props='props')
+                .row.full-width
+                  .col-2
+                    q-avatar(size="30px")
+                      img(:src="props.row.yahooPlayer.headshot.url" style="width: 80%")
+                  .column.justify-center.q-pl-sm.text-body2.text-weight-bold
+                    .row.full-width
+                      | {{ props.row.yahooPlayer.name.full }}
+              q-td
+                .row
+                  .text-center.text-grey-7 (${{props.row.scadPlayer.salary}})
+                  .text-primary.text-weight-bolder.text-center.q-pl-sm ${{calcFranchiseTagSalary(props.row.scadPlayer.salary)}}
 
 </template>
 
@@ -92,6 +122,7 @@ export default {
   },
   async mounted () {
     await this.$store.dispatch('player/getFranchiseTaggedPlayers')
+    await this.$store.dispatch('player/getPreviousYearsFranchiseTaggedPlayers')
     this.loaded = true
   },
   computed: {
@@ -107,6 +138,7 @@ export default {
     scadSettings () { return this.$store.state.league.scadSettings },
     franchiseTagDiscount () { return this.$store.state.league.scadSettings.franchiseTagDiscount },
     franchiseTaggedPlayers () { return this.$store.state.player.franchiseTaggedPlayers },
+    previousYearsFranchiseTaggedPlayers () { return this.$store.state.player.previousYearsFranchiseTaggedPlayers },
     moment () { return moment }
   },
   methods: {

@@ -13,7 +13,8 @@ export default {
     yahooTeamPlayers: [],
     scadTeamPlayers: [],
     scadPlayer: {},
-    franchiseTaggedPlayers: []
+    franchiseTaggedPlayers: [],
+    previousYearsFranchiseTaggedPlayers: []
   },
   getters: {
 
@@ -31,6 +32,10 @@ export default {
     updateFranchiseTaggedPlayers (state, players) {
       // console.log(`[PLAYER-MUTATION] - updateYahooPlayers()`)
       state.franchiseTaggedPlayers = players
+    },
+    updatePreviousYearsFranchiseTaggedPlayers (state, players) {
+      // console.log(`[PLAYER-MUTATION] - updateYahooPlayers()`)
+      state.previousYearsFranchiseTaggedPlayers = players
     },
     updateYahooTeamPlayers (state, players) {
       // console.log(`[PLAYER-MUTATION] - updateYahooPlayers()`)
@@ -133,9 +138,26 @@ export default {
         const res = await api(
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
-          .get(`/scad/player/yahoo/${rootState.league.yahooGameKey}/${rootState.league.yahooLeagueId}/franchiseTagged`)
+          .get(`/scad/player/yahoo/${rootState.league.yahooGameKey}/${rootState.league.scadLeagueId}/franchiseTagged`)
         console.log('FranchiseTaggedPlayers: ', res.data.scadPlayerFranchiseTagged)
         await commit('updateFranchiseTaggedPlayers', res.data.scadPlayerFranchiseTagged)
+      } catch (err) {
+        catchAxiosError(err)
+      }
+    },
+    async getPreviousYearsFranchiseTaggedPlayers ({ commit, rootState, state }) {
+      // console.log(`[PLAYER-ACTION] - getFranchiseTaggedPlayers()`)
+      try {
+        let previousScadLeagueId = rootState.league.scadSettings.previousScadLeagueId
+        let previousGameKey = rootState.league.yahooLeagueDetails.renew.split('_')[0]
+        if (previousScadLeagueId && previousGameKey) {
+          const res = await api(
+            rootState.user.tokens.access_token,
+            rootState.user.tokens.id_token)
+            .get(`/scad/player/yahoo/${previousGameKey}/${previousScadLeagueId}/franchiseTagged`)
+          console.log('PreviousYearsFranchiseTaggedPlayers: ', res.data.scadPlayerFranchiseTagged)
+          await commit('updatePreviousYearsFranchiseTaggedPlayers', res.data.scadPlayerFranchiseTagged)
+        } else commit('updatePreviousYearsFranchiseTaggedPlayers', [])
       } catch (err) {
         catchAxiosError(err)
       }
