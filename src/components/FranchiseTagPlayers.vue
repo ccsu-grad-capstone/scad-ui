@@ -34,8 +34,6 @@
       .text-center.text-grey-8.text-caption(v-else) Deadline Passed: {{moment(scadSettings.franchiseTagDeadline).format('LL')}}
       div(v-if="previousYearsFranchiseTaggedPlayers.length > 0")
         .text-h6.text-weight-bolder 2021 Franchise Tagged Players
-        q-card(v-if="!loaded" flat dense square)
-          loading(:message="'Getting Franchise Tagged Players'")
         q-table(
           :data='previousYearsFranchiseTaggedPlayers',
           :columns='columns',

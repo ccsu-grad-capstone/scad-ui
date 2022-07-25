@@ -150,6 +150,7 @@ export default {
       try {
         let previousScadLeagueId = rootState.league.scadSettings.previousScadLeagueId
         let previousGameKey = rootState.league.yahooLeagueDetails.renew.split('_')[0]
+        console.log(previousScadLeagueId, previousGameKey)
         if (previousScadLeagueId && previousGameKey) {
           const res = await api(
             rootState.user.tokens.access_token,
