@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    .text-h6.text-weight-bolder 2022 Franchise Tagged Players
+    .text-h6.text-weight-bolder {{scadSettings.seasonYear}} Franchise Tagged Players
     q-card(v-if="!loaded" flat dense square)
       loading(:message="'Getting Franchise Tagged Players'")
     .q-pa-xs(v-else)
@@ -33,7 +33,7 @@
       .text-center.text-grey-8.text-caption(v-if="checkFranchiseTag()") Franchise Tag Deadline: {{moment(scadSettings.franchiseTagDeadline).format('LL')}}
       .text-center.text-grey-8.text-caption(v-else) Deadline Passed: {{moment(scadSettings.franchiseTagDeadline).format('LL')}}
       div(v-if="previousYearsFranchiseTaggedPlayers.length > 0")
-        .text-h6.text-weight-bolder 2021 Franchise Tagged Players
+        .text-h6.text-weight-bolder {{scadSettings.seasonYear-1}} Franchise Tagged Players
         q-table(
           :data='previousYearsFranchiseTaggedPlayers',
           :columns='columns',
