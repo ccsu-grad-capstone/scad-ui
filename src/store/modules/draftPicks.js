@@ -35,6 +35,12 @@ export default {
       // console.log('[DRAFTPICK-MUTATION] - updateDraftPicks()')
       state.draftPicksByTeam = []
       state.getDraftPicksByTeamError = true
+    },
+    resetDraftPicks (state) {
+      state.draftPicks = []
+      state.draftPicksByTeam = []
+      state.getDraftPicksByLeagueError = true
+      state.getDraftPicksByTeamError = false
     }
   },
 

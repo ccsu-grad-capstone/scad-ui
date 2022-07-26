@@ -56,6 +56,16 @@ export default {
       // console.log('[TEAM-MUTATION] - updateScadTeam()')
       state.scadTeam = team
       // console.log('SCAD-TEAM: ', team)
+    },
+    resetTeam (state) {
+      state.myYahooTeamId = ''
+      state.myScadTeamId = ''
+
+      state.myYahooTeam = {}
+      state.myScadTeam = {}
+
+      state.yahooTeam = {}
+      state.scadTeam = {}
     }
   },
   actions: {
@@ -133,10 +143,10 @@ export default {
           rootState.user.tokens.access_token,
           rootState.user.tokens.id_token)
           .get(`/scad/league/${rootState.league.scadLeagueId}/player/myPlayers`)
-        // console.log('MY-SCAD-TEAM - PLAYERS: ', players.data)
+        console.log('MY-SCAD-TEAM - PLAYERS: ', players.data)
 
         let scadTeam = team.data.myTeam
-        scadTeam.roster = players.data.scadPlayers
+        scadTeam.roster = players.data.scadPlayer
 
         console.log('MY-SCAD-TEAM: ', scadTeam)
         commit('updateMyScadTeam', scadTeam)

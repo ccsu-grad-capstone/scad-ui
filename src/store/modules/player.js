@@ -53,6 +53,15 @@ export default {
       // console.log('[PLAYER-MUTATION] - logoutPlayer()')
       state._id = ''
       state.salary = ''
+    },
+    resetPlayer (state) {
+      state.yahooPlayers = []
+      state.scadPlayers = []
+      state.yahooTeamPlayers = []
+      state.scadTeamPlayers = []
+      state.scadPlayer = {}
+      state.franchiseTaggedPlayers = []
+      state.previousYearsFranchiseTaggedPlayer = []
     }
   },
   actions: {
@@ -150,7 +159,6 @@ export default {
       try {
         let previousScadLeagueId = rootState.league.scadSettings.previousScadLeagueId
         let previousGameKey = rootState.league.yahooLeagueDetails.renew.split('_')[0]
-        console.log(previousScadLeagueId, previousGameKey)
         if (previousScadLeagueId && previousGameKey) {
           const res = await api(
             rootState.user.tokens.access_token,

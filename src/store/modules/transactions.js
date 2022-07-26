@@ -42,6 +42,15 @@ export default {
     },
     updateEndOfSeasonPlayerHistory (state, update) {
       state.endOfSeasonPlayerHistory = update.updateEndOfSeasonPlayerHistory
+    },
+    resetTransactions (state) {
+      state.id = ''
+      state.lastChecked = ''
+      state.lastTimestamp = ''
+      state.loaded = false
+      state.transactions = []
+      state.reversedTransactions = []
+      state.endOfSeasonPlayerHistory = {}
     }
   },
   actions: {

@@ -23,6 +23,10 @@ export default {
       // console.log('[CAPEXEMPTIONS-MUTATION] - updateCapExemptionsTeam()')
 
       state.capExemptionsByTeam = ce
+    },
+    resetCapExemptions (state) {
+      state.capExemptions = []
+      state.capExemptionsByTeam = []
     }
   },
 

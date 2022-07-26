@@ -30,6 +30,11 @@ export default {
     },
     updateLastChecked (state, d) {
       state.lastChecked = moment(d).format('LLL')
+    },
+    resetDiagnostics (state) {
+      state._id = ''
+      state.lastChecked = ''
+      state.teams = []
     }
   },
   actions: {

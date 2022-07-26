@@ -61,6 +61,7 @@ export default {
       state.offseason = true
     },
     setDefaultLeague (state, league) {
+      console.log('setDefaultLeague', league)
       state.defaultLeague = league
     }
   },

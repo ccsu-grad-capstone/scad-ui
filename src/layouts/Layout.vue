@@ -144,7 +144,7 @@ export default {
     },
     checkIfCommish () { return checkIfCommish },
     filteredLeagues () {
-      return this.scadLeagues.map(l =>
+      return this.user.defaultLeague.scadLeagues.map(l =>
         Object.assign({}, l, {
           value: l.yahooLeagueId,
           label: this.getLeagueName(l.yahooLeagueId)

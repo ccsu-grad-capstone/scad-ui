@@ -827,6 +827,7 @@ export default {
     },
     showCancelFranchiseTagButton () {
       if (
+        (this.team.myYahooTeamId === this.team.yahooTeam.team_id || this.isCommish) &&
         this.franchiseTag &&
         !this.editSalaries &&
         !this.preseasonIR &&
@@ -837,6 +838,7 @@ export default {
     },
     showPreseasonIrButton () {
       if (
+        (this.team.myYahooTeamId === this.team.yahooTeam.team_id || this.isCommish) &&
         !this.franchiseTag &&
         !this.editSalaries &&
         !this.preseasonIR &&
@@ -846,6 +848,7 @@ export default {
     },
     showCancelPreseasonIrButton () {
       if (
+        (this.team.myYahooTeamId === this.team.yahooTeam.team_id || this.isCommish) &&
         !this.franchiseTag &&
         !this.editSalaries &&
         this.preseasonIR &&

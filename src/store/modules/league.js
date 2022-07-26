@@ -82,18 +82,23 @@ export default {
     leagueIsActiveToggle (state) {
       state.isActive = !state.isActive
     },
-    logoutLeague (state) {
-      console.log('[LEAGUE-MUTATION] - logoutLeague()')
+    resetLeague (state) {
+      console.log('[LEAGUE-MUTATION] - resetLeague()')
+
       // state.isActive = false
       // state.key = ''
-      // state.yahooLeagueId = ''
-      // state.scadLeagueId = ''
-      // state.yahooLeague = {}
-      // state.yahooSettings = {}
-      // state.scadSettings = {}
-      // state.teams = []
-      // state.standings = []
+      // state.yahooGameKey = ''
+      state.yahooLeagueId = ''
+      state.scadLeagueId = ''
+      state.renewedAvailable = false
+      state.yahooLeagueDetails = {}
+      state.yahooSettings = {}
+      state.scadSettings = {}
+      state.yahooTeams = []
+      state.scadTeams = []
+      // state.yahooLeagues = []
       // state.scadLeagues = []
+      state.yahooCommishLeagues = []
     }
   },
   getters: {
@@ -184,13 +189,27 @@ export default {
     async switchLeagues ({ rootState, state, dispatch, commit }, yahooLeagueId) {
       // console.log('[LEAGUE-ACTION] - switchLeagues()')
       try {
+        // resetStore
+        await commit('resetLeague')
+        await commit('team/resetTeam', null, { root: true })
+        await commit('player/resetPlayer', null, { root: true })
+        await commit('draftPicks/resetDraftPicks', null, { root: true })
+        await commit('diagnostics/resetDiagnostics', null, { root: true })
+        await commit('capExemptions/resetCapExemptions', null, { root: true })
+        await commit('transactions/resetTransactions', null, { root: true })
+
+        // get new league details
         await dispatch('getYahooLeagueDetails', yahooLeagueId)
         await dispatch('getScadSettingsByYahooId', yahooLeagueId)
         await dispatch('team/getMyScadTeam', null, { root: true })
         await dispatch('team/getMyYahooTeam', null, { root: true })
+        dispatch('draftPicks/getDraftPicksByLeague', null, { root: true })
+        dispatch('capExemptions/getCapExemptionsByLeague', null, { root: true })
+        dispatch('diagnostics/getDiagnostic', null, { root: true })
+        dispatch('getAllYahooCommishLeagues')
+        await dispatch('transactions/getTransactions', null, { root: true })
         await dispatch('getYahooTeams', yahooLeagueId)
         await dispatch('getScadTeams', state.scadLeagueId)
-        await dispatch('transactions/getTransactions', null, { root: true })
         let id = {
           myYahooTeamId: rootState.team.myYahooTeam.team_id,
           myScadTeamId: rootState.team.myScadTeam._id
