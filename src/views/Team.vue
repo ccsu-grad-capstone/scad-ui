@@ -227,6 +227,7 @@ export default {
   },
   data () {
     return {
+      isCommish: false,
       viewByTeam: true,
       teamSalary: 0,
       loaded: false,
@@ -465,6 +466,7 @@ export default {
     await this.$store.dispatch('league/getYahooSettings', this.yahooLeagueId)
     await this.getTeam(this.$route.params.team_id)
     await this.updatePreseasonIR()
+    if (this.checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)) this.isCommish = true
   },
   beforeRouteUpdate (to, from, next) {
     this.selectedTeam = 'Choose a Team'
@@ -608,6 +610,7 @@ export default {
       else return false
     },
 
+    // checks if preseasonIR player is on IR, otherwise removes their preseasonIR tag
     async updatePreseasonIR () {
       let preseasonIRPlayer = this.scadTeam.roster.find(p => p.preseasonIR)
       if (preseasonIRPlayer) {
@@ -813,11 +816,10 @@ export default {
     },
     showFranchiseTagButton () {
       if (
-        this.checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues) &&
+        (this.team.myYahooTeamId === this.team.yahooTeam.team_id || this.isCommish) &&
         !this.franchiseTag &&
         !this.editSalaries &&
         !this.preseasonIR &&
-        this.team.myYahooTeamId === this.team.yahooTeam.team_id &&
         this.checkFranchiseTag() &&
         this.scadSettings.franchiseTagSpots > 0) {
         return true
@@ -855,7 +857,7 @@ export default {
       if (!this.editSalaries &&
         !this.franchiseTag &&
         !this.preseasonIR &&
-        this.checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)) {
+        this.isCommish) {
         return true
       } else return false
     },
@@ -864,7 +866,7 @@ export default {
         this.editSalaries &&
         !this.franchiseTag &&
         !this.preseasonIR &&
-        this.checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)) {
+        this.isCommish) {
         return true
       } else return false
     }
