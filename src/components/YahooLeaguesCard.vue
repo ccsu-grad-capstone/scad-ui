@@ -9,7 +9,7 @@
         .col
           .text-grey.q-pl-md Select row to change leagues {{ league.yahooGameKey }}
           q-separator
-          q-list( v-for="(league, index) in filteredScadLeagues" :key="index")
+          q-list( v-for="(league, index) in user.defaultLeague.scadLeagues" :key="index")
             //- q-item(clickable  @click.native="switchLeague(league._id, league.yahooLeagueId)")
             q-item()
               .row.full-width.q-pt-sm
@@ -17,7 +17,7 @@
                 .col.lt-md {{getLeagueName(league.yahooLeagueId)}}
                 .col.text-left.gt-sm
                   .row.full-width.q-gutter-md
-                    .text-primary.text-weight-bold(v-if="(league._id == scadLeagueId)") Active League
+                    .text-primary.text-weight-bold(v-if="(league.scadLeagueId == scadLeagueId)") Active League
                     .text-primary.text-weight-bold(v-else) Switch to League
                     .text-info.text-weight-bold(v-if="league.yahooLeagueId === user.defaultLeague.yahooLeagueId") Default League
                     q-btn.q-px-xs(v-else label='Set as Default League' flat dense color='white' text-color='accent' size='sm' @click="setAsDefault(league)")
@@ -94,9 +94,6 @@ export default {
     },
     registerLeagueInvites () {
       return this.$store.state.dialog.registerLeagueInvites
-    },
-    filteredScadLeagues () {
-      return this.scadLeagues.filter(l => l.yahooGameKey === this.league.yahooGameKey)
     }
   },
   methods: {

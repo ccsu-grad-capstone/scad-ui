@@ -61,7 +61,6 @@ export default {
       state.offseason = true
     },
     setDefaultLeague (state, league) {
-      console.log('setDefaultLeague', league)
       state.defaultLeague = league
     }
   },
@@ -103,8 +102,7 @@ export default {
         const res = await api(
           state.tokens.access_token,
           state.tokens.id_token)
-          .put(`/udl/update/${league.yahooGameKey}/${league.yahooLeagueId}/${league._id}`)
-        console.log('SET-DEFAULT-LEAGUE RES', res.data)
+          .put(`/udl/update/${league.yahooGame.game_key}/${league.yahooLeagueId}/${league.scadLeagueId}`)
         commit('setDefaultLeague', res.data.udl)
         console.log('[USER-ACTION] - setDefaultLeague(): ', res.data)
       } catch (error) {
