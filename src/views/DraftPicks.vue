@@ -230,8 +230,8 @@ export default {
     getCost (dp) {
       if (dp) {
         if (dp.pick) {
-          if (dp.rd === 1) return `$${this.referenceData.rdOneRookieWages[dp.pick - 1]}`
-          else if (dp.rd === 2) return `$${this.referenceData.rdTwoRookieWages[dp.pick - 1]}`
+          if (dp.rd === 1) return `$${this.scadSettings.rdOneRookieWages[dp.pick - 1]}`
+          else if (dp.rd === 2) return `$${this.scadSettings.rdTwoRookieWages[dp.pick - 1]}`
           else if (dp.rd === 3) return '$1'
         } else return '-'
       }
