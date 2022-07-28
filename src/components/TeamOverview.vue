@@ -29,12 +29,12 @@
           td.text-body.text-grey-5 {{ scadSettings.teMin }} | #[span.qty(v-bind:class="{ 'text-red': !checkPos('te') }") {{getPosCount('TE')}}] | {{ scadSettings.teMax }}
           td ${{getPositionSalaryTotal('TE')}}
           td {{getPerc('TE')}}%
-        tr(v-if="scadSettings.kMin > 0")
+        tr(v-if="scadSettings.kMin > 0 && scadSettings.kMax > 0")
           td.pos K
           td.text-body.text-grey-5 {{ scadSettings.kMin }} | #[span.qty(v-bind:class="{ 'text-red': !checkPos('k') }") {{getPosCount('K')}}] | {{ scadSettings.kMax }}
           td ${{getPositionSalaryTotal('K')}}
           td {{getPerc('K')}}%
-        tr(v-if="scadSettings.defMin > 0")
+        tr(v-if="scadSettings.defMin > 0 && scadSettings.defMax > 0")
           td.pos DEF
           td.text-body.text-grey-5 {{ scadSettings.defMin }} | #[span.qty(v-bind:class="{ 'text-red': !checkPos('def') }") {{getPosCount('DEF')}}] | {{ scadSettings.defMax }}
           td ${{getPositionSalaryTotal('DEF')}}

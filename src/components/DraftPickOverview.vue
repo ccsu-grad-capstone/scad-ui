@@ -118,8 +118,8 @@ export default {
     allDraftPicks () { return this.$store.state.draftPicks.draftPicks },
     draftPicksByTeam () {
       const guid = getTeamGuid(this.yahooTeam)
-      let teamPicks = []
-      for (const dp of this.allDraftPicks) if (getTeamGuid(dp.team) === guid) teamPicks.push(dp)
+      let teamPicks = this.allDraftPicks.filter(dp => getTeamGuid(dp.team) === guid)
+      // for (const dp of this.allDraftPicks) if (getTeamGuid(dp.team) === guid) teamPicks.push(dp)
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.loaded = true
       return teamPicks.sort(function (a, b) {
