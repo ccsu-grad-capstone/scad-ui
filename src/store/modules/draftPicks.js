@@ -48,7 +48,6 @@ export default {
     async getDraftPicksByLeague ({ commit, state, rootState }) {
       // console.log('[DRAFTPICK-ACTION] - getDraftPicksByLeague()')
       let limit = rootState.league.scadSettings.rookieDraftRds * rootState.league.yahooLeagueDetails.num_teams * rootState.league.scadSettings.tradingDraftPickYears
-      console.log(limit)
       try {
         const response = await api(rootState.user.tokens.access_token, rootState.user.tokens.id_token).get(`/draftPicks/${rootState.league.scadLeagueId}/${rootState.league.scadSettings.seasonYear}/${limit}`)
         console.log('DRAFTPICKS-league', response.data)

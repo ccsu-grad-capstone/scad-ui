@@ -76,6 +76,7 @@ export default {
 
   data () {
     return {
+      pages: 42,
       loaded: false,
       edit: {
         visable: false,
@@ -88,7 +89,7 @@ export default {
       },
       pagination: {
         page: 1,
-        rowsPerPage: 36 // 0 means all rows
+        rowsPerPage: this.pag // 0 means all rows
       },
       columns: [
         {
@@ -149,8 +150,8 @@ export default {
     }
   },
   mounted () {
+    this.pagination.rowsPerPage = this.scadSettings.rookieDraftRds * this.yahooLeagueDetails.num_teams
     this.getDraftPicks()
-    this.filter.year = this.scadSettings.seasonYear
   },
   computed: {
     myTeamDPCEStyle () {
@@ -174,6 +175,9 @@ export default {
     },
     scadSettings () {
       return this.$store.state.league.scadSettings
+    },
+    yahooLeagueDetails () {
+      return this.$store.state.league.yahooLeagueDetails
     },
     referenceData () {
       return referenceData
