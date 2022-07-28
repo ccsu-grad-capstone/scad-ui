@@ -7,14 +7,17 @@
         .col-3.text-weight-bolder.q-pt-lg.lt-md SCAD Leagues
         q-separator(vertical)
         .col
-          .text-grey.q-pl-md Select row to change leagues {{ league.yahooGameKey }}
+          .text-grey.q-pl-md Select row to change leagues
           q-separator
           q-list( v-for="(league, index) in user.defaultLeague.scadLeagues" :key="index")
             //- q-item(clickable  @click.native="switchLeague(league._id, league.yahooLeagueId)")
             q-item()
               .row.full-width.q-pt-sm
                 .col.text-body1.text-weight-bolder.gt-sm {{getLeagueName(league.yahooLeagueId)}}
-                .col.lt-md {{getLeagueName(league.yahooLeagueId)}}
+                .col.lt-md
+                  | {{getLeagueName(league.yahooLeagueId)}}
+                  .text-info.text-weight-bold(v-if="league.yahooLeagueId === user.defaultLeague.yahooLeagueId") Default League
+                  q-btn.q-px-xs(v-else label='Set as Default League' flat dense color='white' text-color='accent' size='sm' @click="setAsDefault(league)")
                 .col.text-left.gt-sm
                   .row.full-width.q-gutter-md
                     .text-primary.text-weight-bold(v-if="(league.scadLeagueId == scadLeagueId)") Active League

@@ -165,7 +165,7 @@
                         .col(v-if="(isScadPlayer(props.row.player_id, scadTeam))" :style=" (editSalaries && !isFranchiseTagged(props.row.player_id)) ? 'border: 1px solid #26A69A;' : 'border: none;' ")
                           .text-weight-bolder.text-body2.q-pr-sm ${{ getPlayerSalary(props.row.player_id, props.row.selected_position) }}
                         .col(v-else)
-                          q-btn(size='xs' color='positive' round dense @click='addScadPlayer(props.row.player_id)' icon="fas fa-plus")
+                          q-btn(v-if='isCommish' size='xs' color='positive' round dense @click='addScadPlayer(props.row.player_id)' icon="fas fa-plus")
                         q-popup-edit(
                           v-if="editSalaries && !isFranchiseTagged(props.row.player_id)"
                           :cover="false"
