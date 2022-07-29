@@ -12,6 +12,7 @@
               .col.text-center
                 .text-h6 {{yahooTeam.name}}
                 .text-caption.text-grey-7 Manager: ({{yahooTeam.managers[0].nickname}})
+                .text-caption.text-grey-7(v-if="yahooTeam.managers[1]") Co-Manager: ({{yahooTeam.managers[1].nickname}})
                 .text-caption.text-grey-7(v-if="scadTeam.phone") Phone: ({{scadTeam.phone}})
                 .row.justify-center.gt-sm
                   .text-caption: a(:href='yahooTeam.url') Yahoo! Team Page
