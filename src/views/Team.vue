@@ -2,37 +2,36 @@
   body
     loading(v-if="!loaded" :message="'Fetching SCAD team...'")
     .row.full-width.justify-center(v-else)
-      .row.team-area.q-gutter-md.q-pa-md.justify-center
-        .col-3
-          .col-4
+      .row.team-area.q-gutter-y-md.q-pa-sm.justify-center
+        .col-xl-4.col-lg-4.col-md-4.col-sm-12.col-xs-12
+          .col-4.q-pt-md
             .row.justify-center
               q-avatar(size="100px")
                 img( :src="yahooTeam.team_logos[0].url")
-            .row.justify-center
-              .col
-                .row.justify-center
-                  .text-h6 {{yahooTeam.name}}
-                .row.justify-center.gt-sm
-                  .text-caption.text-grey-7 Manager ({{yahooTeam.managers[0].nickname}})  | team_id: {{yahooTeam.team_id}}
+            .rows
+              .col.text-center
+                .text-h6 {{yahooTeam.name}}
+                .text-caption.text-grey-7 Manager: ({{yahooTeam.managers[0].nickname}})
+                .text-caption.text-grey-7(v-if="scadTeam.phone") Phone: ({{scadTeam.phone}})
                 .row.justify-center.gt-sm
                   .text-caption: a(:href='yahooTeam.url') Yahoo! Team Page
         q-separator.gt-sm(vertical)
         .row.lt-md
           .row.full-width.justify-center
-            .col-7.text-grey-8.text-caption.text-right Cap Exemption Give:
+            .col-6.text-grey-8.text-caption.text-right Cap Exemption Give:
             .col.text-negative.text-weight-bold.text-body-1
               | ${{scadTeam.exceptionOut}}
           .row.full-width.justify-center
-            .col-7.text-grey-8.text-caption.text-right Cap Exemption Receive:
+            .col-6.text-grey-8.text-caption.text-right Cap Exemption Receive:
             .col.text-positive.text-weight-bold.text-body-1
               | ${{scadTeam.exceptionIn}}
           .row.full-width.justify-center
-            .col-7.text-grey-8.text-caption.text-right Franchise Tag:
+            .col-6.text-grey-8.text-caption.text-right Franchise Tag:
             .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
               span(v-if="scadSettings.franchiseTagSpots > 0") {{franchiseTagDisplay()}}
               span(v-else) N/A
           .row.full-width.justify-center
-            .col-7.text-grey-6.text-weight-bold.text-subtitle1.text-right Current Team Salary:
+            .col-6.text-grey-6.text-weight-bold.text-subtitle1.text-right Current Team Salary:
             .col.text-primary.text-weight-bold.text-subtitle1.q-pl-sm
               | ${{teamSalary}}
         .col.q-pa-sm.q-pt-lg.gt-sm
@@ -94,7 +93,9 @@
         .row.full-width.justify-center
           .col-xl-8.col-lg-8.col-md-8.col-sm-12.col-xs-12.q-px-xs
             .row.justify-between.align-center.q-px-sm
-              q-select(square dense v-model='selectedTeam' :options="filteredTeams" style="width: 300px" @input="updateTeamPage")
+              q-select.gt-sm(square dense v-model='selectedTeam' :options="filteredTeams" style="width: 300px" @input="updateTeamPage")
+              .row.full-width.justify-center.lt-md
+                q-select(square dense v-model='selectedTeam' :options="filteredTeams" style="width: 90%" @input="updateTeamPage")
               q-toggle.q-pt-sm(v-model="viewByTeam", label="View By Position")
               div.q-gutter-sm.q-pt-sm
                 div
@@ -884,7 +885,7 @@ a
 .fmt
   background-color: #e1e2e3
 .team-area
-  width: 90%
+  width: 95%
 .team-table
   width: 90%
 .name
