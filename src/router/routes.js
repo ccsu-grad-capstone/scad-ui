@@ -166,6 +166,18 @@ const routes = [
       requiresAuth: true
       // isAdmin: true
     }
+  },
+  {
+    path: '/refresh',
+    name: 'refresh',
+    component: () => import('../layouts/Layout.vue'),
+    children: [
+      { path: '', component: () => import('../views/YahooRefresh.vue') }
+    ],
+    meta: {
+      requiresAuth: true
+      // isAdmin: true
+    }
   }
 ]
 

@@ -2,7 +2,7 @@
   div
     .text-weight-bold Draft Picks:
     loading(v-if="!loaded" :message="'Fetching Draft Picks...'")
-    .row.justify-center.full-width.bg-white.q-py-lg(v-else-if="loaded && getDraftPicksByTeamError")
+    .row.justify-center.full-width.bg-white.q-py-lg(v-else-if="loaded && getDraftPicksByLeagueError")
       .row.full-width.justify-center.text-caption.text-grey-7 Issue getting draft picks try:
       .row.full-width.justify-center: q-btn.q-pa-xs(label='Refresh' color='secondary' text-color='primary' size='md' @click="getPicks()")
     q-table(
@@ -136,16 +136,16 @@ export default {
     scadSettings () {
       return this.$store.state.league.scadSettings
     },
-    getDraftPicksByTeamError () { return this.$store.state.draftPicks.getDraftPicksByTeamError }
+    getDraftPicksByLeagueError () { return this.$store.state.draftPicks.getDraftPicksByLeagueError }
 
   },
   methods: {
-    // getPicks () {
-    //   console.log('getPicks')
-    //   this.loaded = true
-    //   return teamPicks
-    //   // await this.$store.dispatch('draftPicks/getDraftPicksByTeam', { guid: getTeamGuid(this.yahooTeam) })
-    // },
+    async getPicks () {
+      console.log('getPicks')
+      // return teamPicks
+      await this.$store.dispatch('draftPicks/getDraftPicksByLeague')
+      this.loaded = true
+    },
     editPick (dp) {
       this.$store.commit('dialog/editDraftPick')
       this.edit.dp = dp

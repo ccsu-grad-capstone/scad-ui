@@ -183,31 +183,12 @@ export default {
       ]
     })
   },
-  genericServerIssueWithResponse (code, message) {
-    Notify.create({
-      message: `${message}, please try again soon`,
-      position: 'top',
-      timeout: 2500,
-      color: 'red',
-      actions: [
-        { label: 'Refresh', color: 'white', handler: () => { window.location.reload() } }
-      ]
-    })
-  },
-  genericServerIssue (message) {
-    Notify.create({
-      message: `Error Retrieving Info. Please try again soon`,
-      position: 'top',
-      timeout: 2500,
-      color: 'red'
-    })
-  },
   nodeServerIssueWithResponse (message) {
     Notify.create({
       message: `${message}. Please try again soon`,
       position: 'top',
-      timeout: 2500,
-      color: 'red',
+      timeout: 2000,
+      color: 'bottom',
       actions: [
         { label: 'Refresh', color: 'white', handler: () => { window.location.reload() } }
       ]
@@ -216,16 +197,16 @@ export default {
   nodeServerIssueDraftPick (message) {
     Notify.create({
       message: `${message}. Hit refresh button on page`,
-      position: 'top',
-      timeout: 2500,
+      position: 'bottom',
+      timeout: 2000,
       color: 'red'
     })
   },
   nodeServerIssue () {
     Notify.create({
       message: `Error Retrieving Scad Details. Please try again soon`,
-      position: 'top',
-      timeout: 2500,
+      position: 'bottom',
+      timeout: 2000,
       color: 'red',
       actions: [
         { label: 'Refresh', color: 'white', handler: () => { window.location.reload() } }
