@@ -90,7 +90,7 @@ export default {
         console.log('RUN DIAGNOSTIC: ', process.data)
         commit('updateDiagnostic', process.data.diagnostic)
         notify.success('Diagnostic ran successfully')
-        dispatch('league/getScadTeams', state.scadLeagueId, { root: true })
+        dispatch('league/getScadTeams', rootState.league.scadLeagueId, { root: true })
       } catch (error) {
         console.log(error)
         notify.warning('Diagnostic failed to complete.')
