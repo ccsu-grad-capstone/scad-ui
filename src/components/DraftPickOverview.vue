@@ -25,6 +25,9 @@
       template(v-slot:body-cell-comments='props')
         q-td.q-pr-md(:props='props')
           | {{props.row.comments}}
+      template(v-slot:body-cell-condition='props')
+        q-td(:props='props' auto-width)
+          q-icon(v-if="props.row.hasCondition" name='fas fa-exclamation' color='negative' size='xs')
     edit-draft-pick-dialog(v-if="editDraftPick" :dp="edit.dp" @saved="getPicks")
 
     .col.full-width.text-center.q-pa-xs.text-grey.text-caption {{yahooTeam.name}} draft picks
@@ -99,6 +102,15 @@ export default {
             }
           },
           sortable: true
+        },
+        {
+          name: 'condition',
+          required: false,
+          label: '',
+          align: 'center',
+          sortable: false
+          // style: 'background-color: #f0f0f0'
+
         },
         {
           name: 'comments',

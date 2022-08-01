@@ -1,5 +1,5 @@
 <template lang="pug">
-  q-dialog(v-model='visable' persistent)
+  q-dialog(v-model='visible' persistent)
     q-card(style="width: 600px; max-width: 80vw;")
       q-card-section.row
         .col.text-center.text-h5.text-weight-bolder  {{ dp.year }} - {{ outputRound(dp.rd) }} Round
@@ -13,6 +13,11 @@
         .row.full-width.q-mt-sm
           .col-3.text-body.text-right.text-weight-bold.q-ma-sm Original Owner:
           .col.q-ma-sm.text-grey {{dp.originalTeam.name}}
+        .row.full-width.q-mt-sm
+          .col-3.text-body.text-right.text-weight-bold.q-ma-sm Condition:
+          .q-ma-sm
+            q-toggle(filled dense v-model='dp.hasCondition')
+          .col.q-ma-sm.text-caption.text-grey-7(v-if="dp.hasCondition") Pick has a condition and is likely un-tradeable, see comments.
         .row.full-width.q-mt-sm
           .col-3.text-body.text-right.text-weight-bold.q-ma-sm Comments:
           .col.q-ma-sm.text-grey: q-input(v-model='dp.comments' filled type='textarea')
@@ -40,12 +45,12 @@ export default {
   },
   data () {
     return {
-      visable: false,
+      visible: false,
       initOwner: {}
     }
   },
   mounted () {
-    this.visable = true
+    this.visible = true
     this.initOwner = this.dp.team
   },
   computed: {
@@ -85,7 +90,7 @@ export default {
     close () {
       this.$store.commit('dialog/editDraftPick')
       this.$emit('saved')
-      this.visable = false
+      this.visible = false
     }
 
   }

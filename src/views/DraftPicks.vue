@@ -48,6 +48,9 @@
               template(v-slot:body-cell-cost='props')
                 q-td.bg-grey-2(:props='props' auto-width)
                   div.text-weight-bolder.text-primary {{ getCost(props.row) }}
+              template(v-slot:body-cell-condition='props')
+                q-td(:props='props' auto-width)
+                  q-icon(v-if="props.row.hasCondition" name='fas fa-exclamation' color='negative' size='xs')
               template(v-slot:body-cell-owner='props')
                 q-td(:props='props' auto-width :class="myTeamDPCEStyle(getTeamGuid(props.row.team), user.user.guid)")
                   div.q-pr-lg.text-weight-bold {{ getTeamName(props.row.team, yahooTeams) }}
@@ -124,6 +127,12 @@ export default {
           label: 'Cost:',
           align: 'left',
           sortable: false
+        },
+        {
+          name: 'condition',
+          required: false,
+          label: '',
+          align: 'left'
         },
         {
           name: 'owner',
