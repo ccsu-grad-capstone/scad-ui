@@ -15,8 +15,17 @@
 <script>
 export default {
   name: 'YahooRefresh',
+  computed: {
+    league () {
+      return this.$store.state.league
+    }
+  },
   methods: {
     async refresh () {
+      if (!this.league.isActive) {
+        await this.$router.push('/dashboard')
+        window.location.reload()
+      }
       await this.$store.dispatch('user/refreshToken')
       this.$router.push('/dashboard')
     }

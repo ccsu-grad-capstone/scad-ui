@@ -226,6 +226,7 @@ export default {
           this.$store.dispatch('league/getAllScadLeagues')
         } catch (error) {
           console.log('SERVER ISSUE, please try again shortly.')
+          this.navigate('refresh')
         }
         // this.$store.dispatch('team/getMyYahooTeam', '22351')
       }
