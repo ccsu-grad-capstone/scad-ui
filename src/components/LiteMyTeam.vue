@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    .text-h6.text-weight-bolder My Team
+    .q-px-xs.text-h6.text-weight-bolder My Team
     q-card(v-if="!loaded" flat dense square)
       loading(:message="'Getting My Roster'")
     .q-pa-xs(v-else)

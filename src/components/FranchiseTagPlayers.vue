@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    .text-h6.text-weight-bolder {{scadSettings.seasonYear}} Franchise Tagged Players
+    .q-px-xs.text-h6.text-weight-bolder {{scadSettings.seasonYear}} Franchise Tagged Players
     q-card(v-if="!loaded" flat dense square)
       loading(:message="'Getting Franchise Tagged Players'")
     .q-pa-xs(v-else)
@@ -17,15 +17,17 @@
 
         template(v-slot:body='props')
           q-tr(:props='props')
-            q-td {{ props.row.yahooPlayer.display_position }}
+            q-td.text-weight-bold {{ props.row.yahooPlayer.display_position }}
             q-td(key='playerName' :props='props')
               .row.full-width
-                .col-2
+                .col-2.q-pt-xs
                   q-avatar(size="30px")
                     img(:src="props.row.yahooPlayer.headshot.url" style="width: 80%")
-                .column.justify-center.q-pl-sm.text-body2.text-weight-bold
-                  .row.full-width
-                    | {{ props.row.yahooPlayer.name.full }} #[span.text-caption.q-pl-xs - {{ getTeamName(getYahooTeamFromYahooTeamId(yahooTeams, props.row.scadPlayer.isFranchiseTagTeam.yahooTeamId), yahooTeams) }}]
+                .column.justify-center.q-pl-sm
+                  .row.full-width.text-body2.text-weight-bold
+                    | {{ props.row.yahooPlayer.name.full }}
+                  .row.full-width.text-accent
+                    .text-caption {{ getTeamName(getYahooTeamFromYahooTeamId(yahooTeams, props.row.scadPlayer.isFranchiseTagTeam.yahooTeamId), yahooTeams) }}
             q-td
               .row
                 .text-center.text-grey-7 (${{props.row.scadPlayer.salary}})
