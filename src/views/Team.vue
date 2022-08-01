@@ -639,6 +639,10 @@ export default {
       let salary = player.salary
 
       player.isFranchiseTag = true
+      player.isFranchiseTagTeam = {
+        yahooTeamId: this.yahooTeam.team_id,
+        scadTeamId: this.scadTeam._id
+      }
 
       let franchiseTagDiscount = this.league.scadSettings.franchiseTagDiscount
       if (salary <= franchiseTagDiscount) {
@@ -689,6 +693,11 @@ export default {
       }
 
       player.isFranchiseTag = false
+      player.isFranchiseTagTeam = {
+        yahooTeamId: undefined,
+        scadTeamId: undefined
+      }
+
       const log = {
         originalSalary: salary -= adjustment,
         newSalary: player.salary,

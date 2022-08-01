@@ -25,7 +25,7 @@
                     img(:src="props.row.yahooPlayer.headshot.url" style="width: 80%")
                 .column.justify-center.q-pl-sm.text-body2.text-weight-bold
                   .row.full-width
-                    | {{ props.row.yahooPlayer.name.full }}
+                    | {{ props.row.yahooPlayer.name.full }} #[span.text-caption.q-pl-xs - {{ getTeamName(getYahooTeamFromYahooTeamId(yahooTeams, props.row.scadPlayer.isFranchiseTagTeam.yahooTeamId), yahooTeams) }}]
             q-td
               .row
                 .text-center.text-grey-7 (${{props.row.scadPlayer.salary}})
@@ -68,6 +68,7 @@
 import { calcFranchiseTagSalary } from '../utilities/calculator'
 import moment from 'moment'
 import Loading from '../components/Loading'
+import { getTeamName, getYahooTeamFromYahooTeamId } from '../utilities/functions'
 
 export default {
   name: 'FranchiseTaggedPlayers',
@@ -133,11 +134,14 @@ export default {
     myScadTeam () {
       return this.team.myScadTeam
     },
+    yahooTeams () { return this.$store.state.league.yahooTeams },
     scadSettings () { return this.$store.state.league.scadSettings },
     franchiseTagDiscount () { return this.$store.state.league.scadSettings.franchiseTagDiscount },
     franchiseTaggedPlayers () { return this.$store.state.player.franchiseTaggedPlayers },
     previousYearsFranchiseTaggedPlayers () { return this.$store.state.player.previousYearsFranchiseTaggedPlayers },
-    moment () { return moment }
+    moment () { return moment },
+    getTeamName () { return getTeamName },
+    getYahooTeamFromYahooTeamId () { return getYahooTeamFromYahooTeamId }
   },
   methods: {
     calcFranchiseTagSalary (salary) {
