@@ -44,7 +44,7 @@
                   div.q-pr-sm {{ props.row.rd }}
               template(v-slot:body-cell-pick='props')
                 q-td(:props='props' auto-width)
-                  div {{ displayPick(props.row.pick) }}
+                  div(:class="formatPick(props.row)") {{ getPick(props.row) }}
               template(v-slot:body-cell-cost='props')
                 q-td.bg-grey-2(:props='props' auto-width)
                   div.text-weight-bolder.text-primary {{ getCost(props.row) }}
@@ -66,6 +66,7 @@ import editDraftPickDialog from '../components/dialogs/editDraftPickDialog'
 import { myTeamDPCEStyle, displayPick } from '../utilities/formatters'
 import { getTeamGuid, getTeamName } from '../utilities/functions'
 import Loading from '../components/Loading'
+import moment from 'moment'
 
 /* eslint-disable eqeqeq */
 
@@ -163,6 +164,7 @@ export default {
     this.getDraftPicks()
   },
   computed: {
+    moment () { return moment },
     myTeamDPCEStyle () {
       return myTeamDPCEStyle
     },
@@ -206,6 +208,7 @@ export default {
     getTeamName () {
       return getTeamName
     },
+    isDuringSeason () { return moment().isBetween(this.yahooLeagueDetails.start_date, this.yahooLeagueDetails.end_date) },
     filteredPicks () {
       var filtered = this.draftPicks
       Object.keys(this.filter).forEach(key => {
@@ -217,16 +220,49 @@ export default {
           }
         }
       })
-      return filtered.sort(function (a, b) {
+      // Sort by year and by pick
+      let sorted = filtered.sort(function (a, b) {
         if (a.rd === b.rd && a.year === b.year) {
           return a.pick > b.pick ? 1 : a.pick < b.pick ? -1 : 0
         } else if (a.year === b.year) {
           return a.rd > b.rd ? 1 : a.rd < b.rd ? -1 : 0
         }
       })
+
+      let noFilter = (!this.filter.team && !this.filter.year && !this.filter.rd)
+      let filterOnNextYearsPicks = this.scadSettings.seasonYear + 1 === this.filter.year
+
+      // Sort by current standings for next year's dps during season
+      if ((noFilter || filterOnNextYearsPicks) && this.isDuringSeason) {
+        if (filterOnNextYearsPicks) {
+          return this.sortPicks(sorted)
+        } else {
+          let draftPickYearCount = parseInt(this.scadSettings.rookieDraftRds) * parseInt(this.yahooLeagueDetails.num_teams)
+          let start = this.yahooLeagueDetails.renew ? draftPickYearCount : 0
+          let end = this.yahooLeagueDetails.renew ? draftPickYearCount * 2 : draftPickYearCount
+          return sorted.slice(0, start).concat(this.sortPicks(sorted.slice(start, end))).concat(sorted.slice(end))
+        }
+      } else return sorted
     }
   },
   methods: {
+    sortPicks (picks) {
+      let dps = []
+      let rd = 1
+      let reverseStandings = this.yahooTeams.slice().reverse()
+      while (rd <= this.scadSettings.rookieDraftRds) {
+        for (const team of reverseStandings) {
+          dps.push(picks.find(p => getTeamGuid(team) === getTeamGuid(p.originalTeam) && p.rd == rd))
+        }
+        rd++
+      }
+      return dps
+    },
+    getTeamIndex (dp) {
+      let i = this.yahooTeams.findIndex(t => getTeamGuid(t) === getTeamGuid(dp.originalTeam))
+      console.log(i)
+      return i
+    },
     async getDraftPicks () {
       if (this.draftPicks.length < 1) await this.$store.dispatch('draftPicks/getDraftPicksByLeague')
       this.loaded = true
@@ -240,12 +276,38 @@ export default {
       this.filter.year = ''
       this.filter.rd = ''
     },
+    isNextYearsDp (dp) {
+      return this.scadSettings.seasonYear + 1 === dp.year && this.isDuringSeason
+    },
+    getPick (dp) {
+      if (dp) {
+        if (dp.pick) return dp.pick
+        else if (this.isNextYearsDp(dp)) {
+          let reverseStandings = this.yahooTeams.slice().reverse()
+          let i = reverseStandings.findIndex(t => getTeamGuid(t) === getTeamGuid(dp.originalTeam))
+          return `(${i + 1})`
+        }
+      }
+    },
+    formatPick (dp) {
+      return {
+        'text-grey': this.isNextYearsDp(dp) && !dp.pick
+      }
+    },
     getCost (dp) {
       if (dp) {
         if (dp.pick) {
           if (dp.rd === 1) return `$${this.scadSettings.rdOneRookieWages[dp.pick - 1]}`
           else if (dp.rd === 2) return `$${this.scadSettings.rdTwoRookieWages[dp.pick - 1]}`
           else if (dp.rd === 3) return '$1'
+          else return '-'
+        } else if (this.isNextYearsDp(dp)) {
+          let reverseStandings = this.yahooTeams.slice().reverse()
+          let i = reverseStandings.findIndex(t => getTeamGuid(t) === getTeamGuid(dp.originalTeam))
+          if (dp.rd === 1) return `$${this.scadSettings.rdOneRookieWages[i]}`
+          else if (dp.rd === 2) return `$${this.scadSettings.rdTwoRookieWages[i]}`
+          else if (dp.rd === 3) return '$1'
+          else return '-'
         } else return '-'
       }
     }
