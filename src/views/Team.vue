@@ -495,6 +495,10 @@ export default {
       this.scadTeam = JSON.parse(
         JSON.stringify(this.$store.state.team.scadTeam)
       )
+      if (Array.isArray(this.scadTeam.roster) && this.scadTeam.roster.length > 0) {
+        console.log('Scad Roster Exists')
+      } else this.$router.push({ path: `/refresh` })
+
       this.updateTeamSalary()
       this.loaded = true
     },
