@@ -1,28 +1,30 @@
 <template lang="pug">
   q-dialog(v-model='visable' persistent)
     q-card(style="width: 500px; max-width: 100vw;")
-      q-card-section.row
-        .col.text-center.text-h5.text-weight-bolder  Cap Exemption
-      q-card-section.row.items-center
-        .row.full-width
-          .col-3.text-body.text-right.text-weight-bold.q-ma-sm Year:
-          .col-3.q-pl-sm: q-select(dense v-model='$v.capExemption.year.$model' :options='getYears(seasonYear)' :error='$v.capExemption.year.$error' error-message='Required Field')
-        .row.full-width
-          .col-3.text-body.text-right.text-weight-bold.q-ma-sm Giving Team:
-          .col.q-pl-sm: q-select(dense v-model='$v.capExemption.yahooTeamGive.$model' :options='filteredTeams' :display-value='displayTeamName(capExemption.yahooTeamGive.name)' :error='$v.capExemption.yahooTeamGive.$error' error-message='Required Field')
-        .row.full-width
-          .col-3.text-body.text-right.text-weight-bold.q-ma-sm Recieving Team:
-          .col.q-pl-sm: q-select(dense v-model='$v.capExemption.yahooTeamRecieve.$model' :options='filteredTeams' :display-value='displayTeamName(capExemption.yahooTeamRecieve)' :error='$v.capExemption.yahooTeamRecieve.$error' error-message='Required Field')
-        .row.full-width
-          .col-3.text-body.text-right.text-weight-bold.q-ma-sm Amount:
-          .col-2.q-pl-sm: q-select(dense v-model='$v.capExemption.amount.$model' :options='referenceData.capExemptionAmount(this.salaryCapExemptionLimit)' :error='$v.capExemption.amount.$error' error-message='Required Field')
-          .text-caption.q-pt-md dollars
-        .row.full-width.q-mt-sm
-          .col-3.text-body.text-right.text-weight-bold.q-ma-sm Comments:
-          .col.q-ma-sm.text-grey: q-input(v-model='capExemption.comments' filled type='textarea')
-      q-card-actions.row.justify-around
-        q-btn(flat label='Cancel' color='primary' @click="close()")
-        q-btn(flat label='Save' color='primary' @click="saveCE()")
+      loading(v-if="saving" :message="'Saving Cap Exemption...'")
+      div(v-else)
+        q-card-section.row
+          .col.text-center.text-h5.text-weight-bolder  Cap Exemption
+        q-card-section.row.items-center
+          .row.full-width
+            .col-3.text-body.text-right.text-weight-bold.q-ma-sm Year:
+            .col-3.q-pl-sm: q-select(dense v-model='$v.capExemption.year.$model' :options='getYears(seasonYear)' :error='$v.capExemption.year.$error' error-message='Required Field')
+          .row.full-width
+            .col-3.text-body.text-right.text-weight-bold.q-ma-sm Giving Team:
+            .col.q-pl-sm: q-select(dense v-model='$v.capExemption.yahooTeamGive.$model' :options='filteredTeams' :display-value='displayTeamName(capExemption.yahooTeamGive.name)' :error='$v.capExemption.yahooTeamGive.$error' error-message='Required Field')
+          .row.full-width
+            .col-3.text-body.text-right.text-weight-bold.q-ma-sm Recieving Team:
+            .col.q-pl-sm: q-select(dense v-model='$v.capExemption.yahooTeamRecieve.$model' :options='filteredTeams' :display-value='displayTeamName(capExemption.yahooTeamRecieve)' :error='$v.capExemption.yahooTeamRecieve.$error' error-message='Required Field')
+          .row.full-width
+            .col-3.text-body.text-right.text-weight-bold.q-ma-sm Amount:
+            .col-2.q-pl-sm: q-select(dense v-model='$v.capExemption.amount.$model' :options='referenceData.capExemptionAmount(this.salaryCapExemptionLimit)' :error='$v.capExemption.amount.$error' error-message='Required Field')
+            .text-caption.q-pt-md dollars
+          .row.full-width.q-mt-sm
+            .col-3.text-body.text-right.text-weight-bold.q-ma-sm Comments:
+            .col.q-ma-sm.text-grey: q-input(v-model='capExemption.comments' filled type='textarea')
+        q-card-actions.row.justify-around
+          q-btn(flat label='Cancel' color='primary' @click="close()")
+          q-btn(flat label='Save' color='primary' @click="saveCE()")
 </template>
 
 <script>
@@ -32,13 +34,18 @@ import notify from '../../utilities/nofity'
 import { required } from 'vuelidate/lib/validators'
 import { getYears } from '../../utilities/functions'
 import { displayTeamName } from '../../utilities/formatters'
+import Loading from '../Loading'
 
 export default {
   name: 'AddCapExemptionDialog',
+  components: {
+    'loading': Loading
+  },
   props: {
   },
   data () {
     return {
+      saving: false,
       visable: false,
       capExemption: {
         yahooLeagueId: '',
@@ -110,13 +117,16 @@ export default {
   },
   methods: {
     async saveCE () {
+      this.saving = true
       // console.log('[DRAFTPICK] Method - saveCE()')
       this.$v.$touch()
       if (this.$v.$invalid) {
         console.log('SAVE-CE Validation Failed')
+        this.saving = false
       } else {
         await this.save()
         this.$emit('saved')
+        this.saving = false
         this.close()
       }
     },

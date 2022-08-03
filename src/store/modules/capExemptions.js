@@ -73,7 +73,7 @@ export default {
     async removeCapExemption ({ rootState }, id) {
       // console.log('[CAPEXEMPTIONS-ACTION] - saveCapExemption()')
       try {
-        const response = await api(rootState.user.tokens.access_token, rootState.user.tokens.id_token).delete(`/capExemptions/remove/${id}`)
+        const response = await api(rootState.user.tokens.access_token, rootState.user.tokens.id_token).delete(`/capExemptions/${id}`)
         notify.saveSuccessful(response.data)
       } catch (error) {
         catchAxiosError(error)

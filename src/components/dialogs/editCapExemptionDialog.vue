@@ -1,31 +1,33 @@
 <template lang="pug">
   q-dialog(v-model='visable' persistent)
     q-card(style="width: 500px; max-width: 100vw;")
-      q-card-section.row
-        .col.text-center.text-h5.text-weight-bolder  Cap Exemption
-      q-card-section.row.items-center
-        .row.full-width
-          .col-3.text-body.text-right.text-weight-bold.q-ma-sm Year:
-          .col-3.q-pl-sm: q-select(dense disable v-model='capExemption.year' :options='getYears(seasonYear)')
-        .row.full-width
-          .col-3.text-body.text-right.text-weight-bold.q-ma-sm Giving Team:
-          .col.q-pl-sm: q-select(dense disable v-model='capExemption.yahooTeamGive' :options='filteredTeams' :display-value='displayTeamName(capExemption.yahooTeamGive.name)')
-        .row.full-width
-          .col-3.text-body.text-right.text-weight-bold.q-ma-sm Recieving Team:
-          .col.q-pl-sm: q-select(dense disable v-model='capExemption.yahooTeamRecieve' :options='filteredTeams' :display-value='displayTeamName(capExemption.yahooTeamRecieve)')
-        .row.full-width
-          .col-3.text-body.text-right.text-weight-bold.q-ma-sm Amount:
-          .col-2.q-pl-sm: q-select(dense disable v-model='capExemption.amount' :options='referenceData.capExemptionAmount(salaryCapExemptionLimit)')
-          .text-caption.q-pt-md dollars
-        .row.full-width.q-mt-sm
-          .col-3.text-body.text-right.text-weight-bold.q-ma-sm Comments:
-          .col.q-ma-sm.text-grey: q-input(v-model='capExemption.comments' filled type='textarea')
-        .row.full-width.q-mt-sm
-          .q-pr-lg.col.text-grey-5.text-right Added: {{fmtCeDate(capExemption.timestamp)}} ({{capExemption.addedBy}})
-      q-card-actions.row.justify-around
-        q-btn(flat label='Cancel' color='primary' @click="close()")
-        q-btn(flat label='Delete' color='primary' @click="remove()")
-        q-btn(flat label='Save' color='primary' @click="saveCE()")
+      loading(v-if="saving" :message="'Updating Cap Exemption...'")
+      div(v-else)
+        q-card-section.row
+          .col.text-center.text-h5.text-weight-bolder  Cap Exemption
+        q-card-section.row.items-center
+          .row.full-width
+            .col-3.text-body.text-right.text-weight-bold.q-ma-sm Year:
+            .col-3.q-pl-sm: q-select(dense disable v-model='capExemption.year' :options='getYears(seasonYear)')
+          .row.full-width
+            .col-3.text-body.text-right.text-weight-bold.q-ma-sm Giving Team:
+            .col.q-pl-sm: q-select(dense disable v-model='capExemption.yahooTeamGive' :options='filteredTeams' :display-value='displayTeamName(capExemption.yahooTeamGive.name)')
+          .row.full-width
+            .col-3.text-body.text-right.text-weight-bold.q-ma-sm Recieving Team:
+            .col.q-pl-sm: q-select(dense disable v-model='capExemption.yahooTeamRecieve' :options='filteredTeams' :display-value='displayTeamName(capExemption.yahooTeamRecieve)')
+          .row.full-width
+            .col-3.text-body.text-right.text-weight-bold.q-ma-sm Amount:
+            .col-2.q-pl-sm: q-select(dense disable v-model='capExemption.amount' :options='referenceData.capExemptionAmount(salaryCapExemptionLimit)')
+            .text-caption.q-pt-md dollars
+          .row.full-width.q-mt-sm
+            .col-3.text-body.text-right.text-weight-bold.q-ma-sm Comments:
+            .col.q-ma-sm.text-grey: q-input(v-model='capExemption.comments' filled type='textarea')
+          .row.full-width.q-mt-sm
+            .q-pr-lg.col.text-grey-5.text-right Added: {{fmtCeDate(capExemption.timestamp)}} ({{capExemption.addedBy}})
+        q-card-actions.row.justify-around
+          q-btn(flat label='Cancel' color='primary' @click="close()")
+          q-btn(flat label='Delete' color='primary' @click="remove()")
+          q-btn(flat label='Save' color='primary' @click="saveCE()")
 </template>
 
 <script>
@@ -33,15 +35,20 @@
 import referenceData from '../../utilities/referenceData'
 import { displayTeamName, fmtCeDate } from '../../utilities/formatters'
 import { getYears, getTeamGuid } from '../../utilities/functions'
+import Loading from '../Loading'
 
 export default {
   name: 'EditCapExemptionDialog',
+  components: {
+    'loading': Loading
+  },
   props: {
     capExemption: Object
   },
   data () {
     return {
-      visable: false
+      visable: false,
+      saving: false
     }
   },
   mounted () {
@@ -85,28 +92,37 @@ export default {
   methods: {
     async saveCE () {
       // console.log('[DRAFTPICK] Method - saveCE()')
+      this.saving = true
       await this.$store.dispatch('capExemptions/saveCapExemption', this.capExemption)
       this.$emit('saved')
+      this.saving = false
       this.close()
     },
     async remove () {
+      this.saving = true
+
       await this.$store.dispatch('capExemptions/removeCapExemption', this.capExemption._id)
       await this.saveTeamsOnRemove()
       if (this.team.yahooTeam.team_id) { await this.$store.dispatch('team/getTeam', { yahooLeagueId: this.leagueId, yahooTeamId: this.team.yahooTeam.team_id }) }
       this.$emit('saved')
       this.$emit('updateTeam')
+      this.saving = false
       this.close()
     },
     async saveTeamsOnRemove () {
       if (this.capExemption.year == this.seasonYear) {
         let giver = this.scadTeams.find(t => t.yahooGuid == getTeamGuid(this.capExemption.yahooTeamGive))
-        giver.exceptionOut -= this.capExemption.amount
-        giver.salary -= this.capExemption.amount
+        let exceptionOut = giver.exceptionOut - this.capExemption.amount
+        let giverSalary = giver.salary - this.capExemption.amount
+        giver.exceptionOut = exceptionOut
+        giver.salary = giverSalary
         await this.$store.dispatch('team/saveTeam', giver)
 
         let reciever = this.scadTeams.find(t => t.yahooGuid == getTeamGuid(this.capExemption.yahooTeamRecieve))
-        reciever.exceptionIn -= this.capExemption.amount
-        reciever.salary += this.capExemption.amount
+        let exceptionIn = reciever.exceptionIn - this.capExemption.amount
+        let recieverSalary = reciever.salary + this.capExemption.amount
+        reciever.exceptionIn = exceptionIn
+        reciever.salary = recieverSalary
         await this.$store.dispatch('team/saveTeam', reciever)
       }
     },
