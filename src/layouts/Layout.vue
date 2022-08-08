@@ -13,7 +13,9 @@
           q-btn(round flat @click="navigate('my-profile')")
             q-avatar(size="40px")
               img(v-if="loaded" :src="getProfilePic()")
-        q-btn(v-else-if="!user.offseason" label="Log In" flat color="primary" size="md" @click="loginWithYahoo")
+        div(v-else-if="!user.offseason")
+          q-btn(label="About" flat color="primary" size="md" @click="navigate('about')")
+          q-btn(label="Log In" flat color="primary" size="md" @click="loginWithYahoo")
     q-drawer(v-if="this.loggedIn" v-model="leftDrawerOpen" :breakpoint="1200" show-if-above bordered content-class="bg-white" :width="245" elevated)
       q-scroll-area.fit
         q-list.text-grey-8(padding)

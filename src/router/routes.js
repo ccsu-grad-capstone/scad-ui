@@ -175,7 +175,7 @@ const routes = [
       { path: '', component: () => import('../views/YahooRefresh.vue') }
     ],
     meta: {
-      requiresAuth: true
+      // requiresAuth: true
       // isAdmin: true
     }
   }
