@@ -11,8 +11,10 @@
             .rows
               .col.text-center
                 .text-h6 {{yahooTeam.name}}
-                .text-caption.text-grey-7 Manager: ({{yahooTeam.managers[0].nickname}})
-                .text-caption.text-grey-7(v-if="yahooTeam.managers[1]") Co-Manager: ({{yahooTeam.managers[1].nickname}})
+                .text-caption.text-grey-7 Manager: {{yahooTeam.managers[0].nickname}}
+                div(v-if="yahooTeam.managers[1]")
+                  q-btn(v-if="showCoManagerInviteButton()" size="sm" flat dense text-color='primary' @click="inviteCoManager()") Invite Co-Manager: {{yahooTeam.managers[1].nickname}}
+                  .text-caption.text-grey-7(v-else) Co-Manager: ({{yahooTeam.managers[1].nickname}})
                 .text-caption.text-grey-7(v-if="scadTeam.phone") Phone: ({{scadTeam.phone}})
                 .row.justify-center.gt-sm
                   .text-caption: a(:href='yahooTeam.url') Yahoo! Team Page
@@ -215,6 +217,7 @@ import { fmt } from '../utilities/formatters'
 
 import moment from 'moment'
 import Loading from '../components/Loading'
+import { api } from '../utilities/axios-node'
 
 /* eslint-disable eqeqeq */
 
@@ -229,6 +232,8 @@ export default {
   },
   data () {
     return {
+      coManagerExists: false,
+      coManagerUdl: {},
       isCommish: false,
       viewByTeam: true,
       teamSalary: 0,
@@ -469,6 +474,7 @@ export default {
     await this.getTeam(this.$route.params.team_id)
     await this.updatePreseasonIR()
     if (this.checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)) this.isCommish = true
+    if (this.yahooTeam.managers[1]) this.checkCoManager(this.yahooTeam.managers[1].guid)
   },
   beforeRouteUpdate (to, from, next) {
     this.selectedTeam = 'Choose a Team'
@@ -496,7 +502,7 @@ export default {
         JSON.stringify(this.$store.state.team.scadTeam)
       )
       if (Array.isArray(this.scadTeam.roster) && this.scadTeam.roster.length > 0) {
-        console.log('Scad Roster Exists')
+        // console.log('Scad Roster Exists')
       } else this.$router.push({ path: `/refresh` })
 
       this.updateTeamSalary()
@@ -887,6 +893,73 @@ export default {
         this.isCommish) {
         return true
       } else return false
+    },
+    showCoManagerInviteButton () {
+      if ((this.team.myYahooTeamId === this.team.yahooTeam.team_id || this.isCommish) && this.coManagerExists === false) {
+        return true
+      } else return false
+    },
+    async checkCoManager (guid) {
+      try {
+        const res = await api(
+          this.user.tokens.access_token,
+          this.user.tokens.id_token)
+          .get(`/udl/${guid}`)
+        console.log('checkCoManager', res.data)
+        if (res.data.udl) {
+          let leagueExists = res.data.udl.scadLeagues.find(l => l.scadLeagueId === this.league.scadLeagueId)
+          if (leagueExists) this.coManagerExists = true
+        }
+        this.coManagerUdl = res.data.udl
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async inviteCoManager () {
+      if (this.coManagerUdl) {
+      // If udl exists, add scad league to scadLeagues array
+        this.coManagerUdl.scadLeagues.push({
+          yahooGame: this.user.defaultLeague.yahooGame,
+          yahooLeagueId: this.league.yahooLeagueId,
+          scadLeagueId: this.league.scadLeagueId
+        })
+        try {
+          // Need to add an endpoint that will update udl.scadLeagues. /update only updates default league
+          const res = await api(
+            this.user.tokens.access_token,
+            this.user.tokens.id_token)
+            .put(`/udl/update/${this.coManagerUdl._id}`, { data: this.coManagerUdl })
+          console.log('Update UDL for CoManager', res.data)
+          this.coManagerExists = true
+        } catch (error) {
+          console.log(error)
+        }
+      } else {
+      // If udl doesn't exist, create one
+        let udl = {
+          yahooGame: this.user.defaultLeague.yahooGame,
+          yahooLeagueId: this.league.yahooLeagueId,
+          scadLeagueId: this.league.scadLeagueId,
+          guid: this.yahooTeam.managers[1].guid,
+          scadLeagues: [
+            {
+              yahooGame: this.user.defaultLeague.yahooGame,
+              yahooLeagueId: this.league.yahooLeagueId,
+              scadLeagueId: this.league.scadLeagueId
+            }
+          ]
+        }
+        try {
+          const res = await api(
+            this.user.tokens.access_token,
+            this.user.tokens.id_token)
+            .post(`/udl/create`, { data: udl })
+          console.log('Create new UDL for CoManager', res)
+          this.coManagerExists = true
+        } catch (error) {
+          console.log(error)
+        }
+      }
     }
   }
 }

@@ -98,11 +98,16 @@ export default {
     },
     async setDefaultLeague ({ state, commit }, league) {
       console.log('setDefaultLeague', league)
+      let update = {
+        yahooLeagueId: league.yahooLeagueId,
+        yahooGame: league.yahooGame,
+        scadLeagueId: league.scadLeagueId
+      }
       try {
         const res = await api(
           state.tokens.access_token,
           state.tokens.id_token)
-          .put(`/udl/update/${league.yahooGame.game_key}/${league.yahooLeagueId}/${league.scadLeagueId}`)
+          .put(`/udl/update/${state.defaultLeague._id}`, { data: update })
         commit('setDefaultLeague', res.data.udl)
         console.log('[USER-ACTION] - setDefaultLeague(): ', res.data)
       } catch (error) {
