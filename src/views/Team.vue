@@ -58,7 +58,7 @@
                 .col-7.text-grey-8.text-caption.text-right Franchise Tag Deadline:
                 .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
                   span(v-if="scadSettings.franchiseTagSpots > 0")
-                    .text-negative.text-strike(v-if="checkFranchiseTag()") {{moment(scadSettings.franchiseTagDeadline).format('LL')}}
+                    .text-negative.text-strike(v-if="!isBeforeTagDeadline()") {{moment(scadSettings.franchiseTagDeadline).format('LL')}}
                     .text-positive(v-else) {{moment(scadSettings.franchiseTagDeadline).format('LL')}}
                   span(v-else) N/A
               .row
@@ -572,9 +572,10 @@ export default {
       this.error = false
       this.errorMessage = ''
     },
-    checkFranchiseTag () {
+    isBeforeTagDeadline () {
       // return true
-      if (moment().isSameOrBefore(moment(this.scadSettings.franchiseTagDeadline))) return true
+      let date = moment().format('L')
+      if (moment(date).isSameOrBefore(moment(this.scadSettings.franchiseTagDeadline))) return true
       else return false
     },
     checkPreseason () {
@@ -841,7 +842,7 @@ export default {
         !this.franchiseTag &&
         !this.editSalaries &&
         !this.preseasonIR &&
-        this.checkFranchiseTag() &&
+        this.isBeforeTagDeadline() &&
         this.scadSettings.franchiseTagSpots > 0) {
         return true
       } else return false
@@ -852,7 +853,7 @@ export default {
         this.franchiseTag &&
         !this.editSalaries &&
         !this.preseasonIR &&
-        this.checkFranchiseTag() &&
+        this.isBeforeTagDeadline() &&
         this.scadSettings.franchiseTagSpots > 0) {
         return true
       } else return false
