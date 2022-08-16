@@ -32,7 +32,7 @@
               .row
                 .text-center.text-grey-7 (${{props.row.scadPlayer.salary}})
                 .text-primary.text-weight-bolder.text-center.q-pl-sm ${{calcFranchiseTagSalary(props.row.scadPlayer.salary)}}
-      .text-center.text-grey-8.text-caption(v-if="checkFranchiseTag()") Franchise Tag Deadline: {{moment(scadSettings.franchiseTagDeadline).format('LL')}}
+      .text-center.text-grey-8.text-caption(v-if="isBeforeTagDeadline()") Franchise Tag Deadline: {{moment(scadSettings.franchiseTagDeadline).format('LL')}}
       .text-center.text-grey-8.text-caption(v-else) Deadline Passed: {{moment(scadSettings.franchiseTagDeadline).format('LL')}}
       div(v-if="previousYearsFranchiseTaggedPlayers.length > 0")
         .text-h6.text-weight-bolder {{scadSettings.seasonYear-1}} Franchise Tagged Players
@@ -149,9 +149,10 @@ export default {
     calcFranchiseTagSalary (salary) {
       return calcFranchiseTagSalary(salary, this.franchiseTagDiscount)
     },
-    checkFranchiseTag () {
+    isBeforeTagDeadline () {
       // return true
-      if (moment().isBefore(moment(this.scadSettings.franchiseTagDeadline))) return true
+      let date = moment().format('L')
+      if (moment(date).isSameOrBefore(moment(this.scadSettings.franchiseTagDeadline))) return true
       else return false
     }
   }
