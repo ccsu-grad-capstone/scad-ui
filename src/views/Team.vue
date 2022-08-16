@@ -58,7 +58,7 @@
                 .col-7.text-grey-8.text-caption.text-right Franchise Tag Deadline:
                 .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
                   span(v-if="scadSettings.franchiseTagSpots > 0")
-                    .text-negative.text-strike(v-if="moment().isAfter(scadSettings.franchiseTagDeadline)") {{moment(scadSettings.franchiseTagDeadline).format('LL')}}
+                    .text-negative.text-strike(v-if="checkFranchiseTag()") {{moment(scadSettings.franchiseTagDeadline).format('LL')}}
                     .text-positive(v-else) {{moment(scadSettings.franchiseTagDeadline).format('LL')}}
                   span(v-else) N/A
               .row
@@ -574,12 +574,12 @@ export default {
     },
     checkFranchiseTag () {
       // return true
-      if (moment().isBefore(moment(this.scadSettings.franchiseTagDeadline))) return true
+      if (moment().isSameOrBefore(moment(this.scadSettings.franchiseTagDeadline))) return true
       else return false
     },
     checkPreseason () {
       // console.log('checkPreseason: ', this.league.yahooLeagueDetails.start_date)
-      if (moment().isBefore(moment(new Date(this.league.yahooLeagueDetails.start_date)))) return true
+      if (moment().isSameOrBefore(moment(new Date(this.league.yahooLeagueDetails.start_date)))) return true
       else return false
     },
     async savePreseasonIR (id) {
