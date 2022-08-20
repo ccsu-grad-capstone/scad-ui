@@ -122,8 +122,9 @@ export default {
     }
   },
   async mounted () {
-    await this.$store.dispatch('player/getFranchiseTaggedPlayers')
-    await this.$store.dispatch('player/getPreviousYearsFranchiseTaggedPlayers')
+    // calling these in league/dashboard()
+    // await this.$store.dispatch('player/getFranchiseTaggedPlayers')
+    // await this.$store.dispatch('player/getPreviousYearsFranchiseTaggedPlayers')
     this.loaded = true
   },
   computed: {

@@ -161,6 +161,8 @@ export default {
           // Move these calls to Layout.vue?
           dispatch('draftPicks/getDraftPicksByLeague', null, { root: true })
           dispatch('capExemptions/getCapExemptionsByLeague', null, { root: true })
+          dispatch('player/getFranchiseTaggedPlayers', null, { root: true })
+          dispatch('player/getPreviousYearsFranchiseTaggedPlayers', null, { root: true })
           await dispatch('transactions/getTransactions', null, { root: true })
           await dispatch('getYahooTeams', state.yahooLeagueId)
           await dispatch('getScadTeams', state.scadLeagueId)
@@ -203,6 +205,8 @@ export default {
         await dispatch('getScadSettingsByYahooId', yahooLeagueId)
         await dispatch('team/getMyScadTeam', null, { root: true })
         await dispatch('team/getMyYahooTeam', null, { root: true })
+        dispatch('player/getFranchiseTaggedPlayers', null, { root: true })
+        dispatch('player/getPreviousYearsFranchiseTaggedPlayers', null, { root: true })
         dispatch('draftPicks/getDraftPicksByLeague', null, { root: true })
         dispatch('capExemptions/getCapExemptionsByLeague', null, { root: true })
         dispatch('diagnostics/getDiagnostic', null, { root: true })
