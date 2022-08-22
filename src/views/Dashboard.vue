@@ -9,6 +9,10 @@
         .column.justify-center.align-center.text-center
           .text-h4.text-weight-bolder {{league.yahooLeagueDetails.name}}
           a.mobile-hide(:href='league.yahooLeagueDetails.url') {{league.yahooLeagueDetails.url}}
+          div.q-pt-sm(v-if="user.defaultLeague.scadLeagues.length > 1")
+            .text-caption.text-info(v-if="league.yahooLeagueId === user.defaultLeague.yahooLeagueId") Default SCAD League
+            div(v-else)
+              q-btn.q-px-xs( label='Set as Default League' flat dense color='white' text-color='accent' size='sm' @click="setAsDefault()")
       .row.full-width.justify-center
         .col-xl-7.col-lg-7.col-md-7.col-sm-12.col-xs-12
           lite-league.gt-xs(@updateTeamSalaries="updateTeamSalaries")
@@ -78,6 +82,10 @@ export default {
       this.refresh = true
       await this.$store.dispatch('league/updateTeamSalaries')
       this.refresh = false
+    },
+    async setAsDefault () {
+      let league = this.user.defaultLeague.scadLeagues.find(l => l.scadLeagueId === this.league.scadLeagueId)
+      await this.$store.dispatch('user/setDefaultLeague', league)
     }
   }
 }

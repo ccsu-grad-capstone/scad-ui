@@ -14,6 +14,8 @@ const catchAxiosError = (error) => {
       console.log('Getting Draft Picks Error')
     } else if (JSON.stringify(error.response.data).includes('An Error Occur')) {
       router.push('/refresh')
+    } else if (JSON.stringify(error.response.data).includes('Internal Server Error')) {
+      router.push('/refresh')
     }
   } else {
     console.error(error)
