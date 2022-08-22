@@ -470,7 +470,7 @@ export default {
   },
   async created () {
     // console.log('[TEAM] - mounted()')
-    await this.$store.dispatch('league/getYahooSettings', this.yahooLeagueId)
+    // await this.$store.dispatch('league/getYahooSettings', this.yahooLeagueId)
     await this.getTeam(this.$route.params.team_id)
     await this.updatePreseasonIR()
     if (this.checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)) this.isCommish = true
@@ -495,9 +495,9 @@ export default {
           yahooTeamId: yahooTeamId
         })
       }
-      await this.$store.dispatch('capExemptions/getCapExemptionsByTeam', {
-        guid: getTeamGuid(this.yahooTeam)
-      })
+      // await this.$store.dispatch('capExemptions/getCapExemptionsByTeam', {
+      //   guid: getTeamGuid(this.yahooTeam)
+      // })
       this.scadTeam = JSON.parse(
         JSON.stringify(this.$store.state.team.scadTeam)
       )

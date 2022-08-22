@@ -159,16 +159,16 @@ export default {
           commit('team/updateMyScadTeam', scadTeam, { root: true })
           commit('user/setDefaultLeague', dashboard.data.result.udl, { root: true })
           // Move these calls to Layout.vue?
-          dispatch('draftPicks/getDraftPicksByLeague', null, { root: true })
-          dispatch('capExemptions/getCapExemptionsByLeague', null, { root: true })
-          dispatch('player/getFranchiseTaggedPlayers', null, { root: true })
-          dispatch('player/getPreviousYearsFranchiseTaggedPlayers', null, { root: true })
-          await dispatch('transactions/getTransactions', null, { root: true })
-          await dispatch('getYahooTeams', state.yahooLeagueId)
-          await dispatch('getScadTeams', state.scadLeagueId)
-          dispatch('getAllYahooCommishLeagues')
-          // await dispatch('transactions/getTransactions', null, { root: true })
-          // await dispatch('player/getFranchiseTaggedPlayers', null, { root: true })
+          await Promise.allSettled([
+            dispatch('draftPicks/getDraftPicksByLeague', null, { root: true }),
+            dispatch('capExemptions/getCapExemptionsByLeague', null, { root: true }),
+            dispatch('player/getFranchiseTaggedPlayers', null, { root: true }),
+            dispatch('player/getPreviousYearsFranchiseTaggedPlayers', null, { root: true }),
+            dispatch('transactions/getTransactions', null, { root: true }),
+            dispatch('getYahooTeams', state.yahooLeagueId),
+            dispatch('getScadTeams', state.scadLeagueId),
+            dispatch('getAllYahooCommishLeagues')
+          ])
           // dispatch('diagnostics/getDiagnostic', null, { root: true })
           // dispatch('getAllYahooLeagues')
           // dispatch('getAllScadLeagues')
@@ -192,28 +192,33 @@ export default {
       // console.log('[LEAGUE-ACTION] - switchLeagues()')
       try {
         // resetStore
-        await commit('resetLeague')
-        await commit('team/resetTeam', null, { root: true })
-        await commit('player/resetPlayer', null, { root: true })
-        await commit('draftPicks/resetDraftPicks', null, { root: true })
-        await commit('diagnostics/resetDiagnostics', null, { root: true })
-        await commit('capExemptions/resetCapExemptions', null, { root: true })
-        await commit('transactions/resetTransactions', null, { root: true })
-
+        await Promise.allSettled([
+          commit('resetLeague'),
+          commit('team/resetTeam', null, { root: true }),
+          commit('player/resetPlayer', null, { root: true }),
+          commit('draftPicks/resetDraftPicks', null, { root: true }),
+          commit('diagnostics/resetDiagnostics', null, { root: true }),
+          commit('capExemptions/resetCapExemptions', null, { root: true }),
+          commit('transactions/resetTransactions', null, { root: true })
+        ])
         // get new league details
-        await dispatch('getYahooLeagueDetails', yahooLeagueId)
-        await dispatch('getScadSettingsByYahooId', yahooLeagueId)
-        await dispatch('team/getMyScadTeam', null, { root: true })
-        await dispatch('team/getMyYahooTeam', null, { root: true })
-        dispatch('player/getFranchiseTaggedPlayers', null, { root: true })
-        dispatch('player/getPreviousYearsFranchiseTaggedPlayers', null, { root: true })
-        dispatch('draftPicks/getDraftPicksByLeague', null, { root: true })
-        dispatch('capExemptions/getCapExemptionsByLeague', null, { root: true })
-        dispatch('diagnostics/getDiagnostic', null, { root: true })
-        dispatch('getAllYahooCommishLeagues')
-        await dispatch('transactions/getTransactions', null, { root: true })
-        await dispatch('getYahooTeams', yahooLeagueId)
-        await dispatch('getScadTeams', state.scadLeagueId)
+        await Promise.allSettled([
+          dispatch('getYahooLeagueDetails', yahooLeagueId),
+          dispatch('getScadSettingsByYahooId', yahooLeagueId)
+        ])
+        await Promise.allSettled([
+          dispatch('team/getMyScadTeam', null, { root: true }),
+          dispatch('team/getMyYahooTeam', null, { root: true }),
+          dispatch('player/getFranchiseTaggedPlayers', null, { root: true }),
+          dispatch('player/getPreviousYearsFranchiseTaggedPlayers', null, { root: true }),
+          dispatch('draftPicks/getDraftPicksByLeague', null, { root: true }),
+          dispatch('capExemptions/getCapExemptionsByLeague', null, { root: true }),
+          dispatch('diagnostics/getDiagnostic', null, { root: true }),
+          dispatch('getAllYahooCommishLeagues'),
+          dispatch('transactions/getTransactions', null, { root: true }),
+          dispatch('getYahooTeams', yahooLeagueId),
+          dispatch('getScadTeams', state.scadLeagueId)
+        ])
         let id = {
           myYahooTeamId: rootState.team.myYahooTeam.team_id,
           myScadTeamId: rootState.team.myScadTeam._id
