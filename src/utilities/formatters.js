@@ -22,13 +22,18 @@ export function myTeamDPCEStyle (teamGuid, userGuid) {
 }
 export function fmt (row, col, viewByPos) {
   let displayPosition = getDisplayPosition(row.display_position)
-  return {
-    'text-primary': col === 'salary',
-    'text-grey': col === 'previousSalary' || col === 'team',
-    'text-weight-bold': col === 'pos' || col === 'playerName',
-    'text-red': row.selected_position === 'IR',
-    'bg-grey-3': (row.selected_position === 'BN' && !viewByPos) || (displayPosition === 'WR' && viewByPos) || (displayPosition === 'TE' && viewByPos),
-    'bg-red-1': row.selected_position === 'IR'
+  if (row.selected_position === 'IR') {
+    return {
+      'text-red': row.selected_position === 'IR',
+      'bg-red-1': row.selected_position === 'IR'
+    }
+  } else {
+    return {
+      'text-primary': col === 'salary',
+      'text-grey': col === 'previousSalary' || col === 'team',
+      'text-weight-bold': col === 'pos' || col === 'playerName',
+      'bg-grey-3': (row.selected_position === 'BN' && !viewByPos) || (displayPosition === 'WR' && viewByPos) || (displayPosition === 'TE' && viewByPos)
+    }
   }
 }
 
