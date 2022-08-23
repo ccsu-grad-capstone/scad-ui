@@ -470,7 +470,7 @@ export default {
   },
   async created () {
     // console.log('[TEAM] - mounted()')
-    // await this.$store.dispatch('league/getYahooSettings', this.yahooLeagueId)
+    this.$store.dispatch('league/getYahooSettings', this.yahooLeagueId)
     await this.getTeam(this.$route.params.team_id)
     await this.updatePreseasonIR()
     if (this.checkIfCommish(this.league.yahooLeagueId, this.league.yahooCommishLeagues)) this.isCommish = true
