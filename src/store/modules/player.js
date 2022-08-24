@@ -67,8 +67,10 @@ export default {
   actions: {
 
     async getAllPlayers ({ dispatch, rootState }) {
-      await dispatch('getAllYahooPlayers', rootState.league.yahooLeagueId)
-      await dispatch('getAllScadPlayers', rootState.league.scadLeagueId)
+      await Promise.allSettled([
+        dispatch('getAllYahooPlayers', rootState.league.yahooLeagueId),
+        dispatch('getAllScadPlayers', rootState.league.scadLeagueId)
+      ])
     },
 
     async getAllYahooPlayers ({ commit, rootState, state }, leagueId) {
