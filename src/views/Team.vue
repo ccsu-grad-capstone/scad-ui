@@ -58,7 +58,7 @@
                 .col-7.text-grey-8.text-caption.text-right Franchise Tag Deadline:
                 .col.text-primary.text-weight-bold.text-body-1.q-pl-sm
                   span(v-if="scadSettings.franchiseTagSpots > 0")
-                    .text-negative.text-strike(v-if="!isBeforeTagDeadline()") {{moment(scadSettings.franchiseTagDeadline).format('LL')}}
+                    .text-grey-6.text-strike(v-if="!isBeforeTagDeadline()") {{moment(scadSettings.franchiseTagDeadline).format('LL')}}
                     .text-positive(v-else) {{moment(scadSettings.franchiseTagDeadline).format('LL')}}
                   span(v-else) N/A
               .row
@@ -67,9 +67,12 @@
                   span(v-if="scadSettings.franchiseTagSpots > 0") {{franchiseTagDisplay()}}
                   span(v-else) N/A
               .row
-                .col-7.text-grey-6.text-weight-bold.text-subtitle1.text-right.q-pt-sm Current Team Salary:
+                .col-7.text-weight-bold.text-subtitle1.text-right.q-pt-sm
+                  .text-negative(v-if="!isUnderSalaryCap()") Current Team Salary:
+                  .text-grey-7(v-else) Current Team Salary:
                 .col.text-primary.text-weight-bold.text-subtitle1.q-pl-sm.q-pt-sm
-                  | ${{teamSalary}}
+                  .text-negative(v-if="!isUnderSalaryCap()") ${{teamSalary}}
+                  .text-positive(v-else) ${{teamSalary}}
 
             q-separator(vertical)
 
@@ -915,6 +918,9 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+    isUnderSalaryCap () {
+      return this.teamSalary <= this.teamSalaryCap
     },
     async inviteCoManager () {
       if (this.coManagerUdl) {
