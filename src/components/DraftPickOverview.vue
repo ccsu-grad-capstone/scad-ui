@@ -20,14 +20,23 @@
       no-data-label='No draft picks available'
       )
       template(v-slot:body-cell-edit='props')
-        q-td.q-pr-md(:props='props' auto-width)
+        q-td.q-pr-md.bg-grey-3(:props='props' auto-width)
           q-btn(size='xs' color='accent' round dense @click='editPick(props.row)' icon="edit")
-      template(v-slot:body-cell-comments='props')
-        q-td.q-pr-md(:props='props')
-          | {{props.row.comments}}
+      template(v-slot:body-cell-year='props')
+        q-td.q-pr-md.bg-grey-3(:props='props')
+          | {{props.row.year}}
+      template(v-slot:body-cell-pick='props')
+        q-td.q-pr-md(:props='props', :class="checkStyle(props.row.year)")
+          | {{props.row.pick}}
+      template(v-slot:body-cell-rd='props')
+        q-td.q-pr-md(:props='props', :class="checkStyle(props.row.year)")
+          | {{props.row.rd}}
       template(v-slot:body-cell-condition='props')
-        q-td(:props='props' auto-width)
+        q-td(:props='props' auto-width, :class="checkStyle(props.row.year)")
           q-icon(v-if="props.row.hasCondition" name='fas fa-exclamation' color='negative' size='xs')
+      template(v-slot:body-cell-comments='props')
+        q-td.q-pr-md(:props='props', :class="checkStyle(props.row.year)")
+          | {{props.row.comments}}
     edit-draft-pick-dialog(v-if="editDraftPick" :dp="edit.dp" @saved="getPicks")
 
     .col.full-width.text-center.q-pa-xs.text-grey.text-caption {{yahooTeam.name}} draft picks
@@ -37,6 +46,7 @@
 import editDraftPickDialog from '../components/dialogs/editDraftPickDialog'
 import Loading from '../components/Loading'
 import { getTeamGuid } from '../utilities/functions'
+import moment from 'moment'
 
 export default {
   name: 'DraftPickOverview',
@@ -66,8 +76,7 @@ export default {
         {
           name: 'edit',
           label: '',
-          align: 'left',
-          style: 'background-color: #f0f0f0'
+          align: 'left'
         },
         {
           name: 'year',
@@ -76,8 +85,7 @@ export default {
           align: 'center',
           sortable: false,
           field: row => row.year,
-          format: val => `${val}`,
-          style: 'background-color: #f0f0f0'
+          format: val => `${val}`
         },
         {
           name: 'rd',
@@ -117,8 +125,7 @@ export default {
           label: 'Comments',
           align: 'left',
           field: row => row.comments,
-          format: val => `${val}`,
-          style: 'color: grey;'
+          format: val => `${val}`
         }
       ]
     }
@@ -148,6 +155,9 @@ export default {
     scadSettings () {
       return this.$store.state.league.scadSettings
     },
+    league () {
+      return this.$store.state.league
+    },
     getDraftPicksByLeagueError () { return this.$store.state.draftPicks.getDraftPicksByLeagueError }
 
   },
@@ -161,6 +171,10 @@ export default {
     editPick (dp) {
       this.$store.commit('dialog/editDraftPick')
       this.edit.dp = dp
+    },
+    checkStyle (year) {
+      // eslint-disable-next-line eqeqeq
+      if (moment().isSameOrAfter(moment(new Date(this.league.yahooLeagueDetails.start_date))) && this.league.scadSettings.seasonYear == year) return 'bg-grey-3'
     }
   }
 }
