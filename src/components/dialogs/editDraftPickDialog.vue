@@ -6,7 +6,7 @@
       q-card-section.row.items-center
         .row.full-width
           .col-3.text-body.text-right.text-weight-bold.q-ma-sm Pick:
-          .col-3.q-pl-sm: q-select(dense v-model='dp.pick' :options='referenceData.twelveTeams')
+          .col-3.q-pl-sm: q-select(dense v-model='dp.pick' :options='referenceData.fourteenTeams')
         .row.full-width
           .col-3.text-body.text-right.text-weight-bold.q-ma-sm Owner:
           .col-6.q-pl-sm: q-select(dense v-model='dp.team' :options='filteredTeams' :display-value='dp.team.name')
