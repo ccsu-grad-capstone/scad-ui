@@ -146,12 +146,33 @@ export default {
     },
     checkIfCommish () { return checkIfCommish },
     filteredLeagues () {
-      return this.user.defaultLeague.scadLeagues.map(l =>
-        Object.assign({}, l, {
-          value: l.yahooLeagueId,
-          label: this.getLeagueName(l.yahooLeagueId)
-        })
-      )
+      // return this.user.defaultLeague.scadLeagues.map((l) =>
+      //   Object.assign({}, l, {
+      //     value: l.yahooLeagueId,
+      //     label: this.getLeagueName(l.yahooLeagueId)
+      //   })
+      // )
+
+      let leagues = []
+      for (const udl of this.user.defaultLeague.scadLeagues) {
+        let leagueName = this.getLeagueName(udl.yahooLeagueId)
+        // if (!leagueName) {
+        //   let currentLeague = this.yahooLeagues.find(l => l.renew.includes(udl.yahooLeagueId))
+        //   console.log('*', currentLeague.name)
+        //   leagues.push({
+        //     value: udl,
+        //     label: `${currentLeague.name} (old)`
+        //   })
+        // }
+
+        if (leagueName) {
+          leagues.push({
+            value: udl,
+            label: leagueName
+          })
+        }
+      }
+      return leagues
     }
   },
   methods: {
@@ -263,7 +284,7 @@ export default {
       console.log('ActiveLeague', this.activeLeague)
       await this.$store.dispatch(
         'league/switchLeagues',
-        this.activeLeague.yahooLeagueId
+        this.activeLeague.value.yahooLeagueId
       )
       this.navigate('/dashboard')
       this.loaded = true
