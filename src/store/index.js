@@ -10,6 +10,7 @@ import draftPicks from './modules/draftPicks'
 import capExemptions from './modules/capExemptions'
 import diagnostics from './modules/diagnostics'
 import transactions from './modules/transactions'
+import potentialPoints from './modules/potentialPoints'
 
 Vue.use(Vuex)
 
@@ -23,7 +24,8 @@ const store = new Vuex.Store({
     capExemptions,
     player,
     diagnostics,
-    transactions
+    transactions,
+    potentialPoints
   }
 })
 

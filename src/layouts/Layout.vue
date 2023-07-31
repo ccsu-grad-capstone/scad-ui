@@ -243,6 +243,7 @@ export default {
           this.$store.dispatch('diagnostics/getDiagnostic')
           this.$store.dispatch('league/getAllYahooLeagues')
           this.$store.dispatch('league/getAllScadLeagues')
+          this.$store.dispatch('potentialPoints/getPotentialPoints')
         } catch (error) {
           console.log('SERVER ISSUE, please try again shortly.')
           this.navigate('refresh')

@@ -465,6 +465,9 @@ export default {
     franchiseTagDiscount () {
       return this.league.scadSettings.franchiseTagDiscount
     },
+    franchiseTaggedPlayers () {
+      return this.$store.state.player.franchiseTaggedPlayers
+    },
     irReliefPerc () {
       return this.league.scadSettings.irReliefPerc
     },
@@ -785,23 +788,31 @@ export default {
       })
     },
     franchiseTagDisplay () {
-      let scadPlayer
-      let yahooPlayer
-      if (this.scadTeam.isFranchiseTag && this.loaded) {
-        scadPlayer = this.scadTeam.roster.find(p => p.isFranchiseTag)
-        if (scadPlayer) {
-          yahooPlayer = this.yahooTeam.roster.find(
-            p => p.player_id == scadPlayer.yahooPlayerId
-          )
-          return yahooPlayer.name.full
-        } else {
-          this.scadTeam.isFranchiseTag = false
-          this.saveTeam()
-          return '-'
-        }
+      // let scadPlayer
+      // let yahooPlayer
+      let player = this.franchiseTaggedPlayers.find(p => p.scadPlayer.isFranchiseTagTeam.scadTeamId == this.scadTeam._id)
+
+      if (player) {
+        return player.yahooPlayer.name.full
       } else {
         return '-'
       }
+
+      // if (this.scadTeam.isFranchiseTag && this.loaded) {
+      //   scadPlayer = this.scadTeam.roster.find(p => p.isFranchiseTag)
+      //   if (scadPlayer) {
+      //     yahooPlayer = this.yahooTeam.roster.find(
+      //       p => p.player_id == scadPlayer.yahooPlayerId
+      //     )
+      //     return yahooPlayer.name.full
+      //   } else {
+      //     this.scadTeam.isFranchiseTag = false
+      //     this.saveTeam()
+      //     return '-'
+      //   }
+      // } else {
+      //   return '-'
+      // }
     },
     isFranchiseTagged (id) {
       return isFranchiseTagged(id, this.scadTeam)
