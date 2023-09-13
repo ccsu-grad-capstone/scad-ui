@@ -19,7 +19,7 @@ export default {
   mutations: {
     updateValues (state, values) {
       // console.log('[LEAGUE-MUTATION] - key()')
-      state.values = values
+      state.values = values.data
     }
   },
   actions: {
@@ -41,12 +41,12 @@ export default {
           scadLeagueId: rootState.league.scadLeagueId,
           week: week
         }
-        const process = await api(rootState.user.tokens.access_token, rootState.user.tokens.id_token).post(`/run`, { data: params })
+        const process = await api(rootState.user.tokens.access_token, rootState.user.tokens.id_token).post(`/potentialPoints/run`, { data: params })
         console.log('RUN Potential Points: ', process.data)
         notify.success(`Potential Points ran successfully`)
       } catch (error) {
-        console.log(error)
-        notify.warning('Diagnostic failed to complete.')
+        console.log(error.response)
+        notify.warning('Potential Points run failed to complete.')
       }
     }
   }

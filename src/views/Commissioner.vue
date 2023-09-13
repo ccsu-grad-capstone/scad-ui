@@ -97,6 +97,15 @@
                       q-btn(v-else disable label="Export" color="grey" size="sm")
                 .col.q-pl-md
                   .text-caption Exports a list of all cap exemptions into a csv file.
+            q-item()
+              .row.full-width.q-pl-lg
+                .column.justify-center.col-4.text-body1.text-left
+                  | Run Potential Points:
+                .column.justify-center.text-body1.q-pl-lg.text-weight-bolder
+                  div
+                    .row.q-gutter-sm
+                      q-input(dense v-model='week' filled)
+                      q-btn(label="Run" color="primary" size="sm" @click="runPotentialPoints()")
 
 </template>
 
@@ -124,6 +133,7 @@ export default {
     return {
       loaded: false,
       scadSettings: {},
+      week: '',
       processing: false,
       lineupData: [],
       playersData: [],
@@ -285,6 +295,9 @@ export default {
     },
     async logSalaries () {
       await this.$store.dispatch('player/logAllPlayersEndOfYearSalary')
+    },
+    async runPotentialPoints () {
+      await this.$store.dispatch('potentialPoints/runPotentialPoints', this.week)
     },
     triggerRenewLeague () {
       this.$store.commit('dialog/renewLeague')

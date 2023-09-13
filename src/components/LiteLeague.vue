@@ -36,6 +36,9 @@
         q-td(:props='props' auto-width)
           .text-positive.text-weight-bolder(v-if="checkTeamSalary(props.row.team_id) >= 0") ${{getTeamSalary(props.row.team_id)}}
           .text-negative.text-weight-bolder(v-else) ${{getTeamSalary(props.row.team_id)}}
+      template(v-slot:body-cell-potential-points='props')
+        q-td(:props='props' auto-width)
+          div {{getTeamPotentialPoints(props.row.team_id)}}
 
 </template>
 
@@ -89,6 +92,13 @@ export default {
           label: 'Pts Agnst',
           align: 'center',
           field: row => this.formatPoints(row.standings.points_against),
+          headerClasses: 'bg-grey-4 text-grey-8'
+        },
+        {
+          name: 'potential-points',
+          required: true,
+          label: 'MaxPts',
+          align: 'center',
           headerClasses: 'bg-grey-4 text-grey-8'
         },
         {
@@ -178,6 +188,9 @@ export default {
     scadLeagues () {
       return this.$store.state.league.scadLeagues
     },
+    potentialPoints () {
+      return this.$store.state.potentialPoints.values
+    },
     yahooCommishLeagues () {
       return this.$store.state.league.yahooCommishLeagues
     }
@@ -186,6 +199,10 @@ export default {
     getTeamSalary (id) {
       let team = this.scadTeams.find(t => t.yahooTeamId == id)
       return team.salary
+    },
+    getTeamPotentialPoints (id) {
+      let pp = this.potentialPoints.find(v => v.yahooTeamId == id)
+      return pp.potentialPoints.toFixed(2)
     },
     checkTeamSalary (id) {
       let salary = this.getTeamSalary(id)

@@ -11,7 +11,7 @@ const scad = (access_token, id_token) => {
 
   return axios.create({
     baseURL: getBaseURL('SCAD'),
-    timeout: 20000,
+    timeout: 50000,
     headers: {
       'access_token': access_token,
       'id_token': id_token,
