@@ -36,9 +36,9 @@
         q-td(:props='props' auto-width)
           .text-positive.text-weight-bolder(v-if="checkTeamSalary(props.row.team_id) >= 0") ${{getTeamSalary(props.row.team_id)}}
           .text-negative.text-weight-bolder(v-else) ${{getTeamSalary(props.row.team_id)}}
-      template(v-slot:body-cell-potential-points='props')
-        q-td(:props='props' auto-width)
-          div {{getTeamPotentialPoints(props.row.team_id)}}
+      //- template(v-slot:body-cell-potential-points='props')
+      //-   q-td(:props='props' auto-width)
+      //-     div {{getTeamPotentialPoints(props.row.team_id)}}
 
 </template>
 
