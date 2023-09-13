@@ -94,13 +94,13 @@ export default {
           field: row => this.formatPoints(row.standings.points_against),
           headerClasses: 'bg-grey-4 text-grey-8'
         },
-        {
-          name: 'potential-points',
-          required: true,
-          label: 'MaxPts',
-          align: 'center',
-          headerClasses: 'bg-grey-4 text-grey-8'
-        },
+        // {
+        //   name: 'potential-points',
+        //   required: true,
+        //   label: 'MaxPts',
+        //   align: 'center',
+        //   headerClasses: 'bg-grey-4 text-grey-8'
+        // },
         {
           name: 'give',
           required: true,
