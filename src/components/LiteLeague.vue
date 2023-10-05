@@ -36,9 +36,10 @@
         q-td(:props='props' auto-width)
           .text-positive.text-weight-bolder(v-if="checkTeamSalary(props.row.team_id) >= 0") ${{getTeamSalary(props.row.team_id)}}
           .text-negative.text-weight-bolder(v-else) ${{getTeamSalary(props.row.team_id)}}
-      //- template(v-slot:body-cell-potential-points='props')
-      //-   q-td(:props='props' auto-width)
-      //-     div {{getTeamPotentialPoints(props.row.team_id)}}
+      template(v-slot:body-cell-potential-points='props')
+        q-td(:props='props' auto-width)
+          .text-positive.text-weight-bolder(v-if="props.row.standings.rank > 6") {{getTeamPotentialPoints(props.row.team_id)}}
+          div(v-else="props.row.standings.rank > 6") {{getTeamPotentialPoints(props.row.team_id)}}
 
 </template>
 
@@ -86,21 +87,21 @@ export default {
           field: row => this.formatPoints(row.standings.points_for),
           headerClasses: 'bg-grey-4 text-grey-8'
         },
-        {
-          name: 'pointsAgainst',
-          required: true,
-          label: 'Pts Agnst',
-          align: 'center',
-          field: row => this.formatPoints(row.standings.points_against),
-          headerClasses: 'bg-grey-4 text-grey-8'
-        },
         // {
-        //   name: 'potential-points',
+        //   name: 'pointsAgainst',
         //   required: true,
-        //   label: 'MaxPts',
+        //   label: 'Pts Agnst',
         //   align: 'center',
+        //   field: row => this.formatPoints(row.standings.points_against),
         //   headerClasses: 'bg-grey-4 text-grey-8'
         // },
+        {
+          name: 'potential-points',
+          required: true,
+          label: 'MaxPts',
+          align: 'center',
+          headerClasses: 'bg-grey-4 text-grey-8'
+        },
         {
           name: 'give',
           required: true,
