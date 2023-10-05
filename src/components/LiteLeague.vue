@@ -203,7 +203,7 @@ export default {
     },
     getTeamPotentialPoints (id) {
       let pp = this.potentialPoints.find(v => v.yahooTeamId == id)
-      return pp.potentialPoints.toFixed(2)
+      return `${pp.potentialPoints.toFixed(2)} (${pp.week})`
     },
     checkTeamSalary (id) {
       let salary = this.getTeamSalary(id)
