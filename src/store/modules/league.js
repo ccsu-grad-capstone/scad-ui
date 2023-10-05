@@ -217,7 +217,8 @@ export default {
           dispatch('getAllYahooCommishLeagues'),
           dispatch('transactions/getTransactions', null, { root: true }),
           dispatch('getYahooTeams', yahooLeagueId),
-          dispatch('getScadTeams', state.scadLeagueId)
+          dispatch('getScadTeams', state.scadLeagueId),
+          dispatch('potentialPoints/getPotentialPoints', null, { root: true })
         ])
         let id = {
           myYahooTeamId: rootState.team.myYahooTeam.team_id,
