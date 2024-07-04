@@ -182,6 +182,8 @@ export function getDisplayPosition (disPos) {
 
 export function getTeamName (team, yahooTeams) {
   let guid = getTeamGuid(team)
+  console.log(guid)
   let yahooTeam = yahooTeams.find(t => getTeamGuid(t) === guid)
-  return yahooTeam.name
+  if (yahooTeam) return yahooTeam.name
+  else return 'Jims Team (probably)'
 }
