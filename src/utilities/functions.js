@@ -167,7 +167,8 @@ export function getTeamGuid (team) {
   } else if (team.managers[0].guid) {
     guid = team.managers[0].guid
   }
-  if (guid === 'RAL6NBFQ3AGEUH4AHH3GVGGY5M') guid = 'QWA63MEQ6LG4E74F3CQEMO563Q'
+  if (guid === 'RAL6NBFQ3AGEUH4AHH3GVGGY5M') guid = 'QWA63MEQ6LG4E74F3CQEMO563Q' // ??
+  if (guid === 'RSPJ357SO2YCMM6NTQKTK5F5IU') guid = 'VWPIOPCBNIAJAQZVXKIJPUXHNM' // nick -> jim
   return guid
 }
 
@@ -182,8 +183,8 @@ export function getDisplayPosition (disPos) {
 
 export function getTeamName (team, yahooTeams) {
   let guid = getTeamGuid(team)
-  console.log(guid)
+  // console.log(team.name, guid)
   let yahooTeam = yahooTeams.find(t => getTeamGuid(t) === guid)
   if (yahooTeam) return yahooTeam.name
-  else return 'Jims Team (probably)'
+  else return 'N/A'
 }
