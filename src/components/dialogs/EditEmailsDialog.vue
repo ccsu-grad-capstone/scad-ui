@@ -48,13 +48,14 @@ export default {
       this.emails = JSON.parse(JSON.stringify(this.settings.emails))
     } else {
       for (const team of this.yahooTeams) {
-        this.emails.push({ guid: getTeamGuid(team), email: '' })
+        this.emails.push({ guid: getTeamGuid(team, this.scadTeams), email: '' })
       }
     }
   },
   computed: {
     settings () { return this.$store.state.league.scadSettings },
     yahooTeams () { return this.$store.state.league.yahooTeams },
+    scadTeams () { return this.$store.state.league.scadTeams },
     getTeamGuid () { return getTeamGuid }
   },
   methods: {
@@ -69,15 +70,15 @@ export default {
       return team.managers[0].nickname
     },
     checkManager (team) {
-      return this.emails.find(e => e.guid === this.getTeamGuid(team)) || false
+      return this.emails.find(e => e.guid === this.getTeamGuid(team, this.scadTeams)) || false
     },
     getEmail (team) {
-      return this.emails.find(e => e.guid === this.getTeamGuid(team)).email
+      return this.emails.find(e => e.guid === this.getTeamGuid(team, this.scadTeams)).email
     },
     getIndex (team) {
-      // if (this.getTeamGuid(team) === '2OMLCT3C2A42Z3FCGWJZCIDYLU') return -1
+      // if (this.getTeamGuid(team, this.scadTeams) === '2OMLCT3C2A42Z3FCGWJZCIDYLU') return -1
       const i = this.emails.findIndex(e => {
-        return e.guid === this.getTeamGuid(team)
+        return e.guid === this.getTeamGuid(team, this.scadTeams)
       })
       return i
     },
@@ -85,7 +86,7 @@ export default {
       this.emails[this.getIndex(team)].email = e.target.value
     },
     async addEmail (team) {
-      this.emails.push({ guid: getTeamGuid(team), email: '' })
+      this.emails.push({ guid: getTeamGuid(team, this.scadTeams), email: '' })
       await this.save()
     },
     cancel () {

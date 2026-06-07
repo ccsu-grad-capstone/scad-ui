@@ -69,7 +69,7 @@ export default {
         let leagueCommishEmails = []
         let leagueCommish = rootState.league.yahooTeams.filter((t) => t.managers[0].is_commissioner === '1')
         for (const team of leagueCommish) {
-          let email = rootState.league.scadSettings.emails.find((e) => e.guid === getTeamGuid(team))
+          let email = rootState.league.scadSettings.emails.find((e) => e.guid === getTeamGuid(team, rootState.league.scadTeams))
           if (email) leagueCommishEmails.push(email.email)
         }
         await api(rootState.user.tokens.access_token, rootState.user.tokens.id_token).post(`/scad/email/sendDiagnosticTeamIssueEmail`, {

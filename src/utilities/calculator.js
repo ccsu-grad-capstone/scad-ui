@@ -11,17 +11,18 @@ import { getDisplayPosition, getTeamGuid } from './functions'
 // irReliefPerc: SCAD league setting for discount on irReliefPerc
 // yahooTeam: team's yahoo info
 // year: current year of league
+// scadTeams: array of all scad teams
 // Returns total team salary.  Adds player salaries and cap exceptions
-export function calcTeamSalary (yahooPlayers, scadPlayers, capExemptions, franchiseTagDiscount, irReliefPerc, yahooTeam, year) {
+export function calcTeamSalary (yahooPlayers, scadPlayers, capExemptions, franchiseTagDiscount, irReliefPerc, yahooTeam, year, scadTeams) {
   let salary = 0
-  if (yahooPlayers && scadPlayers && capExemptions && franchiseTagDiscount && irReliefPerc && yahooTeam && year) {
+  if (yahooPlayers && scadPlayers && capExemptions && franchiseTagDiscount && irReliefPerc && yahooTeam && year && scadTeams) {
     yahooPlayers.forEach(p => {
       salary += calcPlayerSalary(p.player_id, p.selected_position, scadPlayers, franchiseTagDiscount, irReliefPerc)
     })
     if (capExemptions) {
       capExemptions.forEach(ce => {
         if (year == ce.year) {
-          if (getTeamGuid(ce.yahooTeamGive) == getTeamGuid(yahooTeam)) {
+          if (getTeamGuid(ce.yahooTeamGive, scadTeams) == getTeamGuid(yahooTeam, scadTeams)) {
             salary += ce.amount
           } else { salary -= ce.amount }
         }

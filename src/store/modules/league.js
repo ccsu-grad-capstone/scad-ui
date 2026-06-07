@@ -172,7 +172,7 @@ export default {
           // dispatch('diagnostics/getDiagnostic', null, { root: true })
           // dispatch('getAllYahooLeagues')
           // dispatch('getAllScadLeagues')
-          let myYahooTeam = state.yahooTeams.find(t => getTeamGuid(t) === rootState.user.user.guid) // needed for when getting previous team preseason
+          let myYahooTeam = state.yahooTeams.find(t => getTeamGuid(t, state.scadTeams) === rootState.user.user.guid) // needed for when getting previous team preseason
           let id = {
             myYahooTeamId: myYahooTeam.team_id,
             myScadTeamId: dashboard.data.result.scadMyTeam._id
@@ -242,7 +242,8 @@ export default {
           state.scadSettings.franchiseTagDiscount,
           state.scadSettings.irReliefPerc,
           rootState.team.yahooTeam,
-          state.scadSettings.seasonYear
+          state.scadSettings.seasonYear,
+          state.scadTeams
         )
         await dispatch('team/saveTeam', st, { root: true })
       }

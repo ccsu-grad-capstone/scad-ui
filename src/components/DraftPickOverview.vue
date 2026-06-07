@@ -134,11 +134,15 @@ export default {
     // await this.draftPicksByTeam()
   },
   computed: {
+    scadTeams () {
+      return this.$store.state.league.scadTeams
+    },
     allDraftPicks () { return this.$store.state.draftPicks.draftPicks },
     draftPicksByTeam () {
-      const guid = getTeamGuid(this.yahooTeam)
-      let teamPicks = this.allDraftPicks.filter(dp => getTeamGuid(dp.team) === guid)
-      // for (const dp of this.allDraftPicks) if (getTeamGuid(dp.team) === guid) teamPicks.push(dp)
+      const guid = getTeamGuid(this.yahooTeam, this.scadTeams)
+      console.log('draftPicksByTeam - guid', guid)
+      let teamPicks = this.allDraftPicks.filter(dp => getTeamGuid(dp.team, this.scadTeams) === guid)
+      // for (const dp of this.allDraftPicks) if (getTeamGuid(dp.team, this.scadTeams) === guid) teamPicks.push(dp)
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.loaded = true
       return teamPicks.sort(function (a, b) {

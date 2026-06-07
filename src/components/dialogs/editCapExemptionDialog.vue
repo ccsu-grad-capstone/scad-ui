@@ -111,14 +111,14 @@ export default {
     },
     async saveTeamsOnRemove () {
       if (this.capExemption.year == this.seasonYear) {
-        let giver = this.scadTeams.find(t => t.yahooGuid == getTeamGuid(this.capExemption.yahooTeamGive))
+        let giver = this.scadTeams.find(t => t.yahooGuid == getTeamGuid(this.capExemption.yahooTeamGive, this.scadTeams))
         let exceptionOut = giver.exceptionOut - this.capExemption.amount
         let giverSalary = giver.salary - this.capExemption.amount
         giver.exceptionOut = exceptionOut
         giver.salary = giverSalary
         await this.$store.dispatch('team/saveTeam', giver)
 
-        let reciever = this.scadTeams.find(t => t.yahooGuid == getTeamGuid(this.capExemption.yahooTeamRecieve))
+        let reciever = this.scadTeams.find(t => t.yahooGuid == getTeamGuid(this.capExemption.yahooTeamRecieve, this.scadTeams))
         let exceptionIn = reciever.exceptionIn - this.capExemption.amount
         let recieverSalary = reciever.salary + this.capExemption.amount
         reciever.exceptionIn = exceptionIn

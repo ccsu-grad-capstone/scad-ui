@@ -107,7 +107,8 @@ export default {
     scadSettings () {
       return this.$store.state.league.scadSettings
     },
-    yahooTeams () { return this.$store.state.league.yahooTeams }
+    yahooTeams () { return this.$store.state.league.yahooTeams },
+    scadTeams () { return this.$store.state.league.scadTeams }
   },
   methods: {
     async getExemptions () {
@@ -118,14 +119,14 @@ export default {
       this.edit.ce = ce
     },
     getType (ce) {
-      if (getTeamGuid(ce.yahooTeamGive) === getTeamGuid(this.yahooTeam)) {
+      if (getTeamGuid(ce.yahooTeamGive, this.scadTeams) === getTeamGuid(this.yahooTeam, this.scadTeams)) {
         return 'Give'
       } else {
         return 'Receive'
       }
     },
     getOtherTeam (ce) {
-      if (getTeamGuid(ce.yahooTeamGive) === getTeamGuid(this.yahooTeam)) {
+      if (getTeamGuid(ce.yahooTeamGive, this.scadTeams) === getTeamGuid(this.yahooTeam, this.scadTeams)) {
         return getTeamName(ce.yahooTeamRecieve, this.yahooTeams)
       } else {
         return getTeamName(ce.yahooTeamGive, this.yahooTeams)
