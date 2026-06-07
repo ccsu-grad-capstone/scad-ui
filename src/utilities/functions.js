@@ -161,10 +161,13 @@ export function getSalaryForCatch (t, p) {
 }
 
 export function getTeamGuid (yahooTeam, scadTeams) {
+  // console.log('getTeamGuid: ', yahooTeam, scadTeams)
   let yahooTeamId = yahooTeam.team_id
   let scadTeam = scadTeams.find(t => t.yahooTeamId == yahooTeamId)
 
-  let guid = scadTeam ? scadTeam.guid : undefined
+  let guid = scadTeam ? scadTeam.yahooGuid : undefined
+
+  console.log('getTeamGuid - found guid: ', { yahooTeamId, scadTeam, guid })
 
   // old logic before yahoo started return this guid as -hidden-
   // if (team.managers[0].manager) {
