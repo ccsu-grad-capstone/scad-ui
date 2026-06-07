@@ -160,13 +160,19 @@ export function getSalaryForCatch (t, p) {
   }
 }
 
-export function getTeamGuid (team) {
-  let guid
-  if (team.managers[0].manager) {
-    guid = team.managers[0].manager.guid
-  } else if (team.managers[0].guid) {
-    guid = team.managers[0].guid
-  }
+export function getTeamGuid (yahooTeam, scadTeams) {
+  let yahooTeamId = yahooTeam.team_id
+  let scadTeam = scadTeams.find(t => t.yahooTeamId == yahooTeamId)
+
+  let guid = scadTeam ? scadTeam.guid : undefined
+
+  // old logic before yahoo started return this guid as -hidden-
+  // if (team.managers[0].manager) {
+  //   guid = team.managers[0].manager.guid
+  // } else if (team.managers[0].guid) {
+  //   guid = team.managers[0].guid
+  // }
+
   if (guid === 'RAL6NBFQ3AGEUH4AHH3GVGGY5M') guid = 'QWA63MEQ6LG4E74F3CQEMO563Q' // ??
   if (guid === 'RSPJ357SO2YCMM6NTQKTK5F5IU') guid = 'VWPIOPCBNIAJAQZVXKIJPUXHNM' // nick -> jim
   return guid
