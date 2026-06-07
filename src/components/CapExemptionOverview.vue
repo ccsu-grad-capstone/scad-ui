@@ -127,9 +127,9 @@ export default {
     },
     getOtherTeam (ce) {
       if (getTeamGuid(ce.yahooTeamGive, this.scadTeams) === getTeamGuid(this.yahooTeam, this.scadTeams)) {
-        return getTeamName(ce.yahooTeamRecieve, this.yahooTeams)
+        return getTeamName(ce.yahooTeamRecieve, this.yahooTeams, this.scadTeams)
       } else {
-        return getTeamName(ce.yahooTeamGive, this.yahooTeams)
+        return getTeamName(ce.yahooTeamGive, this.yahooTeams, this.scadTeams)
       }
     },
     updateTeam () {
