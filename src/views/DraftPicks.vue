@@ -52,11 +52,11 @@
                 q-td(:props='props' auto-width)
                   q-icon(v-if="props.row.hasCondition" name='fas fa-exclamation' color='negative' size='xs')
               template(v-slot:body-cell-owner='props')
-                q-td(:props='props' auto-width :class="myTeamDPCEStyle(getTeamGuid(props.row.team, scadTeams), user.user.guid)")
-                  div.q-pr-lg.text-weight-bold {{ getTeamName(props.row.team, yahooTeams, scadTeams) }}
+                q-td(:props='props' auto-width :class="myTeamDPCEStyle(getTeamGuid(props.row.team), user.user.guid)")
+                  div.q-pr-lg.text-weight-bold {{ getTeamName(props.row.team, yahooTeams) }}
               template(v-slot:body-cell-originalOwner='props')
                 q-td(:props='props' auto-width)
-                  div.q-pr-lg.text-grey {{ getTeamName(props.row.originalTeam, yahooTeams, scadTeams) }}
+                  div.q-pr-lg.text-grey {{ getTeamName(props.row.originalTeam, yahooTeams) }}
         edit-draft-pick-dialog(v-if="editDraftPick" :dp="edit.dp" @saved="getDraftPicks")
 </template>
 
@@ -202,9 +202,6 @@ export default {
     myYahooTeamId () {
       return this.$store.state.team.myYahooTeamId
     },
-    scadTeams () {
-      return this.$store.state.league.scadTeams
-    },
     getTeamGuid () {
       return getTeamGuid
     },
@@ -217,7 +214,7 @@ export default {
       Object.keys(this.filter).forEach(key => {
         if (this.filter[key] !== '') {
           if (key === 'team') {
-            filtered = filtered.filter(dp => getTeamGuid(dp.team, this.scadTeams) === getTeamGuid(this.filter.team, this.scadTeams))
+            filtered = filtered.filter(dp => getTeamGuid(dp.team) === getTeamGuid(this.filter.team))
           } else {
             filtered = filtered.filter(dp => dp[key] === this.filter[key])
           }
@@ -255,14 +252,14 @@ export default {
       let reverseStandings = this.yahooTeams.slice().reverse()
       while (rd <= this.scadSettings.rookieDraftRds) {
         for (const team of reverseStandings) {
-          dps.push(picks.find(p => getTeamGuid(team, this.scadTeams) === getTeamGuid(p.originalTeam, this.scadTeams) && p.rd == rd))
+          dps.push(picks.find(p => getTeamGuid(team) === getTeamGuid(p.originalTeam) && p.rd == rd))
         }
         rd++
       }
       return dps
     },
     getTeamIndex (dp) {
-      let i = this.yahooTeams.findIndex(t => getTeamGuid(t, this.scadTeams) === getTeamGuid(dp.originalTeam, this.scadTeams))
+      let i = this.yahooTeams.findIndex(t => getTeamGuid(t) === getTeamGuid(dp.originalTeam))
       console.log(i)
       return i
     },
@@ -287,7 +284,7 @@ export default {
         if (dp.pick) return dp.pick
         else if (this.isNextYearsDp(dp)) {
           let reverseStandings = this.yahooTeams.slice().reverse()
-          let i = reverseStandings.findIndex(t => getTeamGuid(t, this.scadTeams) === getTeamGuid(dp.originalTeam, this.scadTeams))
+          let i = reverseStandings.findIndex(t => getTeamGuid(t) === getTeamGuid(dp.originalTeam))
           return `(${i + 1})`
         }
       }
@@ -306,7 +303,7 @@ export default {
           else return '-'
         } else if (this.isNextYearsDp(dp)) {
           let reverseStandings = this.yahooTeams.slice().reverse()
-          let i = reverseStandings.findIndex(t => getTeamGuid(t, this.scadTeams) === getTeamGuid(dp.originalTeam, this.scadTeams))
+          let i = reverseStandings.findIndex(t => getTeamGuid(t) === getTeamGuid(dp.originalTeam))
           if (dp.rd === 1) return `$${this.scadSettings.rdOneRookieWages[i]}`
           else if (dp.rd === 2) return `$${this.scadSettings.rdTwoRookieWages[i]}`
           else if (dp.rd === 3) return '$1'

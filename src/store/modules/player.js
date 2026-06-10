@@ -186,7 +186,7 @@ export default {
             team: {
               name: owner ? owner.name : 'Free Agent',
               yahooTeamId: owner ? owner.team_id : 'Free Agent',
-              yahooGuid: owner ? getTeamGuid(owner, rootState.league.scadTeams) : 'Free Agent'
+              yahooGuid: owner ? getTeamGuid(owner) : 'Free Agnet'
             },
             user: undefined,
             comment: 'End of year salary.',

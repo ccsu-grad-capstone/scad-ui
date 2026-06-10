@@ -502,7 +502,7 @@ export default {
         })
       }
       await this.$store.dispatch('capExemptions/getCapExemptionsByTeam', {
-        guid: getTeamGuid(this.yahooTeam, this.league.scadTeams)
+        guid: getTeamGuid(this.yahooTeam)
       })
       this.scadTeam = JSON.parse(
         JSON.stringify(this.$store.state.team.scadTeam)
@@ -526,8 +526,7 @@ export default {
         this.franchiseTagDiscount,
         this.irReliefPerc,
         this.yahooTeam,
-        this.scadSettings.seasonYear,
-        this.league.scadTeams
+        this.scadSettings.seasonYear
       )
     },
     getPlayerSalary (id, pos) {
@@ -676,7 +675,7 @@ export default {
         team: {
           name: this.team.yahooTeam.name,
           yahooTeamId: this.team.yahooTeam.team_id,
-          yahooGuid: getTeamGuid(this.team.yahooTeam, this.league.scadTeams)
+          yahooGuid: getTeamGuid(this.team.yahooTeam)
         },
         user: this.user.user.name,
         comment: 'Adding Franchise Tag',
@@ -723,7 +722,7 @@ export default {
         team: {
           name: this.team.yahooTeam.name,
           yahooTeamId: this.team.yahooTeam.team_id,
-          yahooGuid: getTeamGuid(this.team.yahooTeam, this.league.scadTeams)
+          yahooGuid: getTeamGuid(this.team.yahooTeam)
         },
         user: this.user.user.name,
         comment: 'Removing Franchise Tag',
@@ -751,7 +750,7 @@ export default {
         team: {
           name: this.team.yahooTeam.name,
           yahooTeamId: this.team.yahooTeam.team_id,
-          yahooGuid: getTeamGuid(this.team.yahooTeam, this.league.scadTeams)
+          yahooGuid: getTeamGuid(this.team.yahooTeam)
         },
         user: this.user.user.name,
         comment: `Manual salary adjustment`,

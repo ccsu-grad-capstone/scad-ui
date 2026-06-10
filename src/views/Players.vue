@@ -41,7 +41,7 @@
                         | {{getPlayerName(props.row.yahooPlayerId)}}
                   q-td(key='team' :props='props')
                     .text-grey {{getNFLTeam(props.row.yahooPlayerId)}}
-                  q-td(:class="myTeamStyle(props.row.yahooPlayerId, yahooTeams, yahooPlayers, user.user.guid, scadTeams)" key='owner' :props='props')
+                  q-td(:class="myTeamStyle(props.row.yahooPlayerId)" key='owner' :props='props')
                     | {{ getOwner(props.row.yahooPlayerId) }}
                   q-td(key='salaryHistory' :props='props' auto-width)
                     q-icon(name="history" color="info" size="xs" @click="playerHistoryDialog(props.row)")
@@ -225,7 +225,7 @@ export default {
     },
     myTeamStyle (yahooPlayerId) {
       if (this.loaded) {
-        return myTeamStyle(yahooPlayerId, this.yahooTeams, this.yahooPlayers, this.user.user.guid, this.scadTeams)
+        return myTeamStyle(yahooPlayerId, this.yahooTeams, this.yahooPlayers, this.user.user.guid)
       }
     },
     getHeadshot (id) {

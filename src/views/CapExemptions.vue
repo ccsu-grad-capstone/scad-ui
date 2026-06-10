@@ -41,11 +41,11 @@
                 q-td(:props='props' auto-width)
                   div.q-pr-lg {{ props.row.year }}
               template(v-slot:body-cell-giving='props')
-                q-td(:props='props' auto-width :class="myTeamDPCEStyle(getTeamGuid(props.row.yahooTeamGive, scadTeams), user.user.guid)")
-                  div.q-pr-lg {{ getTeamName(props.row.yahooTeamGive, yahooTeams, scadTeams) }}
+                q-td(:props='props' auto-width :class="myTeamDPCEStyle(getTeamGuid(props.row.yahooTeamGive), user.user.guid)")
+                  div.q-pr-lg {{ getTeamName(props.row.yahooTeamGive, yahooTeams) }}
               template(v-slot:body-cell-recieving='props')
-                q-td(:props='props' auto-width :class="myTeamDPCEStyle(getTeamGuid(props.row.yahooTeamRecieve, scadTeams), user.user.guid)")
-                  div.q-pr-lg {{ getTeamName(props.row.yahooTeamRecieve, yahooTeams, scadTeams) }}
+                q-td(:props='props' auto-width :class="myTeamDPCEStyle(getTeamGuid(props.row.yahooTeamRecieve), user.user.guid)")
+                  div.q-pr-lg {{ getTeamName(props.row.yahooTeamRecieve, yahooTeams) }}
               template(v-slot:body-cell-amount='props')
                 q-td(:props='props' auto-width)
                   div.q-pr-lg ${{ props.row.amount }}
@@ -207,7 +207,7 @@ export default {
       Object.keys(this.filter).forEach(key => {
         if (this.filter[key] !== '') {
           if (key === 'team') {
-            filtered = filtered.filter(ce => getTeamGuid(ce.yahooTeamGive, this.scadTeams) === getTeamGuid(this.filter.team, this.scadTeams) || getTeamGuid(ce.yahooTeamRecieve, this.scadTeams) === getTeamGuid(this.filter.team, this.scadTeams))
+            filtered = filtered.filter(ce => getTeamGuid(ce.yahooTeamGive) === getTeamGuid(this.filter.team) || getTeamGuid(ce.yahooTeamRecieve) === getTeamGuid(this.filter.team))
           } else {
             filtered = filtered.filter(ce => ce[key] == this.filter[key])
           }
@@ -221,12 +221,12 @@ export default {
     },
     async applyToTeams (ce) {
       if (ce.year == this.seasonYear) {
-        let giver = this.scadTeams.find(t => t.yahooGuid == getTeamGuid(ce.yahooTeamGive, this.scadTeams))
+        let giver = this.scadTeams.find(t => t.yahooGuid == getTeamGuid(ce.yahooTeamGive))
         giver.exceptionOut += ce.amount
         giver.salary += ce.amount
         await this.$store.dispatch('team/saveTeam', giver)
 
-        let reciever = this.scadTeams.find(t => t.yahooGuid == getTeamGuid(ce.yahooTeamRecieve, this.scadTeams))
+        let reciever = this.scadTeams.find(t => t.yahooGuid == getTeamGuid(ce.yahooTeamRecieve))
         reciever.exceptionIn += ce.amount
         reciever.salary -= ce.amount
         await this.$store.dispatch('team/saveTeam', reciever)

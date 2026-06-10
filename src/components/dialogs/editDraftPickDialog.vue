@@ -69,9 +69,6 @@ export default {
     seasonYear () {
       return this.$store.state.league.scadSettings.seasonYear
     },
-    scadTeams () {
-      return this.$store.state.league.scadTeams
-    },
     filteredTeams () {
       return this.yahooTeams.map(t => Object.assign({}, t, { value: t.name, label: t.name }))
     }
@@ -79,7 +76,7 @@ export default {
   methods: {
     async savePick () {
       // console.log('[DRAFTPICK] Method - savePick()')
-      if (getTeamGuid(this.dp.team, this.scadTeams) !== getTeamGuid(this.initOwner, this.scadTeams)) {
+      if (getTeamGuid(this.dp.team) !== getTeamGuid(this.initOwner)) {
         let log = `${this.dp.team.name} (${this.dp.team.managers[0].nickname}) - ${moment().format('LLL')}`
         if (!this.dp.log) {
           this.dp.log = []

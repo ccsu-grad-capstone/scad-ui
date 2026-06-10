@@ -27,7 +27,7 @@
                   .row.full-width.text-body2.text-weight-bold
                     | {{ props.row.yahooPlayer.name.full }}
                   .row.full-width.text-accent
-                    .text-caption {{ getTeamName(getYahooTeamFromYahooTeamId(yahooTeams, props.row.scadPlayer.isFranchiseTagTeam.yahooTeamId), yahooTeams, scadTeams) }}
+                    .text-caption {{ getTeamName(getYahooTeamFromYahooTeamId(yahooTeams, props.row.scadPlayer.isFranchiseTagTeam.yahooTeamId), yahooTeams) }}
             q-td
               .row
                 .text-center.text-grey-7 (${{props.row.scadPlayer.salary}})
@@ -143,7 +143,6 @@ export default {
     franchiseTaggedPlayers () { return this.$store.state.player.franchiseTaggedPlayers },
     previousYearsFranchiseTaggedPlayers () { return this.$store.state.player.previousYearsFranchiseTaggedPlayers },
     moment () { return moment },
-    scadTeams () { return this.$store.state.league.scadTeams },
     getTeamName () { return getTeamName },
     getYahooTeamFromYahooTeamId () { return getYahooTeamFromYahooTeamId }
   },

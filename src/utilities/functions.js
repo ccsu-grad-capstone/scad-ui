@@ -160,22 +160,13 @@ export function getSalaryForCatch (t, p) {
   }
 }
 
-export function getTeamGuid (yahooTeam, scadTeams) {
-  // console.log('getTeamGuid: ', yahooTeam, scadTeams)
-  let yahooTeamId = yahooTeam.team_id
-  let scadTeam = scadTeams.find(t => t.yahooTeamId == yahooTeamId)
-
-  let guid = scadTeam ? scadTeam.yahooGuid : undefined
-
-  console.log('getTeamGuid - found guid: ', { yahooTeamId, scadTeam, guid })
-
-  // old logic before yahoo started return this guid as -hidden-
-  // if (team.managers[0].manager) {
-  //   guid = team.managers[0].manager.guid
-  // } else if (team.managers[0].guid) {
-  //   guid = team.managers[0].guid
-  // }
-
+export function getTeamGuid (team) {
+  let guid
+  if (team.managers[0].manager) {
+    guid = team.managers[0].manager.guid
+  } else if (team.managers[0].guid) {
+    guid = team.managers[0].guid
+  }
   if (guid === 'RAL6NBFQ3AGEUH4AHH3GVGGY5M') guid = 'QWA63MEQ6LG4E74F3CQEMO563Q' // ??
   if (guid === 'RSPJ357SO2YCMM6NTQKTK5F5IU') guid = 'VWPIOPCBNIAJAQZVXKIJPUXHNM' // nick -> jim
   return guid
@@ -190,10 +181,10 @@ export function getDisplayPosition (disPos) {
   } else return disPos
 }
 
-export function getTeamName (team, yahooTeams, scadTeams) {
-  let guid = getTeamGuid(team, scadTeams)
+export function getTeamName (team, yahooTeams) {
+  let guid = getTeamGuid(team)
   // console.log(team.name, guid)
-  let yahooTeam = yahooTeams.find(t => getTeamGuid(t, scadTeams) === guid)
+  let yahooTeam = yahooTeams.find(t => getTeamGuid(t) === guid)
   if (yahooTeam) return yahooTeam.name
   else return 'N/A'
 }

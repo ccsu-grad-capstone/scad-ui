@@ -3,13 +3,13 @@
 import moment from 'moment'
 import { getYahooPlayer, getTeamGuid, getDisplayPosition } from './functions'
 
-export function myTeamStyle (yahooPlayerId, yahooTeams, yahooPlayers, userGuid, scadTeams) {
+export function myTeamStyle (yahooPlayerId, yahooTeams, yahooPlayers, userGuid) {
   let player = getYahooPlayer(yahooPlayers, yahooPlayerId)
   if (player) {
     let yahooTeam = yahooTeams.find(t => t.team_id == player.yahooTeamId)
     return {
-      'text-accent': getTeamGuid(yahooTeam, scadTeams) == userGuid,
-      'text-weight-bold': getTeamGuid(yahooTeam, scadTeams) == userGuid
+      'text-accent': getTeamGuid(yahooTeam) == userGuid,
+      'text-weight-bold': getTeamGuid(yahooTeam) == userGuid
     }
   }
 }
